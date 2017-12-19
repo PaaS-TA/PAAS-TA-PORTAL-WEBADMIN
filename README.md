@@ -1,2 +1,2 @@
-# openPaasPaastaPortalWebAdmin
+# PAAS-TA-PORTAL-WEBADMIN
 v2.0
