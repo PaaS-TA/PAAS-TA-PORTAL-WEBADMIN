@@ -1,0 +1,43 @@
+# Spring properties
+spring:
+  application:
+    name: portal-web-admin  # Identify this application
+  redis:
+      host: ${vcap.services.portal-redis-session.credentials.host:localhost}
+      password: ${vcap.services.portal-redis-session.credentials.password:f7f80759-49a5-4e29-800f-499778161e7d}
+      port: ${vcap.services.portal-redis-session.credentials.port:42413}
+      timeout: 2100
+
+multipart:
+  maxFileSize: 1000Mb
+  maxRequestSize: 1000Mb
+
+# HTTP Server
+server:
+  port: ${PORT:8090}   # HTTP (Tomcat) port
+
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.portal-eureka-service.credentials.uri:http://127.0.0.1:2221}/eureka/
+  instance:
+    hostname: ${vcap.application.uris[0]:localhost}
+
+# paasta
+paasta:
+  portal:
+    api:
+      authorization:
+        base64: Basic YWRtaW46b3BlbnBhYXN0YQ==
+      url: http://PORTAL-API
+ribbon:
+    eureka:
+        enabled: true
+    ConnectTimeout: 30000
+    ReadTimeout: 30000
+
+monitoringSite:
+    url: YOUR_MONITORING_URL
+    id: YOUR_MONITORING_ID
+    password: YOUR_MONITORING_PASSWORD
