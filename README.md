@@ -1,5 +1,5 @@
 # PAAS-TA-PORTAL-WEBADMIN
-v2.0
+v2.0 - Sprint1
 
 ## 유의사항
 - gradle 2.14 버전
