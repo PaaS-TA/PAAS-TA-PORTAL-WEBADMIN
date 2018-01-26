@@ -1,6 +1,6 @@
 package org.openpaas.paasta.portal.web.admin.service;
 
-import org.openpaas.paasta.common.security.userdetails.User;
+import org.openpaas.paasta.portal.web.admin.common.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

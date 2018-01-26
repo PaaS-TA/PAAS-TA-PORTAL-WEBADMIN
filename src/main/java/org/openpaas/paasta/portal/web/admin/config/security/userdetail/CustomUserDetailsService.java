@@ -1,6 +1,6 @@
 package org.openpaas.paasta.portal.web.admin.config.security.userdetail;
 
-import org.openpaas.paasta.common.security.userdetails.User;
+import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;

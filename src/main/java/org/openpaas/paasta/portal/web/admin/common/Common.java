@@ -1,6 +1,5 @@
 package org.openpaas.paasta.portal.web.admin.common;
 
-import org.openpaas.paasta.common.security.userdetails.User;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
