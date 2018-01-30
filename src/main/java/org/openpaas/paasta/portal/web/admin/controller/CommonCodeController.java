@@ -40,6 +40,12 @@ public class CommonCodeController extends Common {
     @RequestMapping(value = {"/getCommonCode/{codeId}"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getCommonCode(@PathVariable("codeId") String codeId) {
+        System.out.println("#########################################");
+        System.out.println("#########################################");
+        System.out.println(codeId);
+        System.out.println("#########################################");
+        System.out.println("#########################################");
+
         return commonService.procRestTemplate("/commonCode/getCommonCode/" + codeId, HttpMethod.GET, new CommonCode(), null);
     }
 
