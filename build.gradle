@@ -43,6 +43,9 @@ dependencyManagement {
 
 
 dependencies {
+    //Admin Server Setting
+    compile ('de.codecentric:spring-boot-admin-starter-client')
+
     //Config Server Setting
     compile("org.springframework.cloud:spring-cloud-starter-config")
 
