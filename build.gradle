@@ -1,9 +1,11 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.0.RC2'
+        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
     }
     repositories {
         mavenCentral()
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -44,7 +46,7 @@ dependencyManagement {
 
 dependencies {
     //Admin Server Setting
-    compile ('de.codecentric:spring-boot-admin-starter-client')
+    compile ('de.codecentric:spring-boot-admin-starter-client:1.5.7')
 
     //Config Server Setting
     compile("org.springframework.cloud:spring-cloud-starter-config")
