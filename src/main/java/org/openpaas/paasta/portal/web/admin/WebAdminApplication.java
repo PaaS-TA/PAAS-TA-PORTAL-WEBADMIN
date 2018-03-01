@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan(basePackages = {"org.openpaas.paasta.portal.web.admin"})
+//@ComponentScan(basePackages = {"org.openpaas.paasta.portal.web.admin"})
 public class WebAdminApplication {
 
 	/**

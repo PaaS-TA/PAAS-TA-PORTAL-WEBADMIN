@@ -4,42 +4,6 @@ spring:
   cloud:
     config:
       uri: http://localhost:8004
-  boot:
-    #Spring boot admin settings
-    admin:
-      url: http://localhost:2226
-      routes:
-        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream,docs
-        #Timeintervalin ms to update the status of App
-      monitor:
-        perio: 10000
-        #LifeTime of App status in ms.
-        status-lifetime: 10000
-        #Connection Timeout in ms when App's status and info
-        connect-timeout: 2000
-        #Read Timeout in ms when App's status and info
-        read-timeout: 5000
-      metadata-keys-to-sanitize: .password$,.*secret$,.*key$,.$token$,.credentials.,.*vcap_services$
-##INFRA_ADMIN Settings
-project:
-  name: spring-boot-actuator-example
-  artifactId: actuator-example
-  description: sample-th
-info:
-  app:
-    encoding: Encoding - UTF-8
-  java:
-    source: Source - java ver
-    target: Instance1 - Java ver
-  spring:
-    profiles: ${spring.profiles.active:default}
-  build:
-    name: ${project.name}
-    artifact: ${project.artifactId}
-    description: ${project.description}
-management:
-  security:
-    enabled: false
 
 server:
   port: ${PORT:8080}
