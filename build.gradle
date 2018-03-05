@@ -1,36 +1,34 @@
 buildscript {
     ext {
-        springBootVersion = '1.3.3.RELEASE'
+        springBootVersion = '1.5.3.RELEASE'
     }
     repositories {
         mavenCentral()
+        maven { url 'https://repo.spring.io/libs-snapshot' }
 
-        //sonarqube
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
     }
-
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-
-        //sonarqube
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.0.1"
     }
 }
-apply plugin: 'java'
-apply plugin: 'war'
-apply plugin: 'spring-boot'
-apply plugin: "io.spring.dependency-management"
 
-//war file, sonarqube project version
-version '1.0'
-
-war {
-    baseName = 'paasta-portal-web-admin'
-    version "$version"
+ext {
+    springCloudVersion = 'Edgware.RELEASE'
+    tomcatEmbedJasperVersion = '8.5.14'
+    jstlVersion = '1.2'
+    springSecurityTagLibsVersion = '4.2.3.RELEASE'
+    springSession = '1.3.1.RELEASE'
 }
 
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
+
+war {
+    baseName = 'paas-ta-portal-webadmin'
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -39,27 +37,52 @@ repositories {
     mavenCentral()
 }
 
-
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.0.7.RELEASE'
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
 
 
 dependencies {
-    compile ('org.springframework.cloud:spring-cloud-starter-eureka')
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.apache.tomcat.embed:tomcat-embed-jasper')
-    compile ('javax.servlet.jsp:jsp-api:2.2.1-b03')
-    compile ('javax.servlet:jstl:1.2')
+    //Admin Server Setting
+    compile ('de.codecentric:spring-boot-admin-starter-client:1.5.7')
+
+    //Config Server Setting
+    compile("org.springframework.cloud:spring-cloud-starter-config")
+
+    //Eureka
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
 
     // for redis session
-    compile ('org.springframework.boot:spring-boot-starter-redis')
-    compile ('org.springframework.session:spring-session:1.1.1.RELEASE')
+    compile("org.springframework.boot:spring-boot-starter-data-redis")
+    compile ("org.springframework.session:spring-session:${springSession}")
 
-    // http://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs
-    compile ('org.springframework.security:spring-security-taglibs:4.1.0.RELEASE')
+    //Security
+    compile("org.springframework.security.oauth:spring-security-oauth2")
+
+    //WEB
+    compile("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}")
+    compile("org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}")
+    compile("javax.servlet:jstl:${jstlVersion}")
+
+    //Default Spring-boot setting
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-aop")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.7.9+"
+}
+
+test {
+    ignoreFailures=true
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacoco-overall.exec")
+    }
+}

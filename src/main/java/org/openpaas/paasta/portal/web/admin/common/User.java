@@ -1,4 +1,4 @@
-package org.openpaas.paasta.common.security.userdetails;
+package org.openpaas.paasta.portal.web.admin.common;
 
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;

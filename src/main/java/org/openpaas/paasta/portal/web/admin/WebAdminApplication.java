@@ -1,4 +1,4 @@
-package org.openpaas.paasta.portal.web.admin.config;
+package org.openpaas.paasta.portal.web.admin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan(basePackages = {"org.openpaas.paasta.portal.web.admin"})
+//@ComponentScan(basePackages = {"org.openpaas.paasta.portal.web.admin"})
 public class WebAdminApplication {
 
 	/**
@@ -22,8 +22,6 @@ public class WebAdminApplication {
 	 *            Program arguments - ignored.
 	 */
 	public static void main(String[] args) {
-		// Tell server to look for web-server.properties or web-server.yml
-//		System.setProperty("spring.config.name", "web-admin-server");
 		SpringApplication.run(WebAdminApplication.class, args);
 	}
 }
