@@ -47,21 +47,21 @@ public class LoginController {
 
         ModelAndView model = new ModelAndView();
 
-        if (error != null) {
-            model.addObject("error", "아이디 또는 비밀번호가 맞지 않습니다.");
-        }
-
-        if (logout != null) {
-            model.addObject("message", "성공적으로 로그아웃 되었습니다.");
-        }
+//        if (error != null) {
+//            model.addObject("error", "아이디 또는 비밀번호가 맞지 않습니다.");
+//        }
+//
+//        if (logout != null) {
+//            model.addObject("message", "성공적으로 로그아웃 되었습니다.");
+//        }
 
         LOGGER.info("ROLE_ADMIN : " + request.isUserInRole("ROLE_ADMIN"));
-        if(!request.isUserInRole("ROLE_ADMIN")){
-            model.setViewName("/index");
-        }else{
-            model.setViewName("redirect:/main");
-        }
-
+//        if(!request.isUserInRole("ROLE_ADMIN")){
+//            model.setViewName("/index");
+//        }else{
+//            model.setViewName("redirect:/main");
+//        }
+        model.setViewName("redirect:/main");
         return model;
     }
 
@@ -74,11 +74,12 @@ public class LoginController {
     @RequestMapping(value = {"/main"}, method = RequestMethod.GET)
     public ModelAndView homePage(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
-        if(!request.isUserInRole("ROLE_ADMIN")){
-            model.setViewName("redirect:/index");
-        }else{
-            model.setViewName("/main/main");
-        }
+//        if(!request.isUserInRole("ROLE_ADMIN")){
+//            model.setViewName("redirect:/index");
+//        }else{
+//            model.setViewName("/main/main");
+//        }
+        model.setViewName("/main/main");
         return model;
     }
 
