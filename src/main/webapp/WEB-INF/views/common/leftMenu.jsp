@@ -11,16 +11,16 @@
 
     <%--USER INFORMATION--%>
     <div class="userinfo">
-        <sec:authentication property="principal.imgPath" var="imgPath"/>
+        <%--<sec:authentication property="principal.imgPath" var="imgPath"/>--%>
         <c:choose>
             <c:when test="${not empty imgPath}"><img class="circle" src="<c:url value='${Constants.IMAGE_PATH_PREFIX}${imgPath}'/>" alt="사용자"/></c:when>
             <c:otherwise><img class="circle" src="<c:url value='/resources/images/userpic.png'/>" alt="사용자"/></c:otherwise>
         </c:choose>
 
-        <div class="name"><sec:authentication property="principal.name" /></div>
+        <%--<div class="name"><sec:authentication property="principal.name" /></div>--%>
         <div class="dropdown">
             <a class="mail dropdown-toggle" data-toggle="dropdown" id="dropdownTopMenu" href="javascript:void(0);">
-                <sec:authentication property="principal.username" /><span class="caret"></span>
+                <%--<sec:authentication property="principal.username" /><span class="caret"></span>--%>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownTopMenu" style="width: 100%;">
                 <li role="presentation"><a href="javascript:document.getElementById('logout').submit()">로그아웃</a></li>

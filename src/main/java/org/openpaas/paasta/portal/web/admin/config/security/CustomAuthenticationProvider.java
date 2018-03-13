@@ -13,11 +13,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
@@ -42,17 +45,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         try {
 
-            user = customUserDetailsService.loginByUsernameAndPassword(username, password);
+//            user = customUserDetailsService.loginByUsernameAndPassword(username, password);
+//
+//            LOGGER.info("username : " + username + " / password : " + password );
+//            LOGGER.info("username : " + user.getUsername() + " / password : " + user.getPassword());
+//
+//            // matches 를 이용하여 암호를 비교한다.
+//            if ( !password.equals(user.getPassword()) ) {
+//                throw new BadCredentialsException( "암호가 일치하지 않습니다." );
+//            }
 
-            LOGGER.info("username : " + username + " / password : " + password );
-            LOGGER.info("username : " + user.getUsername() + " / password : " + user.getPassword());
+//            authorities = user.getAuthorities();
 
-            // matches 를 이용하여 암호를 비교한다.
-            if ( !password.equals(user.getPassword()) ) {
-                throw new BadCredentialsException( "암호가 일치하지 않습니다." );
-            }
-
-            authorities = user.getAuthorities();
         } catch(UsernameNotFoundException e) {
             LOGGER.info(e.toString());
             throw new UsernameNotFoundException(e.getMessage());
@@ -63,6 +67,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             LOGGER.info(e.toString());
         }
 
+
+
+        List role = new ArrayList();
+        role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        authorities = role;
         return new UsernamePasswordAuthenticationToken(user, password, authorities);
     }
 
