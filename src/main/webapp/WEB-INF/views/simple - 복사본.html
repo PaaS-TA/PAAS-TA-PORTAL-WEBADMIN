@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 2 | Simple Tables</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="../../resources/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../resources/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../../resources/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../resources/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../resources/dist/css/skins/_all-skins.min.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="../../index2.html" class="logo"><!-- link home -->
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>P</b></span><!-- 파스타 이미지로 대체 -->
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>PaaS-TA</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
+      <span>알림사항 환영합니다. Open PaaS PaaS-TA 운영자 포탈입니다.</span>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+    <!-- ===================================================================================== -->
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        클라이언트 목록
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <div class="input-group margin">
+                <div class="input-group-btn">
+                  <button type="button" class="btn"><i class="fa fa-search"></i></button>
+                </div>
+                <!-- /btn-group -->
+                <input type="text" class="form-control" placeholder="검색어를 입력하세요.">
+              </div>
+              <div class="input-group margin" style="float:right;">
+                <div class="input-group input-group-sm" style="width: 110px;">
+                    <button type="button" class="btn btn-block btn-primary btn-sm" data-toggle="modal" data-target="#modal-default">클라이언트 등록</button>
+                </div>
+              </div>
+              <h3 class="box-title"><!-- --></h3>
+            </div>
+            <!-- /.box-header -->
+
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+
+                <tr class="text-center">
+                  <td><b>클라이언트 ID</b></td>
+                </tr>
+                <tr class="text-center">
+                  <td>183</td>
+                </tr>
+                <tr class="text-center">
+                  <td>184</td>
+                </tr>
+                <tr class="text-center">
+                  <td>185</td>
+                </tr>
+                <tr class="text-center">
+                  <td>186</td>
+                </tr>
+                <tr class="text-center">
+                  <td>187</td>
+                </tr>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+      <!-- Modal Layer-->
+      <div class="modal fade" id="modal-default" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Default Modal</h4>
+              </div>
+              <div class="modal-body">
+                <p>One fine body…</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- Modal Layer-->
+
+    </section>
+    <!-- /.content -->
+<!-- ===================================================================================== -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<!--footer -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+    </div>
+    <strong>Copyright &copy; 2016 PaaS-TA. All rights reserved
+  </footer>
+
+
+  <!-- Control Sidebar -->
+  <!-- /.control-sidebar -->
+
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <!--<div class="control-sidebar-bg"></div>-->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script src="../../resources/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="../../resources/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../resources/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../resources/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../resources/dist/js/demo.js"></script>
+</body>
+</html>
