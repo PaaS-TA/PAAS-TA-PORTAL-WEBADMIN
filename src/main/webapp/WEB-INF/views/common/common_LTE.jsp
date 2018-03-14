@@ -18,16 +18,16 @@
     <title> PaaS-TA ADMIN</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="./resource/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./resource/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../resources/bower_components/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="./resource/bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="../../resources/bower_components/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="./resource/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../../resources/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="./resource/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../../resources/dist/css/skins/_all-skins.min.css">
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -38,6 +38,18 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <script src="../../resources/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="../../resources/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../resources/bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../resources/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../../resources/dist/js/demo.js"></script>
 
     <%--JQUERY--%>
     <script type="text/javascript" src="<c:url value='/resources/axisj/jquery/jquery.min.js' />"></script>
@@ -95,10 +107,10 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="./resource/dist/img/credit/mastercard.png" class="img-circle" alt="User Image">
+                    <img src="../../resources/dist/img/credit/mastercard.png" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>NUGU</p>
+                    <p>MENU</p>
                 </div>
             </div>
 
@@ -115,7 +127,7 @@
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-dashboard"></i> <span>운영관리</span>
-            <span class="pull-right-container">
+                        <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>
@@ -134,7 +146,7 @@
                     <a href="#">
                         <i class="fa fa-files-o"></i>
                         <span>포탈 관리</span>
-            <span class="pull-right-container">
+                        <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>
@@ -149,7 +161,7 @@
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>서비스 관리</span>
-            <span class="pull-right-container">
+                        <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>

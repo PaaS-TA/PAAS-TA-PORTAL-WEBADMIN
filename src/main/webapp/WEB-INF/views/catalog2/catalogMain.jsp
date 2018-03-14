@@ -1,11 +1,11 @@
 <%--CONSTANT--%>
 <%@ page import="org.openpaas.paasta.portal.web.admin.common.Constants" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ include file="./common/common_LTE.jsp" %>
+<%@ include file="../common/common_LTE.jsp" %>
 <!-- ===================================================================================== -->
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <h1>카탈로그 관리</h1>
+                <h1>카탈로그 관리</h1>
 </section>
 
 <!-- Main content -->
@@ -85,17 +85,20 @@
                 <!-- /.box-body -->
             </div>
             <!-- /검색유형/검색항목/공개여뷰/검색어-->
+
             <!-- 탭 구현설정 -->
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">앱 템플릿</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" id="AppTemplate" data-widget="collapse"><i
-                                class="fa fa-minus"></i>
-                        </button>
-                    </div>
+                    <!-- [_]창)-->
+                     <div class="box-tools pull-right">
+                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                             <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')" aria-expanded="true"></a>
+                             <i class="fa fa-minus"></i>
+                         </button>
+                     </div>
                 </div>
+
                 <!-- /.box-header -->
                 <div class="box-body" style="">
                     <div id="starterListMessageArea" class="table-responsive">
@@ -113,16 +116,15 @@
                     </div>
                     <!-- /.table-responsive -->
                 </div>
-                <form id="starterHiddenForm">
-                    <input type="hidden" id="starterHiddenFormNo" name="no" value=""/>
-                </form>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix" style="">
-                    <button type="button" class="btn btn-sm btn-primary btn-flat pull-left"
-                            onclick="procMovePage(STARTER_INSERT_FORM_URL, '<%= Constants.CUD_C %>');">
+                    <button type="button"class="btn btn-sm btn-primary btn-flat pull-left" onclick="procMovePage(STARTER_INSERT_FORM_URL, '<%= Constants.CUD_C %>');" >
                         앱 템플릿 등록
                     </button>
                 </div>
+                <form id="starterHiddenForm">
+                    <input type="hidden" id="starterHiddenFormNo" name="no" value=""/>
+                </form>
                 <!-- /.box-footer -->
             </div>
 
@@ -131,15 +133,16 @@
                     <h3 class="box-title">앱 개발환경</h3>
 
                     <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" id="AppDevelopmentEnvironment"
-                                data-widget="collapse"><i class="fa fa-minus"></i>
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <a href="#BUILD_PACK" data-toggle="tab" onclick="procSelectTab('BUILD_PACK')" aria-expanded="true"></a>
+                            <i class="fa fa-minus"></i>
                         </button>
                     </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body" style="">
-                    <div class="table-responsive">
-                        <table class="table no-margin">
+                    <div  id="buildPackTableArea"class="table-responsive">
+                        <table id="buildPackMessageArea" class="table no-margin">
                             <thead>
                             <tr>
                                 <th>이름</th>
@@ -148,14 +151,21 @@
                                 <th>공개</th>
                             </tr>
                             </thead>
+                            <tbody id="buildPackListTable">
+                            </tbody>
                         </table>
                     </div>
                     <!-- /.table-responsive -->
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix" style="">
-                    <a href="#" class="btn btn-sm btn-primary btn-flat pull-left">앱 개발환경 등록</a>
+                    <button type="button" class="btn btn-sm btn-primary btn-flat pull-left" onclick="procMovePage(BUILD_PACK_INSERT_FORM_URL, '<%= Constants.CUD_C %>');">
+                        앱 개발환경 등록
+                    </button>
                 </div>
+                <form id="BuildPackHiddenForm">
+                    <input type="hidden" id="BuildPackHiddenFormNo" name="no" value="" />
+                </form>
                 <!-- /.box-footer -->
             </div>
 
@@ -164,8 +174,9 @@
                     <h3 class="box-title">서비스</h3>
 
                     <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" id="AppService" data-widget="collapse"><i
-                                class="fa fa-minus"></i>
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                            <a href="#SERVICE_PACK" data-toggle="tab" onclick="procSelectTab('SERVICE_PACK')" aria-expanded="true"></a>
                         </button>
                     </div>
                 </div>
@@ -215,22 +226,22 @@
             <!-- /.modal-dialog -->
         </div>
         <!-- Modal Layer-->
+    </div>
 </section>
 <!-- /.content -->
 <!-- ===================================================================================== -->
 
 <script type="text/javascript">
-
     var TAB_NAME = "<c:out value='${TAB_NAME}' default='' />";
 
-    $(document.body).ready(function () {
+    $(document.body).ready(function() {
 
         procSelectTab(TAB_NAME);
     });
 
 
     // SELECT TAB
-    var procSelectTab = function (reqTabName) {
+    var procSelectTab = function(reqTabName) {
         if ("" == reqTabName) return false;
 
         $('.tab-pane.fade').removeClass('active in');
@@ -245,7 +256,7 @@
 
 
     // CHECK SEARCH FORM KEY EVENT
-    var procCheckSearchFormKeyEvent = function (e) {
+    var procCheckSearchFormKeyEvent = function(e) {
         if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
             procGetSearchList();
         }
@@ -253,7 +264,7 @@
 
 
     // GET SEARCH LIST
-    var procGetSearchList = function () {
+    var procGetSearchList = function() {
         var doc = document;
         var reqSearchType = doc.getElementById('searchType').value;
         var reqSearchTypeColumn = doc.getElementById('searchTypeColumn').value;
@@ -261,9 +272,9 @@
         var reqSearchKeyword = doc.getElementById('searchKeyword').value.toLowerCase();
 
         var param = {
-            searchKeyword: reqSearchKeyword,
-            searchTypeColumn: reqSearchTypeColumn,
-            searchTypeUseYn: reqSearchTypeUseYn
+            searchKeyword : reqSearchKeyword,
+            searchTypeColumn : reqSearchTypeColumn,
+            searchTypeUseYn : reqSearchTypeUseYn
         };
 
         var objDivStarter = $("#divStarter");
@@ -297,17 +308,18 @@
     };
 
     // BIND :: BUTTON EVENT
-    $("#btnSearch").on("click", function () {
+    $("#btnSearch").on("click", function() {
         procGetSearchList();
     });
 
 
     $(document.body).ready(function () {
-        getStarterList();
-        getBuildPackList();
-        getServicePackList();
+//        getStarterList();
+//        getBuildPackList();
+//        getServicePackList();
     });
 
 </script>
 
-<%@ include file="./common/footer_LTE.jsp" %>
+
+<%@ include file="../common/footer_LTE.jsp" %>
