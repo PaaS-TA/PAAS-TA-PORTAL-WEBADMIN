@@ -65,13 +65,14 @@ dependencies {
     compile("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}")
     compile("org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}")
     compile("javax.servlet:jstl:${jstlVersion}")
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '1.5.9.RELEASE'
+    //compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.9.RELEASE'
 
     //Default Spring-boot setting
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-aop")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
-
 
 
 apply plugin: 'jacoco'
