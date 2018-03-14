@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>PaaS-TA ADMIN</title>
+</head>
+<body>
+  <div class="wrapper">
+    <header layout:fragment="fragmentHeader" class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo"><!-- link home -->
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+  <span class="logo-mini">
+    <b>P</b>
+    <!-- 파스타 이미지로 대체 -->
+    <!--<img src="http://portal-web-admin.115.68.46.187.xip.io./resources/images/logo.png" width="50" height="50"> -->
+  </span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>PaaS-TA</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
+      <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7;">
+        <i class="fa fa-fw fa-volume-up"></i> <b>알림사항</b> 환영합니다. Open PaaS PaaS-TA 운영자 포탈입니다.
+      </h4>
+    </nav>
+  </header>
+
+
+    <div layout:fragment="content">default Contents</div>
+
+    <footer layout:fragment="fragmentFooter" class="main-footer">
+      <strong>Copyright &copy; 2016 PaaS-TA. All rights reserved</strong>
+    </footer>
+
+  </div>
+</body>
+</html>
