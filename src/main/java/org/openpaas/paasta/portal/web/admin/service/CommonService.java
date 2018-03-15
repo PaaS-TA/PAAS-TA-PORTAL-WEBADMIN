@@ -238,6 +238,7 @@ public class CommonService {
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
 
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        LOGGER.info("cfApiUrl(TestLog)::"+cfApiUrl+reqUrl);
         ResponseEntity<Map> resEntity = restTemplate.exchange(cfApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 

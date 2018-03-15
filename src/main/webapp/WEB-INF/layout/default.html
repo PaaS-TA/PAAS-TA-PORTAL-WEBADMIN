@@ -4,10 +4,49 @@
 <head>
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
   <title>PaaS-TA ADMIN</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" type="text/css" href="/resources/bower_components/font-awesome/css/font-awesome.min.css" th:href="@{/resources/bower_components/font-awesome/css/font-awesome.min.css}"/>
+  <!-- Ionicons -->
+  <link rel="stylesheet" type="text/css" href="/resources/bower_components/Ionicons/css/ionicons.min.css" th:href="@{/resources/bower_components/Ionicons/css/ionicons.min.css}" />
+  <!-- Theme style -->
+  <link rel="stylesheet" type="text/css" href="/resources/dist/css/AdminLTE.min.css" th:href="@{/resources/dist/css/AdminLTE.min.css}"/>
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" type="text/css" href="/resources/dist/css/skins/_all-skins.min.css" th:href="@{/resources/dist/css/skins/_all-skins.min.css}"/>
+
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" type="text/css" href="/resources/css/bootstrap.css" th:href="@{/resources/bower_components/bootstrap/dist/css/bootstrap.min.css}"/>
+
+
+  <!-- JQUERY -->
+  <script type="text/javascript" src="/resources/axisj/jquery/jquery.min.js" th:src="@{../../resources/bower_components/jquery/dist/jquery.min.js}"></script>
+  <script type="text/javascript" src="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" th:src="@{../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+  <script type="text/javascript" src="/resources/js/bootstrap-filestyle.min.js" th:src="@{../../resources/js/bootstrap-filestyle.min.js}"></script>
+
+  <!-- COMMON JS-->
+  <!--<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/common.css'/>">-->
+  <script type="text/javascript" src="/resources/js/common.js" th:attr="src=@{../../resources/js/common.js}"></script>
+
+  <!-- Google Font -->
+  <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">-->
+
 </head>
-<body>
+<body class="hold-transition skin-blue sidebar-mini">
+<script th:inline="javascript" type="text/javascript" layout:fragment="common-script">
+  /*COMMON VALUE*/
+
+  var RESULT_STATUS_SUCCESS = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).RESULT_STATUS_SUCCESS}]]*/ "SUCCESS";
+  var RESULT_STATUS_FAIL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).RESULT_STATUS_FAIL}]]*/ "FAIL";
+
+
+</script>
   <div class="wrapper">
+
     <header layout:fragment="fragmentHeader" class="main-header">
     <!-- Logo -->
     <a href="#" class="logo"><!-- link home -->
@@ -24,19 +63,107 @@
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
-      <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7;">
+      <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;">
         <i class="fa fa-fw fa-volume-up"></i> <b>알림사항</b> 환영합니다. Open PaaS PaaS-TA 운영자 포탈입니다.
       </h4>
     </nav>
   </header>
 
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+      <!-- sidebar: style can be found in sidebar.less -->
+      <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+          <div class="pull-left image">
+            <img src="./resources/dist/img/credit/mastercard.png" th:src="@{/resources/dist/img/credit/mastercard.png}" class="img-circle" alt="User Image"/>
+          </div>
+          <div class="pull-left info">
+            <p>NUGU</p>
+          </div>
+        </div>
 
-    <div layout:fragment="content">default Contents</div>
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu tree" data-widget="tree">
+          <!-- <li> 1depth 만 사용할 경우 -->
+          <!--<li class="header">운영관리</li>
+          <li>
+            <a href="#">
+              <i class="fa fa-circle-o text-red"></i> <span>설정 정보</span>
+            </a>
+          </li>
+          -->
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-dashboard"></i> <span>운영관리</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="#"><i class="fa fa-circle-o"></i> 설정 정보</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 코드 관리</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 조직 및 공간 조회</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 클라이언트</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 권한 관리</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 사용자 관리</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> WEB IDE 유저 관리</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 모니터링 사이트</a></li>
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-files-o"></i>
+              <span>포탈 관리</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="#"><i class="fa fa-circle-o"></i> 메뉴</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 카탈로그</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 지원</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 문서</a></li>
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-pie-chart"></i>
+              <span>서비스 관리</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="#"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
+              <li><a href="#"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
+            </ul>
+          </li>
+
+        </ul>
+      </section>
+      <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div layout:fragment="content" class="content-wrapper">
+        default Contents
+    </div>
+    <!-- /.content-wrapper -->
 
     <footer layout:fragment="fragmentFooter" class="main-footer">
       <strong>Copyright &copy; 2016 PaaS-TA. All rights reserved</strong>
     </footer>
 
-  </div>
+  <!--&lt;!&ndash; Slimscroll &ndash;&gt;-->
+  <script type="text/javascript" src="/resources/bower_components/jquery-slimscroll/jquery.slimscroll.min.js" th:src="@{/resources/bower_components/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+  <!--&lt;!&ndash; FastClick &ndash;&gt;-->
+  <script type="text/javascript" src="/resources/bower_components/fastclick/lib/fastclick.js" th:src="@{/resources/bower_components/fastclick/lib/fastclick.js}"></script>
+  <!--&lt;!&ndash; AdminLTE App &ndash;&gt;-->
+  <script type="text/javascript" src="/resources/dist/js/adminlte.min.js" th:src="@{/resources/dist/js/adminlte.min.js}"></script>
+  <!-- AdminLTE for demo purposes -->
+  <!--<script src="./resources/dist/js/demo.js"></script>-->
+</div>
+  <!-- ./wrapper -->
+  <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script"></script>
 </body>
 </html>
