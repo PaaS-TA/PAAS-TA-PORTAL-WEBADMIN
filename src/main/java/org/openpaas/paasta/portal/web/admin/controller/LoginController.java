@@ -25,11 +25,7 @@ public class LoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-    /**
-     * The Rest template.
-     */
-    @Autowired
-    protected RestTemplate restTemplate;
+
 
     /**
      * 로그인 화면
@@ -45,24 +41,24 @@ public class LoginController {
                                   @RequestParam(value = "logout", required = false) String logout,
                                   Locale locale, HttpServletRequest request) {
 
-        ModelAndView model = new ModelAndView();
+        ModelAndView mv = new ModelAndView();
 
-//        if (error != null) {
-//            model.addObject("error", "아이디 또는 비밀번호가 맞지 않습니다.");
-//        }
-//
-//        if (logout != null) {
-//            model.addObject("message", "성공적으로 로그아웃 되었습니다.");
-//        }
+        if (error != null) {
+            mv.addObject("error", "아이디 또는 비밀번호가 맞지 않습니다.");
+        }
+
+        if (logout != null) {
+            mv.addObject("message", "성공적으로 로그아웃 되었습니다.");
+        }
 
         LOGGER.info("ROLE_ADMIN : " + request.isUserInRole("ROLE_ADMIN"));
-//        if(!request.isUserInRole("ROLE_ADMIN")){
-//            model.setViewName("/index");
-//        }else{
-//            model.setViewName("redirect:/main");
-//        }
-        model.setViewName("redirect:/main");
-        return model;
+        if(!request.isUserInRole("ROLE_ADMIN")){
+            mv.setViewName("/index");
+        }else {
+//            mv.setViewName("redirect:/main");
+            mv.setViewName("redirect:/client/clientMain");
+        }
+        return mv;
     }
 
 
@@ -73,14 +69,14 @@ public class LoginController {
      */
     @RequestMapping(value = {"/main"}, method = RequestMethod.GET)
     public ModelAndView homePage(HttpServletRequest request) {
-        ModelAndView model = new ModelAndView();
-//        if(!request.isUserInRole("ROLE_ADMIN")){
-//            model.setViewName("redirect:/index");
-//        }else{
-//            model.setViewName("/main/main");
-//        }
-        model.setViewName("/main/main");
-        return model;
+        ModelAndView mv = new ModelAndView();
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            mv.setViewName("redirect:/index");
+        } else {
+            mv.setViewName("/main/main");
+        }
+
+        return mv;
     }
 
 

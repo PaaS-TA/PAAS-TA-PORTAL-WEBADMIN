@@ -37,10 +37,10 @@ public class Common {
     @Autowired
     public MessageSource messageSource;
 
-    @Autowired
-    protected RestTemplate restTemplate;
+
 
     public String getToken(){
+
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //token 만료 시간 비교
@@ -63,7 +63,7 @@ public class Common {
 
                 result = (Map)rssResponse.getBody();
 */
-                result = commonService.procRestTemplate("/login", HttpMethod.POST, resBody, null);
+                result = commonService.procCfApiRestTemplate("/login", HttpMethod.POST, resBody, null);
 
                 user.setToken((String)result.get("token"));
                 user.setExpireDate((Long)result.get("expireDate"));

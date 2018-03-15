@@ -35,9 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
         User user = new User("admin", "admin", role);
-        // 만약 데이터가 없을 경우 익셉션
-        //if (user == null) throw new UsernameNotFoundException("접속자 정보를 찾을 수 없습니다.");
-
         return user;
     }
 
@@ -47,26 +44,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         resBody.put("id", username);
         resBody.put("password", password);
-/*
-
-        HttpEntity requestEntity = new HttpEntity(resBody);
-*/
-
         Map result;
 
 
         try{
-            result = commonService.procRestTemplate("/login", HttpMethod.POST, resBody, "");
-
-            /*ResponseEntity rssResponse = restTemplate.exchange(
-                    API_URL + "/login",
-                    HttpMethod.POST,
-                    requestEntity,
-                    Map.class);
-
-            result = (Map)rssResponse.getBody();
-*/
+            result = commonService.procCfApiRestTemplate("/login", HttpMethod.POST, resBody, "");
         } catch (Exception e) {
+            e.printStackTrace();
             throw new BadCredentialsException(e.getMessage());
 
         }

@@ -45,14 +45,10 @@ dependencyManagement {
 
 
 dependencies {
-    //Admin Server Setting
-    compile ('de.codecentric:spring-boot-admin-starter-client:1.5.7')
+
 
     //Config Server Setting
     compile("org.springframework.cloud:spring-cloud-starter-config")
-
-    //Eureka
-    compile("org.springframework.cloud:spring-cloud-starter-eureka")
 
     // for redis session
     compile("org.springframework.boot:spring-boot-starter-data-redis")
@@ -60,6 +56,9 @@ dependencies {
 
     //Security
     compile("org.springframework.security.oauth:spring-security-oauth2")
+
+    //Json
+    compile('org.codehaus.jettison:jettison:1.3.8')
 
     //WEB
     compile("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}")
