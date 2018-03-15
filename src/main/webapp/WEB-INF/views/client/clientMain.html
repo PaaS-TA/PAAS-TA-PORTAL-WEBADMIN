@@ -29,7 +29,7 @@
 
                 <div class="box-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search"/>
+                    <input type="text" name="table_search" id="searchKeyword" class="form-control pull-right" placeholder="Search" onkeyup="procSearchByKeyword(event);"/>
 
                     <div class="input-group-btn">
                       <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -169,7 +169,10 @@
 
       var idx;
       for (idx = CURRENT_OFFSET; idx < loopEnd; idx++) {
-        htmlString.push('<tr><td class="col-md-4 " style="cursor:pointer;" '
+        if(idx == 0){
+          htmlString.push('<tr><td class="text-center"> 클라이언트 ID</td></tr>');
+        }
+        htmlString.push('<tr><td class="text-center" style="cursor:pointer;" '
                 + 'onclick="procMoveClientForm(\'' + resultList[idx] + '\')">' + resultList[idx] + '</td></tr>');
       }
 
