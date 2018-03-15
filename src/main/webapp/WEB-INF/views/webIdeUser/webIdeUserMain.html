@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head>
+    <script th:inline="javascript" type="text/javascript">
+        /*<![CDATA[*/
+        var webIdeUrl;
+        var webIdeUrlOption;
+
+
+        $(document).ready(function(){
+            getConfigInfoValue();
+
+        });
+
+
+        function getConfigInfoValue(){
+
+            param = {
+                name: "web_ide_url"
+            }
+
+            $.ajax({
+                url: "/configInfo/getValue",
+                method: "POST",
+                data: JSON.stringify(param),
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(data){
+
+                    if(data.list){
+                        $.each(data.list, function (id, data) {
+                            if(data.name == "web_ide_url"){
+                                webIdeUrl = data.value.split(",");
+                            }
+                        });
+                        getList();
+                    }
+                }
+            });
+        }
+
+
+        function getList(){
+
+            param = {
+            }
+
+            $.ajax({
+                url: "/webIdeUser/getList",
+                method: "POST",
+                data: JSON.stringify(param),
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(data){
+
+                    if(data.list){
+                        var n = 0;
+                        $.each(data.list, function (id, data) {
+                            n++;
+                            use_y = "";
+                            use_n = "";
+                            if(data.useYn=='Y') {
+                                use_y = "selected";
+                            }else{
+                                use_n = "selected";
+                            }
+
+                            url = "";
+                            if(data.url == null ) {
+                                url = "";
+                            }else{
+                                url = data.url;
+                            }
+
+                            webIdeUrlOption = "<option value=''> -- URL선택 --</option>";
+
+
+                            for(var i=0; webIdeUrl[i] != null; i++){
+                                //alert(url + " " + webIdeUrl[i]);
+                                if(url ==  webIdeUrl[i]) {
+                                    webIdeUrlOption += "<option value='" + webIdeUrl[i] + "' selected='selected'>" + webIdeUrl[i] + "</option>";
+                                }else{
+                                    webIdeUrlOption += "<option value='" + webIdeUrl[i] + "'>" + webIdeUrl[i] + "</option>";
+                                }
+                            }
+
+                            $("#webIdeUserList").append(" <tr>" +
+                                "<td align='left' style='vertical-align: middle'> " + data.userId + "</td>" +
+                                "<td align='left' style='vertical-align: middle'> " + data.orgName + "</td>" +
+                                "<td style='vertical-align: middle'><select id='url"+ n +"' class='form-control'>" + webIdeUrlOption + "</select></td>" +
+                                "<td class='col-md-1' style='vertical-align: middle'> " +
+                                "<select class='form-control' id='useYn"+ n +"'>" +
+                                "<option value='" + use_y + "'>Y</option>" +
+                                "<option value='" + use_n + "'>N</option>" +
+                                "</select>"+
+                                "</td>" +
+                                "<td> " +
+                                "<button type='button' class='btn btn-block btn-primary btn-sm' onClick='updateUser(\""+ data.userId  +"\", \""+ data.orgName  +"\" , \"url"+ n +"\" , \"useYn"+ n +"\")'>저장</button>" +
+                                "<button type='button' class='btn btn-block btn-danger btn-sm' onClick='deleteWebIdeModal(\""+ data.orgName  +"\")'>삭제</button></td>" +
+                                "</tr>");
+
+                        });
+                    }
+                }
+            });
+        }
+        /*]]>*/
+        function updateUser(userId, orgName, url, useYn){
+
+            var objUrl = $("#" + url);
+            var reqUrl = objUrl.val();
+            var reqUseYn = $("#" + useYn).val();
+
+            if (/*<![CDATA[*/'Y' == reqUseYn &&'' == reqUrl/*]]>*/) {
+                procAlert("danger","common.web.ide.url.validation.error.message");
+                objUrl.focus();
+                return false;
+            }
+
+            var param = {
+                userId:  userId,
+                orgName: orgName,
+                url : reqUrl,
+                useYn : reqUseYn
+            };
+
+            $.ajax({
+                url: "/webIdeUser/updateUser",
+                method: "POST",
+                data: JSON.stringify(param),
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(data){
+                    if(data){
+                        procAlert("success", 'WEB IDE 유저 정보가 저장되었습니다.');
+                    }
+                }
+            });
+
+        }
+
+        function deleteWebIdeModal(orgName) {
+
+            $("#popupTitle").html("WEB IDE 유저 삭제");
+            $("#popupMessage").html(""+orgName+" 조직의 WEB IDE 유저를 삭제하시겠습니까?");
+            $("#popupButtonText").text("삭제");
+            $("#popupButtonText").show();
+            $('#popupButtonText').attr('onclick', "deleteUser('"+orgName+"');");
+
+            $('div.modal').modal('toggle');
+        }
+
+        function deleteUser(orgName){
+
+            param = {
+                orgName:  orgName
+            }
+
+            $.ajax({
+                url: "/webIdeUser/deleteUser",
+                method: "POST",
+                data: JSON.stringify(param),
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(data){
+                    if(data){
+                        procAlert('success',"WEB IDE 사용자가 삭제되었습니다.");
+                        $("#webIdeUserList").html("");
+                        getConfigInfoValue();
+                    }
+                },
+                complete : function(data){
+                    $('div.modal').modal('hide');
+                }
+            });
+        }
+
+    </script>
+
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header></header>
+        <!-- ===================================================================================== -->
+        <!-- Content Header (Page header) -->
+        <div layout:fragment="content">
+        <section class="content-header">
+            <h1>
+                클라이언트 목록
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                            <table class="table table-striped">
+                                <tbody id="webIdeUserList">
+                                <tr>
+                                    <th width="20%" style="text-align: left">아이디</th>
+                                    <th width="20%" style="text-align: left">조직</th>
+                                    <th width="38%">URL</th>
+                                    <th width="10%">사용유무</th>
+                                    <th width="12%"></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+
+            <!-- Modal Layer-->
+            <div class="modal fade" id="modal-default" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title">Default Modal</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>One fine body…</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- Modal Layer-->
+
+        </section>
+        <!-- /.content -->
+        <!-- ===================================================================================== -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!--footer -->
+
+
+
+    <!-- Control Sidebar -->
+    <!-- /.control-sidebar -->
+
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <!--<div class="control-sidebar-bg"></div>-->
+
+<!-- ./wrapper -->
+    <footer></footer>
+</div>
+<!-- jQuery 3 -->
+<script src="../../resources/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="../../resources/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../resources/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../resources/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../resources/dist/js/demo.js"></script>
+</body>
+</html>

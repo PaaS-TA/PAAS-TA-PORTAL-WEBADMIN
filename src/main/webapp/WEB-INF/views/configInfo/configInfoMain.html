@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head>
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            getValue();
+        });
+
+        function getValue(){
+
+            param = {
+            }
+
+            $.ajax({
+                url: "/configInfo/getValue",
+                method: "POST",
+                data: JSON.stringify(param),
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(data){
+
+                    if(data.list){
+                        $.each(data.list, function (id, data) {
+                            $('#'+data.name).val(data.value);
+                        });
+                    }
+                }
+            });
+        }
+
+
+        function updateValue(name, value){
+            if (0 != value.length) {
+                if (0 == value.replace(/ /g,"").length) {
+                    $('#' + name).focus();
+                    procAlert("warning", "<spring:message code='common.info.empty.req.data' />");
+                    return false;
+                }
+
+                if (value.includes(' ')) {
+                    $('#' + name).focus();
+                    procAlert("warning", "<spring:message code='common.url.validation.error.message' />");
+                    return false;
+                }
+                if(name!='smtp_url'){
+                    if (!procCheckValidUrl(value)) {
+                        $('#' + name).focus();
+                        procAlert("warning", "<spring:message code='common.url.validation.error.message' />");
+                        return false;
+                    }
+                }
+            } else {
+                $('#' + name).focus();
+                return false;
+            }
+
+            param = {
+                name:  name,
+                value: value
+            }
+
+            $.ajax({
+                url: "/configInfo/updateValue",
+                method: "POST",
+                data: JSON.stringify(param),
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(data){
+                    if(data){
+                        procAlert("success", '설정이 저장되었습니다.');
+                    }
+                }
+            });
+
+        }
+
+
+    </script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header></header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <!-- Content Wrapper. Contains page content -->
+        <!-- ===================================================================================== -->
+        <!-- Content Header (Page header) -->
+        <div layout:fragment="content">
+            <section class="content-header">
+            <h2>
+                클라이언트 목록
+            </h2>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="box" >
+                <!-- /.box-header -->
+                <div class="col-sm-6 pt5">
+                    <h2> API URL </h2>
+                </div>
+                <div style="margin: 45px 0 0 10px;width:98%;">
+                    <table class="table table-striped">
+                        <tbody><tr>
+                            <td width="10%" style="vertical-align: middle" align="center">API 내용</td>
+                            <td width="70%" style="vertical-align: middle"><input type="text" maxlength="200" name="api_url" id="api_url" class="form-control"/></td>
+                            <td width="10%" style="vertical-align: middle">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('api_url', $('#api_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </div>
+                <div class="col-sm-6 pt5">
+                    <h2> UAA URL </h2>
+                </div>
+
+                <div style="margin: 45px 0 0 10px;width:98%;">
+                    <table class="table table-striped">
+                        <tbody><tr>
+                            <td width="10%" style="vertical-align: middle" align="center"> UAA URL
+                            </td>
+                            <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="uaa_url" id="uaa_url" size="150" class="form-control"/></td>
+                            <td width="10%" style="vertical-align: middle">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('uaa_url', $('#uaa_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </div>
+                <div class="col-sm-6 pt5">
+                    <h2> 사용자포탈 URL </h2>
+                </div>
+
+                <div style="margin: 45px 0 0 10px;width:98%;">
+                    <table class="table table-striped">
+                        <tbody><tr>
+                            <td width="10%" style="vertical-align: middle" align="center">사용자포탈 URL
+                            </td>
+                            <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="user_portal_url" id="user_portal_url" size="150" class="form-control"/></td>
+                            <td width="10%" style="vertical-align: middle">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('user_portal_url', $('#user_portal_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </div>
+                <div class="col-sm-6 pt5">
+                    <h2> SMTP URLL </h2>
+                </div>
+
+                <div style="margin: 45px 0 0 10px;width:98%;">
+                    <table class="table table-striped">
+                        <tbody><tr>
+                            <td width="10%" style="vertical-align: middle" align="center">SMTP
+                            </td>
+                            <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="smtp_url" id="smtp_url" size="150" class="form-control"/></td>
+                            <td width="10%" style="vertical-align: middle">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('smtp_url', $('#smtp_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </div>
+                <div class="col-sm-6 pt5">
+                    <h2> WEB IDE URL </h2>
+                </div>
+
+                <div style="margin: 45px 0 0 10px;width:98%;">
+                    <table class="table table-striped" style="margin: 0 0 0 0;">
+                        <tbody ><tr>
+                            <td width="10%"  style="vertical-align: middle" align="center"> <br>WEB IDE URL</br>
+                                <h6> ** 콤마(,)로 각 서버 구분.</h6>
+                            </td>
+                            <td width="70%" style="vertical-align: middle">
+                                <input type="text" maxlength="300" name="web_ide_url" id="web_ide_url" size="150" class="form-control"/>
+                            </td>
+                            <td width="10%" style="vertical-align: middle">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('web_ide_url', $('#web_ide_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </div>
+                <div style="height: 30px;"></div>
+                <!-- /.box-body -->
+            </div>
+
+            <!-- Modal Layer-->
+            <div style="height: 20px;"></div>
+            <div class="modal fade" id="modal-default" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title">Default Modal</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>One fine body…</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- Modal Layer-->
+
+        </section>
+        <!-- /.content -->
+        <!-- ===================================================================================== -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!--footer -->
+
+
+
+    <!-- Control Sidebar -->
+    <!-- /.control-sidebar -->
+
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <!--<div class="control-sidebar-bg"></div>-->
+<!-- ./wrapper -->
+    <footer></footer>
+</div>
+<!-- jQuery 3 -->
+<script src="../../../resources/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="../../../resources/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../../resources/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../../resources/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../../resources/dist/js/demo.js"></script>
+</body>
+</html>
