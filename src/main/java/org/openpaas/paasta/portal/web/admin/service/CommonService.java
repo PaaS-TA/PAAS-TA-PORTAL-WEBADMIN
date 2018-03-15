@@ -33,12 +33,36 @@ public class CommonService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonService.class);
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
     private static final String CF_AUTHORIZATION_HEADER_KEY = "cf-Authorization";
-    private final RestTemplate restTemplate;
+//    private final RestTemplate restTemplate;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Value("${paasta.portal.api.url}")
     private String apiUrl;
     @Value("${paasta.portal.api.authorization.base64}")
     private String base64Authorization;
+
+    // zuul 사용여부에 따른 request URL 적용
+    @Value("${paasta.zuulUrl.api}")
+    private String apiZuulUrl;
+
+    @Value("${paasta.portal.zuulDisabled:none}")
+    public void setRestTemplate(String value) {
+
+        if (!"true".equals(value)){
+            LOGGER.info("[zuulDisabled] config is activation(Request URL Use Zuul Route).");
+
+            restTemplate = new RestTemplate();
+            apiUrl = apiZuulUrl;    //"http://localhost:2225/portalapi";
+
+        }else{
+            LOGGER.info("[zuulDisabled] config is Inactive(Request URL Not Used Zuul Route).");
+            // Default apiUrl : paasta.portal.api.url -> http://PORTALAPI  (for EUREKA)
+        }
+        //LOGGER.info("Zuul Route Use Config value :"+value+"  targetUrl: "+apiUrl);
+    }
+
 
     /**
      * Instantiates a new Common service.
@@ -133,6 +157,32 @@ public class CommonService {
         return result;
     }
 
+    /**
+     * REST TEMPLATE 처리
+     *
+     * @param <T>          the type parameter
+     * @param reqUrl       the req url
+     * @param httpMethod   the http method
+     * @param obj          the obj
+     * @param responseType the response type
+     * @return response entity
+     */
+    public <T> ResponseEntity<T> procRestTemplateV2(String reqUrl, HttpMethod httpMethod, Object obj, Class<T> responseType) {
+
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
+
+//        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
+
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        //For Eureka / Zuul
+        LOGGER.info("apiUrl(TestLog)::"+apiUrl);
+        ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
+
+        //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
+
+        return result;
+    }
 
     /**
      * USER ID를 조회한다.
