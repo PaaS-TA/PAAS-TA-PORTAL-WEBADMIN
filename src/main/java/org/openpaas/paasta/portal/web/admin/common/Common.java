@@ -37,10 +37,10 @@ public class Common {
     @Autowired
     public MessageSource messageSource;
 
-    protected RestTemplate restTemplate;
+
 
     public String getToken(){
-        restTemplate = new RestTemplate();
+
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //token 만료 시간 비교
