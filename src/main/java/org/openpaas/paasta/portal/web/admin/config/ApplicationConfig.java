@@ -2,6 +2,9 @@ package org.openpaas.paasta.portal.web.admin.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +28,8 @@ import java.util.List;
 @Configuration
 //@ComponentScan({ "com.openpaas.portal.web.admin.*" })
 public class ApplicationConfig extends WebMvcConfigurerAdapter {
+
+	private final static Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 	/**
 	 * View resolver internal resource view resolver.
 	 *
@@ -68,10 +73,26 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
 		return converter;
 	}
 
+
+
 	@Bean
-	public static ConfigureRedisAction configureRedisAction()
-	{
-		return ConfigureRedisAction.NO_OP;
+	public static ConfigureRedisAction configureRedisAction() {return ConfigureRedisAction.NO_OP;}
+
+	@Value("${spring.redis.host}")
+	String REDISURL;
+	@Value("${spring.redis.port}")
+	String REDISPORT;
+
+	@Bean
+	public boolean printRedis(){
+		LOGGER.info("##########################################");
+		LOGGER.info("##########################################");
+		LOGGER.info("#########Redis Connection info############");
+		LOGGER.info("Connection Url : " + REDISURL);
+		LOGGER.info("Connection Port: " + REDISPORT);
+		LOGGER.info("##########################################");
+		LOGGER.info("##########################################");
+		return true;
 	}
 
 }

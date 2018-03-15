@@ -57,6 +57,9 @@ dependencies {
     //Security
     compile("org.springframework.security.oauth:spring-security-oauth2")
 
+    //Json
+    compile('org.codehaus.jettison:jettison:1.3.8')
+
     //WEB
     compile("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedJasperVersion}")
     compile("org.springframework.security:spring-security-taglibs:${springSecurityTagLibsVersion}")
