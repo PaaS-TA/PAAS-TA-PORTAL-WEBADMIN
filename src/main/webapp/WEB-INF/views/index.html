@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -26,8 +27,17 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- jQuery 3 -->
+    <script src="../../resources/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="../../resources/plugins/iCheck/icheck.min.js"></script>
+
+
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"/>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"/>
 
 </head>
 <body class="hold-transition login-page" onload="window.document.getElementById('id').focus();">
@@ -39,7 +49,7 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg"></p>
+        <p class="login-box-msg" id="warning" style="color: red;"></p>
         <form name='login' action='/index' method='POST'>
             <div class="form-group has-feedback">
                 <input class="form-control" type="text" name="id" id="id" placeholder="yourmail@example.com" value=""/>
@@ -60,7 +70,7 @@
                 <!-- /.col -->
                 <div class="col-xs-4">
                     <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat">로그인</button>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
                 </div>
                 <!-- /.col -->
 
@@ -69,24 +79,23 @@
     </div>
     <!-- /.login-box-body -->
 </div>
-
 <!-- /.login-box -->
 
-<!-- jQuery 3 -->
-<script src="../../resources/bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="../../resources/plugins/iCheck/icheck.min.js"></script>
-<script>
-    // $(function () {
-    //     $('input').iCheck({
-    //         checkboxClass: 'icheckbox_square-blue',
-    //         radioClass: 'iradio_square-blue',
-    //         increaseArea: '20%' /* optional */
-    //     });
-    // });
+<script th:inline="javascript" type="text/javascript">
+    // ON LOAD
+    $(document.body).ready(function() {
+        var error = /*[[${error}]]*/ null;
+        if(error != null){
+            $("#warning").hide();
+            $("#warning").text(error);
+            $("#warning").slideDown(2000);
+        }else{
+            $("#warning").text('');
+        }
+    });
+
 </script>
+
 </body>
 </html>
 
