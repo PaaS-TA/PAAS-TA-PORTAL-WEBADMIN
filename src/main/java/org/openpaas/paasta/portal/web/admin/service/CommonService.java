@@ -167,6 +167,33 @@ public class CommonService {
      * @param responseType the response type
      * @return response entity
      */
+    public <T> ResponseEntity<T> procRestTemplateV2(String reqUrl, HttpMethod httpMethod, Object obj, String reqToken, Class<T> responseType) {
+
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
+
+        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
+        LOGGER.info("procRestTemplateV2 reqToken :: "+ reqToken);
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        //For Eureka / Zuul
+        LOGGER.info("apiUrl(TestLog)::"+apiUrl);
+        ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
+
+        //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
+
+        return result;
+    }
+
+    /**
+     * REST TEMPLATE 처리
+     *
+     * @param <T>          the type parameter
+     * @param reqUrl       the req url
+     * @param httpMethod   the http method
+     * @param obj          the obj
+     * @param responseType the response type
+     * @return response entity
+     */
     public <T> ResponseEntity<T> procRestTemplateV2(String reqUrl, HttpMethod httpMethod, Object obj, Class<T> responseType) {
 
         HttpHeaders reqHeaders = new HttpHeaders();
@@ -183,6 +210,7 @@ public class CommonService {
 
         return result;
     }
+
 
     /**
      * USER ID를 조회한다.
