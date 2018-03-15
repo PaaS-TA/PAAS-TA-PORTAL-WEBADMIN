@@ -35,6 +35,8 @@
   <!-- Google Font -->
   <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">-->
 
+
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <script th:inline="javascript" type="text/javascript" layout:fragment="common-script">
@@ -53,6 +55,11 @@
   var RESULT_STATUS_FAIL_MESSAGE = /*[[#{common.system.error.message}]]*/ "";
   var INFO_EMPTY_REQUEST_DATA = /*[[#{common.info.empty.req.data}]]*/ "";
   var IMAGE_PATH_PREFIX = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).IMAGE_PATH_PREFIX}]]*/ "";
+
+  function noticeAnimation(){
+      $("#notice")
+  }
+
 
 </script>
   <div class="wrapper">
@@ -73,7 +80,7 @@
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
-      <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;">
+      <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;color: white;" id="notice">
         <i class="fa fa-fw fa-volume-up"></i> <b>알림사항</b> 환영합니다. Open PaaS PaaS-TA 운영자 포탈입니다.
       </h4>
     </nav>
