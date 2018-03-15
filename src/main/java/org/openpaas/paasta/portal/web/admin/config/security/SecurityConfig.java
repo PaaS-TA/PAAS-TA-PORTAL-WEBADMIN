@@ -52,7 +52,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //				.logout().logoutSuccessUrl("/index?logout");
 
         http
-                .antMatcher("/**").authorizeRequests().anyRequest().permitAll().and().csrf().disable();
+				.csrf().disable()
+                .authorizeRequests()
+				.antMatchers("/**").permitAll()
+				.antMatchers("/main").access("hasRole('ROLE_ADMIN')")
+				.and()
+				.formLogin().loginPage("/index")
+				.defaultSuccessUrl("/client/clientMain")
+				.failureUrl("/index?error")
+				.usernameParameter("id").passwordParameter("password");
+
+
 
 	}
 

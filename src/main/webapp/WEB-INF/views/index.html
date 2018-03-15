@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>AdminLTE 2 | Simple Tables</title>
+    <title>PaasTa-Admin</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
     <!-- Bootstrap 3.3.7 -->
@@ -34,13 +34,13 @@
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="index.jsp"><b>MEMBER LOGIN</b></a>
+        <a href="index"><b>MEMBER LOGIN</b></a>
+        <div><span class="login-font2">운영자 포탈에 오신 것을 환영합니다.</span></div>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">운영자 포탈에 오신 것을 환영합니다.</p>
-        <form name='login' method = 'RequestMethod.POST'>
-            <!--action="<c:url value='/index' />"-->
+        <p class="login-box-msg"></p>
+        <form name='login' action='/index' method='POST'>
             <div class="form-group has-feedback">
                 <input class="form-control" type="text" name="id" id="id" placeholder="yourmail@example.com" value=""/>
 
@@ -49,38 +49,23 @@
                 <input class="form-control" name="password" type="password" placeholder="Password" value=""/>
 
             </div>
-            <!--<c:choose>-->
-            <!--<c:when test="${not empty error}">-->
-            <!--<div class="text-center mt15 alert alert-danger" style="width:45%;height:28px;"> <span class="glyphicon glyphicon-warning-sign"></span><font style="padding-left:7px;font-size:13px;">${error}</font></div>-->
-            <!--<%&#45;&#45;<div class="custom-login-form" style="color: red">${error}</div>&#45;&#45;%>-->
-            <!--</c:when>-->
-            <!--<c:when test="${not empty message}">-->
-            <!--<div class="custom-login-form">${message}</div>-->
-            <!--</c:when>-->
-            <!--<c:otherwise><div>&nbsp</div></c:otherwise>-->
-            <!--</c:choose>-->
             <div class="row">
                 <div class="col-xs-8">
                     <div class="checkbox icheck">
                         <label>
-                            <input type="checkbox"/> Remember Me
+
                         </label>
                     </div>
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
-                    <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat">로그인</button>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 </div>
                 <!-- /.col -->
 
             </div>
         </form>
-        <!-- /.social-auth-links -->
-
-        <a href="#">I forgot my password</a><br/>
-        <a href="register.html" class="text-center">Register a new membership</a>
-
     </div>
     <!-- /.login-box-body -->
 </div>
@@ -94,13 +79,13 @@
 <!-- iCheck -->
 <script src="../../resources/plugins/iCheck/icheck.min.js"></script>
 <script>
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' /* optional */
-        });
-    });
+    // $(function () {
+    //     $('input').iCheck({
+    //         checkboxClass: 'icheckbox_square-blue',
+    //         radioClass: 'iradio_square-blue',
+    //         increaseArea: '20%' /* optional */
+    //     });
+    // });
 </script>
 </body>
 </html>

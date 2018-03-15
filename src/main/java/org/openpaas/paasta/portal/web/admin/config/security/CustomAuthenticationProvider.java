@@ -45,17 +45,17 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         try {
 
-//            user = customUserDetailsService.loginByUsernameAndPassword(username, password);
-//
-//            LOGGER.info("username : " + username + " / password : " + password );
-//            LOGGER.info("username : " + user.getUsername() + " / password : " + user.getPassword());
-//
-//            // matches 를 이용하여 암호를 비교한다.
-//            if ( !password.equals(user.getPassword()) ) {
-//                throw new BadCredentialsException( "암호가 일치하지 않습니다." );
-//            }
+            user = customUserDetailsService.loginByUsernameAndPassword(username, password);
 
-//            authorities = user.getAuthorities();
+            LOGGER.info("username : " + username + " / password : " + password );
+            LOGGER.info("username : " + user.getUsername() + " / password : " + user.getPassword());
+
+            // matches 를 이용하여 암호를 비교한다.
+            if ( !password.equals(user.getPassword()) ) {
+                throw new BadCredentialsException( "암호가 일치하지 않습니다." );
+            }
+
+            authorities = user.getAuthorities();
 
         } catch(UsernameNotFoundException e) {
             LOGGER.info(e.toString());
