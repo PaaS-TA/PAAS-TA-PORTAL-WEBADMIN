@@ -15,6 +15,7 @@ Portal-WebAdmin ? Paasta에서 제공하는 서비스를 관리자에게 관리�
 - TomcatEmded 8.5.14
 - Gradle 4.4.1
 - Spring-boot 1.5.9
+- Thymeleaf
 - Redis 1.3.1
 
 
