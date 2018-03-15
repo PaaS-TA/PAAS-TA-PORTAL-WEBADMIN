@@ -35,6 +35,8 @@
   <!-- Google Font -->
   <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">-->
 
+
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <script th:inline="javascript" type="text/javascript" layout:fragment="common-script">
@@ -53,6 +55,11 @@
   var RESULT_STATUS_FAIL_MESSAGE = /*[[#{common.system.error.message}]]*/ "";
   var INFO_EMPTY_REQUEST_DATA = /*[[#{common.info.empty.req.data}]]*/ "";
   var IMAGE_PATH_PREFIX = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).IMAGE_PATH_PREFIX}]]*/ "";
+
+  function noticeAnimation(){
+      $("#notice")
+  }
+
 
 </script>
   <div class="wrapper">
@@ -73,7 +80,7 @@
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
-      <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;">
+      <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;color: white;" id="notice">
         <i class="fa fa-fw fa-volume-up"></i> <b>알림사항</b> 환영합니다. Open PaaS PaaS-TA 운영자 포탈입니다.
       </h4>
     </nav>
@@ -111,14 +118,14 @@
             </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="#"><i class="fa fa-circle-o"></i> 설정 정보</a></li>
+              <li><a href="/configInfo/configInfoMain"><i class="fa fa-circle-o"></i> 설정 정보</a></li>
               <li><a href="#"><i class="fa fa-circle-o"></i> 코드 관리</a></li>
               <li><a href="#"><i class="fa fa-circle-o"></i> 조직 및 공간 조회</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i> 클라이언트</a></li>
+              <li><a href="/client/clientMain"><i class="fa fa-circle-o"></i> 클라이언트</a></li>
               <li><a href="#"><i class="fa fa-circle-o"></i> 권한 관리</a></li>
               <li><a href="#"><i class="fa fa-circle-o"></i> 사용자 관리</a></li>
               <li><a href="#"><i class="fa fa-circle-o"></i> WEB IDE 유저 관리</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i> 모니터링 사이트</a></li>
+              <li><a href="/webIdeUser/webIdeUserMain"><i class="fa fa-circle-o"></i> 모니터링 사이트</a></li>
             </ul>
           </li>
           <li class="treeview">
@@ -131,7 +138,7 @@
             </a>
             <ul class="treeview-menu">
               <li><a href="#"><i class="fa fa-circle-o"></i> 메뉴</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i> 카탈로그</a></li>
+              <li><a href="/catalog/catalogMain"><i class="fa fa-circle-o"></i> 카탈로그</a></li>
               <li><a href="#"><i class="fa fa-circle-o"></i> 지원</a></li>
               <li><a href="#"><i class="fa fa-circle-o"></i> 문서</a></li>
             </ul>

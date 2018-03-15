@@ -25,11 +25,11 @@
             <div class="box">
               <div class="box-header">
 
-                <h3 class="box-title"><button type="button" class="btn btn-block btn-primary btn-sm" data-toggle="modal" data-target="#modal-default">클라이언트 등록</button></h3>
-
+                <h3 class="box-title"><button type="button" class="btn btn-block btn-primary btn-sm" onclick="procMovePage(GET_CLIENT_FORM);">클라이언트 등록</button></h3>
+                
                 <div class="box-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search"/>
+                    <input type="text" name="table_search" id="searchKeyword" class="form-control pull-right" placeholder="Search" onkeyup="procSearchByKeyword(event);"/>
 
                     <div class="input-group-btn">
                       <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -42,26 +42,26 @@
 
               <div class="box-body no-padding">
                 <table class="table table-striped"> <!-- table-responsive -->
-
-                  <tr class="text-center">
-                    <td><b>클라이언트 ID</b></td>
-                  </tr>
-                  <tr class="text-center">
-                    <td>183</td>
-                  </tr>
-                  <tr class="text-center">
-                    <td>184</td>
-                  </tr>
-                  <tr class="text-center">
-                    <td>185</td>
-                  </tr>
-                  <tr class="text-center">
-                    <td>186</td>
-                  </tr>
-                  <tr class="text-center">
-                    <td>187</td>
-                  </tr>
-
+                  <tbody id="clientInfoTable">
+                  <!--<tr class="text-center">-->
+                    <!--<td><b>클라이언트 ID</b></td>-->
+                  <!--</tr>-->
+                  <!--<tr class="text-center">-->
+                    <!--<td>183</td>-->
+                  <!--</tr>-->
+                  <!--<tr class="text-center">-->
+                    <!--<td>184</td>-->
+                  <!--</tr>-->
+                  <!--<tr class="text-center">-->
+                    <!--<td>185</td>-->
+                  <!--</tr>-->
+                  <!--<tr class="text-center">-->
+                    <!--<td>186</td>-->
+                  <!--</tr>-->
+                  <!--<tr class="text-center">-->
+                    <!--<td>187</td>-->
+                  <!--</tr>-->
+                </tbody>
                 </table>
               </div>
               <!-- /.box-body -->
@@ -71,20 +71,61 @@
         </div>
 
         <!-- Modal Layer-->
-        <div class="modal fade" id="modal-default" style="display: none;">
-          <div class="modal-dialog">
+        <div class="modal fade" id="client-form" style="display: none;">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title">Default Modal</h4>
+
+                <h4 class="modal-title">서비스 브로커 등록</h4>
               </div>
               <div class="modal-body">
-                <p>One fine body…</p>
+
+                <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                  <!--<div class="box-header"></div>-->
+                  <!-- /.box-header -->
+                  <!-- form start -->
+                  <form class="form-horizontal">
+                    <div class="box-body" style="padding: 0px">
+
+                      <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">서비스 브로커 이름</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="name" placeholder="ex) rabbitmq-service-broker"/>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="userName" class="col-sm-2 control-label">사용자 이름</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="userName" placeholder="ex) admin"/>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="userPassword" class="col-sm-2 control-label">사용자 패스워드</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="userPassword" placeholder="ex) admin"/>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="url" class="col-sm-2 control-label">URL 정보</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="url" placeholder="ex) http://10.30.40.81:4567"/>
+                        </div>
+                      </div>
+
+                    </div>
+                  </form>
+                </div>
+
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+              <div class="modal-footer" style="border-top: 0px">
+                <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
+                <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
+                <button type="button" class="btn btn-sm btn-primary">등록</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -104,6 +145,9 @@
 <!-- ./wrapper -->
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+  /*<![CDATA[*/
+
+
   var GET_CLIENT_FORM = "/client/clientForm";
   var LOADED_LIST_COUNT = 0;
   var GET_CLIENT_LIST = "/client/getClientList";
@@ -122,15 +166,113 @@
   };
 
   var procCallbackGetClientList = function (data) {
-    if("" == data.RESULT){
+    if (RESULT_STATUS_FAIL == data.RESULT){
       return false;
     }
 
+    for(var i = 0; i < data.list.length; i++){
+      CLIENT_LIST[i] = data.list[i].client_id;
+    }
 
+    CURRENT_LIST = CLIENT_LIST;
+    printData(CLIENT_LIST);
+  }
+
+  function printData(data) {
+
+    var objTableArea = $('#clientInfoTableArea');
+    var objTableTitle = $('#clientInfoTableTitle');
+    var objTable = $('#clientInfoTable');
+    var objMessageArea = $('#clientInfoMessageArea');
+    var listLength = data.length;
+    var htmlString = [];
+
+    if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ == CURRENT_OFFSET) {
+      LOADED_LIST_COUNT = 0;
+      objTable.html('');
+    }
+
+    objMessageArea.html('');
+
+    if (listLength < 1) {
+      objTableArea.hide();
+      objTableTitle.hide();
+      objTable.hide();
+      objMessageArea.append(/*[[#{common.info.result.success}]]*/);
+      objMessageArea.show();
+
+    } else {
+      var resultList = data;
+
+      var loopEnd = CURRENT_OFFSET + LOAD_UNIT;
+      if (loopEnd > listLength)
+        loopEnd = listLength;
+
+      var idx;
+      for (idx = CURRENT_OFFSET; idx < loopEnd; idx++) {
+        if(idx == 0){
+          htmlString.push('<tr><td class="text-center"> 클라이언트 ID</td></tr>');
+        }
+        htmlString.push('<tr><td class="text-center" style="cursor:pointer;" '
+                + 'onclick="procMoveClientForm(\'' + resultList[idx] + '\')">' + resultList[idx] + '</td></tr>');
+      }
+
+      LOADED_LIST_COUNT += idx;
+
+      if (listLength > LOADED_LIST_COUNT) {
+        $('#buttonGetMoreList').animate({
+          opacity: "show"
+        });
+      } else {
+        $('#buttonGetMoreList').hide();
+      }
+
+      objMessageArea.hide();
+      objTable.append(htmlString);
+      objTable.show();
+      objTableTitle.show();
+      objTableArea.show();
+    }
+  };
+
+
+  // MOVE PAGE
+  var procMoveClientForm = function(reqParam) {
+    var hiddenForm = $('#hiddenForm');
+    $('#clientId').val(reqParam);
+    hiddenForm.attr({action:GET_CLIENT_FORM, method:"POST"}).submit();
+  };
+
+  // GET MORE LIST
+  var procGetMoreList = function() {
+    CURRENT_OFFSET = CURRENT_OFFSET+10;
+    printData(CURRENT_LIST);
 
   }
 
+  function procSearchByKeyword(event) {
+    $('#buttonGetMoreList').hide();
+    CURRENT_OFFSET = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ "";
+    LOADED_LIST_COUNT = 0;
 
+    $('#clientInfoTableTitle').hide();
+    $('#clientInfoTable').empty();
+
+    var searchKeyword = document.getElementById('searchKeyword').value;
+    var searchResult = new Array();
+    var newIdx = 0;
+    for (var i=0; i < CLIENT_LIST.length; i++ ){
+
+      if (CLIENT_LIST[i].includes(document.getElementById('searchKeyword').value)) {
+        searchResult[newIdx++] = CLIENT_LIST[i];
+      }
+    }
+
+    CURRENT_LIST = searchResult;
+    printData(searchResult);
+
+  }
+  /*]]>*/
 </script>
 
 
