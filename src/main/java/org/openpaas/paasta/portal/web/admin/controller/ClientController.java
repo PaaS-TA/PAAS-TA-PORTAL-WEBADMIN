@@ -86,7 +86,7 @@ public class ClientController {
     @RequestMapping(value = {"/getClientList"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getClientList(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procRestTemplate("/client/getClientList", HttpMethod.POST, param, null);
+        return commonService.procCfApiRestTemplate("/client/getClientList", HttpMethod.POST, param, null);
     }
 
 
