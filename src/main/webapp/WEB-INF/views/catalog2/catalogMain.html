@@ -1,147 +1,24 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Simple Tables</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
-    <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="../../../resources/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../../resources/bower_components/font-awesome/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="../../../resources/bower_components/Ionicons/css/ionicons.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../../resources/dist/css/AdminLTE.min.css">
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="../../../resources/dist/css/skins/_all-skins.min.css">
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- Google Font -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
-
-    <header class="main-header">
-        <!-- Logo -->
-        <a href="#" class="logo"><!-- link home -->
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini">
-        <b>P</b>
-                <!-- 파스타 이미지로 대체 -->
-                <!--<img src="http://portal-web-admin.115.68.46.187.xip.io./resources/images/logo.png" width="50" height="50"> -->
-      </span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>PaaS-TA</b></span>
-        </a>
-        <!-- Header Navbar: style can be found in header.less -->
-        <nav class="navbar navbar-static-top">
-            <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
-            <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7;">
-                <i class="fa fa-fw fa-volume-up"></i> <b>알림사항</b> 환영합니다. Open PaaS PaaS-TA 운영자 포탈입니다.
-            </h4>
-        </nav>
-    </header>
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-            <!-- Sidebar user panel -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="../../../resources/dist/img/credit/mastercard.png" class="img-circle" alt="User Image">
-                </div>
-                <div class="pull-left info">
-                    <p>MENU</p>
-                </div>
-            </div>
-
-            <!-- sidebar menu: : style can be found in sidebar.less -->
-            <ul class="sidebar-menu tree" data-widget="tree">
-                <!-- <li> 1depth 만 사용할 경우 -->
-                <!--<li class="header">운영관리</li>
-                <li>
-                  <a href="#">
-                    <i class="fa fa-circle-o text-red"></i> <span>설정 정보</span>
-                  </a>
-                </li>
-                -->
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>운영관리</span>
-                        <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 설정 정보</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 코드 관리</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 조직 및 공간 조회</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 클라이언트</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 권한 관리</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 사용자 관리</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> WEB IDE 유저 관리</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 모니터링 사이트</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-files-o"></i>
-                        <span>포탈 관리</span>
-                        <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 메뉴</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 카탈로그</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 지원</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 문서</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-pie-chart"></i>
-                        <span>서비스 관리</span>
-                        <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
-                    </ul>
-                </li>
-
-            </ul>
-        </section>
-        <!-- /.sidebar -->
-    </aside>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head></head>
+<body>
+<div>
+    <header></header>
+    <aside>/</aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div layout:fragment="content" class="content-wrapper">
 
-        <!-- ===================================================================================== -->
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>카탈로그 관리</h1>
+            <h1>
+                카탈로그 관리
+            </h1>
         </section>
 
         <!-- Main content -->
-        <!-- 검색유형/검색항목/공개여뷰/검색어-->
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
@@ -155,85 +32,96 @@
                                         <select id="searchType" name="searchType"
                                                 class="form-control select2 select2-hidden-accessible"
                                                 style="width: 100%;"
-                                                tabindex="-1" aria-hidden="true">
-                                            <option selected="selected" value="<%= Constants.SEARCH_TYPE_ALL %>"> 전체
+                                                tabindex="-1"
+                                                aria-hidden="true">
+                                            <option selected="selected"
+                                                    th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
+                                                전체
                                             </option>
-                                            <option value="<%= Constants.TAB_NAME_STARTER %>"> 앱 템플릿</option>
-                                            <option value="<%= Constants.TAB_NAME_BUILD_PACK %>"> 앱 개발환경</option>
-                                            <option value="<%= Constants.TAB_NAME_SERVICE_PACK %>"> 서비스</option>
+                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}">
+                                                앱 템플릿
+                                            </option>
+                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_BUILD_PACK}">
+                                                앱 개발환경
+                                            </option>
+                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_SERVICE_PACK}">
+                                                앱 서비스
+                                            </option>
                                         </select>
                                         <span class="select2 select2-container select2-container--default select2-container--below"
                                               dir="ltr" style="width: 100%;">
-                                    <span class="selection"></span>
-                                    <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                </span>
+                                        <span class="selection"></span>
+                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
+                                        </span>
                                     </div>
-                                    <!-- /.form-group -->
                                     <div class="selectbox select2">
                                         <label for="searchTypeColumn">검색항목</label>
                                         <select id="searchTypeColumn" name="searchTypeColumn"
                                                 class="form-control select2 select2-hidden-accessible"
-                                                style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                            <option selected="selected" value="<%= Constants.SEARCH_TYPE_ALL %>"> 전체
+                                                style="width: 100%;"
+                                                tabindex="-1"
+                                                aria-hidden="true">
+                                            <option selected="selected"
+                                                    th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
+                                                전체
                                             </option>
-                                            <option value="<%= Constants.SEARCH_TYPE_NAME %>"> 이름</option>
-                                            <option value="<%= Constants.SEARCH_TYPE_SUMMARY %>"> 요약</option>
+                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_NAME}">
+                                                이름
+                                            </option>
+                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_SUMMARY}">
+                                                요약
+                                            </option>
                                         </select>
                                         <span class="select2 select2-container select2-container--default select2-container--below"
                                               dir="ltr" style="width: 100%;">
-                                    <span class="selection"></span>
-                                    <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                </span>
+                                        <span class="selection"></span>
+                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
+                                        </span>
                                     </div>
-                                    <!-- /.form-group -->
                                 </div>
-                                <!-- /.col -->
+
                                 <div class="col-md-6">
                                     <div class="selectbox select3">
-                                        <label for="searchTypeUseYn">공개여부</label>
+                                        <label for="searchType">공개여부</label>
                                         <select id="searchTypeUseYn" name="searchTypeUseYn"
                                                 class="form-control select2 select2-hidden-accessible"
                                                 style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                            <option selected="selected" value="<%= Constants.SEARCH_TYPE_ALL %>"> 전체
+                                            <option selected="selected"
+                                                    th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
+                                                전체
                                             </option>
-                                            <option value="<%= Constants.USE_YN_Y %>"> 공개</option>
-                                            <option value="<%= Constants.USE_YN_N %>"> 비공개</option>
+                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}">
+                                                공개
+                                            </option>
+                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}">
+                                                비공개
+                                            </option>
                                         </select>
                                         <span class="select2 select2-container select2-container--default select2-container--below"
                                               dir="ltr" style="width: 100%;">
-                                    <span class="selection"></span>
-                                    <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                </span>
+                                        <span class="selection"></span>
+                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
+                                        </span>
                                     </div>
-                                    <!-- /.form-group -->
-                                    <div class="select select4">
+                                    <div class="selectbox select4">
                                         <label for="searchTypeColumn">검색어</label>
                                         <div class="box-tools">
                                             <div class="input-group input-group-sm">
                                                 <input type="text" id="searchKeyword" class="form-control pull-right"
                                                        placeholder="검색어를 입력하세요"
-                                                       onkeypress="procCheckSearchFormKeyEvent(event);">
+                                                       onkeypress="procCheckSearchFormKeyEvent(event);"/>
                                                 <div class="input-group-btn">
                                                     <button type="submit" class="btn btn-default"><i
-                                                            class="fa fa-search"></i>
-                                                    </button>
+                                                            class="fa fa-search"></i></button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /btn-group -->
                                     </div>
-                                    <!-- /.세트 -->
-                                    <!-- /.form-group -->
                                 </div>
-                                <!-- /.col -->
                             </div>
-                            <!-- /.row -->
                         </div>
-                        <!-- /.box-body -->
                     </div>
-                    <!-- /검색유형/검색항목/공개여뷰/검색어-->
-
-                    <!-- 탭 구현설정 -->
+                    <!-- 탭 구현설정1 -->
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">앱 템플릿</h3>
@@ -248,44 +136,31 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body" style="">
-                            <div id="starterListMessageArea" class="table-responsive">
-                                <table id="starterListTableArea" class="table no-margin">
+                            <div id="starterListTableArea" class="table-responsive">
+                                <table id="starterListTableAreaT" class="table no-margin">
                                     <thead>
                                     <tr>
-                                        <th>이름</th>
-                                        <th>요약</th>
-                                        <th>분류</th>
-                                        <th>공개</th>
+                                        <td>이름</td>
+                                        <td>요약</td>
+                                        <td>분류</td>
+                                        <td>공개</td>
                                     </tr>
                                     </thead>
-                                    <tbody id="starterList"></tbody>
+                                    <tbody>
+                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.table-responsive -->
                         </div>
-
-                        <div class="box-footer clearfix" style="">
-                            <button type="button" class="btn btn-sm btn-primary btn-flat pull-left"
-                                    onclick="procMovePage(STARTER_INSERT_FORM_URL, '<%= Constants.CUD_C %>');">
-                                앱 템플릿 등록
-                            </button>
-                        </div>
-
-                        <form id="starterHiddenForm">
-                            <input type="hidden" id="starterHiddenFormNo" name="no" value=""/>
-                        </form>
-                        <!-- /.box-body -->
-
-                        <!-- /.box-footer -->
                     </div>
-
+                    <!-- 탭 구현설정 2-->
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">앱 개발환경</h3>
-
+                            <!-- [_]창)-->
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <a href="#BUILD_PACK" data-toggle="tab" onclick="procSelectTab('BUILD_PACK')"
+                                    <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')"
                                        aria-expanded="true"></a>
                                     <i class="fa fa-minus"></i>
                                 </button>
@@ -293,145 +168,76 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body" style="">
-                            <div id="buildPackTableArea" class="table-responsive">
-                                <table id="buildPackMessageArea" class="table no-margin">
+                            <div id="buildPackMessageArea" class="table-responsive">
+                                <table id="buildPackMessageAreaT" class="table no-margin">
                                     <thead>
                                     <tr>
-                                        <th>이름</th>
-                                        <th>요약</th>
-                                        <th>분류</th>
-                                        <th>공개</th>
+                                        <td>이름</td>
+                                        <td>요약</td>
+                                        <td>분류</td>
+                                        <td>공개</td>
                                     </tr>
                                     </thead>
-                                    <tbody id="buildPackListTable">
+                                    <tbody>
                                     </tbody>
                                 </table>
                             </div>
                             <!-- /.table-responsive -->
                         </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer clearfix" style="">
-                            <button type="button" class="btn btn-sm btn-primary btn-flat pull-left"
-                                    onclick="procMovePage(BUILD_PACK_INSERT_FORM_URL, '<%= Constants.CUD_C %>');">
-                                앱 개발환경 등록
-                            </button>
-                        </div>
-                        <!-- /.box-body -->
-                        <!-- /.box-footer -->
                     </div>
-
+                    <!-- 탭 구현설정 3-->
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">서비스</h3>
-
+                            <!-- [_]창)-->
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <a href="#SERVICE_PACK" data-toggle="tab" onclick="procSelectTab('SERVICE_PACK')"
+                                    <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')"
                                        aria-expanded="true"></a>
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
                         </div>
+                        <!-- /.box-header -->
                         <div class="box-body" style="">
-                            <!-- /.box-header -->
-                            <div class="box-body" style="">
-                                <div id="servicePackMessageArea" class="table-responsive"></div>
-                                <table id="servicePackTableArea" class="table no-margin">
+                            <div id="servicePackTableArea" class="table-responsive">
+                                <table id="servicePackTableAreaT" class="table no-margin">
                                     <thead>
                                     <tr>
-                                        <th>이름</th>
-                                        <th>요약</th>
-                                        <th>분류</th>
-                                        <th>공개</th>
+                                        <td>이름</td>
+                                        <td>요약</td>
+                                        <td>분류</td>
+                                        <td>공개</td>
                                     </tr>
                                     </thead>
-                                    <tbody id="servicePackListTable">
+                                    <tbody>
                                     </tbody>
-
                                 </table>
                             </div>
-                            <div class="box-footer clearfix" style="">
-                                <button type="button" class="btn btn-sm btn-primary btn-flat pull-left"
-                                        onclick="procMovePage(SERVICE_PACK_INSERT_FORM_URL, '<%= Constants.CUD_C %>');">
-                                    서비스 등록
-                                </button>
-                            </div>
-
-                            <form id="ServicePackHiddenForm">
-                                <input type="hidden" id="ServicePackHiddenFormNo" name="no" value=""/>
-                            </form>
                             <!-- /.table-responsive -->
                         </div>
-                        <!-- /.box-body -->
-                        <!-- /탭 설정 -->
                     </div>
-                    <!-- /.box -->
+                    <!-- 탭 구현하기 끝 -->
                 </div>
-                <!-- Modal Layer-->
-                <div class="modal fade" id="modal-default" style="display: none;">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span></button>
-                                <h4 class="modal-title">Default Modal</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p>One fine body…</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
-                                </button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </div>
-                        <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                </div>
-                <!-- Modal Layer-->
             </div>
         </section>
         <!-- /.content -->
-        <!-- ===================================================================================== -->
     </div>
     <!-- /.content-wrapper -->
 
-    <!--footer -->
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 2.4.0
-        </div>
-        <strong>Copyright &copy; 2016 PaaS-TA. All rights reserved
-        </strong>
-    </footer>
+    <footer></footer>
 
-
-    <!-- Control Sidebar -->
-    <!-- /.control-sidebar -->
-
-    <!-- Add the sidebar's background. This div must be placed
-         immediately after the control sidebar -->
-    <!--<div class="control-sidebar-bg"></div>-->
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery 3 -->
-<script src="../../../resource/bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="../../../resource/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Slimscroll -->
-<script src="../../../resource/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="../../../resource/bower_components/fastclick/lib/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="../../../resource/dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../../../resource/dist/js/demo.js"></script>
+<script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+    /*<![CDATA[*/
+    var error = /*[[${error}]]*/ null;
 
-<%--JQUERY--%>
-<script type="text/javascript" src="<c:url value='../../../resources/axisj/jquery/jquery.min.js' />"></script>
 
-<!--<script type="text/javascript" src="<c:url value='../../../resources/js/common.js' />"></script>-->
+    /*]]>*/
+</script>
+
+
 </body>
 </html>
