@@ -100,11 +100,16 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="./resources/dist/img/credit/mastercard.png"
-                         th:src="@{/resources/dist/img/credit/mastercard.png}" class="img-circle" alt="User Image"/>
+                    <img src="./resources/dist/img/credit/profile.png"
+                         th:src="@{/resources/dist/img/credit/profile.png}" class="img-circle" alt="User Image"/>
                 </div>
                 <div class="pull-left info">
-                    <p>MENU</p>
+                    <p>    Admin             님</p>
+                    <a href="#">
+                        <i class="fa fa-circle text-success">
+                           Online
+                        </i>
+                    </a>
                 </div>
             </div>
 
@@ -120,7 +125,15 @@
                 -->
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>운영관리</span>
+                        <i class="fa fa-dashboard"></i> <span>대쉬보드</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i> <span>운영관리</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -139,7 +152,7 @@
 
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-pie-chart"></i>
+                        <i class="fa fa-edit"></i>
                         <span>서비스 관리</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
