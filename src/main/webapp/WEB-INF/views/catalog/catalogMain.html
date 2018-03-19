@@ -24,10 +24,24 @@
                 <div class="col-xs-12">
                     <div class="box box-default">
                         <!-- /.box-header -->
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-fw fa-search"></i>Search</h3>
+                            <!-- [_]창)-->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')"
+                                       aria-expanded="true"></a>
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-6">
+                            <div class="content-box2 col-md-12 col-md-offset-13">
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-6">-->
                                     <div class="selectbox select1">
+                                        <i class="fa fa-fw fa-check-square-o"></i>
                                         <label for="searchType">검색유형</label>
                                         <select id="searchType" name="searchType"
                                                 class="form-control select2 select2-hidden-accessible"
@@ -55,6 +69,8 @@
                                         </span>
                                     </div>
                                     <div class="selectbox select2">
+                                        <p/>
+                                        <i class="fa fa-fw fa-check-square-o"></i>
                                         <label for="searchTypeColumn">검색항목</label>
                                         <select id="searchTypeColumn" name="searchTypeColumn"
                                                 class="form-control select2 select2-hidden-accessible"
@@ -78,10 +94,12 @@
                                         <span class="dropdown-wrapper" aria-hidden="true"></span>
                                         </span>
                                     </div>
-                                </div>
+                                <!--</div>-->
 
-                                <div class="col-md-6">
+                                <!--<div class="col-md-6">-->
                                     <div class="selectbox select3">
+                                        <p/>
+                                        <i class="fa fa-fw fa-check-square-o"></i>
                                         <label for="searchType">공개여부</label>
                                         <select id="searchTypeUseYn" name="searchTypeUseYn"
                                                 class="form-control select2 select2-hidden-accessible"
@@ -104,6 +122,8 @@
                                         </span>
                                     </div>
                                     <div class="selectbox select4">
+                                        <p/>
+                                        <i class="fa fa-fw fa-check-square-o"></i>
                                         <label for="searchTypeColumn">검색어</label>
                                         <div class="box-tools">
                                             <div class="input-group input-group-sm">
@@ -117,122 +137,145 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <!--▼col-md-6 -->
+                                <!--</div>-->
+                                <!--▼row -->
+                            <!--</div>-->
                             </div>
                         </div>
                     </div>
                     <!-- 탭 구현설정1 -->
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">앱 템플릿</h3>
-                            <!-- [_]창)-->
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')"
-                                       aria-expanded="true"></a>
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body" style="">
-                            <div id="starterListTableArea" class="table-responsive">
-                                <table id="starterListTableAreaT" class="table no-margin">
-                                    <thead>
-                                    <tr>
-                                        <td>이름</td>
-                                        <td>요약</td>
-                                        <td>분류</td>
-                                        <td>공개</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                                <div class="box-footer clearfix">
-                                    <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage('STARTER_INSERT_FORM_URL', $('#CUD_C').val())">
-                                        앱 템플릿 등록
-                                    </button>
+                    <div class="nav-tabs-custom" style="cursor: move;">
+                        <!-- Tabs within a box -->
+                        <ul class="nav nav-tabs pull-right ui-sortable-handle">
+                            <!-- chart - 03 -->
+                            <li class=""><a href="#app-service" data-toggle="tab" aria-expanded="false">
+                                <i class="fa fa-fw fa-gear"></i>Service</a></li>
+                            <!-- chart - 02 -->
+                            <li class=""><a href="#app-development-environment" data-toggle="tab" aria-expanded="false">
+                                <i class="fa fa-fw fa-code-fork"></i>Development environment</a></li>
+                            <!-- chart - 01-->
+                            <li class="active"><a href="#app-template" data-toggle="tab" aria-expanded="true">
+                                <i class="fa fa-fw fa-bookmark-o"></i> Template</a></li>
+                            <!-- App Icons-->
+                            <li class="pull-left header"><i class=" fa fa-fw fa-cloud"></i> App</li>
+                        </ul>
+
+
+                        <div class="tab-content no-padding">
+                            <!-- chart - 01 --><!--<div th:insert=""></div>-->
+                            <div class="chart tab-pane active" id="app-template" style="position: relative; height: 300px;">
+                                <div id="starterListTableArea" class="table-responsive">
+                                    <table id="starterListTableAreaT" class="table table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>이름</th>
+                                            <th>요약</th>
+                                            <th>분류</th>
+                                            <th>공개</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>1.app-template</td>
+                                            <td>1.app-template</td>
+                                            <td>1.app-template</td>
+                                            <td>1.app-template</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2.</td>
+                                            <td>2.app-template</td>
+                                            <td>2.app-template</td>
+                                            <td>2.app-template</td>
+                                            <td>2.app-template</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="box-footer clearfix">
+                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage('STARTER_INSERT_FORM_URL', $('#CUD_C').val())">
+                                            앱 템플릿 등록
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- /.table-responsive -->
-                        </div>
-                    </div>
-                    <!-- 탭 구현설정 2-->
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">앱 개발환경</h3>
-                            <!-- [_]창)-->
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')"
-                                       aria-expanded="true"></a>
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body" style="">
-                            <div id="buildPackMessageArea" class="table-responsive">
-                                <table id="buildPackMessageAreaT" class="table no-margin">
-                                    <thead>
-                                    <tr>
-                                        <td>이름</td>
-                                        <td>요약</td>
-                                        <td>분류</td>
-                                        <td>공개</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                                <div class="box-footer clearfix">
-                                    <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage('BUILD_PACK_INSERT_FORM_URL', $('#CUD_C').val())">
-                                        앱 개발환경 등록
-                                    </button>
+
+                            <!-- chart - 02 -->
+                            <div class="chart tab-pane" id="app-development-environment" style="position: relative; height: 300px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                                <div id="buildPackMessageArea" class="table-responsive">
+                                    <table id="buildPackMessageAreaT" class="table table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>이름</th>
+                                            <th>요약</th>
+                                            <th>분류</th>
+                                            <th>공개</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>1.app-development-environment</td>
+                                            <td>1.app-development-environment</td>
+                                            <td>1.app-development-environment</td>
+                                            <td>1.app-development-environment</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2.</td>
+                                            <td>2.app-development-environment</td>
+                                            <td>2.app-development-environment</td>
+                                            <td>2.app-development-environment</td>
+                                            <td>2.app-devtelopment-environmen</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="box-footer clearfix">
+                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage('BUILD_PACK_INSERT_FORM_URL', $('#CUD_C').val())">
+                                            앱 개발환경 등록
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- /.table-responsive -->
-                        </div>
-                    </div>
-                    <!-- 탭 구현설정 3-->
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">서비스</h3>
-                            <!-- [_]창)-->
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')"
-                                       aria-expanded="true"></a>
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body" style="">
-                            <div id="servicePackTableArea" class="table-responsive">
-                                <table id="servicePackTableAreaT" class="table no-margin">
-                                    <thead>
-                                    <tr>
-                                        <td>이름</td>
-                                        <td>요약</td>
-                                        <td>분류</td>
-                                        <td>공개</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                                <div class="box-footer clearfix">
-                                    <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage('SERVICE_PACK_INSERT_FORM_URL', $('#CUD_C').val())">
-                                        서비스 등록
-                                    </button>
+
+                            <!-- chart - 03 -->
+                            <div class="chart tab-pane" id="app-service" style="position: relative; height: 300px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                                <div id="servicePackTableArea" class="table-responsive">
+                                    <table id="servicePackTableAreaT" class="table table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>이름</th>
+                                            <th>요약</th>
+                                            <th>분류</th>
+                                            <th>공개</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>1.app-Service</td>
+                                            <td>1.app-Service</td>
+                                            <td>1.app-Service</td>
+                                            <td>1.app-Service</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2.</td>
+                                            <td>2.app-Service</td>
+                                            <td>2.app-Service</td>
+                                            <td>2.app-Service</td>
+                                            <td>2.app-Service</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="box-footer clearfix">
+                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage('SERVICE_PACK_INSERT_FORM_URL', $('#CUD_C').val())">
+                                            서비스 등록
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- /.table-responsive -->
+                            <!-- ▼ <div class="tab-content no-padding">-->
                         </div>
+                        <!-- ▼ tab class end -->
                     </div>
-                    <!-- 탭 구현하기 끝 -->
+                    <!-- ▼row: 12   <div class="tab-content no-padding">-->
                 </div>
             </div>
         </section>
@@ -247,9 +290,6 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var error = /*[[${error}]]*/ null;
-
-
     /*]]>*/
 </script>
 
