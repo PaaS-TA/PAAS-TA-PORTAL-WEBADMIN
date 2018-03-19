@@ -192,7 +192,7 @@
                                     </table>
 
                                     <div class="box-footer clearfix">
-                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage('STARTER_INSERT_FORM_URL', $('#CUD_C').val())">
+                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage(STARTER_INSERT_FORM_URL)">
                                             앱 템플릿 등록
                                         </button>
                                     </div>
@@ -231,7 +231,7 @@
                                         </tbody>
                                     </table>
                                     <div class="box-footer clearfix">
-                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage('BUILD_PACK_INSERT_FORM_URL', $('#CUD_C').val())">
+                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage(BUILD_PACK_INSERT_FORM_URL)">
                                             앱 개발환경 등록
                                         </button>
                                     </div>
@@ -267,7 +267,7 @@
                                         </tbody>
                                     </table>
                                     <div class="box-footer clearfix">
-                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage('SERVICE_PACK_INSERT_FORM_URL', $('#CUD_C').val())">
+                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage(SERVICE_PACK_INSERT_FORM_URL)">
                                             서비스 등록
                                         </button>
                                     </div>
@@ -382,11 +382,11 @@
     });
 
 
-    $(document.body).ready(function () {
-        getStarterList();
-        getBuildPackList();
-        getServicePackList();
-    });
+//    $(document.body).ready(function () {
+//        getStarterList();
+//        getBuildPackList();
+//        getServicePackList();
+//    });
 
 
     // GET StarterList
