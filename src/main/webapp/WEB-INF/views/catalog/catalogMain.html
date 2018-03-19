@@ -131,8 +131,7 @@
                                                        placeholder="검색어를 입력하세요"
                                                        onkeypress="procCheckSearchFormKeyEvent(event);"/>
                                                 <div class="input-group-btn">
-                                                    <button type="submit" class="btn btn-default"><i
-                                                            class="fa fa-search"></i></button>
+                                                    <button type="submit" id="btnSearch" class="btn btn-default"><i class="fa fa-search"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -163,10 +162,10 @@
 
 
                         <div class="tab-content no-padding">
-                            <!-- chart - 01 --><!--<div th:insert=""></div>-->
+                            <!-- chart - 01 -->
                             <div class="chart tab-pane active" id="app-template" style="position: relative; height: 300px;">
-                                <div id="starterListTableArea" class="table-responsive">
-                                    <table id="starterListTableAreaT" class="table table-striped">
+                                <div id="starterListMessageArea" class="table-responsive">
+                                    <table id="starterListTableArea" class="table table-striped">
                                         <tbody>
                                         <tr>
                                             <th style="width: 10px">#</th>
@@ -199,11 +198,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <form id="starterHiddenForm">
+                            <input type="hidden" id="starterHiddenFormNo" name="no" value="" />
+                            </form>
 
                             <!-- chart - 02 -->
                             <div class="chart tab-pane" id="app-development-environment" style="position: relative; height: 300px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                 <div id="buildPackMessageArea" class="table-responsive">
-                                    <table id="buildPackMessageAreaT" class="table table-striped">
+                                    <table id="buildPackTableArea" class="table table-striped">
                                         <tbody>
                                         <tr>
                                             <th style="width: 10px">#</th>
@@ -238,8 +240,8 @@
 
                             <!-- chart - 03 -->
                             <div class="chart tab-pane" id="app-service" style="position: relative; height: 300px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                <div id="servicePackTableArea" class="table-responsive">
-                                    <table id="servicePackTableAreaT" class="table table-striped">
+                                <div id="servicePackMessageArea" class="table-responsive">
+                                    <table id="servicePackTableArea" class="table table-striped">
                                         <tbody>
                                         <tr>
                                             <th style="width: 10px">#</th>
@@ -290,6 +292,264 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
+
+//    var TAB_NAME = "<c:out value='${TAB_NAME}' default='' />";
+    var TAB_NAME;
+    var STARTER_LIST_PROC_URL = "/catalog/getStarterNamesList";
+    var STARTER_INSERT_FORM_URL = "/catalog/starterForm";
+    var BUILD_PACK_LIST_PROC_URL = "/catalog/getBuildPackCatalogList";
+    var BUILD_PACK_INSERT_FORM_URL = "/catalog/buildPackForm";
+    var SERVICE_PACK_LIST_PROC_URL = "/catalog/getServicePackCatalogList";
+    var SERVICE_PACK_INSERT_FORM_URL = "/catalog/servicePackForm";
+
+    $(document.body).ready(function() {
+        procSelectTab(TAB_NAME);
+    });
+
+
+    // SELECT TAB
+    var procSelectTab = function(reqTabName) {
+        if ("" == reqTabName) return false;
+
+        $('.tab-pane.fade').removeClass('active in');
+        $('#' + reqTabName).addClass('active in');
+        $('#catalogTabs_' + reqTabName).tab("show");
+
+        $("#STARTER").hide();
+        $("#BUILD_PACK").hide();
+        $("#SERVICE_PACK").hide();
+        $("#" + reqTabName).show();
+    };
+
+
+    // CHECK SEARCH FORM KEY EVENT
+    var procCheckSearchFormKeyEvent = function(e) {
+        if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
+            procGetSearchList();
+        }
+    };
+
+
+    // GET SEARCH LIST
+    var procGetSearchList = function() {
+        var doc = document;
+        var reqSearchType = doc.getElementById('searchType').value;
+        var reqSearchTypeColumn = doc.getElementById('searchTypeColumn').value;
+        var reqSearchTypeUseYn = doc.getElementById('searchTypeUseYn').value;
+        var reqSearchKeyword = doc.getElementById('searchKeyword').value.toLowerCase();
+
+        var param = {
+            searchKeyword : reqSearchKeyword,
+            searchTypeColumn : reqSearchTypeColumn,
+            searchTypeUseYn : reqSearchTypeUseYn
+        };
+
+        var objDivStarter = $("#divStarter");
+        var objDivBuildPack = $("#divBuildPack");
+        var objDivServicePack = $("#divServicePack");
+
+        objDivStarter.show();
+        objDivBuildPack.show();
+        objDivServicePack.show();
+
+        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_BUILD_PACK}]]*/ == reqSearchType) {
+            getBuildPackList(param);
+            objDivStarter.hide();
+            objDivServicePack.hide();
+
+        } else if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_SERVICE_PACK}]]*/ == reqSearchType)  {
+
+            getServicePackList(param);
+            objDivStarter.hide();
+            objDivBuildPack.hide();
+
+        } else if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}]]*/ == reqSearchType)  {
+            getStarterList(param);
+            objDivBuildPack.hide();
+            objDivServicePack.hide();
+
+        } else {
+            getStarterList(param);
+            getBuildPackList(param);
+            getServicePackList(param);
+        }
+    };
+
+
+    // BIND :: BUTTON EVENT
+    $("#btnSearch").on("click", function() {
+        procGetSearchList();
+    });
+
+
+    $(document.body).ready(function () {
+        getStarterList();
+        getBuildPackList();
+        getServicePackList();
+    });
+
+
+    // GET StarterList
+    var getStarterList = function(reqParam) {
+        var param = {};
+        if (null != reqParam && "" != reqParam) param = reqParam;
+        procCallAjax(STARTER_LIST_PROC_URL, param, procCallbackGetStarterList);
+    };
+
+
+    // GET BuildPackList
+    var getBuildPackList = function(reqParam) {
+        var param = {};
+
+        if (null != reqParam && "" != reqParam) param = reqParam;
+
+        procCallAjax(BUILD_PACK_LIST_PROC_URL, param, procCallbackGetBuildPackList);
+    };
+
+
+    // GET ServicePackList
+    var getServicePackList = function(reqParam) {
+        var param = {};
+
+        if (null != reqParam && "" != reqParam) param = reqParam;
+
+        procCallAjax(SERVICE_PACK_LIST_PROC_URL, param, procCallbackGetServicePackList);
+    };
+
+
+    // GET LIST CALLBACK StarterList
+    var procCallbackGetStarterList = function (data) {
+        var objTable = $("#starterList");
+        var objTableArea = $('#starterListTableArea');
+        var objMessageArea = $('#starterListMessageArea');
+        var listLength = data.list.length;
+        var htmlString = [];
+
+        objTable.html('');
+        objMessageArea.html('');
+
+        if (listLength < 1) {
+            objTableArea.hide();
+
+            objMessageArea.append('<spring:message code="common.info.empty.data" />');
+            objMessageArea.show();
+
+        } else {
+            var catalogList = data.list;
+            var reqParam = {};
+
+            for (var i = 0; i < listLength; i++) {
+                reqParam = {name: catalogList[i].name};
+                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveStarterInsertForm(\'' + catalogList[i].no + '\')">'
+                    + '<td class="col-md-3">' + catalogList[i].name + '</td>'
+                    + '<td class="col-md-4">' + catalogList[i].summary + '</td>'
+                    + '<td class="col-md-2 tac">' + catalogList[i].classificationValue + '</td>'
+                    + '<td class="col-md-1 tac">' + catalogList[i].useYn + '</td>'
+                    + '</tr>');
+            }
+            objMessageArea.hide();
+            objTable.append(htmlString);
+            objTableArea.show();
+        }
+    };
+
+
+    // GET LIST CALLBACK BuildPackList
+    var procCallbackGetBuildPackList = function(data) {
+        var objTable = $('#buildPackListTable');
+        var objTableArea = $('#buildPackTableArea');
+        var objMessageArea = $('#buildPackMessageArea');
+        var listLength = data.list.length;
+        var htmlString = [];
+
+        objTable.html('');
+        objMessageArea.html('');
+
+        if (listLength < 1) {
+            objTableArea.hide();
+
+            objMessageArea.append('<spring:message code="common.info.empty.data" />');
+            objMessageArea.show();
+
+        } else {
+            var catalogList = data.list;
+
+            for (var i = 0; i < listLength; i++) {
+                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveBuildPackInsertForm(\'' + catalogList[i].no + '\')">'
+                    + '<td class="col-md-3">' + catalogList[i].name + '</td>'
+                    + '<td class="col-md-4">' + catalogList[i].summary + '</td>'
+                    + '<td class="col-md-2 tac">' + catalogList[i].classificationValue + '</td>'
+                    + '<td class="col-md-1 tac">' + catalogList[i].useYn + '</td>'
+                    + '</tr>');
+            }
+
+            objMessageArea.hide();
+            objTable.append(htmlString);
+            objTableArea.show();
+        }
+    };
+
+
+    // GET LIST CALLBACK ServicePackList
+    var procCallbackGetServicePackList = function(data) {
+        var objTable = $('#servicePackListTable');
+        var objTableArea = $('#servicePackTableArea');
+        var objMessageArea = $('#servicePackMessageArea');
+        var listLength = data.list.length;
+        var htmlString = [];
+
+        objTable.html('');
+        objMessageArea.html('');
+
+        if (listLength < 1) {
+            objTableArea.hide();
+
+            objMessageArea.append('<spring:message code="common.info.empty.data" />');
+            objMessageArea.show();
+
+        } else {
+            var catalogList = data.list;
+
+            for (var i = 0; i < listLength; i++) {
+                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveServicePackInsertForm(\'' + catalogList[i].no + '\')">'
+                    + '<td class="col-md-3">' + catalogList[i].name + '</td>'
+                    + '<td class="col-md-4">' + catalogList[i].summary + '</td>'
+                    + '<td class="col-md-2 tac" style="text-align: center;">' + catalogList[i].classificationValue + '</td>'
+                    + '<td class="col-md-1 tac" style="text-align: center;">' + catalogList[i].useYn + '</td>'
+                    + '</tr>');
+            }
+
+            objMessageArea.hide();
+
+            objTable.append(htmlString);
+            objTableArea.show();
+        }
+    };
+
+
+    // MOVE PAGE StarterInsertForm
+    var procMoveStarterInsertForm = function(reqParam) {
+        var hiddenForm = $('#starterHiddenForm');
+        $('#starterHiddenFormNo').val(reqParam);
+        hiddenForm.attr({action:STARTER_INSERT_FORM_URL, method:"POST"}).submit();
+    };
+
+
+    // MOVE PAGE BuildPackInsertForm
+    var procMoveBuildPackInsertForm = function(reqParam) {
+        var hiddenForm = $('#BuildPackHiddenForm');
+        $('#BuildPackHiddenFormNo').val(reqParam);
+        hiddenForm.attr({action:BUILD_PACK_INSERT_FORM_URL, method:"POST"}).submit();
+    };
+
+
+    // MOVE PAGE ServicePackInsertForm
+    var procMoveServicePackInsertForm = function(reqParam) {
+        var hiddenForm = $('#ServicePackHiddenForm');
+        $('#ServicePackHiddenFormNo').val(reqParam);
+        hiddenForm.attr({action:SERVICE_PACK_INSERT_FORM_URL, method:"POST"}).submit();
+    };
+
     /*]]>*/
 </script>
 
