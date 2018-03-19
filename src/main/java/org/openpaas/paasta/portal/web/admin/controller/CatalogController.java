@@ -93,7 +93,7 @@ class CatalogController extends Common {
     @RequestMapping(value = {"/getBuildPackCatalogList"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getBuildPackCatalogList(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getBuildPackCatalogList", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate("/catalog/getBuildPackCatalogList", HttpMethod.POST, param, null);
     }
 
 
@@ -106,7 +106,7 @@ class CatalogController extends Common {
     @RequestMapping(value = {"/getServicePackCatalogList"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getServicePackCatalogList(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getServicePackCatalogList", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate("/catalog/getServicePackCatalogList", HttpMethod.POST, param, null);
     }
 
 
@@ -378,7 +378,7 @@ class CatalogController extends Common {
     @RequestMapping(value = {"/getStarterNamesList"}, method = RequestMethod.POST) // names
     @ResponseBody
     public Map<String, Object> getStarterNamesList(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getStarterNamesList", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate("/catalog/getStarterNamesList", HttpMethod.POST, param, null);
     }
 
 
@@ -391,7 +391,7 @@ class CatalogController extends Common {
     @RequestMapping(value = {"/getBuildPackNamesList"}, method = RequestMethod.POST) // names
     @ResponseBody
     public Map<String, Object> getBuildPackNamesList(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getBuildPackNamesList", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate("/catalog/getBuildPackNamesList", HttpMethod.POST, param, null);
     }
 
 
@@ -404,7 +404,7 @@ class CatalogController extends Common {
     @RequestMapping(value = {"/getServicePackNamesList"}, method = RequestMethod.POST) // names
     @ResponseBody
     public Map<String, Object> getServicePackNamesList(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getServicePackNamesList", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate("/catalog/getServicePackNamesList", HttpMethod.POST, param, null);
     }
 
 
