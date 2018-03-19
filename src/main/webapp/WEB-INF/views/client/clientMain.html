@@ -26,7 +26,7 @@
               <div class="box-header">
 
                 <h3 class="box-title"><button type="button" class="btn btn-block btn-primary btn-sm" onclick="procMovePage(GET_CLIENT_FORM);">클라이언트 등록</button></h3>
-                
+
                 <div class="box-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="text" name="table_search" id="searchKeyword" class="form-control pull-right" placeholder="Search" onkeyup="procSearchByKeyword(event);"/>
@@ -146,8 +146,6 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
   /*<![CDATA[*/
-
-
   var GET_CLIENT_FORM = "/client/clientForm";
   var LOADED_LIST_COUNT = 0;
   var GET_CLIENT_LIST = "/client/getClientList";
