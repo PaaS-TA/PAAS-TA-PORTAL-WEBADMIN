@@ -50,9 +50,6 @@ dependencies {
     //Config Server Setting
     compile("org.springframework.cloud:spring-cloud-starter-config")
 
-    // for redis session
-    compile("org.springframework.boot:spring-boot-starter-data-redis")
-    compile ("org.springframework.session:spring-session:${springSession}")
 
     //Security
     compile("org.springframework.security.oauth:spring-security-oauth2")
