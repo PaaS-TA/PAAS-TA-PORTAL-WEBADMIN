@@ -242,29 +242,7 @@
                             <div class="chart tab-pane" id="app-service" style="position: relative; height: 300px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                 <div id="servicePackMessageArea" class="table-responsive">
                                     <table id="servicePackTableArea" class="table table-striped">
-                                        <tbody>
-                                        <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>이름</th>
-                                            <th>요약</th>
-                                            <th>분류</th>
-                                            <th>공개</th>
-                                        </tr>
-                                        <tr>
-                                            <td>1.</td>
-                                            <td>1.app-Service</td>
-                                            <td>1.app-Service</td>
-                                            <td>1.app-Service</td>
-                                            <td>1.app-Service</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>2.app-Service</td>
-                                            <td>2.app-Service</td>
-                                            <td>2.app-Service</td>
-                                            <td>2.app-Service</td>
-                                        </tr>
-                                        </tbody>
+
                                     </table>
                                     <div class="box-footer clearfix">
                                         <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage(SERVICE_PACK_INSERT_FORM_URL)">
@@ -299,7 +277,7 @@
     var STARTER_INSERT_FORM_URL = "/catalog/starterForm";
     var BUILD_PACK_LIST_PROC_URL = "/catalog/getBuildPackCatalogList";
     var BUILD_PACK_INSERT_FORM_URL = "/catalog/buildPackForm";
-    var SERVICE_PACK_LIST_PROC_URL = "/catalog/getServicePackCatalogList";
+    var SERVICE_PACK_LIST_PROC_URL = "/catalog/servicePackCatalogList";
     var SERVICE_PACK_INSERT_FORM_URL = "/catalog/servicePackForm";
 
     $(document.body).ready(function() {
@@ -382,11 +360,12 @@
     });
 
 
-//    $(document.body).ready(function () {
+//   procGetSearchList
+    $(document.body).ready(function () {
 //        getStarterList();
 //        getBuildPackList();
-//        getServicePackList();
-//    });
+        getServicePackList();
+    });
 
 
     // GET StarterList
@@ -413,7 +392,8 @@
 
         if (null != reqParam && "" != reqParam) param = reqParam;
 
-        procCallAjax(SERVICE_PACK_LIST_PROC_URL, param, procCallbackGetServicePackList);
+        procCallAjax2(SERVICE_PACK_LIST_PROC_URL, "GET", null, procCallbackGetServicePackList);
+
     };
 
 
@@ -492,17 +472,17 @@
 
     // GET LIST CALLBACK ServicePackList
     var procCallbackGetServicePackList = function(data) {
-        var objTable = $('#servicePackListTable');
-        var objTableArea = $('#servicePackTableArea');
+
+        var objTable = $('#servicePackTableArea');
         var objMessageArea = $('#servicePackMessageArea');
         var listLength = data.list.length;
         var htmlString = [];
 
         objTable.html('');
-        objMessageArea.html('');
+//        objMessageArea.html('');
 
         if (listLength < 1) {
-            objTableArea.hide();
+            //objTableArea.hide();
 
             objMessageArea.append('<spring:message code="common.info.empty.data" />');
             objMessageArea.show();
@@ -510,8 +490,15 @@
         } else {
             var catalogList = data.list;
 
+            htmlString.push('<th style="width: 10px">#</th>'
+                +'<th>이름</th>'
+                + '<th>요약</th>'
+                + '<th>분류</th>'
+                + '<th>공개</th>');
+
             for (var i = 0; i < listLength; i++) {
                 htmlString.push('<tr style="cursor:pointer;" onclick="procMoveServicePackInsertForm(\'' + catalogList[i].no + '\')">'
+                    + '<td class="col-md-3">' + (i+1)+ '</td>'
                     + '<td class="col-md-3">' + catalogList[i].name + '</td>'
                     + '<td class="col-md-4">' + catalogList[i].summary + '</td>'
                     + '<td class="col-md-2 tac" style="text-align: center;">' + catalogList[i].classificationValue + '</td>'
@@ -519,10 +506,9 @@
                     + '</tr>');
             }
 
-            objMessageArea.hide();
-
+            //objMessageArea.hide();
             objTable.append(htmlString);
-            objTableArea.show();
+            //objTableArea.show();
         }
     };
 

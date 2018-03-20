@@ -103,11 +103,11 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getServicePackCatalogList"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getServicePackCatalogList(@RequestBody Catalog param) {
-        return commonService.procCommonApiRestTemplate("/catalog/getServicePackCatalogList", HttpMethod.POST, param, null);
-    }
+//    @RequestMapping(value = {"/getServicePackCatalogList"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Object> getServicePackCatalogList(@RequestBody Catalog param) {
+//        return commonService.procCommonApiRestTemplate("/catalog/getServicePackCatalogList", HttpMethod.POST, param, null);
+//    }
 
 
     /**
@@ -498,4 +498,26 @@ class CatalogController extends Common {
 
         return mv;
     }
+
+
+    /**
+     * @REST API
+     * by.SEJI
+     */
+
+    /**
+     * 서비스 카탈로그 목록을 조회한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    //html에 던저주는,
+    @GetMapping("/servicePackCatalogList")
+    @ResponseBody
+    public Map<String, Object> getServicePackCatalogList(@ModelAttribute Catalog param) {
+        //내가 요청하는 api
+        return commonService.procCommonApiRestTemplate("/catalog/servicepackCatalogs", HttpMethod.GET, param, null);
+
+    }
+
 }
