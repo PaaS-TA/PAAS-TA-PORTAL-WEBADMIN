@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head></head>
+<body>
+<div>
+    <header></header>
+    <aside>/</aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div layout:fragment="content" class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-default">
+                        <!-- /.box-header -->
+                        <div class="box-header with-border">
+                            <h3 class="box-title">  <i class="fa fa-fw fa-chrome"></i> Development environment</h3>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="content-box2 col-md-12 col-md-offset-13">
+                                <!--<div class="row">-->
+                                <!--<div class="col-md-6">-->
+                                <br/>
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="name">이름</label>
+                                    <input type="text" class="form-control" id="name"/>
+                                </div>
+
+                                <br/>
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="classification">분류</label>
+                                    <select id="classification"
+                                            class="form-control select2 select2-hidden-accessible"
+                                            style="width: 100%;"
+                                            tabindex="-1"
+                                            aria-hidden="true">
+                                        <option selected="selected" th:value="${19073}"> 시스템 앱 개발환경</option>
+                                        <option th:value="${3157}"> 사용자 앱 개발환경</option>
+                                    </select>
+                                    <span class="select2 select2-container select2-container--default select2-container--below"
+                                          dir="ltr" style="width: 100%;">
+                                        <span class="selection"></span>
+                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
+                                        </span>
+                                </div>
+
+
+                                <br/>
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="buildPackName">앱 개발환경</label>
+                                    <select id="buildPackName"
+                                            class="form-control select2 select2-hidden-accessible"
+                                            style="width: 100%;"
+                                            tabindex="-1"
+                                            aria-hidden="true">
+                                        <option selected="selected" th:value="staticfile_buildpack">staticfile_buildpack</option>
+                                        <option th:value="java_buildpack_offline">java_buildpack_offline</option>
+                                        <option th:value="java_buildpack">java_buildpack</option>
+                                        <option th:value="ruby_buildpack">ruby_buildpack</option>
+                                        <option th:value="nodejs_buildpack">nodejs_buildpack</option>
+                                        <option th:value="go_buildpack">go_buildpack</option>
+                                        <option th:value="python_buildpack">python_buildpack</option>
+                                        <option th:value="php_buildpack">php_buildpack</option>
+                                        <option th:value="binary_buildpack">binary_buildpack</option>
+                                        <option th:value="dotnet_core_buildpack">dotnet_core_buildpack</option>
+                                        <option th:value="egov_buildpack">egov_buildpack</option>
+                                        <option th:value="pinpoint_buildpack">pinpoint_buildpack</option>
+                                    </select>
+                                    <span class="select2 select2-container select2-container--default select2-container--below"
+                                          dir="ltr" style="width: 100%;">
+                                        <span class="selection"></span>
+                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
+                                        </span>
+                                </div>
+
+                                <!--</div>-->
+                                <br/>
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="thumbnail"> 썸네일(50X50)</label>
+                                    <p/>
+                                    <input type="file" id="thumbnail"/>
+                                </div><p/>
+
+                                <br/>
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="appSampleFile"> 앱 샘플</label>
+                                    <p/>
+                                    <input type="file" id="appSampleFile"/>
+                                    <p class="help-block">파일 첨부는 1개 파일만 가능합니다.</p>
+                                </div><p/>
+
+                                <br/>
+                                <!--<div class="col-md-6">-->
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="useYn_Y">공개여부</label>
+                                    <br/>
+                                    <label class="radio-inline">
+                                        <input type="radio" id="useYn_Y" name="useYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/> 활성화
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" id="useYn_N" name="useYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/> 비 활성화
+                                    </label>
+                                </div>
+
+
+                                <br/>
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="summary">요약</label>
+                                    <input type="text" class="form-control" id="summary"/>
+                                </div>
+
+                                <br/>
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="description">설명</label>
+                                    <textarea class="form-control" rows="5" id="description"></textarea>
+                                </div>
+
+                                <button type="button" class="btn btn-sm pull-left btn-default" id="btnCancel">취소</button>
+                                <button type="button" class="btn btn-sm btn-primary btn-flat pull-right" id="btnRegist">등록</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ▼row: 12   <div class="tab-content no-padding">-->
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer></footer>
+
+</div>
+<!-- ./wrapper -->
+
+<script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+    /*<![CDATA[*/
+
+    var CATEGORY_HOME_URL = "/catalog/catalogMain";
+    var CATALOG_LIST_PROC_URL = "/catalog/getBuildPackCatalogList";
+    var CATEGORY_LIST_PROC_URL = "/commonCode/getCommonCode";
+    var BUILD_PACK_LIST_PROC_URL = "/catalog/getBuildPackList";
+    var DUPLICATED_PROC_URL = "/catalog/getBuildPackCatalogCount";
+    var INSERT_PROC_URL = "'/catalog/insertBuildPackCatalog";
+    var UPDATE_PROC_URL = "/catalog/updateBuildPackCatalog";
+    var DELETE_PROC_URL = "/catalog/deleteBuildPackCatalog";
+    var CHECK_DELETE_PROC_URL = "/catalog/getCheckDeleteBuildPackCatalogCount";
+    var UPLOAD_IMAGE_PROC_URL = "/catalog/uploadThumbnailImage";
+    var DELETE_IMAGE_PROC_URL = "/catalog/deleteThumbnailImage";
+    var UPLOAD_APP_SAMPLE_PROC_URL = "/catalog/uploadAppSampleFile";
+    var DELETE_APP_SAMPLE_PROC_URL = "/catalog/deleteAppSampleFile';
+    var BUILD_PACK_CATALOG_ID = "<%= Constants.BUILD_PACK_CATALOG_ID %>";
+    var INSERT_FLAG = "<c:out value='${INSERT_FLAG}' default='' />";
+    var CUD_U = "<%= Constants.CUD_U %>";
+    var REQ_NO = "<c:out value='${REQUEST_NO}' default='' />";
+
+    var INIT_MESSAGE = "첨부된 파일이 없습니다.";
+    var REQUEST_APP_SAMPLE_FILE;
+    var REQUEST_APP_SAMPLE_FILE_OBJECT;
+    REQUEST_APP_SAMPLE_FILE_OBJECT = $('#appSampleFile');
+
+    // GET CATEGORY LIST
+    var getCategoryList = function() {
+        procCallAjax(CATEGORY_LIST_PROC_URL + "/" + BUILD_PACK_CATALOG_ID, null, procCallbackCategoryList);
+    };
+
+
+    // GET CATEGORY LIST CALLBACK
+    var procCallbackCategoryList = function(data) {
+        if (RESULT_STATUS_FAIL == data.RESULT) return false;
+
+        var objSelectBox = $('#classification');
+        var listLength = data.list.length;
+        var htmlString = [];
+
+        for (var i = 0; i < listLength; i++) {
+            htmlString.push("<option value='" + data.list[i].key + "'>" + data.list[i].value + "</option>");
+        }
+
+        objSelectBox.append(htmlString);
+
+        getBuildPackList();
+    };
+
+
+    // GET BUILD PACK LIST
+    var getBuildPackList = function() {
+        procCallAjax(BUILD_PACK_LIST_PROC_URL, {}, procCallbackBuildPackList);
+    };
+
+
+    // GET BUILD PACK LIST CALLBACK
+    var procCallbackBuildPackList = function(data) {
+        if (RESULT_STATUS_FAIL == data.RESULT) return false;
+
+        var objSelectBox = $('#buildPackName');
+        var listLength = data.list.length;
+        var htmlString = [];
+
+        for (var i = 0; i < listLength; i++) {
+            htmlString.push("<option value='" + data.list[i].name + "'>" + data.list[i].name + "</option>");
+        }
+
+        objSelectBox.append(htmlString);
+
+        var reqAppSampleFileName = $("#appSampleFileName").val();
+
+        if (reqAppSampleFileName == '' || reqAppSampleFileName == null) {
+            $('#appSampleFileNameLabel').text(INIT_MESSAGE);
+        }
+
+        var insertFlag = INSERT_FLAG;
+        if ("" != insertFlag && CUD_U == insertFlag) procUpdateForm();
+    };
+
+
+    // UPDATE FORM
+    var procUpdateForm = function() {
+        var reqNo = REQ_NO;
+        if (null == reqNo || "" == reqNo) {
+            procAlert("danger", '<spring:message code="common.system.error.message" />');
+            return false;
+        }
+
+        procCallAjax(CATALOG_LIST_PROC_URL, {no: reqNo}, procCallbackUpdateForm);
+    };
+
+
+    // CALL BACK UPDATE FORM
+    var procCallbackUpdateForm = function(data) {
+        if (RESULT_STATUS_FAIL == data.RESULT) return false;
+
+        if (data.list.length < 1) return false;
+
+        var resultData = data.list[0];
+
+        var reqName = $('#name');
+        var reqOrgName = $('#orgName');
+        var reqClassification = $('#classification');
+        var reqBuildPackName = $('#buildPackName');
+        var reqThumbImgPath = $("#thumbImgPath");
+        var reqOrgThumbImgPath = $("#orgThumbImgPath");
+        var reqThumbImgName = $("#thumbImgName");
+        var reqUseYn = $('#useYn_' + resultData.useYn);
+        var reqSummary = $('#summary');
+        var reqDescription = $('#description');
+
+        reqName.val(resultData.name);
+        reqOrgName.val(resultData.name);
+        reqClassification.val(resultData.classification);
+        reqBuildPackName.val(resultData.buildPackName);
+        reqThumbImgPath.val(resultData.thumbImgPath);
+        reqOrgThumbImgPath.val(resultData.thumbImgPath);
+        reqThumbImgName.val(resultData.thumbImgName);
+        reqUseYn.attr('checked', true);
+        reqSummary.val(resultData.summary);
+        reqDescription.val(resultData.description);
+
+        var tempThumbImgPath = reqThumbImgPath.val();
+
+        if (null != tempThumbImgPath && "" != tempThumbImgPath) {
+            $('#divPreview').attr('style', 'display: block; height: 94px;');
+        }
+
+        $('#preview').attr('src', IMAGE_PATH_PREFIX+tempThumbImgPath);
+        $("#labelThumbName").text(reqThumbImgName.val());
+
+        var appSampleFileName = resultData.appSampleFileName;
+
+        if ('' != appSampleFileName) {
+            var appSampleFilePath = resultData.appSampleFilePath;
+            var appSampleFileSize = resultData.appSampleFileSize;
+
+            var reqAppSampleFileName = $("#appSampleFileName");
+            var reqAppSampleFilePath = $("#appSampleFilePath");
+            var reqAppSampleFileSize = $("#appSampleFileSize");
+            var reqOrgAppSampleFileName = $("#orgAppSampleFileName");
+            var reqOrgAppSampleFilePath = $("#orgAppSampleFilePath");
+            var reqOrgAppSampleFileSize = $("#orgAppSampleFileSize");
+
+            reqAppSampleFileName.val(appSampleFileName);
+            reqAppSampleFilePath.val(appSampleFilePath);
+            reqAppSampleFileSize.val(appSampleFileSize);
+            reqOrgAppSampleFileName.val(appSampleFileName);
+            reqOrgAppSampleFilePath.val(appSampleFilePath);
+            reqOrgAppSampleFileSize.val(appSampleFileSize);
+
+            procSetFileLabel(appSampleFileName, appSampleFileSize, appSampleFilePath);
+        } else {
+            $('#appSampleFileNameLabel').text(INIT_MESSAGE);
+        }
+    };
+
+
+    // CHECK DUPLICATED NAME
+    var procCheckDuplicatedName = function() {
+        if (!procCheckValidStringSpace()) return false;
+        if (!procCheckValid()) return false;
+
+        var doc = document;
+        var reqName = doc.getElementById('name').value;
+        var orgName = doc.getElementById('orgName').value;
+
+        // CHECK DUPLICATED NAME
+        var insertFlag = INSERT_FLAG;
+        if ("" != insertFlag && CUD_U == insertFlag && reqName == orgName) {
+            procUploadThumbnailImageFile({RESULT : RESULT_STATUS_SUCCESS});
+        } else {
+            procCallAjax(DUPLICATED_PROC_URL, {name: reqName}, procUploadThumbnailImageFile);
+        }
+    };
+
+    // PROCESS CHECK VALID
+    var procCheckValid = function() {
+
+        // name
+        var name = $('#name').val();
+        if (name == '') {
+            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            $('#name').focus();
+            return false;
+        }
+
+        // summart
+        var summary = $('#summary').val();
+        if (summary == '') {
+            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            $('#summary').focus();
+            return false;
+        }
+
+        return true;
+    };
+
+    // UPLOAD THUMBNAIL IMAGE FILE
+    var procUploadThumbnailImageFile = function(data) {
+        if (RESULT_STATUS_SUCCESS != data.RESULT) {
+            $('#name').focus();
+            return false;
+        }
+
+        var formData = getFileFormData();
+
+        if (formData != undefined) {
+            uploadFile(formData, UPLOAD_IMAGE_PROC_URL, procUploadAppSampleFile);
+        } else {
+            procUploadAppSampleFile();
+        }
+    };
+
+
+    // UPLOAD APP SAMPLE FILE
+    var procUploadAppSampleFile = function() {
+        var formData = getAppSampleFileFormData();
+
+        if (!formData) {
+            procInsert();
+        } else {
+            procUploadFile(formData, UPLOAD_APP_SAMPLE_PROC_URL, procCallbackUploadAppSampleFile);
+        }
+    };
+
+
+    // UPLOAD APP SAMPLE FILE CALLBACK
+    var procCallbackUploadAppSampleFile = function(data) {
+        if (RESULT_STATUS_SUCCESS == data.RESULT) document.getElementById('appSampleFilePath').value = data.path;
+        procInsert();
+    };
+
+
+    // APP SAMPLE FILE FORM DATA
+    var getAppSampleFileFormData = function() {
+        var reqFileObject = REQUEST_APP_SAMPLE_FILE;
+        if (null == reqFileObject || undefined === reqFileObject) return false;
+
+        var formData = new FormData();
+        formData.append("file", reqFileObject[0]);
+
+        return formData;
+    };
+
+
+    // INSERT
+    var procInsert = function() {
+        var doc = document;
+        var reqUseYn = $("input:radio[name='useYn']:checked").val();
+        var param = $("#catalogForm").serializeObject();
+
+        var param2 = {
+            useYn: reqUseYn,
+            summary: doc.getElementById('summary').value,
+            description: doc.getElementById('description').value,
+            classification: doc.getElementById('classification').value
+        };
+
+        $.extend(param, param2);
+
+        // UPDATE
+        var insertFlag = INSERT_FLAG;
+        if ("" != insertFlag && CUD_U == insertFlag) {
+            procCallAjax(UPDATE_PROC_URL, param, procCallbackUpdate);
+
+            // INSERT
+        } else {
+            procCallAjax(INSERT_PROC_URL, param, procCallbackInsert);
+        }
+    };
+
+
+    // INSERT CALLBACK
+    var procCallbackInsert = function(data) {
+        if (RESULT_STATUS_SUCCESS == data.RESULT) {
+            procAlert("success", '<spring:message code="common.info.result.success" />');
+            procMovePage(CATEGORY_HOME_URL);
+
+        } else {
+            procAlert("danger", data.RESULT_MESSAGE);
+        }
+    };
+
+
+    // UPDATE CALLBACK
+    var procCallbackUpdate = function(data) {
+        if (RESULT_STATUS_SUCCESS == data.RESULT) {
+            procDeleteThumbnailImageFile();
+            procAlert("success", '<spring:message code="common.info.result.success" />');
+
+        } else {
+            procAlert("danger", data.RESULT_MESSAGE);
+        }
+    };
+
+
+    // CHECK DELETE
+    var procCheckDelete = function() {
+        $('div.modal').modal('toggle');
+
+        var reqNo = REQ_NO;
+        if (null == reqNo || "" == reqNo) return false;
+
+        procCallAjax(CHECK_DELETE_PROC_URL, {no: reqNo}, procDelete);
+    };
+
+
+    // DELETE
+    var procDelete = function(data) {
+        if (RESULT_STATUS_SUCCESS != data.RESULT) {
+            procAlert("danger", data.RESULT_MESSAGE);
+            return false;
+        }
+
+        document.getElementById('thumbImgPath').value = '';
+
+        procCallAjax(DELETE_PROC_URL, {no: REQ_NO}, procCallbackDelete);
+    };
+
+
+    // DELETE CALLBACK
+    var procCallbackDelete = function(data) {
+        if (RESULT_STATUS_SUCCESS == data.RESULT) {
+            procDeleteThumbnailImageFile();
+            procAlert("success", '<spring:message code="common.info.result.success" />');
+            procMovePage(CATEGORY_HOME_URL);
+
+        } else {
+            procAlert("danger", data.RESULT_MESSAGE);
+        }
+    };
+
+
+    // DELETE THUMBNAIL IMAGE FILE
+    var procDeleteThumbnailImageFile = function() {
+        if (procCheckDeleteFileValid('<%= Constants.FILE_TYPE_IMAGE %>')) {
+            procCallAjax(DELETE_IMAGE_PROC_URL, {thumbImgPath : document.getElementById('orgThumbImgPath').value}, procDeleteAppSampleFile);
+        } else {
+            procDeleteAppSampleFile();
+        }
+    };
+
+
+    // DELETE APP SAMPLE FILE
+    var procDeleteAppSampleFile = function() {
+        if (procCheckDeleteFileValid('<%= Constants.FILE_TYPE_APP_SAMPLE %>')) {
+            procCallAjax(DELETE_APP_SAMPLE_PROC_URL, {appSampleFilePath : document.getElementById('orgAppSampleFilePath').value}, procCallbackDeleteFile);
+        } else {
+            procMovePage(CATEGORY_HOME_URL);
+        }
+    };
+
+
+    // CHECK DELETE FILE VALID
+    var procCheckDeleteFileValid = function(reqFileType) {
+        var doc = document;
+        var orgFilePath = doc.getElementById('orgThumbImgPath').value;
+        var filePath = doc.getElementById('thumbImgPath').value;
+
+        if ('<%= Constants.FILE_TYPE_APP_SAMPLE %>' == reqFileType) {
+            orgFilePath = doc.getElementById('orgAppSampleFilePath').value;
+            filePath = doc.getElementById('appSampleFilePath').value;
+        }
+
+        var insertFlag = INSERT_FLAG;
+        if ("" != insertFlag && CUD_U == insertFlag) {
+            if (orgFilePath == filePath || orgFilePath == "" || orgFilePath == null) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+
+    // DELETE FILE CALLBACK
+    var procCallbackDeleteFile = function() {
+        procMovePage(CATEGORY_HOME_URL);
+    };
+
+
+    // RESET IMAGE
+    var procResetImage = function() {
+        var doc = document;
+        doc.getElementById('thumbImgPath').value = '';
+        doc.getElementById('thumbImgName').value = '';
+
+        resetThumbnail();
+    };
+
+
+    // SET FILE INFO
+    var procSetFileInfo = function(reqFile) {
+        var fileName = reqFile[0].name;
+        var limitFileSizeMb = '<%= Constants.CATALOG_APP_SAMPLE_LIMIT_FILE_SIZE_MB %>';
+        var limitFileSize = parseInt(limitFileSizeMb) << 20;
+        var orgFileSize = reqFile[0].size;
+
+        if (limitFileSize < orgFileSize) {
+            var alertMessage = '파일 크기는 ' + limitFileSizeMb + ' MB 를 넘을 수 없습니다.';
+            procAlert("danger", alertMessage);
+            window.scrollTo(0, 0);
+            return false;
+        }
+
+        REQUEST_APP_SAMPLE_FILE = reqFile;
+
+        procSetFileLabel(fileName, orgFileSize, '<%= Constants.NONE_VALUE %>');
+    };
+
+
+    // SET FILE LABEL
+    var procSetFileLabel = function(reqFileName, reqOrgFileSize, reqFilePath) {
+        if (null == reqFileName || '' == reqFileName) return false;
+
+        var doc = document;
+        var fileSize = procConvertFormatNumber(procCalculateFloor(parseInt(reqOrgFileSize) / 1024, 2));
+        var fileName = reqFileName + " (" + fileSize + " KB)";
+
+        doc.getElementById('appSampleFileName').value = reqFileName;
+        doc.getElementById('appSampleFileSize').value = reqOrgFileSize;
+
+        if ('<%= Constants.NONE_VALUE %>' != reqFilePath) {
+            var linkHtml = '<a href="javascript:void(0);" onclick="procDownload(\'' + reqFilePath + '\', \'' + reqFileName + '\')">' + fileName + '</a>';
+            $('#appSampleFileNameLabel').html(linkHtml);
+
+        } else {
+            $('#appSampleFileNameLabel').text(fileName);
+        }
+
+        $('#appSampleFileDeleteButtonArea').show();
+
+        // BIND :: BUTTON EVENT
+        $("#btnDeleteFile").on("click", function() {
+            procDeleteAppSampleFileLabel();
+        });
+    };
+
+
+    // DELETE FILE LABEL
+    var procDeleteAppSampleFileLabel = function() {
+        var doc = document;
+        var fileDeleteButtonArea = $('#appSampleFileDeleteButtonArea');
+        var reqFileLabel = $('#appSampleFileNameLabel');
+
+        fileDeleteButtonArea.hide();
+        reqFileLabel.text(INIT_MESSAGE);
+
+        doc.getElementById('appSampleFileName').value = '';
+        doc.getElementById('appSampleFilePath').value = '';
+        doc.getElementById('appSampleFileSize').value = '';
+    };
+
+
+    // CALCULATE FLOOR
+    var procCalculateFloor = function(reqNumber, reqPosition) {
+        var digits = Math.pow(10, reqPosition);
+        var num = Math.round(reqNumber * digits) / digits;
+
+        return num.toFixed(reqPosition);
+    };
+
+
+    // CONVERT FORMAT NUMBER
+    var procConvertFormatNumber = function (reqString) {
+        return reqString.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
+
+    // INIT
+    var procInit = function() {
+        getCategoryList();
+
+        $('#name').focus();
+        $('#useYn_Y').attr('checked', true);
+
+        var insertFlag = INSERT_FLAG;
+        if ("" != insertFlag && CUD_U == insertFlag) procUpdateForm();
+
+        resetThumbnail();
+
+        $("#hiddenThumbnail").on("change", function() {
+            setPreView($(this));
+        });
+
+        $('#appSampleFileDeleteButtonArea').hide();
+        procAlert("info", WELCOME_MESSAGE);
+    };
+
+
+    // BIND :: BUTTON EVENT
+    $("#btnResetImg").on("click", function() {
+        procResetImage();
+    });
+
+
+    // BIND :: BUTTON EVENT
+    $("#btnDeleteAppSampleFile").on("click", function() {
+        procDeleteAppSampleFileLabel();
+    });
+
+
+    // BIND :: BUTTON EVENT
+    $("#btnSearchAppSampleFile").on("click", function() {
+        REQUEST_APP_SAMPLE_FILE_OBJECT.click();
+    });
+
+
+    // BIND :: FILE CHANGE
+    REQUEST_APP_SAMPLE_FILE_OBJECT.on("change", function() {
+        procSetFileInfo($(this)[0].files);
+    });
+
+
+    // BIND :: BUTTON EVENT
+    $("#btnRegist").on("click", function() {
+        procCheckDuplicatedName();
+    });
+
+
+    // BIND :: BUTTON EVENT
+    $("#btnCancel").on("click", function() {
+        procMovePage(CATEGORY_HOME_URL + "/<%= Constants.TAB_NAME_BUILD_PACK %>");
+    });
+
+
+    // BIND :: BUTTON EVENT
+    $("#btnDelete").on("click", function() {
+        procPopup('카탈로그', DELETE_MESSAGE, 'procCheckDelete();');
+    });
+
+
+    // ON LOAD
+    $(document.body).ready(function() {
+        procInit();
+    });
+
+
+    /*]]>*/
+</script>
+
+
+</body>
+</html>
