@@ -100,7 +100,7 @@ public class ClientController {
     @RequestMapping(value = {"/getClient"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procRestTemplate("/client/getClient", HttpMethod.POST, param, null);
+        return commonService.procCfApiRestTemplate("/client/getClient", HttpMethod.POST, param, null);
     }
 
     /**
@@ -113,7 +113,7 @@ public class ClientController {
     @RequestMapping(value = {"/registerClient"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> registerClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procRestTemplate("/client/registerClient", HttpMethod.POST, param, null);
+        return commonService.procCfApiRestTemplate("/client/registerClient", HttpMethod.POST, param, null);
     }
 
     /**
@@ -126,7 +126,7 @@ public class ClientController {
     @RequestMapping(value = {"/updateClient"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> updateClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procRestTemplate("/client/updateClient", HttpMethod.POST, param, null);
+        return commonService.procCfApiRestTemplate("/client/updateClient", HttpMethod.POST, param, null);
     }
 
     /**
