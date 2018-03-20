@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-//@ComponentScan(basePackages = {"org.openpaas.paasta.portal.web.admin"})
 public class WebAdminApplication extends WebMvcConfigurerAdapter {
 
 	/**

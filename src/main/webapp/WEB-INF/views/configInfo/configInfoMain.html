@@ -12,17 +12,13 @@
 
         function getValue(){
 
-            param = {
-            }
+            // var param = {};
 
             $.ajax({
-                url: "/configInfo/getValue",
-                method: "POST",
-                data: JSON.stringify(param),
+                url: "/configInfos",
+                // data: JSON.stringify(param),
                 dataType: 'json',
-                contentType: "application/json",
                 success: function(data){
-
                     if(data.list){
                         $.each(data.list, function (id, data) {
                             $('#'+data.name).val(data.value);
@@ -37,19 +33,19 @@
             if (0 != value.length) {
                 if (0 == value.replace(/ /g,"").length) {
                     $('#' + name).focus();
-                    procAlert("warning", "<spring:message code='common.info.empty.req.data' />");
+                    procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
                     return false;
                 }
 
                 if (value.includes(' ')) {
                     $('#' + name).focus();
-                    procAlert("warning", "<spring:message code='common.url.validation.error.message' />");
+                    procAlert("warning", '<spring:message code="common.url.validation.error.message" />');
                     return false;
                 }
                 if(name!='smtp_url'){
                     if (!procCheckValidUrl(value)) {
                         $('#' + name).focus();
-                        procAlert("warning", "<spring:message code='common.url.validation.error.message' />");
+                        procAlert("warning", '<spring:message code="common.url.validation.error.message" />');
                         return false;
                     }
                 }
