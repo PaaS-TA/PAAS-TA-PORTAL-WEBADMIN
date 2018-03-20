@@ -57,10 +57,16 @@ public class ConfigInfoController extends Common {
     @ResponseBody
     public Map<String, Object> getValue(@RequestBody ConfigInfo configInfo)  {
 
-        return commonService.procRestTemplate("/configInfo/getValue", HttpMethod.POST, configInfo, null);
-
+        return commonService.procCommonApiRestTemplate("/configInfo/getValue", HttpMethod.POST, configInfo, null);
     }
 
+    @RequestMapping(value = {"/configInfo/getValues"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getValues()  {
+        ConfigInfo configInfo = new ConfigInfo();
+        System.out.println("dd");
+        return commonService.procCommonApiRestTemplate("/configInfo/getValue", HttpMethod.GET, configInfo, null);
+    }
     /**
      * 설정 정보를 수정한다.
      *
@@ -71,7 +77,7 @@ public class ConfigInfoController extends Common {
     @ResponseBody
     public Map<String, Object> updateValue(@RequestBody ConfigInfo configInfo)  {
 
-        return commonService.procRestTemplate("/configInfo/updateValue", HttpMethod.POST, configInfo, null);
+        return commonService.procCommonApiRestTemplate("/configInfo/updateValue", HttpMethod.POST, configInfo, null);
     }
 
 }
