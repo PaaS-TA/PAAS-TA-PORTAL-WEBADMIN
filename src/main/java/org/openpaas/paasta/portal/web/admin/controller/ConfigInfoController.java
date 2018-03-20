@@ -65,7 +65,7 @@ public class ConfigInfoController extends Common {
     public Map<String, Object> getValues()  {
         ConfigInfo configInfo = new ConfigInfo();
         System.out.println("dd");
-        return commonService.procCommonApiRestTemplate("/configInfo/getValue", HttpMethod.GET, configInfo, null);
+        return commonService.procCommonApiRestTemplate("/configInfo/getValues", HttpMethod.GET, configInfo, null);
     }
     /**
      * 설정 정보를 수정한다.
