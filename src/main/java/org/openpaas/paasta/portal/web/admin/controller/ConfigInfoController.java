@@ -6,10 +6,7 @@ import org.openpaas.paasta.portal.web.admin.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
@@ -53,32 +50,36 @@ public class ConfigInfoController extends Common {
      * @param configInfo the ConfigInfo
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/configInfo/getValue"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/configInfos"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getValue(@RequestBody ConfigInfo configInfo)  {
-
-        return commonService.procCommonApiRestTemplate("/configInfo/getValue", HttpMethod.POST, configInfo, null);
+    public Map<String, Object> getValue(@ModelAttribute ConfigInfo configInfo) {
+        return commonService.procCommonApiRestTemplate("/configInfos", HttpMethod.GET, configInfo, null);
     }
 
-    @RequestMapping(value = {"/configInfo/getValues"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getValues()  {
-        ConfigInfo configInfo = new ConfigInfo();
-        System.out.println("dd");
-        return commonService.procCommonApiRestTemplate("/configInfo/getValues", HttpMethod.GET, configInfo, null);
-    }
     /**
      * 설정 정보를 수정한다.
      *
      * @param configInfo the configInfo
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/configInfo/updateValue"}, method = RequestMethod.POST)
+    @PutMapping(value = {"/configInfos/{name:.+}"})
     @ResponseBody
-    public Map<String, Object> updateValue(@RequestBody ConfigInfo configInfo)  {
+    public Map<String, Object> updateValue(@PathVariable("name") String name, @RequestBody ConfigInfo configInfo) {
 
-        return commonService.procCommonApiRestTemplate("/configInfo/updateValue", HttpMethod.POST, configInfo, null);
+        return commonService.procCommonApiRestTemplate("/configInfos/" + name, HttpMethod.PUT, configInfo, null);
     }
+
+    /*
+     *예제~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~₩
+     */
+
+
+//    @RequestMapping(value = {"/configInfos/{name:.+}"}, method = RequestMethod.GET)
+//    @ResponseBody
+//    public Map<String, Object> getValue(@PathVariable("name")String name, @ModelAttribute ConfigInfo configInfo) {
+//        return commonService.procCommonApiRestTemplate("/configInfos"+name, HttpMethod.GET, configInfo, null);
+//    }
+
 
 }
 
