@@ -4,15 +4,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-
-import org.springframework.session.data.redis.config.ConfigureRedisAction;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -71,28 +68,6 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 		converter.setObjectMapper(new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false));
 		return converter;
-	}
-
-
-
-	@Bean
-	public static ConfigureRedisAction configureRedisAction() {return ConfigureRedisAction.NO_OP;}
-
-	@Value("${spring.redis.host}")
-	String REDISURL;
-	@Value("${spring.redis.port}")
-	String REDISPORT;
-
-	@Bean
-	public boolean printRedis(){
-		LOGGER.info("##########################################");
-		LOGGER.info("##########################################");
-		LOGGER.info("#########Redis Connection info############");
-		LOGGER.info("Connection Url : " + REDISURL);
-		LOGGER.info("Connection Port: " + REDISPORT);
-		LOGGER.info("##########################################");
-		LOGGER.info("##########################################");
-		return true;
 	}
 
 }
