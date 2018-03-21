@@ -163,7 +163,7 @@
 
                         <div class="tab-content no-padding">
                             <!-- chart - 01 -->
-                            <div class="chart tab-pane active" id="app-template" style="position: relative; height: 300px;">
+                            <div class="chart tab-pane active" id="app-template" style="position: relative; height: 800px;">
                                 <div id="starterListMessageArea" class="table-responsive">
                                     <table id="starterListTableArea" class="table table-striped">
                                         <tbody>
@@ -203,10 +203,9 @@
                             </form>
 
                             <!-- chart - 02 -->
-                            <div class="chart tab-pane" id="app-development-environment" style="position: relative; height: 300px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                            <div class="chart tab-pane" id="app-development-environment" style="position: relative; height: 800px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                 <div id="buildPackMessageArea" class="table-responsive">
-                                    <table id="buildPackTableArea" class="table table-striped">
-                                        <tbody>
+                                    <table class="table table-striped">
                                         <tr>
                                             <th style="width: 10px">#</th>
                                             <th>이름</th>
@@ -214,20 +213,9 @@
                                             <th>분류</th>
                                             <th>공개</th>
                                         </tr>
-                                        <tr>
-                                            <td>1.</td>
-                                            <td>1.app-development-environment</td>
-                                            <td>1.app-development-environment</td>
-                                            <td>1.app-development-environment</td>
-                                            <td>1.app-development-environment</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>2.app-development-environment</td>
-                                            <td>2.app-development-environment</td>
-                                            <td>2.app-development-environment</td>
-                                            <td>2.app-devtelopment-environmen</td>
-                                        </tr>
+
+                                        <tbody id="buildPackTableArea">
+
                                         </tbody>
                                     </table>
                                     <div class="box-footer clearfix">
@@ -239,10 +227,19 @@
                             </div>
 
                             <!-- chart - 03 -->
-                            <div class="chart tab-pane" id="app-service" style="position: relative; height: 300px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                            <div class="chart tab-pane" id="app-service" style="position: relative; height: 800px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                 <div id="servicePackMessageArea" class="table-responsive">
-                                    <table id="servicePackTableArea" class="table table-striped">
+                                    <table  class="table table-striped">
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>이름</th>
+                                            <th>요약</th>
+                                            <th>분류</th>
+                                            <th>공개</th>
+                                        </tr>
+                                        <tbody id="servicePackTableArea">
 
+                                        </tbody>
                                     </table>
                                     <div class="box-footer clearfix">
                                         <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage(SERVICE_PACK_INSERT_FORM_URL)">
@@ -276,7 +273,7 @@
     var STARTER_LIST_PROC_URL = "/catalog/getStarterNamesList";
     var STARTER_INSERT_FORM_URL = "/catalog/starterForm";
     var BUILD_PACK_LIST_PROC_URL = "/catalog/getBuildPackCatalogList";
-    var BUILD_PACK_INSERT_FORM_URL = "/catalog/buildPackForm";
+    var BUILD_PACK_INSERT_FORM_URL = "/catalog/buildPackCatalogList";
     var SERVICE_PACK_LIST_PROC_URL = "/catalog/servicePackCatalogList";
     var SERVICE_PACK_INSERT_FORM_URL = "/catalog/servicePackForm";
 
@@ -382,7 +379,7 @@
 
         if (null != reqParam && "" != reqParam) param = reqParam;
 
-        procCallAjax(BUILD_PACK_LIST_PROC_URL, param, procCallbackGetBuildPackList);
+        procCallAjax2(BUILD_PACK_LIST_PROC_URL, "GET", null, procCallbackGetBuildPackList);
     };
 
 
@@ -421,14 +418,15 @@
             for (var i = 0; i < listLength; i++) {
                 reqParam = {name: catalogList[i].name};
                 htmlString.push('<tr style="cursor:pointer;" onclick="procMoveStarterInsertForm(\'' + catalogList[i].no + '\')">'
-                    + '<td class="col-md-3">' + catalogList[i].name + '</td>'
-                    + '<td class="col-md-4">' + catalogList[i].summary + '</td>'
-                    + '<td class="col-md-2 tac">' + catalogList[i].classificationValue + '</td>'
-                    + '<td class="col-md-1 tac">' + catalogList[i].useYn + '</td>'
+                    + '<td>' + catalogList[i].name + '</td>'
+                    + '<td>' + catalogList[i].summary + '</td>'
+                    + '<td>' + catalogList[i].classificationValue + '</td>'
+                    + '<td>' + catalogList[i].useYn + '</td>'
                     + '</tr>');
             }
             objMessageArea.hide();
             objTable.append(htmlString);
+            objTable.trigger( "create" );
             objTableArea.show();
         }
     };
@@ -436,14 +434,13 @@
 
     // GET LIST CALLBACK BuildPackList
     var procCallbackGetBuildPackList = function(data) {
-        var objTable = $('#buildPackListTable');
+
         var objTableArea = $('#buildPackTableArea');
         var objMessageArea = $('#buildPackMessageArea');
         var listLength = data.list.length;
         var htmlString = [];
 
         objTable.html('');
-        objMessageArea.html('');
 
         if (listLength < 1) {
             objTableArea.hide();
@@ -456,16 +453,14 @@
 
             for (var i = 0; i < listLength; i++) {
                 htmlString.push('<tr style="cursor:pointer;" onclick="procMoveBuildPackInsertForm(\'' + catalogList[i].no + '\')">'
-                    + '<td class="col-md-3">' + catalogList[i].name + '</td>'
-                    + '<td class="col-md-4">' + catalogList[i].summary + '</td>'
-                    + '<td class="col-md-2 tac">' + catalogList[i].classificationValue + '</td>'
-                    + '<td class="col-md-1 tac">' + catalogList[i].useYn + '</td>'
+                    + '<td>' + (i+1)+ '</td>'
+                    + '<td>' + catalogList[i].name + '</td>'
+                    + '<td>' + catalogList[i].summary + '</td>'
+                    + '<td>' + catalogList[i].classificationValue + '</td>'
+                    + '<td>' + catalogList[i].useYn + '</td>'
                     + '</tr>');
             }
-
-            objMessageArea.hide();
-            objTable.append(htmlString);
-            objTableArea.show();
+            objTable.append(htmlString).trigger( "create" );
         }
     };
 
@@ -490,24 +485,18 @@
         } else {
             var catalogList = data.list;
 
-            htmlString.push('<th style="width: 10px">#</th>'
-                +'<th>이름</th>'
-                + '<th>요약</th>'
-                + '<th>분류</th>'
-                + '<th>공개</th>');
-
             for (var i = 0; i < listLength; i++) {
                 htmlString.push('<tr style="cursor:pointer;" onclick="procMoveServicePackInsertForm(\'' + catalogList[i].no + '\')">'
-                    + '<td class="col-md-3">' + (i+1)+ '</td>'
-                    + '<td class="col-md-3">' + catalogList[i].name + '</td>'
-                    + '<td class="col-md-4">' + catalogList[i].summary + '</td>'
-                    + '<td class="col-md-2 tac" style="text-align: center;">' + catalogList[i].classificationValue + '</td>'
-                    + '<td class="col-md-1 tac" style="text-align: center;">' + catalogList[i].useYn + '</td>'
+                    + '<td>' + (i+1)+ '</td>'
+                    + '<td>' + catalogList[i].name + '</td>'
+                    + '<td>' + catalogList[i].summary + '</td>'
+                    + '<td>' + catalogList[i].classificationValue + '</td>'
+                    + '<td>' + catalogList[i].useYn + '</td>'
                     + '</tr>');
             }
 
             //objMessageArea.hide();
-            objTable.append(htmlString);
+            objTable.append(htmlString).trigger( "create" );
             //objTableArea.show();
         }
     };
