@@ -52,21 +52,35 @@ public class ConfigInfoController extends Common {
      */
     @RequestMapping(value = {"/configInfos"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getValue(@ModelAttribute ConfigInfo configInfo) {
+    public Map<String, Object> getValues(@ModelAttribute ConfigInfo configInfo) {
         return commonService.procCommonApiRestTemplate("/configInfos", HttpMethod.GET, configInfo, null);
     }
 
     /**
+     * 설정 정보를 조회한다.
+     * @param name - primary key
+     * @return ModelAndView model
+     */
+    @RequestMapping(value = {"/configInfos/{name}"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getValue(@PathVariable String name) {
+        return commonService.procCommonApiRestTemplate("/configInfos/"+name, HttpMethod.GET, null, null);
+    }
+
+
+
+
+
+    /**
      * 설정 정보를 수정한다.
-     *
+     * @param name - primary key
      * @param configInfo the configInfo
      * @return ModelAndView model
      */
-    @PutMapping(value = {"/configInfos/{name:.+}"})
+    @RequestMapping(value = {"/configInfos/{name}"}, method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, Object> updateValue(@PathVariable("name") String name, @RequestBody ConfigInfo configInfo) {
-
-        return commonService.procCommonApiRestTemplate("/configInfos/" + name, HttpMethod.PUT, configInfo, null);
+    public Map<String, Object> updateValue(@PathVariable String name, @RequestBody ConfigInfo configInfo) {
+        return commonService.procCommonApiRestTemplate("/configInfos/"+name, HttpMethod.PUT, configInfo, null);
     }
 
     /*
