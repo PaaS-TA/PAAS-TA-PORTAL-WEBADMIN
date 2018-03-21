@@ -272,8 +272,8 @@
     var TAB_NAME;
     var STARTER_LIST_PROC_URL = "/catalog/getStarterNamesList";
     var STARTER_INSERT_FORM_URL = "/catalog/starterForm";
-    var BUILD_PACK_LIST_PROC_URL = "/catalog/getBuildPackCatalogList";
-    var BUILD_PACK_INSERT_FORM_URL = "/catalog/buildPackCatalogList";
+    var BUILD_PACK_LIST_PROC_URL = "/catalog/buildPackCatalogList";
+    var BUILD_PACK_INSERT_FORM_URL = "/catalog/buildPackForm";
     var SERVICE_PACK_LIST_PROC_URL = "/catalog/servicePackCatalogList";
     var SERVICE_PACK_INSERT_FORM_URL = "/catalog/servicePackForm";
 
@@ -360,7 +360,7 @@
 //   procGetSearchList
     $(document.body).ready(function () {
 //        getStarterList();
-//        getBuildPackList();
+        getBuildPackList();
         getServicePackList();
     });
 
@@ -418,6 +418,7 @@
             for (var i = 0; i < listLength; i++) {
                 reqParam = {name: catalogList[i].name};
                 htmlString.push('<tr style="cursor:pointer;" onclick="procMoveStarterInsertForm(\'' + catalogList[i].no + '\')">'
+                    + '<td>' + (i+1)+ '</td>'
                     + '<td>' + catalogList[i].name + '</td>'
                     + '<td>' + catalogList[i].summary + '</td>'
                     + '<td>' + catalogList[i].classificationValue + '</td>'
@@ -440,11 +441,9 @@
         var listLength = data.list.length;
         var htmlString = [];
 
-        objTable.html('');
+        objTableArea.html('');
 
         if (listLength < 1) {
-            objTableArea.hide();
-
             objMessageArea.append('<spring:message code="common.info.empty.data" />');
             objMessageArea.show();
 
@@ -460,7 +459,7 @@
                     + '<td>' + catalogList[i].useYn + '</td>'
                     + '</tr>');
             }
-            objTable.append(htmlString).trigger( "create" );
+            objTableArea.append(htmlString).trigger( "create" );
         }
     };
 
@@ -474,11 +473,8 @@
         var htmlString = [];
 
         objTable.html('');
-//        objMessageArea.html('');
 
         if (listLength < 1) {
-            //objTableArea.hide();
-
             objMessageArea.append('<spring:message code="common.info.empty.data" />');
             objMessageArea.show();
 
@@ -494,10 +490,7 @@
                     + '<td>' + catalogList[i].useYn + '</td>'
                     + '</tr>');
             }
-
-            //objMessageArea.hide();
             objTable.append(htmlString).trigger( "create" );
-            //objTableArea.show();
         }
     };
 

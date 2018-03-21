@@ -84,17 +84,17 @@ class CatalogController extends Common {
     }
 
 
-    /**
-     * 앱 개발환경 카탈로그 목로 조회
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getBuildPackCatalogList"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getBuildPackCatalogList(@RequestBody Catalog param) {
-        return commonService.procCommonApiRestTemplate("/catalog/getBuildPackCatalogList", HttpMethod.POST, param, null);
-    }
+//    /**
+//     * 앱 개발환경 카탈로그 목로 조회
+//     *
+//     * @param param Catalog(모델클래스)
+//     * @return Map(자바클래스)
+//     */
+//    @RequestMapping(value = {"/getBuildPackCatalogList"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Object> getBuildPackCatalogList(@RequestBody Catalog param) {
+//        return commonService.procCommonApiRestTemplate("/catalog/getBuildPackCatalogList", HttpMethod.POST, param, null);
+//    }
 
 
     /**
@@ -499,11 +499,22 @@ class CatalogController extends Common {
         return mv;
     }
 
-
     /**
      * @REST API
      * by.SEJI
      */
+
+    /**
+     * 앱 개발환경 카탈로그 목로 조회
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping("/buildPackCatalogList")
+    @ResponseBody
+    public Map<String, Object> getBuildPackCatalogList(@ModelAttribute Catalog param) {
+        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs", HttpMethod.GET, param, null);
+    }
 
     /**
      * 서비스 카탈로그 목록을 조회한다.
@@ -519,5 +530,4 @@ class CatalogController extends Common {
         return commonService.procCommonApiRestTemplate("/catalog/servicepackCatalogs", HttpMethod.GET, param, null);
 
     }
-
 }
