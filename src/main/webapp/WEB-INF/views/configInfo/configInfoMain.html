@@ -3,14 +3,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="../layout/default">
 <head>
-
     <script type="text/javascript">
 
         $(document).ready(function(){
-            getValue();
+            getValues();
         });
 
-        function getValue(){
+        function getValues(){
 
             // var param = {};
 
@@ -28,24 +27,69 @@
             });
         }
 
+        function getValue(name)
+        {
+            $.ajax({
+                url: "/configInfos/" + name,
+                method: "GET",
+                // data: JSON.stringify(param),
+                dataType: 'json',
+                success: function(data){
+                    if(data.list){
+                        $.each(data.list, function (id, data) {
+                            $("#beforename").html(data.value);
+                        });
+                    }
+                }
+            });
+        }
+
+        function initmodal(name, value)
+        {
+            $("#urlname").html(name);
+            if(name == "API URL")
+            {
+                name = "api_url";
+            }
+            else if(name == "UAA URL")
+            {
+                name = "uaa_url ";
+            }
+            else if(name == "사용자포탈 URL")
+            {
+                name = "user_portal_url";
+            }
+            else if(name == "SMTP URL")
+            {
+                name = "smtp_url";
+            }
+            else if(name == "WEB IDE URL")
+            {
+                name = "web_ide_url";
+            }
+            getValue(name);
+            $("#aftername").html(value);
+        }
+
 
         function updateValue(name, value){
+
             if (0 != value.length) {
                 if (0 == value.replace(/ /g,"").length) {
                     $('#' + name).focus();
-                    procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+                    procAlert("warning", '#{common.info.empty.req.data}');
                     return false;
                 }
 
                 if (value.includes(' ')) {
                     $('#' + name).focus();
-                    procAlert("warning", '<spring:message code="common.url.validation.error.message" />');
+                    procAlert("warning",'#{common.url.validation.error.message}');
                     return false;
                 }
                 if(name!='smtp_url'){
                     if (!procCheckValidUrl(value)) {
                         $('#' + name).focus();
-                        procAlert("warning", '<spring:message code="common.url.validation.error.message" />');
+                        procAlert("warning", '#{common.url.validation.error.message}');
                         return false;
                     }
                 }
@@ -55,13 +99,12 @@
             }
 
             param = {
-                name:  name,
                 value: value
             }
 
             $.ajax({
-                url: "/configInfo/updateValue",
-                method: "POST",
+                url: "/configInfos/"+name,
+                method: "PUT",
                 data: JSON.stringify(param),
                 dataType: 'json',
                 contentType: "application/json",
@@ -86,82 +129,98 @@
         <!-- Content Header (Page header) -->
         <div layout:fragment="content">
             <section class="content-header">
-            <h2>
-                클라이언트 목록
-            </h2>
+            <h3>
+                설정 정보
+            </h3>
         </section>
 
         <!-- Main content -->
         <section class="content">
-            <div class="box" >
-                <!-- /.box-header -->
+            <div class="box box-default" >
+                <!-- /.box box-default-header -->
                 <div class="col-sm-6 pt5">
-                    <h2> API URL </h2>
+                    <h3> API URL </h3>
                 </div>
-                <div style="margin: 45px 0 0 10px;width:98%;">
+                <div style="padding:10px;">
                     <table class="table table-striped">
                         <tbody><tr>
                             <td width="10%" style="vertical-align: middle" align="center">API 내용</td>
                             <td width="70%" style="vertical-align: middle"><input type="text" maxlength="200" name="api_url" id="api_url" class="form-control"/></td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('api_url', $('#api_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('API URL', $('#api_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
                             </td>
                         </tr>
                         </tbody></table>
                 </div>
+
+            </div>
+
+            <div class="box box-default" >
                 <div class="col-sm-6 pt5">
-                    <h2> UAA URL </h2>
+                    <h3> UAA URL </h3>
                 </div>
 
-                <div style="margin: 45px 0 0 10px;width:98%;">
+                <div style="padding:10px;">
                     <table class="table table-striped">
                         <tbody><tr>
                             <td width="10%" style="vertical-align: middle" align="center"> UAA URL
                             </td>
                             <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="uaa_url" id="uaa_url" size="150" class="form-control"/></td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('uaa_url', $('#uaa_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('UAA URL', $('#uaa_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
                             </td>
                         </tr>
                         </tbody></table>
                 </div>
+
+            </div>
+
+            <div class="box box-default" >
                 <div class="col-sm-6 pt5">
-                    <h2> 사용자포탈 URL </h2>
+                    <h3> 사용자포탈 URL </h3>
                 </div>
 
-                <div style="margin: 45px 0 0 10px;width:98%;">
+                <div style="padding:10px;">
                     <table class="table table-striped">
                         <tbody><tr>
                             <td width="10%" style="vertical-align: middle" align="center">사용자포탈 URL
                             </td>
                             <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="user_portal_url" id="user_portal_url" size="150" class="form-control"/></td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('user_portal_url', $('#user_portal_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('사용자포탈 URL', $('#user_portal_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
                             </td>
                         </tr>
                         </tbody></table>
                 </div>
+
+            </div>
+
+            <div class="box box-default" >
                 <div class="col-sm-6 pt5">
-                    <h2> SMTP URLL </h2>
+                    <h3> SMTP URL </h3>
                 </div>
 
-                <div style="margin: 45px 0 0 10px;width:98%;">
+                <div style="padding:10px;">
                     <table class="table table-striped">
                         <tbody><tr>
                             <td width="10%" style="vertical-align: middle" align="center">SMTP
                             </td>
                             <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="smtp_url" id="smtp_url" size="150" class="form-control"/></td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('smtp_url', $('#smtp_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('SMTP URL', $('#smtp_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
                             </td>
                         </tr>
                         </tbody></table>
                 </div>
+
+            </div>
+
+            <div class="box box-default" >
                 <div class="col-sm-6 pt5">
-                    <h2> WEB IDE URL </h2>
+                    <h3> WEB IDE URL </h3>
                 </div>
 
-                <div style="margin: 45px 0 0 10px;width:98%;">
+                <div style="padding:10px;">
                     <table class="table table-striped" style="margin: 0 0 0 0;">
                         <tbody ><tr>
                             <td width="10%"  style="vertical-align: middle" align="center"> <br>WEB IDE URL</br>
@@ -171,13 +230,13 @@
                                 <input type="text" maxlength="300" name="web_ide_url" id="web_ide_url" size="150" class="form-control"/>
                             </td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="updateValue('web_ide_url', $('#web_ide_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('WEB IDE URL', $('#web_ide_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
                             </td>
                         </tr>
                         </tbody></table>
                 </div>
-                <div style="height: 30px;"></div>
-                <!-- /.box-body -->
+                <div style="padding:10px;"></div>
+                <!-- /.box box-default-body -->
             </div>
 
             <!-- Modal Layer-->
@@ -188,14 +247,18 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title">Default Modal</h4>
+                            <h3 class="modal-title" id="urlname">Default Modal</h3>
+                        </div>
+                        <div></div>
+                        <div class="modal-body">
+                            <h5 style="display: inline">변경 전 URL : </h5> <h5 style="display: inline" id="beforename"> </h5>
                         </div>
                         <div class="modal-body">
-                            <p>One fine body…</p>
+                            <h5 style="display: inline">변경 후 URL : </h5> <h5 style="display: inline" id="aftername"> </h5>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal" >취소</button>
+                            <button type="button" class="btn btn-primary" onClick="updateValue($('#modaltitle').text(), $('#modalbody').text())" data-dismiss="modal">저장</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -223,17 +286,6 @@
 <!-- ./wrapper -->
     <footer></footer>
 </div>
-<!-- jQuery 3 -->
-<script src="../../../resources/bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="../../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Slimscroll -->
-<script src="../../../resources/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="../../../resources/bower_components/fastclick/lib/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="../../../resources/dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../../../resources/dist/js/demo.js"></script>
+
 </body>
 </html>
