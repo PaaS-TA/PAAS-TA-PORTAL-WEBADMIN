@@ -22,237 +22,124 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="box box-default">
-                        <!-- /.box-header -->
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-fw fa-search"></i>Search</h3>
-                            <!-- [_]창)-->
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')"
-                                       aria-expanded="true"></a>
-                                    <i class="fa fa-minus"></i>
-                                </button>
+                    <div class="box">
+                        <!-- 탭 구현설정1 -->
+                        <div class="nav-tabs-custom" style="cursor: move;">
+                            <!-- Tabs within a box -->
+                            <ul class="nav nav-tabs pull-right ui-sortable-handle">
+                                <!-- chart - 03 -->
+                                <li class=""><a href="#app-service" data-toggle="tab" aria-expanded="false">
+                                    <i class="fa fa-fw fa-gear"></i>Service</a></li>
+                                <!-- chart - 02 -->
+                                <li class=""><a href="#app-development-environment" data-toggle="tab"
+                                                aria-expanded="false">
+                                    <i class="fa fa-fw fa-code-fork"></i>Development environment</a></li>
+                                <!-- chart - 01-->
+                                <li class="active"><a href="#app-template" data-toggle="tab" aria-expanded="true">
+                                    <i class="fa fa-fw fa-bookmark-o"></i> Template</a></li>
+                                <!-- App Icons-->
+                                <li class="pull-left header"><i class=" fa fa-fw fa-cloud"></i> App</li>
+                            </ul>
+
+                            <!-- Search a box -->
+                            <div class="box-header">
+                                <div class="input-group input-group-sm pull-right header" style="width: 200px;">
+                                    <input type="text" name="table_search" class="form-control pull-right"
+                                           placeholder="Search"/>
+
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="box-body">
-                            <div class="content-box2 col-md-12 col-md-offset-13">
-                            <!--<div class="row">-->
-                                <!--<div class="col-md-6">-->
-                                    <div class="selectbox select1">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="searchType">검색유형</label>
-                                        <select id="searchType" name="searchType"
-                                                class="form-control select2 select2-hidden-accessible"
-                                                style="width: 100%;"
-                                                tabindex="-1"
-                                                aria-hidden="true">
-                                            <option selected="selected"
-                                                    th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
-                                                전체
-                                            </option>
-                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}">
-                                                앱 템플릿
-                                            </option>
-                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_BUILD_PACK}">
-                                                앱 개발환경
-                                            </option>
-                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_SERVICE_PACK}">
-                                                앱 서비스
-                                            </option>
-                                        </select>
-                                        <span class="select2 select2-container select2-container--default select2-container--below"
-                                              dir="ltr" style="width: 100%;">
-                                        <span class="selection"></span>
-                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                        </span>
-                                    </div>
-                                    <div class="selectbox select2">
-                                        <p/>
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="searchTypeColumn">검색항목</label>
-                                        <select id="searchTypeColumn" name="searchTypeColumn"
-                                                class="form-control select2 select2-hidden-accessible"
-                                                style="width: 100%;"
-                                                tabindex="-1"
-                                                aria-hidden="true">
-                                            <option selected="selected"
-                                                    th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
-                                                전체
-                                            </option>
-                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_NAME}">
-                                                이름
-                                            </option>
-                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_SUMMARY}">
-                                                요약
-                                            </option>
-                                        </select>
-                                        <span class="select2 select2-container select2-container--default select2-container--below"
-                                              dir="ltr" style="width: 100%;">
-                                        <span class="selection"></span>
-                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                        </span>
-                                    </div>
-                                <!--</div>-->
+                            <div class="tab-content no-padding">
+                                <!-- chart - 01 -->
+                                <div class="chart tab-pane active" id="app-template"
+                                     style="position: relative; height: 600px;">
+                                    <div id="starterListMessageArea" class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>이름</th>
+                                                <th>요약</th>
+                                                <th>분류</th>
+                                                <th>공개</th>
+                                            </tr>
+                                            <tbody id="starterListTableArea">
 
-                                <!--<div class="col-md-6">-->
-                                    <div class="selectbox select3">
-                                        <p/>
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="searchType">공개여부</label>
-                                        <select id="searchTypeUseYn" name="searchTypeUseYn"
-                                                class="form-control select2 select2-hidden-accessible"
-                                                style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                            <option selected="selected"
-                                                    th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
-                                                전체
-                                            </option>
-                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}">
-                                                공개
-                                            </option>
-                                            <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}">
-                                                비공개
-                                            </option>
-                                        </select>
-                                        <span class="select2 select2-container select2-container--default select2-container--below"
-                                              dir="ltr" style="width: 100%;">
-                                        <span class="selection"></span>
-                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                        </span>
-                                    </div>
-                                    <div class="selectbox select4">
-                                        <p/>
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="searchTypeColumn">검색어</label>
-                                        <div class="box-tools">
-                                            <div class="input-group input-group-sm">
-                                                <input type="text" id="searchKeyword" class="form-control pull-right"
-                                                       placeholder="검색어를 입력하세요"
-                                                       onkeypress="procCheckSearchFormKeyEvent(event);"/>
-                                                <div class="input-group-btn">
-                                                    <button type="submit" id="btnSearch" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                                </div>
-                                            </div>
+                                            </tbody>
+                                        </table>
+
+                                        <div class="box-footer clearfix">
+                                            <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right"
+                                                    onclick="procMovePage(STARTER_INSERT_FORM_URL)">
+                                                앱 템플릿 등록
+                                            </button>
                                         </div>
                                     </div>
-                                    <!--▼col-md-6 -->
-                                <!--</div>-->
-                                <!--▼row -->
-                            <!--</div>-->
+                                </div>
+                                <form id="starterHiddenForm">
+                                    <input type="hidden" id="starterHiddenFormNo" name="no" value=""/>
+                                </form>
+
+                                <!-- chart - 02 -->
+                                <div class="chart tab-pane" id="app-development-environment"
+                                     style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                                    <div id="buildPackMessageArea" class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>이름</th>
+                                                <th>요약</th>
+                                                <th>분류</th>
+                                                <th>공개</th>
+                                            </tr>
+
+                                            <tbody id="buildPackTableArea">
+
+                                            </tbody>
+                                        </table>
+                                        <div class="box-footer clearfix">
+                                            <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right"
+                                                    onclick="procMovePage(BUILD_PACK_INSERT_FORM_URL)">
+                                                앱 개발환경 등록
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- chart - 03 -->
+                                <div class="chart tab-pane" id="app-service"
+                                     style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                                    <div id="servicePackMessageArea" class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>이름</th>
+                                                <th>요약</th>
+                                                <th>분류</th>
+                                                <th>공개</th>
+                                            </tr>
+                                            <tbody id="servicePackTableArea">
+
+                                            </tbody>
+                                        </table>
+                                        <div class="box-footer clearfix">
+                                            <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right"
+                                                    onclick="procMovePage(SERVICE_PACK_INSERT_FORM_URL)">
+                                                서비스 등록
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ▼ <div class="tab-content no-padding">-->
                             </div>
+                            <!-- ▼ tab class end -->
                         </div>
+                        <!-- ▼row: 12   <div class="tab-content no-padding">-->
                     </div>
-                    <!-- 탭 구현설정1 -->
-                    <div class="nav-tabs-custom" style="cursor: move;">
-                        <!-- Tabs within a box -->
-                        <ul class="nav nav-tabs pull-right ui-sortable-handle">
-                            <!-- chart - 03 -->
-                            <li class=""><a href="#app-service" data-toggle="tab" aria-expanded="false">
-                                <i class="fa fa-fw fa-gear"></i>Service</a></li>
-                            <!-- chart - 02 -->
-                            <li class=""><a href="#app-development-environment" data-toggle="tab" aria-expanded="false">
-                                <i class="fa fa-fw fa-code-fork"></i>Development environment</a></li>
-                            <!-- chart - 01-->
-                            <li class="active"><a href="#app-template" data-toggle="tab" aria-expanded="true">
-                                <i class="fa fa-fw fa-bookmark-o"></i> Template</a></li>
-                            <!-- App Icons-->
-                            <li class="pull-left header"><i class=" fa fa-fw fa-cloud"></i> App</li>
-                        </ul>
-
-
-                        <div class="tab-content no-padding">
-                            <!-- chart - 01 -->
-                            <div class="chart tab-pane active" id="app-template" style="position: relative; height: 800px;">
-                                <div id="starterListMessageArea" class="table-responsive">
-                                    <table id="starterListTableArea" class="table table-striped">
-                                        <tbody>
-                                        <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>이름</th>
-                                            <th>요약</th>
-                                            <th>분류</th>
-                                            <th>공개</th>
-                                        </tr>
-                                        <tr>
-                                            <td>1.</td>
-                                            <td>1.app-template</td>
-                                            <td>1.app-template</td>
-                                            <td>1.app-template</td>
-                                            <td>1.app-template</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>2.app-template</td>
-                                            <td>2.app-template</td>
-                                            <td>2.app-template</td>
-                                            <td>2.app-template</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-
-                                    <div class="box-footer clearfix">
-                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage(STARTER_INSERT_FORM_URL)">
-                                            앱 템플릿 등록
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <form id="starterHiddenForm">
-                            <input type="hidden" id="starterHiddenFormNo" name="no" value="" />
-                            </form>
-
-                            <!-- chart - 02 -->
-                            <div class="chart tab-pane" id="app-development-environment" style="position: relative; height: 800px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                <div id="buildPackMessageArea" class="table-responsive">
-                                    <table class="table table-striped">
-                                        <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>이름</th>
-                                            <th>요약</th>
-                                            <th>분류</th>
-                                            <th>공개</th>
-                                        </tr>
-
-                                        <tbody id="buildPackTableArea">
-
-                                        </tbody>
-                                    </table>
-                                    <div class="box-footer clearfix">
-                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage(BUILD_PACK_INSERT_FORM_URL)">
-                                            앱 개발환경 등록
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- chart - 03 -->
-                            <div class="chart tab-pane" id="app-service" style="position: relative; height: 800px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                <div id="servicePackMessageArea" class="table-responsive">
-                                    <table  class="table table-striped">
-                                        <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>이름</th>
-                                            <th>요약</th>
-                                            <th>분류</th>
-                                            <th>공개</th>
-                                        </tr>
-                                        <tbody id="servicePackTableArea">
-
-                                        </tbody>
-                                    </table>
-                                    <div class="box-footer clearfix">
-                                        <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right" onclick="procMovePage(SERVICE_PACK_INSERT_FORM_URL)">
-                                            서비스 등록
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- ▼ <div class="tab-content no-padding">-->
-                        </div>
-                        <!-- ▼ tab class end -->
-                    </div>
-                    <!-- ▼row: 12   <div class="tab-content no-padding">-->
                 </div>
             </div>
         </section>
@@ -268,22 +155,22 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
 
-//    var TAB_NAME = "<c:out value='${TAB_NAME}' default='' />";
+    //    var TAB_NAME = "<c:out value='${TAB_NAME}' default='' />";
     var TAB_NAME;
-    var STARTER_LIST_PROC_URL = "/catalog/getStarterNamesList";
+    var STARTER_LIST_PROC_URL = "/catalog/starterNamesList";
     var STARTER_INSERT_FORM_URL = "/catalog/starterForm";
     var BUILD_PACK_LIST_PROC_URL = "/catalog/buildPackCatalogList";
     var BUILD_PACK_INSERT_FORM_URL = "/catalog/buildPackForm";
     var SERVICE_PACK_LIST_PROC_URL = "/catalog/servicePackCatalogList";
     var SERVICE_PACK_INSERT_FORM_URL = "/catalog/servicePackForm";
 
-    $(document.body).ready(function() {
+    $(document.body).ready(function () {
         procSelectTab(TAB_NAME);
     });
 
 
     // SELECT TAB
-    var procSelectTab = function(reqTabName) {
+    var procSelectTab = function (reqTabName) {
         if ("" == reqTabName) return false;
 
         $('.tab-pane.fade').removeClass('active in');
@@ -298,7 +185,7 @@
 
 
     // CHECK SEARCH FORM KEY EVENT
-    var procCheckSearchFormKeyEvent = function(e) {
+    var procCheckSearchFormKeyEvent = function (e) {
         if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
             procGetSearchList();
         }
@@ -306,7 +193,7 @@
 
 
     // GET SEARCH LIST
-    var procGetSearchList = function() {
+    var procGetSearchList = function () {
         var doc = document;
         var reqSearchType = doc.getElementById('searchType').value;
         var reqSearchTypeColumn = doc.getElementById('searchTypeColumn').value;
@@ -314,9 +201,9 @@
         var reqSearchKeyword = doc.getElementById('searchKeyword').value.toLowerCase();
 
         var param = {
-            searchKeyword : reqSearchKeyword,
-            searchTypeColumn : reqSearchTypeColumn,
-            searchTypeUseYn : reqSearchTypeUseYn
+            searchKeyword: reqSearchKeyword,
+            searchTypeColumn: reqSearchTypeColumn,
+            searchTypeUseYn: reqSearchTypeUseYn
         };
 
         var objDivStarter = $("#divStarter");
@@ -327,23 +214,35 @@
         objDivBuildPack.show();
         objDivServicePack.show();
 
-        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_BUILD_PACK}]]*/ == reqSearchType) {
+        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_BUILD_PACK}]]*/ == reqSearchType
+        )
+        {
             getBuildPackList(param);
             objDivStarter.hide();
             objDivServicePack.hide();
 
-        } else if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_SERVICE_PACK}]]*/ == reqSearchType)  {
+        }
+        else
+        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_SERVICE_PACK}]]*/ == reqSearchType
+        )
+        {
 
             getServicePackList(param);
             objDivStarter.hide();
             objDivBuildPack.hide();
 
-        } else if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}]]*/ == reqSearchType)  {
+        }
+        else
+        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}]]*/ == reqSearchType
+        )
+        {
             getStarterList(param);
             objDivBuildPack.hide();
             objDivServicePack.hide();
 
-        } else {
+        }
+        else
+        {
             getStarterList(param);
             getBuildPackList(param);
             getServicePackList(param);
@@ -352,29 +251,31 @@
 
 
     // BIND :: BUTTON EVENT
-    $("#btnSearch").on("click", function() {
+    $("#btnSearch").on("click", function () {
         procGetSearchList();
     });
 
 
-//   procGetSearchList
+    //   procGetSearchList
     $(document.body).ready(function () {
-//        getStarterList();
+        getStarterList();
         getBuildPackList();
         getServicePackList();
     });
 
 
     // GET StarterList
-    var getStarterList = function(reqParam) {
+    var getStarterList = function (reqParam) {
         var param = {};
+
         if (null != reqParam && "" != reqParam) param = reqParam;
-        procCallAjax(STARTER_LIST_PROC_URL, param, procCallbackGetStarterList);
+
+        procCallAjax2(STARTER_LIST_PROC_URL, "GET", null, procCallbackGetStarterList);
     };
 
 
     // GET BuildPackList
-    var getBuildPackList = function(reqParam) {
+    var getBuildPackList = function (reqParam) {
         var param = {};
 
         if (null != reqParam && "" != reqParam) param = reqParam;
@@ -384,7 +285,7 @@
 
 
     // GET ServicePackList
-    var getServicePackList = function(reqParam) {
+    var getServicePackList = function (reqParam) {
         var param = {};
 
         if (null != reqParam && "" != reqParam) param = reqParam;
@@ -396,45 +297,38 @@
 
     // GET LIST CALLBACK StarterList
     var procCallbackGetStarterList = function (data) {
-        var objTable = $("#starterList");
+
         var objTableArea = $('#starterListTableArea');
         var objMessageArea = $('#starterListMessageArea');
         var listLength = data.list.length;
         var htmlString = [];
 
-        objTable.html('');
-        objMessageArea.html('');
+        objTableArea.html('');
 
         if (listLength < 1) {
-            objTableArea.hide();
-
             objMessageArea.append('<spring:message code="common.info.empty.data" />');
             objMessageArea.show();
 
         } else {
             var catalogList = data.list;
-            var reqParam = {};
 
             for (var i = 0; i < listLength; i++) {
                 reqParam = {name: catalogList[i].name};
                 htmlString.push('<tr style="cursor:pointer;" onclick="procMoveStarterInsertForm(\'' + catalogList[i].no + '\')">'
-                    + '<td>' + (i+1)+ '</td>'
+                    + '<td>' + (i + 1) + '</td>'
                     + '<td>' + catalogList[i].name + '</td>'
                     + '<td>' + catalogList[i].summary + '</td>'
                     + '<td>' + catalogList[i].classificationValue + '</td>'
                     + '<td>' + catalogList[i].useYn + '</td>'
                     + '</tr>');
             }
-            objMessageArea.hide();
-            objTable.append(htmlString);
-            objTable.trigger( "create" );
-            objTableArea.show();
+            objTableArea.append(htmlString).trigger("create");
         }
     };
 
 
     // GET LIST CALLBACK BuildPackList
-    var procCallbackGetBuildPackList = function(data) {
+    var procCallbackGetBuildPackList = function (data) {
 
         var objTableArea = $('#buildPackTableArea');
         var objMessageArea = $('#buildPackMessageArea');
@@ -452,20 +346,21 @@
 
             for (var i = 0; i < listLength; i++) {
                 htmlString.push('<tr style="cursor:pointer;" onclick="procMoveBuildPackInsertForm(\'' + catalogList[i].no + '\')">'
-                    + '<td>' + (i+1)+ '</td>'
+                    + '<td>' + (i + 1) + '</td>'
                     + '<td>' + catalogList[i].name + '</td>'
                     + '<td>' + catalogList[i].summary + '</td>'
                     + '<td>' + catalogList[i].classificationValue + '</td>'
                     + '<td>' + catalogList[i].useYn + '</td>'
                     + '</tr>');
             }
-            objTableArea.append(htmlString).trigger( "create" );
+            objTableArea.append(htmlString).trigger("create");
+            objTable.append(htmlString).trigger("create");
         }
     };
 
 
     // GET LIST CALLBACK ServicePackList
-    var procCallbackGetServicePackList = function(data) {
+    var procCallbackGetServicePackList = function (data) {
 
         var objTable = $('#servicePackTableArea');
         var objMessageArea = $('#servicePackMessageArea');
@@ -483,44 +378,43 @@
 
             for (var i = 0; i < listLength; i++) {
                 htmlString.push('<tr style="cursor:pointer;" onclick="procMoveServicePackInsertForm(\'' + catalogList[i].no + '\')">'
-                    + '<td>' + (i+1)+ '</td>'
+                    + '<td>' + (i + 1) + '</td>'
                     + '<td>' + catalogList[i].name + '</td>'
                     + '<td>' + catalogList[i].summary + '</td>'
                     + '<td>' + catalogList[i].classificationValue + '</td>'
                     + '<td>' + catalogList[i].useYn + '</td>'
                     + '</tr>');
             }
-            objTable.append(htmlString).trigger( "create" );
+            objTable.append(htmlString).trigger("create");
         }
     };
 
 
     // MOVE PAGE StarterInsertForm
-    var procMoveStarterInsertForm = function(reqParam) {
+    var procMoveStarterInsertForm = function (reqParam) {
         var hiddenForm = $('#starterHiddenForm');
         $('#starterHiddenFormNo').val(reqParam);
-        hiddenForm.attr({action:STARTER_INSERT_FORM_URL, method:"POST"}).submit();
+        hiddenForm.attr({action: STARTER_INSERT_FORM_URL, method: "POST"}).submit();
     };
 
 
     // MOVE PAGE BuildPackInsertForm
-    var procMoveBuildPackInsertForm = function(reqParam) {
+    var procMoveBuildPackInsertForm = function (reqParam) {
         var hiddenForm = $('#BuildPackHiddenForm');
         $('#BuildPackHiddenFormNo').val(reqParam);
-        hiddenForm.attr({action:BUILD_PACK_INSERT_FORM_URL, method:"POST"}).submit();
+        hiddenForm.attr({action: BUILD_PACK_INSERT_FORM_URL, method: "POST"}).submit();
     };
 
 
     // MOVE PAGE ServicePackInsertForm
-    var procMoveServicePackInsertForm = function(reqParam) {
+    var procMoveServicePackInsertForm = function (reqParam) {
         var hiddenForm = $('#ServicePackHiddenForm');
         $('#ServicePackHiddenFormNo').val(reqParam);
-        hiddenForm.attr({action:SERVICE_PACK_INSERT_FORM_URL, method:"POST"}).submit();
+        hiddenForm.attr({action: SERVICE_PACK_INSERT_FORM_URL, method: "POST"}).submit();
     };
 
     /*]]>*/
 </script>
-
 
 </body>
 </html>

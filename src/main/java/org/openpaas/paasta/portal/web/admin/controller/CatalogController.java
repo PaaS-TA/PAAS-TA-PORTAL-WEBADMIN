@@ -369,17 +369,17 @@ class CatalogController extends Common {
     }
 
 
-    /**
-     * 앱 템플릿명 목록을 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getStarterNamesList"}, method = RequestMethod.POST) // names
-    @ResponseBody
-    public Map<String, Object> getStarterNamesList(@RequestBody Catalog param) {
-        return commonService.procCommonApiRestTemplate("/catalog/getStarterNamesList", HttpMethod.POST, param, null);
-    }
+//    /**
+//     * 앱 템플릿명 목록을 조회한다.
+//     *
+//     * @param param Catalog(모델클래스)
+//     * @return Map(자바클래스)
+//     */
+//    @RequestMapping(value = {"/getStarterNamesList"}, method = RequestMethod.POST) // names
+//    @ResponseBody
+//    public Map<String, Object> getStarterNamesList(@RequestBody Catalog param) {
+//        return commonService.procCommonApiRestTemplate("/catalog/getStarterNamesList", HttpMethod.POST, param, null);
+//    }
 
 
     /**
@@ -503,6 +503,18 @@ class CatalogController extends Common {
      * @REST API
      * by.SEJI
      */
+
+    /**
+     * 앱 템플릿명 목록을 조회한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping("/starterNamesList")
+    @ResponseBody
+    public Map<String, Object> getStarterNamesList(@ModelAttribute Catalog param) {
+        return commonService.procCommonApiRestTemplate("/catalog/starternameCatalogs", HttpMethod.GET, param, null);
+    }
 
     /**
      * 앱 개발환경 카탈로그 목로 조회
