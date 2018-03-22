@@ -56,6 +56,7 @@ var procCallAjax = function(reqUrl, param, callback) {
         dataType: 'json',
         contentType: "application/json",
         success: function(data) {
+
             if (data) {
                 callback(data, param);
             } else {
@@ -79,6 +80,47 @@ var procCallAjax = function(reqUrl, param, callback) {
         }
     });
 };
+
+// CALL AJAX  reqMethod PUT, DELETE 추가
+var procCallAjax2 = function(reqUrl, reqMethod, param, callback) {
+    var reqData = "";
+    //var reqMethod = "POST";
+
+    if (param != null) {
+        reqData = param;
+    }
+    $.ajax({
+        url: reqUrl,
+        method: reqMethod,
+        data: reqData,
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(data) {
+
+            if (data) {
+                callback(data, param);
+            } else {
+                var resData = {RESULT : RESULT_STATUS_SUCCESS,
+                    RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
+
+                callback(resData, param);
+            }
+        },
+        error: function(xhr, status, error) {
+            var resData = {RESULT : RESULT_STATUS_FAIL,
+                RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
+
+            callback(resData, param);
+
+            console.log("ERROR :: error :: ", error);
+            procAlert("danger", JSON.parse(xhr.responseText).message);
+        },
+        complete : function(data) {
+            console.log("COMPLETE :: data :: ", data);
+        }
+    });
+};
+
 
 // ALARM
 var timeoutHandler = null;
