@@ -132,7 +132,7 @@ class CatalogController extends Common {
     @RequestMapping(value = {"/getServicePackCatalogCount"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getServicePackCatalogCount(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getServicePackCatalogCount", HttpMethod.POST, param, null);
+        return catalogService.getServicePackCatalogCount(param);
     }
 
 
@@ -513,7 +513,7 @@ class CatalogController extends Common {
     @GetMapping("/starterNamesList")
     @ResponseBody
     public Map<String, Object> getStarterNamesList(@ModelAttribute Catalog param) {
-        return commonService.procCommonApiRestTemplate("/catalog/starternameCatalogs", HttpMethod.GET, param, null);
+        return catalogService.getStarterNamesList(param);
     }
 
     /**
@@ -525,7 +525,7 @@ class CatalogController extends Common {
     @GetMapping("/buildPackCatalogList")
     @ResponseBody
     public Map<String, Object> getBuildPackCatalogList(@ModelAttribute Catalog param) {
-        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs", HttpMethod.GET, param, null);
+        return catalogService.getBuildPackCatalogList(param);
     }
 
     /**
@@ -534,12 +534,12 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    //html에 던저주는,
+    //move::catalogMain.html
     @GetMapping("/servicePackCatalogList")
     @ResponseBody
     public Map<String, Object> getServicePackCatalogList(@ModelAttribute Catalog param) {
-        //내가 요청하는 api
-        return commonService.procCommonApiRestTemplate("/catalog/servicepackCatalogs", HttpMethod.GET, param, null);
-
+        //move::catalogService.java
+        return catalogService.getServicePackCatalogList(param);
     }
+
 }

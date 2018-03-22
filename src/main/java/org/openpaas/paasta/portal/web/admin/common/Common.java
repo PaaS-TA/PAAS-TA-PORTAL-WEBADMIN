@@ -1,5 +1,6 @@
 package org.openpaas.paasta.portal.web.admin.common;
 
+import org.openpaas.paasta.portal.web.admin.service.CatalogService;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +28,10 @@ public class Common {
 
     @Autowired
     public CommonService commonService;
+
+    @Autowired
+    public CatalogService catalogService;
+
     /**
      * Get Token
      *
