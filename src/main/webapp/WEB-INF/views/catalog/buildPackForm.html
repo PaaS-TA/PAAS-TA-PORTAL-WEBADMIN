@@ -6,6 +6,7 @@
 <body>
 <div>
     <header></header>
+    <!-- HTML aside 요소는 문서의 주요 컨텐츠에 별도로 이어진 컨텐츠가 있는 문서의 한 구획을 말합니다. 주로 사이드바로 나타냅니다. -->
     <aside>/</aside>
 
     <!-- Content Wrapper. Contains page content -->
@@ -18,119 +19,122 @@
                     <div class="box box-default">
                         <!-- /.box-header -->
                         <div class="box-header with-border">
-                            <h3 class="box-title">  <i class="fa fa-fw fa-chrome"></i> Development environment</h3>
+                            <h3 class="box-title"><i class="fa fa-fw fa-chrome"></i> Development environment</h3>
                         </div>
 
                         <div class="box-body">
+                            <!--인스턴스 설정-->
                             <div class="content-box2 col-md-12 col-md-offset-13">
-                                <!--<div class="row">-->
-                                <!--<div class="col-md-6">-->
-                                <br/>
+                                <!--<div class="1">-->
+                                <input type="hidden" id="thumb_image_path" value="${thumb_image_path}"/>
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="name">이름</label>
-                                    <input type="text" class="form-control" id="name"/>
-                                </div>
+                                    <input type="text" class="form-control" id="name" name="name"/>
+                                </div><br/>
 
-                                <br/>
+                                <!--<div class="2">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="classification">분류</label>
-                                    <select id="classification"
-                                            class="form-control select2 select2-hidden-accessible"
-                                            style="width: 100%;"
-                                            tabindex="-1"
-                                            aria-hidden="true">
-                                        <option selected="selected" th:value="${19073}"> 시스템 앱 개발환경</option>
-                                        <option th:value="${3157}"> 사용자 앱 개발환경</option>
+                                    <select class="form-control" id="classification"
+                                            style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
                                     </select>
-                                    <span class="select2 select2-container select2-container--default select2-container--below"
-                                          dir="ltr" style="width: 100%;">
-                                        <span class="selection"></span>
-                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                        </span>
-                                </div>
+                                </div><br/>
 
-
-                                <br/>
+                                <!--<div class="3">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="buildPackName">앱 개발환경</label>
-                                    <select id="buildPackName"
-                                            class="form-control select2 select2-hidden-accessible"
-                                            style="width: 100%;"
-                                            tabindex="-1"
-                                            aria-hidden="true">
-                                        <option selected="selected" th:value="staticfile_buildpack">staticfile_buildpack</option>
-                                        <option th:value="java_buildpack_offline">java_buildpack_offline</option>
-                                        <option th:value="java_buildpack">java_buildpack</option>
-                                        <option th:value="ruby_buildpack">ruby_buildpack</option>
-                                        <option th:value="nodejs_buildpack">nodejs_buildpack</option>
-                                        <option th:value="go_buildpack">go_buildpack</option>
-                                        <option th:value="python_buildpack">python_buildpack</option>
-                                        <option th:value="php_buildpack">php_buildpack</option>
-                                        <option th:value="binary_buildpack">binary_buildpack</option>
-                                        <option th:value="dotnet_core_buildpack">dotnet_core_buildpack</option>
-                                        <option th:value="egov_buildpack">egov_buildpack</option>
-                                        <option th:value="pinpoint_buildpack">pinpoint_buildpack</option>
-                                    </select>
-                                    <span class="select2 select2-container select2-container--default select2-container--below"
-                                          dir="ltr" style="width: 100%;">
-                                        <span class="selection"></span>
-                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                        </span>
-                                </div>
+                                        <select class="form-control" id="buildPackName" name="buildPackName"
+                                                style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
+                                        </select>
+                                </div><br/>
 
-                                <!--</div>-->
-                                <br/>
+                                <!--<div class="4">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
-                                    <label for="thumbnail"> 썸네일(50X50)</label>
-                                    <p/>
+                                    <label for="thumbnail"> 썸네일<font style="font-size:13px;color:#ababab;">(50X50)</font></label>
                                     <input type="file" id="thumbnail"/>
-                                </div><p/>
+                                </div>
 
-                                <br/>
+                                <div class="form-group">
+                                    <label id="labelThumbName"></label>
+                                    <button id="btnResetImg" type="button" class="btn-del" aria-label="썸네일 지우기">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    </button>
+                                </div><br/>
+
+                                <!--<div class="5">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="appSampleFile"> 앱 샘플</label>
-                                    <p/>
-                                    <input type="file" id="appSampleFile"/>
+                                    <input type="file" name="files[]" id="appSampleFile"/>
                                     <p class="help-block">파일 첨부는 1개 파일만 가능합니다.</p>
-                                </div><p/>
-
-                                <br/>
-                                <!--<div class="col-md-6">-->
-                                <div class="form-group">
-                                    <i class="fa fa-fw fa-check-square-o"></i>
-                                    <label for="useYn_Y">공개여부</label>
-                                    <br/>
-                                    <label class="radio-inline">
-                                        <input type="radio" id="useYn_Y" name="useYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/> 활성화
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" id="useYn_N" name="useYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/> 비 활성화
-                                    </label>
                                 </div>
 
+                                <div class="form-group">
+                                    <button id="btnDeleteAppSampleFile" type="button" class="btn-del mt-30 ml3" aria-label="파일 지우기">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    </button>
+                                </div><br/>
 
-                                <br/>
+                                <!--<div class="6">-->
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="useYn_Y">공개</label>
+                                    <div>
+                                        <label class="radio-inline">
+                                            <input type="radio" id="useYn_Y" name="useYn"
+                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>  Y
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" id="useYn_N" name="useYn"
+                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/> N
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!--<div class="7">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="summary">요약</label>
-                                    <input type="text" class="form-control" id="summary"/>
-                                </div>
+                                    <input type="text" class="form-control" id="summary" name="summary"/>
+                                </div><br/>
 
-                                <br/>
+                                <!--<div class="8">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="description">설명</label>
                                     <textarea class="form-control" rows="5" id="description"></textarea>
                                 </div>
 
-                                <button type="button" class="btn btn-sm pull-left btn-default" id="btnCancel">취소</button>
-                                <button type="button" class="btn btn-sm btn-primary btn-flat pull-right" id="btnRegist">등록</button>
+                                <!--<div class="9"::button>-->
+                                <div class="form-group">
+                                    <div class="col-sm-offset-1 col-sm-9 " align="right" id = "statusActivity">
+                                        <div class="divButtons" style="width:97.8%;">
 
+                                            <!--<div th:with="insertFlag=${INSERT_FLAG}"></div>-->
+                                            <!--<div th:with="checkCudU=${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}"></div>-->
+                                            <div th:with="insertFlag=${INSERT_FLAG}, checkCudU=${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}">
+                                                <choose>
+                                                    <p th:when="test=${insertFlag == checkCudU}">
+                                                        <button type="button" class="btn btn_del2 fl ml-22" id="btnDelete">삭제</button>
+                                                        <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">취소</button>
+                                                        <button type="button" class="btn btn-save btn-sm" id="btnRegist">저장</button>
+                                                    </p>
+                                                    <th:otherwise>
+                                                        <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel2">취소</button>
+                                                        <button type="button" class="btn btn-save btn-sm" id="btnRegist2">등록</button>
+                                                    </th:otherwise>
+                                                </choose>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--<div class="9"::button>-->
                             </div>
                         </div>
                     </div>
@@ -162,11 +166,11 @@
     var UPLOAD_IMAGE_PROC_URL = "/catalog/uploadThumbnailImage";
     var DELETE_IMAGE_PROC_URL = "/catalog/deleteThumbnailImage";
     var UPLOAD_APP_SAMPLE_PROC_URL = "/catalog/uploadAppSampleFile";
-    var DELETE_APP_SAMPLE_PROC_URL = "/catalog/deleteAppSampleFile';
-    var BUILD_PACK_CATALOG_ID = "<%= Constants.BUILD_PACK_CATALOG_ID %>";
-    var INSERT_FLAG = "<c:out value='${INSERT_FLAG}' default='' />";
-    var CUD_U = "<%= Constants.CUD_U %>";
-    var REQ_NO = "<c:out value='${REQUEST_NO}' default='' />";
+    var DELETE_APP_SAMPLE_PROC_URL = "/catalog/deleteAppSampleFile";
+    var BUILD_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).BUILD_PACK_CATALOG_ID}]]*/ "";
+    var INSERT_FLAG = "<>";
+    var CUD_U = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ "";
+    var REQ_NO = "<>";
 
     var INIT_MESSAGE = "첨부된 파일이 없습니다.";
     var REQUEST_APP_SAMPLE_FILE;
@@ -174,13 +178,13 @@
     REQUEST_APP_SAMPLE_FILE_OBJECT = $('#appSampleFile');
 
     // GET CATEGORY LIST
-    var getCategoryList = function() {
+    var getCategoryList = function () {
         procCallAjax(CATEGORY_LIST_PROC_URL + "/" + BUILD_PACK_CATALOG_ID, null, procCallbackCategoryList);
     };
 
 
     // GET CATEGORY LIST CALLBACK
-    var procCallbackCategoryList = function(data) {
+    var procCallbackCategoryList = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
         var objSelectBox = $('#classification');
@@ -198,13 +202,13 @@
 
 
     // GET BUILD PACK LIST
-    var getBuildPackList = function() {
+    var getBuildPackList = function () {
         procCallAjax(BUILD_PACK_LIST_PROC_URL, {}, procCallbackBuildPackList);
     };
 
 
     // GET BUILD PACK LIST CALLBACK
-    var procCallbackBuildPackList = function(data) {
+    var procCallbackBuildPackList = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
         var objSelectBox = $('#buildPackName');
@@ -229,7 +233,7 @@
 
 
     // UPDATE FORM
-    var procUpdateForm = function() {
+    var procUpdateForm = function () {
         var reqNo = REQ_NO;
         if (null == reqNo || "" == reqNo) {
             procAlert("danger", '<spring:message code="common.system.error.message" />');
@@ -241,7 +245,7 @@
 
 
     // CALL BACK UPDATE FORM
-    var procCallbackUpdateForm = function(data) {
+    var procCallbackUpdateForm = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
         if (data.list.length < 1) return false;
@@ -276,7 +280,7 @@
             $('#divPreview').attr('style', 'display: block; height: 94px;');
         }
 
-        $('#preview').attr('src', IMAGE_PATH_PREFIX+tempThumbImgPath);
+        $('#preview').attr('src', IMAGE_PATH_PREFIX + tempThumbImgPath);
         $("#labelThumbName").text(reqThumbImgName.val());
 
         var appSampleFileName = resultData.appSampleFileName;
@@ -307,7 +311,7 @@
 
 
     // CHECK DUPLICATED NAME
-    var procCheckDuplicatedName = function() {
+    var procCheckDuplicatedName = function () {
         if (!procCheckValidStringSpace()) return false;
         if (!procCheckValid()) return false;
 
@@ -318,14 +322,14 @@
         // CHECK DUPLICATED NAME
         var insertFlag = INSERT_FLAG;
         if ("" != insertFlag && CUD_U == insertFlag && reqName == orgName) {
-            procUploadThumbnailImageFile({RESULT : RESULT_STATUS_SUCCESS});
+            procUploadThumbnailImageFile({RESULT: RESULT_STATUS_SUCCESS});
         } else {
             procCallAjax(DUPLICATED_PROC_URL, {name: reqName}, procUploadThumbnailImageFile);
         }
     };
 
     // PROCESS CHECK VALID
-    var procCheckValid = function() {
+    var procCheckValid = function () {
 
         // name
         var name = $('#name').val();
@@ -347,7 +351,7 @@
     };
 
     // UPLOAD THUMBNAIL IMAGE FILE
-    var procUploadThumbnailImageFile = function(data) {
+    var procUploadThumbnailImageFile = function (data) {
         if (RESULT_STATUS_SUCCESS != data.RESULT) {
             $('#name').focus();
             return false;
@@ -364,7 +368,7 @@
 
 
     // UPLOAD APP SAMPLE FILE
-    var procUploadAppSampleFile = function() {
+    var procUploadAppSampleFile = function () {
         var formData = getAppSampleFileFormData();
 
         if (!formData) {
@@ -376,14 +380,14 @@
 
 
     // UPLOAD APP SAMPLE FILE CALLBACK
-    var procCallbackUploadAppSampleFile = function(data) {
+    var procCallbackUploadAppSampleFile = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) document.getElementById('appSampleFilePath').value = data.path;
         procInsert();
     };
 
 
     // APP SAMPLE FILE FORM DATA
-    var getAppSampleFileFormData = function() {
+    var getAppSampleFileFormData = function () {
         var reqFileObject = REQUEST_APP_SAMPLE_FILE;
         if (null == reqFileObject || undefined === reqFileObject) return false;
 
@@ -395,7 +399,7 @@
 
 
     // INSERT
-    var procInsert = function() {
+    var procInsert = function () {
         var doc = document;
         var reqUseYn = $("input:radio[name='useYn']:checked").val();
         var param = $("#catalogForm").serializeObject();
@@ -422,7 +426,7 @@
 
 
     // INSERT CALLBACK
-    var procCallbackInsert = function(data) {
+    var procCallbackInsert = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
             procAlert("success", '<spring:message code="common.info.result.success" />');
             procMovePage(CATEGORY_HOME_URL);
@@ -434,7 +438,7 @@
 
 
     // UPDATE CALLBACK
-    var procCallbackUpdate = function(data) {
+    var procCallbackUpdate = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
             procDeleteThumbnailImageFile();
             procAlert("success", '<spring:message code="common.info.result.success" />');
@@ -446,7 +450,7 @@
 
 
     // CHECK DELETE
-    var procCheckDelete = function() {
+    var procCheckDelete = function () {
         $('div.modal').modal('toggle');
 
         var reqNo = REQ_NO;
@@ -457,7 +461,7 @@
 
 
     // DELETE
-    var procDelete = function(data) {
+    var procDelete = function (data) {
         if (RESULT_STATUS_SUCCESS != data.RESULT) {
             procAlert("danger", data.RESULT_MESSAGE);
             return false;
@@ -470,7 +474,7 @@
 
 
     // DELETE CALLBACK
-    var procCallbackDelete = function(data) {
+    var procCallbackDelete = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
             procDeleteThumbnailImageFile();
             procAlert("success", '<spring:message code="common.info.result.success" />');
@@ -483,9 +487,9 @@
 
 
     // DELETE THUMBNAIL IMAGE FILE
-    var procDeleteThumbnailImageFile = function() {
+    var procDeleteThumbnailImageFile = function () {
         if (procCheckDeleteFileValid('<%= Constants.FILE_TYPE_IMAGE %>')) {
-            procCallAjax(DELETE_IMAGE_PROC_URL, {thumbImgPath : document.getElementById('orgThumbImgPath').value}, procDeleteAppSampleFile);
+            procCallAjax(DELETE_IMAGE_PROC_URL, {thumbImgPath: document.getElementById('orgThumbImgPath').value}, procDeleteAppSampleFile);
         } else {
             procDeleteAppSampleFile();
         }
@@ -493,9 +497,9 @@
 
 
     // DELETE APP SAMPLE FILE
-    var procDeleteAppSampleFile = function() {
+    var procDeleteAppSampleFile = function () {
         if (procCheckDeleteFileValid('<%= Constants.FILE_TYPE_APP_SAMPLE %>')) {
-            procCallAjax(DELETE_APP_SAMPLE_PROC_URL, {appSampleFilePath : document.getElementById('orgAppSampleFilePath').value}, procCallbackDeleteFile);
+            procCallAjax(DELETE_APP_SAMPLE_PROC_URL, {appSampleFilePath: document.getElementById('orgAppSampleFilePath').value}, procCallbackDeleteFile);
         } else {
             procMovePage(CATEGORY_HOME_URL);
         }
@@ -503,7 +507,7 @@
 
 
     // CHECK DELETE FILE VALID
-    var procCheckDeleteFileValid = function(reqFileType) {
+    var procCheckDeleteFileValid = function (reqFileType) {
         var doc = document;
         var orgFilePath = doc.getElementById('orgThumbImgPath').value;
         var filePath = doc.getElementById('thumbImgPath').value;
@@ -525,13 +529,13 @@
 
 
     // DELETE FILE CALLBACK
-    var procCallbackDeleteFile = function() {
+    var procCallbackDeleteFile = function () {
         procMovePage(CATEGORY_HOME_URL);
     };
 
 
     // RESET IMAGE
-    var procResetImage = function() {
+    var procResetImage = function () {
         var doc = document;
         doc.getElementById('thumbImgPath').value = '';
         doc.getElementById('thumbImgName').value = '';
@@ -541,7 +545,7 @@
 
 
     // SET FILE INFO
-    var procSetFileInfo = function(reqFile) {
+    var procSetFileInfo = function (reqFile) {
         var fileName = reqFile[0].name;
         var limitFileSizeMb = '<%= Constants.CATALOG_APP_SAMPLE_LIMIT_FILE_SIZE_MB %>';
         var limitFileSize = parseInt(limitFileSizeMb) << 20;
@@ -561,7 +565,7 @@
 
 
     // SET FILE LABEL
-    var procSetFileLabel = function(reqFileName, reqOrgFileSize, reqFilePath) {
+    var procSetFileLabel = function (reqFileName, reqOrgFileSize, reqFilePath) {
         if (null == reqFileName || '' == reqFileName) return false;
 
         var doc = document;
@@ -582,14 +586,14 @@
         $('#appSampleFileDeleteButtonArea').show();
 
         // BIND :: BUTTON EVENT
-        $("#btnDeleteFile").on("click", function() {
+        $("#btnDeleteFile").on("click", function () {
             procDeleteAppSampleFileLabel();
         });
     };
 
 
     // DELETE FILE LABEL
-    var procDeleteAppSampleFileLabel = function() {
+    var procDeleteAppSampleFileLabel = function () {
         var doc = document;
         var fileDeleteButtonArea = $('#appSampleFileDeleteButtonArea');
         var reqFileLabel = $('#appSampleFileNameLabel');
@@ -604,7 +608,7 @@
 
 
     // CALCULATE FLOOR
-    var procCalculateFloor = function(reqNumber, reqPosition) {
+    var procCalculateFloor = function (reqNumber, reqPosition) {
         var digits = Math.pow(10, reqPosition);
         var num = Math.round(reqNumber * digits) / digits;
 
@@ -619,7 +623,7 @@
 
 
     // INIT
-    var procInit = function() {
+    var procInit = function () {
         getCategoryList();
 
         $('#name').focus();
@@ -630,7 +634,7 @@
 
         resetThumbnail();
 
-        $("#hiddenThumbnail").on("change", function() {
+        $("#hiddenThumbnail").on("change", function () {
             setPreView($(this));
         });
 
@@ -640,49 +644,49 @@
 
 
     // BIND :: BUTTON EVENT
-    $("#btnResetImg").on("click", function() {
+    $("#btnResetImg").on("click", function () {
         procResetImage();
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnDeleteAppSampleFile").on("click", function() {
+    $("#btnDeleteAppSampleFile").on("click", function () {
         procDeleteAppSampleFileLabel();
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnSearchAppSampleFile").on("click", function() {
+    $("#btnSearchAppSampleFile").on("click", function () {
         REQUEST_APP_SAMPLE_FILE_OBJECT.click();
     });
 
 
     // BIND :: FILE CHANGE
-    REQUEST_APP_SAMPLE_FILE_OBJECT.on("change", function() {
+    REQUEST_APP_SAMPLE_FILE_OBJECT.on("change", function () {
         procSetFileInfo($(this)[0].files);
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnRegist").on("click", function() {
+    $("#btnRegist").on("click", function () {
         procCheckDuplicatedName();
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnCancel").on("click", function() {
+    $("#btnCancel").on("click", function () {
         procMovePage(CATEGORY_HOME_URL + "/<%= Constants.TAB_NAME_BUILD_PACK %>");
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnDelete").on("click", function() {
+    $("#btnDelete").on("click", function () {
         procPopup('카탈로그', DELETE_MESSAGE, 'procCheckDelete();');
     });
 
 
     // ON LOAD
-    $(document.body).ready(function() {
+    $(document.body).ready(function () {
         procInit();
     });
 
