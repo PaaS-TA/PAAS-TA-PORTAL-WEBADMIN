@@ -10,7 +10,7 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div layout:fragment="content" class="content-wrapper">
-
+        <input type="hidden" id="tabNumber" value="1"/>
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
@@ -21,14 +21,22 @@
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <!-- Search a box -->
                 <div class="col-xs-12">
-                    <div class="input-group input-group-sm pull-right header" style="width: 300px;">
-                        <input type="text" id="searchKeyword" class="form-control pull-right" placeholder="Search" onkeyup="getSearchList(event);"/>
+                    <div class="box-header">
+                        <!-- create button box -->
+                        <div class="box-title">
+                            <button th:type="button" class="btn btn-block btn-primary btn-sm" onclick="procMoveForm()" id="btn_insert">앱 템플릿 등록</button>
+                        </div>
+                        <!-- Search a box -->
+                        <div class="input-group input-group-sm pull-right header" style="width: 300px;">
+                            <input type="text" id="searchKeyword" class="form-control pull-right" placeholder="Search"
+                                   onkeyup="getSearchList(event);"/>
 
-                        <div class="input-group-btn">
-                            <button type="button" id="btnSearch" class="btn btn-default"><i class="fa fa-search"></i>
-                            </button>
+                            <div class="input-group-btn">
+                                <button type="button" id="btnSearch" class="btn btn-default"><i
+                                        class="fa fa-search"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,14 +49,14 @@
                             <!-- Tabs within a box -->
                             <ul class="nav nav-tabs pull-right ui-sortable-handle">
                                 <!-- chart - 03 -->
-                                <li class=""><a href="#app-service" data-toggle="tab" aria-expanded="false">
+                                <li class=""><a href="#app-service" data-toggle="tab" aria-expanded="false" onclick="appbutton('3')">
                                     <i class="fa fa-fw fa-gear"></i>Service</a></li>
                                 <!-- chart - 02 -->
-                                <li class=""><a href="#app-development-environment" data-toggle="tab"
+                                <li class=""><a href="#app-development-environment" data-toggle="tab" onclick="appbutton('2')"
                                                 aria-expanded="false">
                                     <i class="fa fa-fw fa-code-fork"></i>Development environment</a></li>
                                 <!-- chart - 01-->
-                                <li class="active"><a href="#app-template" data-toggle="tab" aria-expanded="true">
+                                <li class="active"><a href="#app-template"  data-toggle="tab" aria-expanded="true" onclick="appbutton('1')">
                                     <i class="fa fa-fw fa-bookmark-o"></i> Template</a></li>
                                 <!-- App Icons-->
                                 <li class="pull-left header"><i class=" fa fa-fw fa-cloud"></i> App</li>
@@ -73,16 +81,13 @@
                                         </table>
 
                                         <div class="box-footer clearfix">
-                                            <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right"
-                                                    onclick="procMovePage(STARTER_INSERT_FORM_URL)">
-                                                앱 템플릿 등록
-                                            </button>
-                                        </div>
+                                       </div>
                                     </div>
+                                    <form id="starterHiddenForm">
+                                        <input type="hidden" id="starterHiddenFormNo" name="no" value=""/>
+                                    </form>
                                 </div>
-                                <form id="starterHiddenForm">
-                                    <input type="hidden" id="starterHiddenFormNo" name="no" value=""/>
-                                </form>
+
 
                                 <!-- chart - 02 -->
                                 <div class="chart tab-pane" id="app-development-environment"
@@ -102,11 +107,10 @@
                                             </tbody>
                                         </table>
                                         <div class="box-footer clearfix">
-                                            <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right"
-                                                    onclick="procMovePage(BUILD_PACK_INSERT_FORM_URL)">
-                                                앱 개발환경 등록
-                                            </button>
                                         </div>
+                                        <form id="BuildPackHiddenForm">
+                                            <input type="hidden" id="BuildPackHiddenFormNo" name="no" value=""/>
+                                        </form>
                                     </div>
                                 </div>
 
@@ -127,12 +131,11 @@
                                             </tbody>
                                         </table>
                                         <div class="box-footer clearfix">
-                                            <button th:type="button" class="btn btn-sm btn-primary btn-flat pull-right"
-                                                    onclick="procMovePage(SERVICE_PACK_INSERT_FORM_URL)">
-                                                서비스 등록
-                                            </button>
                                         </div>
                                     </div>
+                                    <form id="ServicePackHiddenForm">
+                                        <input type="hidden" id="ServicePackHiddenFormNo" name="no" value=""/>
+                                    </form>
                                 </div>
                                 <!-- ▼ <div class="tab-content no-padding">-->
                             </div>
@@ -178,7 +181,7 @@
     });
 
 
-    getSearchList = function(){
+    getSearchList = function () {
         getStarterList();
         getBuildPackList();
         getServicePackList();
@@ -214,7 +217,7 @@
         var searchKeyword = document.getElementById('searchKeyword').value;
         var searchResult = new Array();
         var newIdx = 0;
-        for (var i=0; i < CLIENT_LIST.length; i++ ){
+        for (var i = 0; i < CLIENT_LIST.length; i++) {
 
             if (CLIENT_LIST[i].includes(document.getElementById('searchKeyword').value)) {
                 searchResult[newIdx++] = CLIENT_LIST[i];
@@ -222,7 +225,7 @@
         }
 
         CURRENT_LIST = searchResult;
-        var reqParam = {'searchKeyword' : searchKeyword };
+        var reqParam = {'searchKeyword': searchKeyword};
         getStarterList(reqParam);
     }
 
@@ -233,13 +236,13 @@
 
     });
 
-     // GET StarterList
+    // GET StarterList
     var getStarterList = function () {
         var doc = document;
         var searchKeyword = document.getElementById('searchKeyword').value;
-        var param ="";
-        if (null != searchKeyword && "" != searchKeyword){
-            param = {"searchKeyword" : searchKeyword};
+        var param = "";
+        if (null != searchKeyword && "" != searchKeyword) {
+            param = {"searchKeyword": searchKeyword};
         }
         procCallAjax2(STARTER_LIST_PROC_URL, "GET", param, procCallbackGetStarterList);
     };
@@ -249,9 +252,9 @@
     var getBuildPackList = function (reqParam) {
         var doc = document;
         var searchKeyword = document.getElementById('searchKeyword').value;
-        var param ="";
-        if (null != searchKeyword && "" != searchKeyword){
-            param = {"searchKeyword" : searchKeyword};
+        var param = "";
+        if (null != searchKeyword && "" != searchKeyword) {
+            param = {"searchKeyword": searchKeyword};
         }
 
         procCallAjax2(BUILD_PACK_LIST_PROC_URL, "GET", param, procCallbackGetBuildPackList);
@@ -262,9 +265,9 @@
     var getServicePackList = function (reqParam) {
         var doc = document;
         var searchKeyword = document.getElementById('searchKeyword').value;
-        var param ="";
-        if (null != searchKeyword && "" != searchKeyword){
-            param = {"searchKeyword" : searchKeyword};
+        var param = "";
+        if (null != searchKeyword && "" != searchKeyword) {
+            param = {"searchKeyword": searchKeyword};
         }
 
         procCallAjax2(SERVICE_PACK_LIST_PROC_URL, "GET", param, procCallbackGetServicePackList);
@@ -390,6 +393,35 @@
         $('#ServicePackHiddenFormNo').val(reqParam);
         hiddenForm.attr({action: SERVICE_PACK_INSERT_FORM_URL, method: "POST"}).submit();
     };
+
+
+    var appbutton = function (tabnumber) {
+        $("#btn_insert").text("");
+        if(tabnumber == 3){
+            $("#btn_insert").text("서비스 등록");
+        }else if(tabnumber == 2){
+            $("#btn_insert").text("앱 개발환경 등록");
+
+        }else if(tabnumber == 1){
+            $("#btn_insert").text("앱 템플릿 등록");
+        }
+        $("#tabNumber").val(tabnumber);
+    }
+
+
+
+
+    var procMoveForm = function () {
+
+        var tabnumber = $("#tabNumber").val();
+        if(tabnumber == 1){
+            procMovePage(STARTER_INSERT_FORM_URL);
+        }else if(tabnumber == 2){
+            procMovePage(BUILD_PACK_INSERT_FORM_URL);
+        }else if(tabnumber == 3){
+            procMovePage(SERVICE_PACK_INSERT_FORM_URL);
+        }
+    }
 
     /*]]>*/
 </script>
