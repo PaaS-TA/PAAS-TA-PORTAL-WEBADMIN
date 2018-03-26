@@ -9,12 +9,17 @@
   <aside>/</aside>
 
   <!-- Content Wrapper. Contains page content -->
-    <div layout:fragment="content" class="content-wrapper">
+    <div layout:fragment="content" class="content-wrapper" th:with="UPDATE_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}, INSERT_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C} ">
 
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          클라이언트 등록
+          <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
+            클라이언트 상세
+          </div>
+          <div th:if=" ${INSERT_FLAG} == ${INSERT_CD} ">
+            클라이언트 등록
+          </div>
         </h1>
       </section>
 
@@ -33,14 +38,17 @@
                   <div class="form-group">
                     <label for="uaacClientId" class="col-sm-2 control-label">아이디</label>
                     <div class="col-sm-10">
-                      <input type="email" class="form-control" id="uaacClientId" placeholder="ID"/>
+                      <input type="email" class="form-control" id="uaacClientId" placeholder="ID"
+                      th:style="${INSERT_FLAG} == ${UPDATE_CD} ? 'background:white;cursor:default;' : ''"
+                      th:disabled="${INSERT_FLAG} == ${UPDATE_CD}"/>
+
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group" th:if="${INSERT_FLAG} == ${INSERT_CD}">
                     <label for="uaacClientPw" class="col-sm-2 control-label">패스워드</label>
                     <div class="col-sm-10">
-                      <input type="password" class="form-control" id="uaacClientPw" placeholder="Password"/>
+                      <input type="password" class="form-control" id="uaacClientPw" placeholder="Password" />
                     </div>
                   </div>
 
@@ -175,7 +183,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
   });
 
   function procGetClient() {
-    var client_id = "${CLIENT_ID}";
+    var client_id = /*[[${CLIENT_ID}]]*/ "";
     var param = {
       client_id : client_id
     }
@@ -389,6 +397,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
 
   // BIND :: BUTTON EVENT
   $("#btnRegist").on("click", function() {
+    alert("ASDHKAJHSKDH");
     parsingClientOptions();
   });
 

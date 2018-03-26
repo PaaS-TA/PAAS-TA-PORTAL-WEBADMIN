@@ -49,7 +49,7 @@ public class BuildPackController extends Common {
     @ResponseBody
     public Map<String, Object> getBuildPacks(@RequestBody BuildPack buildPack) {
 
-        return commonService.procRestTemplate("/buildPack/getBuildPacks", HttpMethod.POST, buildPack, getToken());
+        return commonService.procCfApiRestTemplate("/buildPack/getBuildPacks", HttpMethod.POST, buildPack, getToken());
 
     }
 
@@ -63,7 +63,7 @@ public class BuildPackController extends Common {
     @ResponseBody
     public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack) {
 
-        return commonService.procRestTemplate("/buildPack/updateBuildPack", HttpMethod.POST, buildPack, getToken());
+        return commonService.procCfApiRestTemplate("/buildPack/updateBuildPack", HttpMethod.POST, buildPack, getToken());
     }
 
 
