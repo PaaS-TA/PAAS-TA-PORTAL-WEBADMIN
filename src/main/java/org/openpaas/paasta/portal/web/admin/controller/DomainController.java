@@ -34,19 +34,22 @@ public class DomainController extends Common {
      * @version 1.0
      * @since 2016.7.26 최초작성
      */
-    @RequestMapping(value = {"/getDomains/{status}"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/getDomains/{status}"}, method = RequestMethod.GET)
     @ResponseBody
-    public List getDomains(@PathVariable String status) {
-        LOGGER.info("Start getDomains");
-
-        ResponseEntity rssResponse = commonService.procRestTemplate("/domain/getDomains/" + status, HttpMethod.POST, "", getToken(), List.class);
-        List domains = (List) rssResponse.getBody();
-
-        LOGGER.info(rssResponse.getBody().toString());
-
-        return domains;
+    public Map<String, Object> getDomains(@PathVariable String status) {
+        LOGGER.info("Start getDomains" + status);
+        return commonService.procCfApiRestTemplate("/domain/getDomains/" + status, HttpMethod.GET, null, getToken());
     }
-
+    //    public List getDomains(@PathVariable String status) {
+//        LOGGER.info("Start getDomains");
+//
+//        ResponseEntity rssResponse = commonService.procRestTemplate("/domain/getDomains/" + status, HttpMethod.POST, "", getToken(), List.class);
+//        List domains = (List) rssResponse.getBody();
+//
+//        LOGGER.info(rssResponse.getBody().toString());
+//
+//        return domains;
+//    }
     /**
      * 도메인 추가
      *
