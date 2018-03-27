@@ -2,6 +2,8 @@ package org.openpaas.paasta.portal.web.admin.common;
 
 import org.openpaas.paasta.portal.web.admin.service.CatalogService;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigInfoService;
+import org.openpaas.paasta.portal.web.admin.service.OrgSpaceListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +34,16 @@ public class Common {
     @Autowired
     public CatalogService catalogService;
 
+    @Autowired
+    public ConfigInfoService configInfoService;
     /**
      * Get Token
      *
      * @return string string
      */
+
+    @Autowired
+    public OrgSpaceListService orgSpaceListService;
 
     @Autowired
     public MessageSource messageSource;
