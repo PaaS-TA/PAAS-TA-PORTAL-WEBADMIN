@@ -81,14 +81,9 @@
   });
 
   function getList(){
-
-    var param = {
-    }
-
     $.ajax({
-      url: "/buildpacks",  // /buildPack/getBuildPacks
+      url: "/buildpacks",
       method: "GET",
-      //data: JSON.stringify(param),
       dataType: 'json',
       contentType: "application/json",
       success: function(data){
@@ -133,7 +128,7 @@
 
 
   function updateBuildPack(guid, n, refresh){
-    param = {
+    var param = {
       guid:  guid,
       position: $('#position'+ n).val(),
       enable : $('#enabled'+ n).is(":checked"),
@@ -141,7 +136,7 @@
     }
 
     $.ajax({
-      url: "/buildpacks/"+guid,  // /buildPack/updateBuildPack
+      url: "/buildpacks/"+guid,
       method: "PUT",
       data: JSON.stringify(param),
       dataType: 'json',

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 빌드팩 컨트롤러 - 빌드팩 정보를 조회, 수정한다.
@@ -42,7 +43,7 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildpacks"}, method = RequestMethod.GET)  ///buildPack/getBuildPacks
+    @RequestMapping(value = {"/buildpacks"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
 
@@ -56,11 +57,12 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildpacks/{guid}"}, method = RequestMethod.PUT)  ///buildPack/updateBuildPack
+    @RequestMapping(value = {"/buildpacks/{guid}"}, method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack , @PathVariable String guid) {
+        public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack , @PathVariable String guid) {
 
-        return commonService.procCfApiRestTemplate("/buildpacks/"+guid, HttpMethod.PUT, buildPack, getToken());
+        buildPack.setGuid(UUID.fromString(guid));
+        return commonService.procCfApiRestTemplate("/buildpacks/"+buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
     }
 
 
