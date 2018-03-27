@@ -84,19 +84,19 @@ public class ServiceBrokerController extends Common {
 
     }
 
-    /**
-     * 서비스 브로커를 조회한다.
-     *
-     * @param serviceBroker serviceBroker
-     * @return ModelAndView model
-     */
-    @RequestMapping(value = {"/service/service_brokers"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getServiceBroker(@ModelAttribute ServiceBroker serviceBroker, @RequestParam("name") String serviceName) {
-
-        return commonService.procCfApiRestTemplate("/service_brokers?name="+serviceName, HttpMethod.GET, serviceBroker, this.getToken());
-
-    }
+//    /**
+//     * 서비스 브로커를 조회한다.
+//     *
+//     * @param serviceBroker serviceBroker
+//     * @return ModelAndView model
+//     */
+//    @RequestMapping(value = {"/service/service_brokers"}, method = RequestMethod.GET)
+//    @ResponseBody
+//    public Map<String, Object> getServiceBroker(@ModelAttribute ServiceBroker serviceBroker, @RequestParam("name") String serviceName) {
+//
+//        return commonService.procCfApiRestTemplate("/service_brokers?name="+serviceName, HttpMethod.GET, serviceBroker, this.getToken());
+//
+//    }
 
 
     /**
