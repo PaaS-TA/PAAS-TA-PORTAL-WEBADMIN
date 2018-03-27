@@ -48,6 +48,18 @@
                                     <label for="buildPackName">앱 개발환경</label>
                                         <select class="form-control" id="buildPackName" name="buildPackName"
                                                 style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
+                                            <option selected="selected" th:value="staticfile_buildpack">staticfile_buildpack</option>
+                                            <option th:value="java_buildpack_offline">java_buildpack_offline</option>
+                                            <option th:value="java_buildpack">java_buildpack</option>
+                                            <option th:value="ruby_buildpack">ruby_buildpack</option>
+                                            <option th:value="nodejs_buildpack">nodejs_buildpack</option>
+                                            <option th:value="go_buildpack">go_buildpack</option>
+                                            <option th:value="python_buildpack">python_buildpack</option>
+                                            <option th:value="php_buildpack">php_buildpack</option>
+                                            <option th:value="binary_buildpack">binary_buildpack</option>
+                                            <option th:value="dotnet_core_buildpack">dotnet_core_buildpack</option>
+                                            <option th:value="egov_buildpack">egov_buildpack</option>
+                                            <option th:value="pinpoint_buildpack">pinpoint_buildpack</option>
                                         </select>
                                 </div><br/>
 
@@ -119,13 +131,14 @@
                                             <div th:with="insertFlag=${INSERT_FLAG}, checkCudU=${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}">
                                                 <choose>
                                                     <p th:when="test=${insertFlag == checkCudU}">
-                                                        <button type="button" class="btn btn_del2 fl ml-22" id="btnDelete">삭제</button>
-                                                        <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">취소</button>
-                                                        <button type="button" class="btn btn-save btn-sm" id="btnRegist">저장</button>
+
+                                                        <button type="button" class="btn btn_del2 btn-primary btn-sm" id="btnDelete">삭제</button>
+                                                        <button type="button" class="btn btn-cancel2 btn-primary btn-sm" id="btnCancel">취소</button>
+                                                        <button type="button" class="btn btn-save btn-primary btn-sm" id="btnRegist">저장</button>
                                                     </p>
                                                     <th:otherwise>
-                                                        <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel2">취소</button>
-                                                        <button type="button" class="btn btn-save btn-sm" id="btnRegist2">등록</button>
+                                                        <button type="button" class="btn btn-cancel2 btn-primary btn-sm" id="btnCancel">취소</button>
+                                                        <button type="button" class="btn btn-save btn-primary btn-sm" id="btnRegist">등록</button>
                                                     </th:otherwise>
                                                 </choose>
                                             </div>
@@ -153,14 +166,13 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-
     var CATEGORY_HOME_URL = "/catalog/catalogMain";
     var CATALOG_LIST_PROC_URL = "/catalog/getBuildPackCatalogList";
-    var CATEGORY_LIST_PROC_URL = "/commonCode/getCommonCode";
-    var BUILD_PACK_LIST_PROC_URL = "/catalog/getBuildPackList";
+    var CATEGORY_LIST_PROC_URL = "/commonCode/getCommonCode";  //공통코드 메인페이지로 이동한다.??
+    var BUILD_PACK_LIST_PROC_URL = "/catalog/buildPackCatalogList";
     var DUPLICATED_PROC_URL = "/catalog/getBuildPackCatalogCount";
     var INSERT_PROC_URL = "'/catalog/insertBuildPackCatalog";
-    var UPDATE_PROC_URL = "/catalog/updateBuildPackCatalog";
+    var UPDATE_PROC_URL = "/catalog/buildpackCatalogs/{no}";
     var DELETE_PROC_URL = "/catalog/deleteBuildPackCatalog";
     var CHECK_DELETE_PROC_URL = "/catalog/getCheckDeleteBuildPackCatalogCount";
     var UPLOAD_IMAGE_PROC_URL = "/catalog/uploadThumbnailImage";
@@ -179,12 +191,14 @@
 
     // GET CATEGORY LIST
     var getCategoryList = function () {
-        procCallAjax(CATEGORY_LIST_PROC_URL + "/" + BUILD_PACK_CATALOG_ID, null, procCallbackCategoryList);
+        procCallAjax2(CATEGORY_LIST_PROC_URL + "/" + BUILD_PACK_CATALOG_ID ,"GET",null, procCallbackCategoryList);
     };
-
 
     // GET CATEGORY LIST CALLBACK
     var procCallbackCategoryList = function (data) {
+
+        alert("buildlPaxkForm**html**"+BUILD_PACK_CATALOG_ID);
+
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
         var objSelectBox = $('#classification');
@@ -560,7 +574,7 @@
 
         REQUEST_APP_SAMPLE_FILE = reqFile;
 
-        procSetFileLabel(fileName, orgFileSize, '<%= Constants.NONE_VALUE %>');
+        procSetFileLabel(fileName, orgFileSize,  /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).NONE_VALUE}]]*/);
     };
 
 
@@ -675,8 +689,10 @@
 
     // BIND :: BUTTON EVENT
     $("#btnCancel").on("click", function () {
-        procMovePage(CATEGORY_HOME_URL + "/<%= Constants.TAB_NAME_BUILD_PACK %>");
+        history.go(-1);
+//        procMovePage(CATEGORY_HOME_URL + "/" + /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_BUILD_PACK}]]*/);
     });
+
 
 
     // BIND :: BUTTON EVENT
