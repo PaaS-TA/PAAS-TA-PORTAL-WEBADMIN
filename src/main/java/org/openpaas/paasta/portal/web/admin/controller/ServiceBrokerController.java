@@ -6,10 +6,7 @@ import org.openpaas.paasta.portal.web.admin.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
@@ -79,11 +76,11 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/service/getServiceBrokers"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/service/service_brokers"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getServiceBrokers(@RequestBody ServiceBroker serviceBroker) {
+    public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker) {
 
-        return commonService.procRestTemplate("/service/getServiceBrokers", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate("/service/service_brokers", HttpMethod.GET, serviceBroker, this.getToken());
 
     }
 
@@ -93,11 +90,11 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/service/getServiceBroker"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/service_brokers?name={serviceName}"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getServiceBroker(@RequestBody ServiceBroker serviceBroker) {
+    public Map<String, Object> getServiceBroker(@ModelAttribute ServiceBroker serviceBroker, @PathVariable String serviceName) {
 
-        return commonService.procRestTemplate("/service/getServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate("/service_brokers?name="+serviceName, HttpMethod.GET, serviceBroker, this.getToken());
 
     }
 
@@ -112,7 +109,7 @@ public class ServiceBrokerController extends Common {
     @ResponseBody
     public Map<String, Object> createServiceBroker(@RequestBody ServiceBroker serviceBroker) {
 
-        return commonService.procRestTemplate("/service/createServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate("/service/createServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
     }
 
 
@@ -126,7 +123,7 @@ public class ServiceBrokerController extends Common {
     @ResponseBody
     public Map<String, Object> updateServiceBroker(@RequestBody ServiceBroker serviceBroker) {
 
-        return commonService.procRestTemplate("/service/updateServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate("/service/updateServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
     }
 
 
@@ -140,7 +137,7 @@ public class ServiceBrokerController extends Common {
     @ResponseBody
     public Map<String, Object> deleteServiceBroker(@RequestBody ServiceBroker serviceBroker) {
 
-        return commonService.procRestTemplate("/service/deleteServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate("/service/deleteServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
 
     }
 
@@ -155,7 +152,7 @@ public class ServiceBrokerController extends Common {
     @ResponseBody
     public Map<String, Object> renameServiceBroker(@RequestBody ServiceBroker serviceBroker) {
 
-        return commonService.procRestTemplate("/service/renameServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate("/service/renameServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
 
     }
 
