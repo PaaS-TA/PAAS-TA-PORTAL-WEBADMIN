@@ -88,7 +88,9 @@
             <!-- Sidebar toggle button-->
             <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
             <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;color: white;" id="notice">
-                <i class="fa fa-fw fa-volume-up"></i> <b>알림사항</b> 환영합니다. Open PaaS PaaS-TA 운영자 포탈입니다.
+                <i class="fa fa-fw fa-volume-up"></i>
+                <span><b>알림사항</b></span>
+                <span id="alertMsg" th:text="#{common.system.welcome.message}"></span>
             </h4>
         </nav>
     </header>
@@ -157,7 +159,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="/buildPack/buildPackMain"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> 서비스 브로커X</a></li>
+                        <li><a href="/service/serviceBrokerMain"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
                     </ul>
                 </li>
 

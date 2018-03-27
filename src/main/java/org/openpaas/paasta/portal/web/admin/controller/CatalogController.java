@@ -109,18 +109,18 @@ class CatalogController extends Common {
 //        return commonService.procCommonApiRestTemplate("/catalog/getServicePackCatalogList", HttpMethod.POST, param, null);
 //    }
 
-
-    /**
-     * 앱 개발환경 카탈로그 개수 조회
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getBuildPackCatalogCount"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getBuildPackCatalogCount(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getBuildPackCatalogCount", HttpMethod.POST, param, null);
-    }
+//
+//    /**
+//     * 앱 개발환경 카탈로그 개수 조회
+//     *
+//     * @param param Catalog(모델클래스)
+//     * @return Map(자바클래스)
+//     */
+//    @RequestMapping(value = {"/getBuildPackCatalogCount"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Object> getBuildPackCatalogCount(@RequestBody Catalog param) {
+//        return commonService.procRestTemplate("/catalog/getBuildPackCatalogCount", HttpMethod.POST, param, null);
+//    }
 
 
     /**
@@ -221,19 +221,19 @@ class CatalogController extends Common {
         return commonService.procRestTemplate("/catalog/insertServicePackCatalog", HttpMethod.POST, commonService.setUserId(param), null);
     }
 
-
-    /**
-     * 앱 개발환경 카탈로그를 수정한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     * @throws Exception Exception(자바클래스)
-     */
-    @RequestMapping(value = {"/updateBuildPackCatalog"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> updateBuildPackCatalog(@RequestBody Catalog param) throws Exception {
-        return commonService.procRestTemplate("/catalog/updateBuildPackCatalog", HttpMethod.PUT, commonService.setUserId(param), null);
-    }
+//
+//    /**
+//     * 앱 개발환경 카탈로그를 수정한다.
+//     *
+//     * @param param Catalog(모델클래스)
+//     * @return Map(자바클래스)
+//     * @throws Exception Exception(자바클래스)
+//     */
+//    @RequestMapping(value = {"/updateBuildPackCatalog"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Object> updateBuildPackCatalog(@RequestBody Catalog param) throws Exception {
+//        return commonService.procRestTemplate("/catalog/updateBuildPackCatalog", HttpMethod.PUT, commonService.setUserId(param), null);
+//    }
 
 
     /**
@@ -290,6 +290,7 @@ class CatalogController extends Common {
 
 
     /**
+     *
      * 서비스 카탈로그 삭제 가능여부를 조회한다.
      *
      * @param param Catalog(모델클래스)
@@ -528,6 +529,20 @@ class CatalogController extends Common {
         return catalogService.getBuildPackCatalogList(param);
     }
 
+
+    /**
+     * 앱 개발환경 카탈로그 개수 조회
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping("/buildpackCatalogs/count")
+    @ResponseBody
+    public Map<String, Object> getBuildPackCatalogCount(@ModelAttribute Catalog param) {
+        return catalogService.getBuildPackCatalogCount(param);
+    }
+
+
     /**
      * 서비스 카탈로그 목록을 조회한다.
      *
@@ -541,5 +556,22 @@ class CatalogController extends Common {
         //move::catalogService.java
         return catalogService.getServicePackCatalogList(param);
     }
+
+
+    /**
+     * 앱 개발환경 카탈로그를 수정한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     * @throws Exception Exception(자바클래스)
+     */
+    @PutMapping(value = {"buildpackCatalogs/{no}"})
+    @ResponseBody
+    public Map<String, Object> updateBuildPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
+        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs/{no}", HttpMethod.PUT, commonService.setUserId(param), null);
+    }
+
+
+
 
 }
