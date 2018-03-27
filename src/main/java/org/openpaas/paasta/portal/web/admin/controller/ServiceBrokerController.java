@@ -78,9 +78,15 @@ public class ServiceBrokerController extends Common {
      */
     @RequestMapping(value = {"/service/service_brokers"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker) {
+    public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker, @RequestParam(value="name", required = false, defaultValue = "") String serviceName) {
 
-        return commonService.procCfApiRestTemplate("/service/service_brokers", HttpMethod.GET, serviceBroker, this.getToken());
+        if(!serviceName.equals("")){
+            return commonService.procCfApiRestTemplate("/service/service_brokers?name="+serviceName, HttpMethod.GET, serviceBroker, this.getToken());
+        }else{
+            return commonService.procCfApiRestTemplate("/service/service_brokers", HttpMethod.GET, serviceBroker, this.getToken());
+        }
+
+
 
     }
 
