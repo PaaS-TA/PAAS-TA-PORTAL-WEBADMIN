@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head></head>
+<body>
+<div>
+    <header></header>
+    <aside>/</aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div layout:fragment="content" class="content-wrapper">
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                서비스 브로커
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+
+                            <h3 class="box-title"></h3>
+
+                            <div class="col-xs-2 col-xs-push-10">
+                                <button type="button" class="btn btn-block btn-primary btn-sm " data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceBroker-form">
+                                    등록
+                                </button>
+                            </div>
+
+                        </div>
+                        <!-- /.box-header -->
+
+                        <div class="box-body no-padding">
+                            <table class="table table-striped text-center"> <!-- table-responsive -->
+
+                                <tr>
+                                    <td><b>이름</b></td>
+                                    <td><b>URL</b></td>
+                                </tr>
+                                <tbody id="serviceBrokerList" th:remove="body">
+                                    <tr>
+                                        <td>glusterfs-service</td>
+                                        <td>http://10.30.120.197:8080</td>
+                                    </tr>
+                                    <tr>
+                                        <td>mysql-service-broker</td>
+                                        <td>http://10.30.40.195:8080</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+
+            <!-- Modal Layer-->
+            <div class="modal fade" id="serviceBroker-form" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+
+                            <h4 class="modal-title">서비스 브로커 등록</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <!--<div class="box-header"></div>-->
+                                <!-- /.box-header -->
+                                <!-- form start -->
+                                <form class="form-horizontal">
+                                    <div class="box-body" style="padding: 0px">
+
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-2 control-label"><div class="word-break:normal,break-word;">서비스 브로커 이름</div></label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="name" placeholder="ex) rabbitmq-service-broker"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="username" class="col-sm-2 control-label">사용자 이름</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="username" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="password" class="col-sm-2 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="url" class="col-sm-2 control-label">URL 정보</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="url" placeholder="ex) http://10.30.40.81:4567"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer" style="border-top: 0px">
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
+                            <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
+                            <button type="button" class="btn btn-sm btn-primary" onClick="createServiceBroker()">등록</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- Modal Layer-->
+
+        </section>
+
+        <!-- /.Content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer></footer>
+
+</div>
+<!-- ./wrapper -->
+
+<script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+    /*<![CDATA[*/
+    var serviceBrokerName = /*[[${name}]]*/ 'empty';
+
+
+    $(document).ready(function () {
+        getServiceBrokerList();
+
+    });
+
+    function getServiceBrokerList() {
+
+        var param = {}
+
+        $.ajax({
+            url: "/service_brokers",
+            method: "GET",
+            //data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+
+                if (data.list) {
+                    var n = 0;
+                    $.each(data.list, function (id, data) {
+
+                        $("#serviceBrokerList").append(" <tr class='table table-striped table-hover t1' style='cursor:pointer;'" +
+                                " onclick='javascript:getServiceBroker(\""+data.name+"\");'>" +
+                                "<td class='col-md-1' align='left'>" + data.name + "</td>" +
+                                "<td class='col-md-1' align='left'>" + data.url + "</td>"
+                        );
+
+                    });
+                }
+            }
+        });
+    }
+
+    function getServiceBroker(serviceBrokerName) {
+
+        var param = {
+            name: serviceBrokerName
+        }
+
+        $.ajax({
+            url: "/service_brokers",
+            method: "GET",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+
+                if (data.servicebroker) {
+
+                    $("#name").val(data.servicebroker.name);
+                    $("#username").val(data.servicebroker.username);
+                    $("#password").val(data.servicebroker.password);
+                    $("#url").val(data.servicebroker.url);
+
+                }
+
+                $('div.modal').modal('toggle');
+            }
+        });
+    }
+
+
+    function updateServiceBroker() {
+
+        if (!procCheckValidStringSpace()) return false;
+
+        var param = {
+            name: serviceBrokerName,
+            username: $("#username").val(),
+            password: $("#password").val(),
+            url: $("#url").val()
+        }
+
+        $.ajax({
+            url: "/service/updateServiceBroker",
+            method: "POST",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    procAlert("success", /*[[#{service.update.result.success}]]*/ "");
+                    location.href = "/service/serviceBrokerMain";
+                }
+            },
+            error: function (xhr, status, error) {
+                procAlert('warning', "");
+            }
+
+        });
+
+    }
+
+
+    function renameServiceBroker() {
+
+        var objName = $("#name");
+        var reqName = objName.val();
+        if (!procCheckValidStringSpace(reqName)) {
+            procAlert('warning', /*[[#{service.validation.error}]]*/ "");
+            objName.focus();
+        } return false;
+
+        var param = {
+            name: serviceBrokerName,
+            newName: reqName
+        }
+
+        $.ajax({
+            url: "/service/renameServiceBroker",
+            method: "POST",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    serviceBrokerName = reqName;
+                    procAlert("success", /*[[#{service.rename.result.success}]]*/ "");
+                }
+            },
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            }
+
+        });
+
+    }
+
+
+    function deleteServiceBrokerModal() {
+
+        $("#popupTitle").html("서비스 브로커 삭제");
+        $("#popupMessage").html("" + serviceBrokerName + " " + /*[[#{service.delete.confirm}]]*/ "");
+        $("#popupButtonText").text("삭제");
+        $("#popupButtonText").show();
+        $('#popupButtonText').attr('onclick', "deleteServiceBroker();");
+
+        $('div.modal').modal('toggle');
+    }
+
+    function deleteServiceBroker() {
+
+        var param = {
+            name: serviceBrokerName
+        }
+
+        $.ajax({
+            url: "/service/deleteServiceBroker",
+            method: "POST",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
+                    location.href = "/service/serviceBrokerMain";
+                }
+            },
+
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            },
+
+            complete: function (data) {
+                $('div.modal').modal('hide');
+            }
+        });
+    }
+
+    function createServiceBroker() {
+
+        if (!procCheckValidStringSpace()){
+            return false;
+        }
+
+        var param = {
+            name: $("#name").val(),
+            username: $("#username").val(),
+            password: $("#password").val(),
+            url: $("#url").val()
+        }
+
+        $.ajax({
+            url: "/service/createServiceBroker",
+            method: "POST",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    location.href = "/service/serviceBrokerMain";
+                    procAlert("success", /*[[#{service.insert.result.success}]]*/ "");
+                }
+            },
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            }
+
+        });
+
+    }
+
+    /*]]>*/
+</script>
+
+
+</body>
+</html>
