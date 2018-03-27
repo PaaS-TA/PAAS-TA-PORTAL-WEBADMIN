@@ -100,7 +100,7 @@ public class ServiceBrokerController extends Common {
 
 
     /**
-     * 서비스 브로커를 등록한다.
+     * 서비스 브로커를 등록한다..
      *
      * @param serviceBroker the serviceBroker
      * @return ModelAndView model
