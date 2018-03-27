@@ -63,6 +63,11 @@ public class CatalogService {
         return commonService.procCommonApiRestTemplate("/catalog/servicepackCatalogs" + search, HttpMethod.GET, param, null);
     }
 
+
+    public Map<String,Object> getBuildPackCatalogCount(Catalog param) {
+        return commonService.procCommonApiRestTemplate("/catalog/getBuildPackCatalogCount", HttpMethod.GET, param, null);
+    }
+
     public Map<String, Object> getServicePackCatalogCount(Catalog param){
         return commonService.procRestTemplate("/catalog/getServicePackCatalogCount", HttpMethod.POST, param, null);
     }
