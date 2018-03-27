@@ -25,6 +25,7 @@ import java.util.Map;
 @RequestMapping(value = {"/catalog"})
 class CatalogController extends Common {
     private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
+
     /**
      * 카탈로그 메인페이지로 이동한다.
      *
@@ -32,7 +33,9 @@ class CatalogController extends Common {
      */
     @RequestMapping(value = {"/catalogMain"}, method = RequestMethod.GET)
     public ModelAndView getCatalogMain() {
-        return new ModelAndView(){{setViewName("/catalog/catalogMain");}};
+        return new ModelAndView() {{
+            setViewName("/catalog/catalogMain");
+        }};
     }
 
 
@@ -77,10 +80,10 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getServicePackList"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/servicePackList"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getServicePackList(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getServicePackList", HttpMethod.POST, param, this.getToken());
+        return commonService.procRestTemplate("/catalog/getServicePackList", HttpMethod.GET, param, this.getToken());
     }
 
 
@@ -173,8 +176,9 @@ class CatalogController extends Common {
      */
     @RequestMapping(value = {"/servicePackForm"}, method = RequestMethod.GET)
     public ModelAndView getServicePackForm() {
-        return new ModelAndView(){{setViewName("/catalog/servicePackForm");
-            addObject("INSERT_FLAG", Constants.CUD_C);}};
+        return new ModelAndView() {{
+            setViewName("/catalog/servicePackForm");
+        }};
     }
 
 
@@ -188,7 +192,6 @@ class CatalogController extends Common {
     public ModelAndView getServicePackForm(HttpServletRequest req) {
         return new ModelAndView() {{
             setViewName("/catalog/servicePackForm");
-            addObject("INSERT_FLAG", Constants.CUD_U);
             addObject("REQUEST_NO", req.getParameter("no"));
         }};
     }
@@ -290,7 +293,6 @@ class CatalogController extends Common {
 
 
     /**
-     *
      * 서비스 카탈로그 삭제 가능여부를 조회한다.
      *
      * @param param Catalog(모델클래스)
@@ -511,22 +513,10 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/starterNamesList")
+    @GetMapping("/starterNames")
     @ResponseBody
     public Map<String, Object> getStarterNamesList(@ModelAttribute Catalog param) {
         return catalogService.getStarterNamesList(param);
-    }
-
-    /**
-     * 앱 개발환경 카탈로그 목로 조회
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @GetMapping("/buildPackCatalogList")
-    @ResponseBody
-    public Map<String, Object> getBuildPackCatalogList(@ModelAttribute Catalog param) {
-        return catalogService.getBuildPackCatalogList(param);
     }
 
 
@@ -550,11 +540,51 @@ class CatalogController extends Common {
      * @return Map(자바클래스)
      */
     //move::catalogMain.html
-    @GetMapping("/servicePackCatalogList")
+    @GetMapping("/servicePackCatalogs")
     @ResponseBody
     public Map<String, Object> getServicePackCatalogList(@ModelAttribute Catalog param) {
-        //move::catalogService.java
         return catalogService.getServicePackCatalogList(param);
+    }
+
+
+    /**
+     * 서비스 카탈로그 목록을 조회한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    //move::catalogMain.html
+    @GetMapping("/servicePackCatalogs/{no}")
+    @ResponseBody
+    public Map<String, Object> getServicePackCatalog(@PathVariable("no") int no, @ModelAttribute Catalog param) {
+        param.setServicePackCategoryNo(no);
+        return catalogService.getServicePackCatalog(no, param);
+    }
+
+
+    /**
+     * 앱 개발환경 카탈로그 목로 조회
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping("/buildPackCatalogs")
+    @ResponseBody
+    public Map<String, Object> getBuildPackCatalogList(@ModelAttribute Catalog param) {
+        return catalogService.getBuildPackCatalogList(param);
+    }
+
+    /**
+     * 앱 개발환경 카탈로그 목로 조회
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping("/buildPackCatalogs/{no}")
+    @ResponseBody
+    public Map<String, Object> getBuildPackCatalogList(@PathVariable("no") int no, @ModelAttribute Catalog param) {
+
+        return catalogService.getBuildPackCatalog(no, param);
     }
 
 
@@ -570,8 +600,6 @@ class CatalogController extends Common {
     public Map<String, Object> updateBuildPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
         return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs/{no}", HttpMethod.PUT, commonService.setUserId(param), null);
     }
-
-
 
 
 }

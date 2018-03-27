@@ -2,6 +2,8 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.model.CommonCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +19,11 @@ import java.util.Map;
  * @since 2016.06.17 최초작성
  */
 @Controller
-@RequestMapping(value = {"/commonCode"})
+@RequestMapping(value = {"/code"})
 public class CommonCodeController extends Common {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommonCodeController.class);
+
 
     /**
      * 공통코드 메인페이지로 이동한다.
@@ -27,26 +32,23 @@ public class CommonCodeController extends Common {
      */
     @RequestMapping(value = {"/commonCodeMain"}, method = RequestMethod.GET)
     public ModelAndView getCommonCodeMain() {
-        return new ModelAndView(){{setViewName("/commonCode/commonCodeMain");}};
+        return new ModelAndView() {{
+            setViewName("/commonCode/commonCodeMain");
+        }};
     }
 
 
     /**
      * 공통코드 목록을 조회한다.
      *
-     * @param codeId String(아이디)
+     * @param key String(아이디)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getCommonCode/{codeId}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/codeDetail/{key}"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getCommonCode(@PathVariable("codeId") String codeId) {
-        System.out.println("#########################################");
-        System.out.println("#########################################");
-        System.out.println(codeId);
-        System.out.println("#########################################");
-        System.out.println("#########################################");
-
-        return commonService.procRestTemplate("/commonCode/getCommonCode/" + codeId, HttpMethod.GET, new CommonCode(), null);
+    public Map<String, Object> getCommonCode(@PathVariable("key") String key, @ModelAttribute CommonCode param) {
+        param.setKey(key);
+        return commonCodeService.getCommonCode(key);
     }
 
 
@@ -56,10 +58,10 @@ public class CommonCodeController extends Common {
      * @param param the param
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getCommonCode"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/codeDetail"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getCommonCode(@RequestBody CommonCode param) {
-        return commonService.procRestTemplate("/commonCode/getCommonCode", HttpMethod.POST, param, null);
+    public Map<String, Object> getCommonCode(@ModelAttribute CommonCode param) {
+        return commonCodeService.getCommonCode(param);
     }
 
 
@@ -69,12 +71,11 @@ public class CommonCodeController extends Common {
      * @param param the param
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/insertCommonCode"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/codeDetail"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> insertCommonCode(@RequestBody CommonCode param) {
         param.setUserId(commonService.getUserId());
-
-        return commonService.procRestTemplate("/commonCode/insertCommonCode", HttpMethod.POST, param, null);
+        return commonCodeService.insertCommonCode(param);
     }
 
 
@@ -84,12 +85,11 @@ public class CommonCodeController extends Common {
      * @param param the param
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/updateCommonCode"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/codeDetail"}, method = RequestMethod.PUT)
     @ResponseBody
     public Map<String, Object> updateCommonCode(@RequestBody CommonCode param) {
         param.setUserId(commonService.getUserId());
-
-        return commonService.procRestTemplate("/commonCode/updateCommonCode", HttpMethod.PUT, param, null);
+        return commonCodeService.updateCommonCode(param);
     }
 
 
@@ -99,9 +99,9 @@ public class CommonCodeController extends Common {
      * @param param the param
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/deleteCommonCode"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/codeDetail"}, method = RequestMethod.DELETE)
     @ResponseBody
     public Map<String, Object> deleteCommonCode(@RequestBody CommonCode param) {
-        return commonService.procRestTemplate("/commonCode/deleteCommonCode", HttpMethod.POST, param, null);
+        return commonCodeService.deleteCommonCode(param);
     }
 }

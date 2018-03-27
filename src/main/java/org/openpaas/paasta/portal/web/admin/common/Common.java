@@ -1,9 +1,6 @@
 package org.openpaas.paasta.portal.web.admin.common;
 
-import org.openpaas.paasta.portal.web.admin.service.CatalogService;
-import org.openpaas.paasta.portal.web.admin.service.CommonService;
-import org.openpaas.paasta.portal.web.admin.service.ConfigInfoService;
-import org.openpaas.paasta.portal.web.admin.service.OrgSpaceListService;
+import org.openpaas.paasta.portal.web.admin.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,29 +33,34 @@ public class Common {
 
     @Autowired
     public ConfigInfoService configInfoService;
+
+    @Autowired
+    public CommonCodeService commonCodeService;
+
+
+    @Autowired
+    public OrgSpaceListService orgSpaceListService;
+
     /**
      * Get Token
      *
      * @return string string
      */
 
-    @Autowired
-    public OrgSpaceListService orgSpaceListService;
 
     @Autowired
     public MessageSource messageSource;
 
 
+    public String getToken() {
 
-    public String getToken(){
-
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //token 만료 시간 비교
-        if(user.getExpireDate() <= System.currentTimeMillis()){
+        if (user.getExpireDate() <= System.currentTimeMillis()) {
 
-            try{
-                Map<String,Object> resBody = new HashMap();
+            try {
+                Map<String, Object> resBody = new HashMap();
                 resBody.put("id", user.getUsername());
                 resBody.put("password", user.getPassword());
 
@@ -76,8 +78,8 @@ public class Common {
 */
                 result = commonService.procCfApiRestTemplate("/login", HttpMethod.POST, resBody, null);
 
-                user.setToken((String)result.get("token"));
-                user.setExpireDate((Long)result.get("expireDate"));
+                user.setToken((String) result.get("token"));
+                user.setExpireDate((Long) result.get("expireDate"));
 
                 // session에 적용
                 Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
@@ -90,10 +92,10 @@ public class Common {
             }
         }
 
-        LOG.info("############################# Expires In : " + (user.getExpireDate() - System.currentTimeMillis())/1000 + " sec");
+        LOG.info("############################# Expires In : " + (user.getExpireDate() - System.currentTimeMillis()) / 1000 + " sec");
 
         String token = user.getToken();
 
-        return token ;
+        return token;
     }
 }
