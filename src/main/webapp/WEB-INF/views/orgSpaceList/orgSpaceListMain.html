@@ -6,6 +6,9 @@
     <script>
         var GET_ORGS_FOR_ADMIN_URL = "/orgSpaceList/OrgAndSpace";
         var GET_SPACES_FOR_ADMIN_URL = "/orgSpaceList/Space/";
+        var OrgSpaceList = "/orgSpaceList/";
+        var OrgAndSpace = "/OrgAndSpace";
+        var Space = "/Space";
         var domainNames;
         var currentOrg;
 
@@ -135,7 +138,7 @@
             $("#spaceTable").hide();
             $("#noSpaceMessage").hide();
             currentOrg = orgName;
-            getOrgsForAdmin(GET_SPACES_FOR_ADMIN_URL+orgName, {"orgName":orgName},procCallbackGetSpaces)
+            getOrgsForAdmin(OrgSpaceList+orgName+Space, {"orgName":orgName},procCallbackGetSpaces)
         }
 
         var procCallbackGetSpaces = function(data) {
@@ -179,12 +182,12 @@
         }
 
         // GET ORG SUMMARY
-        var procGetOrgSummary = function (orgName, quotaMame) {
+        var procGetOrgSummary = function (orgName, quotaName) {
             $("#modaltitle").html("로딩중");
             $("#modalbody").html("데이터를 불러오고 있습니다.");
-            getOrgsForAdmin("/orgSpaceList/OrgByName/"+quotaMame, {orgName: quotaMame}, procCallbackGetOrgQuota);
+            getOrgsForAdmin("/orgSpaceList/"+quotaName+"/OrgByName", {orgName: quotaName}, procCallbackGetOrgQuota);
 
-            getOrgsForAdmin("/orgSpaceList/OrgSummary/"+orgName, {orgName: orgName}, procCallbackGetOrgSummary);
+            getOrgsForAdmin("/orgSpaceList/"+orgName+"/OrgSummary", {orgName: orgName}, procCallbackGetOrgSummary);
 
         };
 
@@ -225,14 +228,14 @@
             $("#modalbody").html("데이터를 불러오고 있습니다.");
 
             if(spaceQuotaId != "null") {
-                getOrgsForAdmin("/orgSpaceList/SpaceQuota/" + spaceQuotaId, {
+                getOrgsForAdmin("/orgSpaceList/"+spaceQuotaId+"/SpaceQuota", {
                     spaceName: spaceId
                 }, procCallbackGetSpaceQuota);
             }
             else{
                 spaceQuotaText = "";
             }
-            getOrgsForAdmin("/orgSpaceList/SpaceSummary/"+spaceId, {
+            getOrgsForAdmin("/orgSpaceList/"+spaceId+"/SpaceSummary", {
                spaceName: spaceId
             }, procCallbackGetSpaceSummary);
         };
@@ -293,7 +296,7 @@
                 $('#noSearchOrgMessage').hide();
                 $('#orgTable').show();
                 $('#orgTable div[id*="orgSpaceViewArea-table-content-org-no"]').show();
-                changeTableContentColor("org")
+
             } else{
                 $('#orgTable tr[id*="orgSpaceViewArea-table-content-org-no"]').hide();
 
@@ -301,7 +304,7 @@
                     $('#noSearchOrgMessage').hide();
                     $('#orgTable').show();
                     $('#orgTable tr[name*="'+input+'"]').show();
-                    changeTableContentColor("org")
+
                 } else{
                     $('#orgTable').hide();
                     $('#noSearchOrgMessage').show();

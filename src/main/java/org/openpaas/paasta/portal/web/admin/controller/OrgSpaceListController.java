@@ -24,9 +24,6 @@ import java.util.Map;
 @RequestMapping(value = {"/orgSpaceList"})
 public class OrgSpaceListController extends Common {
 
-    @Autowired
-    private CommonService commonService;
-
     /**
      * Gets org space list main.
      *
@@ -34,7 +31,7 @@ public class OrgSpaceListController extends Common {
      */
     @RequestMapping(value = {"/orgSpaceListMain"}, method = RequestMethod.GET)
     public ModelAndView getOrgSpaceListMain() {
-        return new ModelAndView(){{setViewName("/orgSpaceList/orgSpaceListMain");}};
+        return orgSpaceListService.getOrgSpaceListMain();
     }
 
 
@@ -50,7 +47,7 @@ public class OrgSpaceListController extends Common {
     @RequestMapping(value = {"/OrgAndSpace"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getOrgsForAdmin(@ModelAttribute String param) throws Exception {
-        return commonService.procCfApiRestTemplate("/org/OrgAndSpace", HttpMethod.GET, param, null);
+        return orgSpaceListService.getOrgsForAdmin("/org/OrgAndSpace", HttpMethod.GET, param, null);
     }
 
     /**
@@ -61,11 +58,10 @@ public class OrgSpaceListController extends Common {
      * @throws Exception the exception
      * @author 김도준
      */
-    @RequestMapping(value = {"/Space/{orgName}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/{orgName}/Space"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getSpacesForAdmin(@PathVariable String orgName) throws Exception {
-        System.out.println(orgName);
-        return commonService.procCfApiRestTemplate("/space/"+orgName, HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpacesForAdmin("/"+orgName+"/space", HttpMethod.GET, null, getToken());
     }
 
     /**
@@ -74,19 +70,10 @@ public class OrgSpaceListController extends Common {
      * @param orgName 조직 객체
      * @return Org 조직 객체
      */
-    @RequestMapping(value = {"/OrgSummary/{orgName}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/{orgName}/OrgSummary"}, method = RequestMethod.GET)
     @ResponseBody
     public  Map<String, Object> getOrgSummary(@PathVariable String orgName) {
-//
-//        Org rspOrg = null;
-//
-//        if (org.getOrgName() == null) {
-//            throw new IllegalArgumentException("조직정보가 존재하지 않습니다.");
-//        }
-//        ResponseEntity rssResponse =
-//        rspOrg = (Org) rssResponse.getBody();
-
-        return commonService.procCfApiRestTemplate("/org/OrgSummary/"+orgName, HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getOrgSummary("/org/"+orgName+"/OrgSummary", HttpMethod.GET, null, getToken());
     }
 
 
@@ -96,11 +83,10 @@ public class OrgSpaceListController extends Common {
      * @param orgName 조직 이름
      * @return Org 조직 객체
      */
-    @RequestMapping(value = {"/OrgByName/{orgName}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/{orgName}/OrgByName"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getOrgByName(@PathVariable String orgName) {
-
-        return commonService.procCfApiRestTemplate("/org/OrgByName/"+orgName, HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getOrgByName("/org/"+orgName+"/OrgByName", HttpMethod.GET, null, getToken());
     }
 
 
@@ -110,11 +96,10 @@ public class OrgSpaceListController extends Common {
      * @param spaceId space id값
      * @return Space 영역 객체
      */
-    @RequestMapping(value = {"/SpaceSummary/{spaceId}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/{spaceId}/SpaceSummary"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getSpaceSummary(@PathVariable String spaceId) {
-
-        return commonService.procCfApiRestTemplate("/space/SpaceSummary/"+ spaceId, HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpaceSummary("/space/"+ spaceId+ "/SpaceSummary", HttpMethod.GET, null, getToken());
     }
 
     /**
@@ -123,25 +108,22 @@ public class OrgSpaceListController extends Common {
      * @param spaceQuotaId 영역 객체
      * @return Map (자바 Map 클래스)
      */
-    @RequestMapping(value = {"/SpaceQuota/{spaceQuotaId}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/{spaceQuotaId}/SpaceQuota"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getSpaceQuota(@PathVariable String spaceQuotaId) {
-
-        return commonService.procCfApiRestTemplate("/space/SpaceQuota/"+ spaceQuotaId, HttpMethod.GET, null, getToken());
-
+        return orgSpaceListService.getSpaceQuota("/space/"+ spaceQuotaId+"/SpaceQuota", HttpMethod.GET, null, getToken());
     }
 
     /**
      * 특정 영역을 선택하여 영역을 조회한다.
      *
-     * @param space 영역 객체
      * @return Map (자바 Map 클래스)
      */
-    @RequestMapping(value = {"/getSpace"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/getSpace"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getSpace(@RequestBody Space space) {
+    public Map<String, Object> getSpace() {
 
-        return commonService.procRestTemplate("/space/getSpace", HttpMethod.POST, space, getToken());
+        return orgSpaceListService.getSpace("/space/getSpace", HttpMethod.POST, null, getToken());
 
     }
 
