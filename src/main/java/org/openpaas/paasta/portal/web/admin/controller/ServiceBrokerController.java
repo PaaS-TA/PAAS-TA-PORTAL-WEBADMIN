@@ -90,9 +90,9 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/service_brokers?name={serviceName}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/service/service_brokers"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getServiceBroker(@ModelAttribute ServiceBroker serviceBroker, @PathVariable String serviceName) {
+    public Map<String, Object> getServiceBroker(@ModelAttribute ServiceBroker serviceBroker, @RequestParam("name") String serviceName) {
 
         return commonService.procCfApiRestTemplate("/service_brokers?name="+serviceName, HttpMethod.GET, serviceBroker, this.getToken());
 
