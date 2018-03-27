@@ -47,7 +47,7 @@ public class BuildPackController extends Common {
     @ResponseBody
     public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
 
-        return commonService.procCfApiRestTemplate("/buildpacks", HttpMethod.GET, buildPack, getToken());
+        return commonService.procCfApiRestTemplate("/buildPack/buildpacks", HttpMethod.GET, buildPack, getToken());
 
     }
 
@@ -62,7 +62,7 @@ public class BuildPackController extends Common {
         public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack , @PathVariable String guid) {
 
         buildPack.setGuid(UUID.fromString(guid));
-        return commonService.procCfApiRestTemplate("/buildpacks/"+buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
+        return commonService.procCfApiRestTemplate("/buildPack/buildpacks/"+buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
     }
 
 
