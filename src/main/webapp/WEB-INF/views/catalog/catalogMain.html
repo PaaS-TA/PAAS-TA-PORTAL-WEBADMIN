@@ -7,9 +7,9 @@
 <div>
     <header></header>
     <aside>/</aside>
-
     <!-- Content Wrapper. Contains page content -->
     <div layout:fragment="content" class="content-wrapper">
+        <!-- tabNumber hidden value :: tabs -->
         <input type="hidden" id="tabNumber" value="1"/>
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -17,7 +17,6 @@
                 카탈로그 관리
             </h1>
         </section>
-
         <!-- Main content -->
         <section class="content">
             <div class="row">
@@ -25,13 +24,14 @@
                     <div class="box-header">
                         <!-- create button box -->
                         <div class="box-title">
-                            <button th:type="button" class="btn btn-block btn-primary btn-sm" onclick="procMoveForm()" id="btn_insert">앱 템플릿 등록</button>
+                            <button th:type="button" class="btn btn-block btn-primary btn-sm" onclick="procMoveForm()"
+                                    id="btn_insert">앱 템플릿 등록
+                            </button>
                         </div>
                         <!-- Search a box -->
                         <div class="input-group input-group-sm pull-right header" style="width: 300px;">
                             <input type="text" id="searchKeyword" class="form-control pull-right" placeholder="Search"
                                    onkeyup="getSearchList(event);"/>
-
                             <div class="input-group-btn">
                                 <button type="button" id="btnSearch" class="btn btn-default"><i
                                         class="fa fa-search"></i>
@@ -46,17 +46,20 @@
                     <div class="box">
                         <!-- 탭 구현설정1 -->
                         <div class="nav-tabs-custom" style="cursor: move;">
-                            <!-- Tabs within a box -->
+                            <!-- Tabs box -->
                             <ul class="nav nav-tabs pull-right ui-sortable-handle">
                                 <!-- chart - 03 -->
-                                <li class=""><a href="#app-service" data-toggle="tab" aria-expanded="false" onclick="appbutton('3')">
+                                <li class=""><a href="#app-service" data-toggle="tab" aria-expanded="false"
+                                                onclick="appbutton('3')">
                                     <i class="fa fa-fw fa-gear"></i>Service</a></li>
                                 <!-- chart - 02 -->
-                                <li class=""><a href="#app-development-environment" data-toggle="tab" onclick="appbutton('2')"
+                                <li class=""><a href="#app-development-environment" data-toggle="tab"
+                                                onclick="appbutton('2')"
                                                 aria-expanded="false">
                                     <i class="fa fa-fw fa-code-fork"></i>Development environment</a></li>
                                 <!-- chart - 01-->
-                                <li class="active"><a href="#app-template"  data-toggle="tab" aria-expanded="true" onclick="appbutton('1')">
+                                <li class="active"><a href="#app-template" data-toggle="tab" aria-expanded="true"
+                                                      onclick="appbutton('1')">
                                     <i class="fa fa-fw fa-bookmark-o"></i> Template</a></li>
                                 <!-- App Icons-->
                                 <li class="pull-left header"><i class=" fa fa-fw fa-cloud"></i> App</li>
@@ -65,7 +68,7 @@
                             <div class="tab-content no-padding">
                                 <!-- chart - 01 -->
                                 <div class="chart tab-pane active" id="app-template"
-                                     style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                                     style="position: relative; height: 500px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                     <div id="starterListMessageArea" class="table-responsive">
                                         <table class="table table-striped">
                                             <tr>
@@ -76,22 +79,17 @@
                                                 <th>공개</th>
                                             </tr>
                                             <tbody id="starterListTableArea">
-
                                             </tbody>
                                         </table>
-
-                                        <div class="box-footer clearfix">
-                                       </div>
+                                        <div class="box-footer clearfix"></div>
                                     </div>
                                     <form id="starterHiddenForm">
                                         <input type="hidden" id="starterHiddenFormNo" name="no" value=""/>
                                     </form>
                                 </div>
-
-
                                 <!-- chart - 02 -->
                                 <div class="chart tab-pane" id="app-development-environment"
-                                     style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                                     style="position: relative; height: 500px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                     <div id="buildPackMessageArea" class="table-responsive">
                                         <table class="table table-striped">
                                             <tr>
@@ -101,22 +99,18 @@
                                                 <th>분류</th>
                                                 <th>공개</th>
                                             </tr>
-
                                             <tbody id="buildPackTableArea">
-
                                             </tbody>
                                         </table>
-                                        <div class="box-footer clearfix">
-                                        </div>
+                                        <div class="box-footer clearfix"></div>
                                         <form id="BuildPackHiddenForm">
                                             <input type="hidden" id="BuildPackHiddenFormNo" name="no" value=""/>
                                         </form>
                                     </div>
                                 </div>
-
                                 <!-- chart - 03 -->
                                 <div class="chart tab-pane" id="app-service"
-                                     style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                                     style="position: relative; height: 500px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                     <div id="servicePackMessageArea" class="table-responsive">
                                         <table class="table table-striped">
                                             <tr>
@@ -127,11 +121,9 @@
                                                 <th>공개</th>
                                             </tr>
                                             <tbody id="servicePackTableArea">
-
                                             </tbody>
                                         </table>
-                                        <div class="box-footer clearfix">
-                                        </div>
+                                        <div class="box-footer clearfix"></div>
                                     </div>
                                     <form id="ServicePackHiddenForm">
                                         <input type="hidden" id="ServicePackHiddenFormNo" name="no" value=""/>
@@ -149,17 +141,12 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-
     <footer></footer>
-
 </div>
 <!-- ./wrapper -->
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-
-    //    var TAB_NAME = "<CatalogController:out value='${TAB_NAME}' default='' />";
-    var TAB_NAME;
     var STARTER_LIST_PROC_URL = "/catalog/starterNamesList";
     var STARTER_INSERT_FORM_URL = "/catalog/starterForm";
     var BUILD_PACK_LIST_PROC_URL = "/catalog/buildPackCatalogList";
@@ -175,31 +162,11 @@
         getServicePackList();
     });
 
-
-    $(document.body).ready(function () {
-        procSelectTab(TAB_NAME);
-    });
-
-
     getSearchList = function () {
         getStarterList();
         getBuildPackList();
         getServicePackList();
     }
-
-    // SELECT TAB
-    var procSelectTab = function (reqTabName) {
-        if ("" == reqTabName) return false;
-
-        $('.tab-pane.fade').removeClass('active in');
-        $('#' + reqTabName).addClass('active in');
-        $('#catalogTabs_' + reqTabName).tab("show");
-
-        $("#STARTER").hide();
-        $("#BUILD_PACK").hide();
-        $("#SERVICE_PACK").hide();
-        $("#" + reqTabName).show();
-    };
 
 
     // CHECK SEARCH FORM KEY EVENT
@@ -229,7 +196,6 @@
         getStarterList(reqParam);
     }
 
-
     // BIND :: BUTTON EVENT
     $("#btnSearch").on("click", function () {
         procGetSearchList();
@@ -247,7 +213,6 @@
         procCallAjax2(STARTER_LIST_PROC_URL, "GET", param, procCallbackGetStarterList);
     };
 
-
     // GET BuildPackList
     var getBuildPackList = function (reqParam) {
         var doc = document;
@@ -256,10 +221,8 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-
         procCallAjax2(BUILD_PACK_LIST_PROC_URL, "GET", param, procCallbackGetBuildPackList);
     };
-
 
     // GET ServicePackList
     var getServicePackList = function (reqParam) {
@@ -269,11 +232,9 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-
         procCallAjax2(SERVICE_PACK_LIST_PROC_URL, "GET", param, procCallbackGetServicePackList);
 
     };
-
 
     // GET LIST CALLBACK StarterList
     var procCallbackGetStarterList = function (data) {
@@ -282,7 +243,6 @@
         var objMessageArea = $('#starterListMessageArea');
         var listLength = data.list.length;
         var htmlString = [];
-
 
         objTableArea.html('');
 
@@ -307,7 +267,6 @@
             objTableArea.append(htmlString).trigger("create");
         }
     };
-
 
     // GET LIST CALLBACK BuildPackList
     var procCallbackGetBuildPackList = function (data) {
@@ -339,7 +298,6 @@
         }
     };
 
-
     // GET LIST CALLBACK ServicePackList
     var procCallbackGetServicePackList = function (data) {
         var objTable = $('#servicePackListTable');
@@ -370,14 +328,12 @@
         }
     };
 
-
     // MOVE PAGE StarterInsertForm
     var procMoveStarterInsertForm = function (reqParam) {
         var hiddenForm = $('#starterHiddenForm');
         $('#starterHiddenFormNo').val(reqParam);
         hiddenForm.attr({action: STARTER_INSERT_FORM_URL, method: "POST"}).submit();
     };
-
 
     // MOVE PAGE BuildPackInsertForm
     var procMoveBuildPackInsertForm = function (reqParam) {
@@ -386,7 +342,6 @@
         hiddenForm.attr({action: BUILD_PACK_INSERT_FORM_URL, method: "POST"}).submit();
     };
 
-
     // MOVE PAGE ServicePackInsertForm
     var procMoveServicePackInsertForm = function (reqParam) {
         var hiddenForm = $('#ServicePackHiddenForm');
@@ -394,35 +349,31 @@
         hiddenForm.attr({action: SERVICE_PACK_INSERT_FORM_URL, method: "POST"}).submit();
     };
 
-
+    // MOVE PAGE Button Form
     var appbutton = function (tabnumber) {
         $("#btn_insert").text("");
-        if(tabnumber == 3){
+        if (tabnumber == 3) {
             $("#btn_insert").text("서비스 등록");
-        }else if(tabnumber == 2){
+        } else if (tabnumber == 2) {
             $("#btn_insert").text("앱 개발환경 등록");
 
-        }else if(tabnumber == 1){
+        } else if (tabnumber == 1) {
             $("#btn_insert").text("앱 템플릿 등록");
         }
         $("#tabNumber").val(tabnumber);
     }
 
-
-
-
+    // MOVE TabForm
     var procMoveForm = function () {
-
         var tabnumber = $("#tabNumber").val();
-        if(tabnumber == 1){
+        if (tabnumber == 1) {
             procMovePage(STARTER_INSERT_FORM_URL);
-        }else if(tabnumber == 2){
+        } else if (tabnumber == 2) {
             procMovePage(BUILD_PACK_INSERT_FORM_URL);
-        }else if(tabnumber == 3){
+        } else if (tabnumber == 3) {
             procMovePage(SERVICE_PACK_INSERT_FORM_URL);
         }
     }
-
     /*]]>*/
 </script>
 
