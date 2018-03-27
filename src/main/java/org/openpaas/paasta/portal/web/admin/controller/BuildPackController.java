@@ -43,7 +43,7 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildpacks"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/buildPack/buildpacks"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
 
@@ -57,7 +57,7 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildpacks/{guid}"}, method = RequestMethod.PUT)
+    @RequestMapping(value = {"/buildPack/buildpacks/{guid}"}, method = RequestMethod.PUT)
     @ResponseBody
         public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack , @PathVariable String guid) {
 
