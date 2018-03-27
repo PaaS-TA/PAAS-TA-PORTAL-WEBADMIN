@@ -82,13 +82,13 @@
 
   function getList(){
 
-    param = {
+    var param = {
     }
 
     $.ajax({
-      url: "/buildPack/getBuildPacks",
-      method: "POST",
-      data: JSON.stringify(param),
+      url: "/buildpacks",  // /buildPack/getBuildPacks
+      method: "GET",
+      //data: JSON.stringify(param),
       dataType: 'json',
       contentType: "application/json",
       success: function(data){
@@ -141,8 +141,8 @@
     }
 
     $.ajax({
-      url: "/buildPack/updateBuildPack",
-      method: "POST",
+      url: "/buildpacks/"+guid,  // /buildPack/updateBuildPack
+      method: "PUT",
       data: JSON.stringify(param),
       dataType: 'json',
       contentType: "application/json",

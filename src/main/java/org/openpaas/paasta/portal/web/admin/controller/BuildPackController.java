@@ -4,10 +4,7 @@ import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.model.BuildPack;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
@@ -45,11 +42,11 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildPack/getBuildPacks"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/buildpacks"}, method = RequestMethod.GET)  ///buildPack/getBuildPacks
     @ResponseBody
-    public Map<String, Object> getBuildPacks(@RequestBody BuildPack buildPack) {
+    public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
 
-        return commonService.procCfApiRestTemplate("/buildPack/getBuildPacks", HttpMethod.POST, buildPack, getToken());
+        return commonService.procCfApiRestTemplate("/buildpacks", HttpMethod.GET, buildPack, getToken());
 
     }
 
@@ -59,11 +56,11 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildPack/updateBuildPack"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/buildpacks/{guid}"}, method = RequestMethod.PUT)  ///buildPack/updateBuildPack
     @ResponseBody
-    public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack) {
+    public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack , @PathVariable String guid) {
 
-        return commonService.procCfApiRestTemplate("/buildPack/updateBuildPack", HttpMethod.POST, buildPack, getToken());
+        return commonService.procCfApiRestTemplate("/buildpacks/"+guid, HttpMethod.PUT, buildPack, getToken());
     }
 
 
