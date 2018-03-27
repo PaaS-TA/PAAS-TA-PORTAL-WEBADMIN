@@ -149,12 +149,9 @@
 
     function getServiceBrokerList() {
 
-        var param = {}
-
         $.ajax({
-            url: "/service_brokers",
+            url: "/service/service_brokers",
             method: "GET",
-            //data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
@@ -182,9 +179,9 @@
         }
 
         $.ajax({
-            url: "/service_brokers",
+            url: "/service/service_brokers",
             method: "GET",
-            data: JSON.stringify(param),
+            data: param,
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
