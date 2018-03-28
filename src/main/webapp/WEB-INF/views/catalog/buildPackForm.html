@@ -6,13 +6,24 @@
 <body>
 <div>
     <header></header>
-    <!-- HTML aside 요소는 문서의 주요 컨텐츠에 별도로 이어진 컨텐츠가 있는 문서의 한 구획을 말합니다. 주로 사이드바로 나타냅니다. -->
     <aside>/</aside>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div layout:fragment="content" class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div layout:fragment="content" class="content-wrapper" th:with="UPDATE_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}, INSERT_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C} ">
+
         <!-- Content Header (Page header) -->
-        <!-- Main content -->
+        <section class="content-header">
+            <h1>
+                <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
+                    앱 개발환경 상세
+                </div>
+                <div th:if=" ${INSERT_FLAG} == ${INSERT_CD} ">
+                    앱 개발환경 등록
+                </div>
+            </h1>
+        </section>
+
+        <!-- Content Header (Page header) -->
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
@@ -33,7 +44,6 @@
                                     <input type="text" class="form-control" id="name" name="name"/>
                                 </div>
                                 <br/>
-
                                 <!--<div class="2">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
@@ -43,7 +53,6 @@
                                     </select>
                                 </div>
                                 <br/>
-
                                 <!--<div class="3">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
@@ -53,7 +62,6 @@
                                     </select>
                                 </div>
                                 <br/>
-
                                 <!--<div class="4">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
@@ -69,7 +77,6 @@
                                     </button>
                                 </div>
                                 <br/>
-
                                 <!--<div class="5">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
@@ -85,7 +92,6 @@
                                     </button>
                                 </div>
                                 <br/>
-
                                 <!--<div class="6">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
@@ -93,17 +99,14 @@
                                     <div>
                                         <label class="radio-inline">
                                             <input type="radio" id="useYn_Y" name="useYn"
-                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>
-                                            Y
+                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>Y
                                         </label>
                                         <label class="radio-inline">
                                             <input type="radio" id="useYn_N" name="useYn"
-                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/>
-                                            N
+                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/>N
                                         </label>
                                     </div>
                                 </div>
-
                                 <!--<div class="7">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
@@ -111,21 +114,16 @@
                                     <input type="text" class="form-control" id="summary" name="summary"/>
                                 </div>
                                 <br/>
-
                                 <!--<div class="8">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="description">설명</label>
                                     <textarea class="form-control" rows="5" id="description"></textarea>
                                 </div>
-
                                 <!--<div class="9"::button>-->
                                 <div class="form-group">
                                     <div class="col-sm-offset-1 col-sm-9 " align="right" id="statusActivity">
                                         <div class="divButtons" style="width:97.8%;">
-
-                                            <!--<div th:with="insertFlag=${INSERT_FLAG}"></div>-->
-                                            <!--<div th:with="checkCudU=${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}"></div>-->
                                             <div th:with="insertFlag=${INSERT_FLAG}, checkCudU=${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}">
                                                 <choose>
                                                     <p th:when="test=${insertFlag == checkCudU}">
@@ -133,7 +131,7 @@
                                                         <button type="button" class="btn btn_del2 btn-primary btn-sm"
                                                                 id="btnDelete">삭제
                                                         </button>
-                                                        <button type="button" class="btn btn-cancel2 btn-primary btn-sm"
+                                                        <button type="button" class="btn btn-cancel btn-default btn-sm pull-left"
                                                                 id="btnCancel">취소
                                                         </button>
                                                         <button type="button" class="btn btn-save btn-primary btn-sm"
@@ -141,7 +139,7 @@
                                                         </button>
                                                     </p>
                                                     <th:otherwise>
-                                                        <button type="button" class="btn btn-cancel2 btn-primary btn-sm"
+                                                        <button type="button" class="btn btn-cancel btn-default btn-sm pull-left"
                                                                 id="btnCancel">취소
                                                         </button>
                                                         <button type="button" class="btn btn-save btn-primary btn-sm"
@@ -154,7 +152,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!--<div class="9"::button>-->
                             </div>
                         </div>
