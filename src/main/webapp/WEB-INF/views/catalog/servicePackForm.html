@@ -49,7 +49,6 @@
                                         </span>
                                 </div>
 
-
                                 <br/>
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
@@ -67,7 +66,6 @@
                                         </span>
                                 </div>
 
-                                <!--</div>-->
                                 <br/>
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
@@ -75,80 +73,67 @@
                                     <p/>
                                     <input type="file" id="thumbnail"/>
                                 </div>
-                                <p/>
 
                                 <br/>
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
-                                    <label for="serviceParameter">서비스 생성 파라미터</label>
-                                    <button type='button' class='btn btn-save btn-sm'
-                                            style='margin-top:10px;margin-right:100px;' id='addServiceParameter'>추가
-                                    </button>
-                                    <p/>
+                                    <!--<label for="serviceParameter">서비스 생성 파라미터</label><br/>-->
+                                    <label for="servicePackName">서비스 생성 파라미터</label><p/>
                                     <label class="control-label col-sm-2" for="serviceParameter"></label>
-                                    <p/>
-                                    <div id="serviceParameterArea" class="col-sm-7" style="width: 60%" align="left">
-                                    </div>
+                                    <button type='button' class='btn btn-save btn-sm' style='margin-top:10px;margin-right:100px;' id='addServiceParameter'>추가</button>
+                                    <div id="serviceParameterArea" class="col-sm-7" style="width: 60%" align="left"></div>
                                 </div>
-
 
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
-                                    <label class="control-label col-sm-2" for="appBindYn_Y">앱 바인드 사용</label>
-                                    <p/>
+                                    <label for="appBindYn_Y">앱 바인드 사용</label><p/>
                                     <div class="col-sm-9 mt10">
                                         <label class="radio-inline">
                                             <input type="radio" onclick="javascript:yesNoCheck();" id="appBindYn_Y"
                                                    name="appBindYn"
-                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_Y}"/>
-                                            Y
+                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_Y}"/>Y
                                         </label>
                                         <label class="radio-inline">
                                             <input type="radio" onclick="javascript:yesNoCheck();" id="appBindYn_N"
                                                    name="appBindYn"
-                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_N}"/>
-                                            N
+                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_N}"/>N
                                         </label>
                                     </div>
                                 </div>
-                                <div id="app_bind_parameter_form">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2" for="servicePackName">앱 바인드 파라미터</label>
-                                        <button type='button' class='btn btn-save btn-sm'
-                                                style='margin-top:10px;margin-right:100px;' id='addAppBindParameter'>추가
-                                        </button>
-                                        <div class="col-sm-6" style="width: 55%">
-                                            <input type="text" class="form-control" id="app_bind_parameter"/>
-                                        </div>
-                                        <div id="appBindParameterArea" class="col-sm-7" style="width: 60%" align="left">
-                                        </div>
+
+                                <br/><br/>
+                                <div class="form-group" id="app_bind_parameter_form">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="servicePackName">앱 바인드 파라미터</label><p/>
+                                    <!--<label for="appParameter">앱 바인드 파라미터</label><p/>-->
+                                    <button type='button' class='btn btn-save btn-sm' style='margin-top:10px;margin-right:100px;' id='addAppBindParameter'>추가</button>
+                                    <div id="appBindParameterArea" class="col-sm-7" style="width: 60%" align="left">
                                     </div>
                                 </div>
 
-
-                                <br/>
+                                <br/><br/>
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
-                                    <label for="useYn_Y">공개여부</label>
-                                    <br/>
+                                    <label for="useYn_Y">공개</label>
+                                    <p/>
+                                    <div class="col-sm-9 mt10">
                                     <label class="radio-inline">
                                         <input type="radio" id="useYn_Y" name="useYn"
-                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>
-                                        Y
+                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>Y
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio" id="useYn_N" name="useYn"
-                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/>
-                                        N
+                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/>N
                                     </label>
+                                    </div>
                                 </div>
 
-
-                                <br/>
+                                <br/><br/>
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="dashboardUseYn_Y">대시보드 사용</label>
-                                    <br/>
+                                    <p/>
+                                    <div class="col-sm-9 mt10">
                                     <label class="radio-inline">
                                         <input type="radio" id="dashboardUseYn_Y" name="dashboardUseYn"
                                                th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_Y}"/>
@@ -159,17 +144,16 @@
                                                th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_N}"/>
                                         N
                                     </label>
+                                    </div>
                                 </div>
 
-
-                                <br/>
+                                <br/><br/>
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="summary">요약</label>
                                     <input type="text" class="form-control" id="summary"/>
                                 </div>
 
-                                <br/>
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="description">설명</label>
@@ -214,9 +198,9 @@
     var DELETE_IMAGE_PROC_URL = "/catalog/deleteThumbnailImage";
     var UPLOAD_APP_SAMPLE_PROC_URL = "/catalog/uploadAppSampleFile";
     var DELETE_APP_SAMPLE_PROC_URL = "/catalog/deleteAppSampleFile";
-    var SERVICE_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CATALOG_ID}]]*/ null;
-    var INSERT_FLAG = "<c:out value='${INSERT_FLAG}' default='' />";
-    var CUD_U = "<%= Constants.CUD_U %>";
+    var SERVICE_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CATALOG_ID}]]*/ "";
+    var INSERT_FLAG = /*${INSERT_FLAG}*/"";
+    var CUD_U = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ "";
     var REQ_NO = /*[[${REQUEST_NO}]]*/ null;
 
     var INIT_MESSAGE = "첨부된 파일이 없습니다.";
@@ -249,14 +233,14 @@
     };
 
 
-    // GET BUILD PACK LIST
+    // GET SERVICE PACK LIST
     var getServicePackList = function () {
         var param = "";
         procCallAjax2(SERVICE_PACK_LIST_PROC_URL, 'GET', param, procCallbackServicePackList);
     };
 
 
-    // GET BUILD PACK LIST CALLBACK
+    // GET SERVICE PACK LIST CALLBACK
     var procCallbackServicePackList = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
@@ -326,130 +310,130 @@
         reqDashboardUseYn.attr('checked', true);
         var tempThumbImgPath = reqThumbImgPath.val();
 
-
-        // 서비스 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
-        // if (resultData.parameter != null || resultData.parameter != '' || resultData.parameter != undefined)
-        //     $("#serviceParameterArea").empty();
-        // str = resultData.parameter.replace("}", "");
-        // var str2 = str.replace("{", "");
-        // var split = str2.split(",");
-        // count = split.length;
-        // var htmlString2 = [];
-        //
-        // if (count > 0) {
-        //     for (var j = 1; j < count + 1; j++) {
-        //         var html2 = "<div class=" + "service_parameter_line" + j + ">"
-        //             + "<input type='text' class='form-control-parameter1' id=" + "parameterName" + j + ">"
-        //             + "<select class='form-control-parameter2' id=" + "serviceParameterSelectType" + j + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
-        //             "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>";
-        //         html2 += "<button type='button' class='btn delete-service-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteServiceParameter' onclick='deleteLine(" + j + ")'>삭제</button></div>";
-        //
-        //         htmlString2.push(html2);
-        //     }
-        //     var parameterInputBoxArea2 = $("#serviceParameterArea");
-        //     parameterInputBoxArea2.append(htmlString2);
-        // } else {
-        //     var html2 = "<div class='service_parameter_line1'><input type='text' class='form-control-parameter1' id=" + "parameterName1" + ">"
-        //         + "<select class='form-control-parameter2' id=" + "serviceParameterSelectType1" + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
-        //         "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>"
-        //         + "<button type='button' class='btn btn-save btn-sm' style='margin-top:-9px;margin-left:-6px;' id='addServiceParameter'>추가</button>";
-        //     html2 += "<button type='button' class='btn delete-service-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteServiceParameter' onclick='deleteLine(1)'>삭제</button></div>";
-        //
-        //     htmlString2.push(html2);
-        // }
-        // for (var i = 0; i < split.length; i++) {
-        //     var deleteSign = split[i].replace(/"/g, "");
-        //
-        //     splitSign = deleteSign.split(":");
-        //     if (splitSign != null && splitSign != "undefined" && splitSign != "") {
-        //         var reqParameterName = $('#parameterName' + (i + 1));
-        //         var reqParameterType = $('#serviceParameterSelectType' + (i + 1));
-        //
-        //         reqParameterName.val(splitSign[0]);
-        //         if (splitSign[1].length > 0) {
-        //             if (splitSign[1].trim() == "text") {
-        //                 reqParameterType.val(splitSign[1]);
-        //             }
-        //             if (splitSign[1].trim() == "password") {
-        //                 reqParameterType.val(splitSign[1]);
-        //             }
-        //             if (splitSign[1].trim() == "default") {
-        //                 reqParameterType.val(splitSign[1]);
-        //             }
-        //             if (splitSign[1].trim() == "userAppointed") {
-        //                 reqParameterType.val(splitSign[1]);
-        //             }
-        //         }
-        //     }
-        // }
-        //
-        //
-        // // 앱 바인드 사용 유무에 따라 앱 바인드 파라미터 입력 창 show / hide 여부
-        // $('input[name="appBindYn"]').click(function () {
-        //     if ($(this).attr('id') == 'appBindYn_Y') {
-        //         $('#app_bind_parameter_form').show();
-        //     } else {
-        //         $('#app_bind_parameter_form').hide();
-        //     }
-        // });
-        //
-        //
-        // // 앱 바인드 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
-        // if (resultData.app_bind_parameter != null || resultData.app_bind_parameter != '' || resultData.app_bind_parameter != undefined)
-        //     $("#appBindParameterArea").empty();
-        // appParameterStr = resultData.app_bind_parameter.replace("}", "");
-        // var appParameterStr2 = appParameterStr.replace("{", "");
-        // var split = appParameterStr2.split(",");
-        // count2 = split.length;
-        // var htmlString2 = [];
-        //
-        // if (count2 > 0) {
-        //     for (var a = 1; a < count2 + 1; a++) {
-        //         var html2 = "<div class=" + "app_bind_parameter_line" + a + ">"
-        //             + "<input type='text' class='form-control-appBindParameter1' id=" + "appBindParameterName" + a + ">"
-        //             + "<select class='form-control-parameter2' id=" + "appBindParameterSelectType" + a + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
-        //             "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>";
-        //         html2 += "<button type='button' class='btn delete-appBind-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(" + a + ")'>삭제</button></div>";
-        //
-        //         htmlString2.push(html2);
-        //     }
-        //     var appBindParameterInputBoxArea = $("#appBindParameterArea");
-        //     appBindParameterInputBoxArea.append(htmlString2);
-        // } else {
-        //     var html2 = "<div class='app_bind_parameter_line1'><input type='text' class='form-control-appBindParameter1' id=" + "appBindParameterName1" + ">"
-        //         + "<select class='form-control-parameter2' id=" + "appBindParameterSelectType1" + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
-        //         "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>"
-        //         + "<button type='button' class='btn btn-save btn-sm' style='margin-top:-9px;margin-left:-6px;' id='addAppBindParameter'>추가</button>";
-        //     html2 += "<button type='button' class='btn delete-appBind-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(1)'>삭제</button></div>";
-        //
-        //     htmlString2.push(html2);
-        // }
-        // for (var b = 0; b < split.length; b++) {
-        //     var deleteSign = split[b].replace(/"/g, "");
-        //
-        //     splitSign2 = deleteSign.split(":");
-        //     if (splitSign2 != null && splitSign2 != "undefined" && splitSign2 != "") {
-        //         var reqParameterName = $('#appBindParameterName' + (b + 1));
-        //         var reqParameterType = $('#appBindParameterSelectType' + (b + 1));
-        //
-        //         reqParameterName.val(splitSign2[0]);
-        //         if (splitSign2[1].length > 0) {
-        //             if (splitSign2[1].trim() == "text") {
-        //                 reqParameterType.val(splitSign2[1]);
-        //             }
-        //             if (splitSign2[1].trim() == "password") {
-        //                 reqParameterType.val(splitSign2[1]);
-        //             }
-        //             if (splitSign2[1].trim() == "default") {
-        //                 reqParameterType.val(splitSign2[1]);
-        //             }
-        //             if (splitSign2[1].trim() == "userAppointed") {
-        //                 reqParameterType.val(splitSign2[1]);
-        //             }
-        //         }
-        //     }
-        // }
-
+//======================================================================================================================
+//         서비스 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
+//         if (resultData.parameter != null || resultData.parameter != '' || resultData.parameter != undefined)
+//             $("#serviceParameterArea").empty();
+//         str = resultData.parameter.replace("}", "");
+//         var str2 = str.replace("{", "");
+//         var split = str2.split(",");
+//         count = split.length;
+//         var htmlString2 = [];
+//
+//         if (count > 0) {
+//             for (var j = 1; j < count + 1; j++) {
+//                 var html2 = "<div class=" + "service_parameter_line" + j + ">"
+//                     + "<input type='text' class='form-control-parameter1' id=" + "parameterName" + j + ">"
+//                     + "<select class='form-control-parameter2' id=" + "serviceParameterSelectType" + j + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
+//                     "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>";
+//                 html2 += "<button type='button' class='btn delete-service-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteServiceParameter' onclick='deleteLine(" + j + ")'>삭제</button></div>";
+//
+//                 htmlString2.push(html2);
+//             }
+//             var parameterInputBoxArea2 = $("#serviceParameterArea");
+//             parameterInputBoxArea2.append(htmlString2);
+//         } else {
+//             var html2 = "<div class='service_parameter_line1'><input type='text' class='form-control-parameter1' id=" + "parameterName1" + ">"
+//                 + "<select class='form-control-parameter2' id=" + "serviceParameterSelectType1" + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
+//                 "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>"
+//                 + "<button type='button' class='btn btn-save btn-sm' style='margin-top:-9px;margin-left:-6px;' id='addServiceParameter'>추가</button>";
+//             html2 += "<button type='button' class='btn delete-service-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteServiceParameter' onclick='deleteLine(1)'>삭제</button></div>";
+//
+//             htmlString2.push(html2);
+//         }
+//         for (var i = 0; i < split.length; i++) {
+//             var deleteSign = split[i].replace(/"/g, "");
+//
+//             splitSign = deleteSign.split(":");
+//             if (splitSign != null && splitSign != "undefined" && splitSign != "") {
+//                 var reqParameterName = $('#parameterName' + (i + 1));
+//                 var reqParameterType = $('#serviceParameterSelectType' + (i + 1));
+//
+//                 reqParameterName.val(splitSign[0]);
+//                 if (splitSign[1].length > 0) {
+//                     if (splitSign[1].trim() == "text") {
+//                         reqParameterType.val(splitSign[1]);
+//                     }
+//                     if (splitSign[1].trim() == "password") {
+//                         reqParameterType.val(splitSign[1]);
+//                     }
+//                     if (splitSign[1].trim() == "default") {
+//                         reqParameterType.val(splitSign[1]);
+//                     }
+//                     if (splitSign[1].trim() == "userAppointed") {
+//                         reqParameterType.val(splitSign[1]);
+//                     }
+//                 }
+//             }
+//         }
+//
+//
+//         // 앱 바인드 사용 유무에 따라 앱 바인드 파라미터 입력 창 show / hide 여부
+//         $('input[name="appBindYn"]').click(function () {
+//             if ($(this).attr('id') == 'appBindYn_Y') {
+//                 $('#app_bind_parameter_form').show();
+//             } else {
+//                 $('#app_bind_parameter_form').hide();
+//             }
+//         });
+//
+//
+//         // 앱 바인드 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
+//         if (resultData.app_bind_parameter != null || resultData.app_bind_parameter != '' || resultData.app_bind_parameter != undefined)
+//             $("#appBindParameterArea").empty();
+//         appParameterStr = resultData.app_bind_parameter.replace("}", "");
+//         var appParameterStr2 = appParameterStr.replace("{", "");
+//         var split = appParameterStr2.split(",");
+//         count2 = split.length;
+//         var htmlString2 = [];
+//
+//         if (count2 > 0) {
+//             for (var a = 1; a < count2 + 1; a++) {
+//                 var html2 = "<div class=" + "app_bind_parameter_line" + a + ">"
+//                     + "<input type='text' class='form-control-appBindParameter1' id=" + "appBindParameterName" + a + ">"
+//                     + "<select class='form-control-parameter2' id=" + "appBindParameterSelectType" + a + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
+//                     "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>";
+//                 html2 += "<button type='button' class='btn delete-appBind-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(" + a + ")'>삭제</button></div>";
+//
+//                 htmlString2.push(html2);
+//             }
+//             var appBindParameterInputBoxArea = $("#appBindParameterArea");
+//             appBindParameterInputBoxArea.append(htmlString2);
+//         } else {
+//             var html2 = "<div class='app_bind_parameter_line1'><input type='text' class='form-control-appBindParameter1' id=" + "appBindParameterName1" + ">"
+//                 + "<select class='form-control-parameter2' id=" + "appBindParameterSelectType1" + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
+//                 "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>"
+//                 + "<button type='button' class='btn btn-save btn-sm' style='margin-top:-9px;margin-left:-6px;' id='addAppBindParameter'>추가</button>";
+//             html2 += "<button type='button' class='btn delete-appBind-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(1)'>삭제</button></div>";
+//
+//             htmlString2.push(html2);
+//         }
+//         for (var b = 0; b < split.length; b++) {
+//             var deleteSign = split[b].replace(/"/g, "");
+//
+//             splitSign2 = deleteSign.split(":");
+//             if (splitSign2 != null && splitSign2 != "undefined" && splitSign2 != "") {
+//                 var reqParameterName = $('#appBindParameterName' + (b + 1));
+//                 var reqParameterType = $('#appBindParameterSelectType' + (b + 1));
+//
+//                 reqParameterName.val(splitSign2[0]);
+//                 if (splitSign2[1].length > 0) {
+//                     if (splitSign2[1].trim() == "text") {
+//                         reqParameterType.val(splitSign2[1]);
+//                     }
+//                     if (splitSign2[1].trim() == "password") {
+//                         reqParameterType.val(splitSign2[1]);
+//                     }
+//                     if (splitSign2[1].trim() == "default") {
+//                         reqParameterType.val(splitSign2[1]);
+//                     }
+//                     if (splitSign2[1].trim() == "userAppointed") {
+//                         reqParameterType.val(splitSign2[1]);
+//                     }
+//                 }
+//             }
+//         }
+//======================================================================================================================
 
         if (null != tempThumbImgPath && "" != tempThumbImgPath) {
             $('#divPreview').attr('style', 'display: block; height: 94px;');
