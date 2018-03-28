@@ -209,9 +209,13 @@ var procPopup = function(reqTitle, reqMessage, procFunction, reqButtonText) {
 
 // CLOSE POPUP
 var procClosePopup = function() {
-    $('div.modal').modal('hide');
+    // modal을 닫을때 ID 지정 사용하고자 할때 사용 - Argument(ID) 수용하도록 수정
+    if(arguments.length > 0){
+        $('#'+arguments[0]).modal('hide');
+    }else{
+        $('div.modal').modal('hide');
+    }
 };
-
 
 // SET LEFT MENU
 var procSetLeftMenu = function() {
