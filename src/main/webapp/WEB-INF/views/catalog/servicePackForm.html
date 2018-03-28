@@ -7,32 +7,40 @@
 <div>
     <header></header>
     <aside>/</aside>
-
     <!-- Content Wrapper. Contains page content -->
-    <div layout:fragment="content" class="content-wrapper">
+    <div layout:fragment="content" class="content-wrapper" th:with="UPDATE_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}, INSERT_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C} ">
+
         <!-- Content Header (Page header) -->
-        <!-- Main content -->
+        <section class="content-header">
+            <h1>
+                <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
+                    서비스 상세
+                </div>
+                <div th:if=" ${INSERT_FLAG} == ${INSERT_CD} ">
+                    서비스 등록
+                </div>
+            </h1>
+        </section>
+
+        <!-- Content Header (Page header) -->
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-default">
                         <!-- /.box-header -->
                         <div class="box-header with-border">
-                            <h3 class="box-title">  <i class="fa fa-fw fa-chrome"></i> Service</h3>
+                            <h3 class="box-title"><i class="fa fa-fw fa-chrome"></i> Service</h3>
                         </div>
 
                         <div class="box-body">
                             <div class="content-box2 col-md-12 col-md-offset-13">
-                                <!--<div class="row">-->
-                                <!--<div class="col-md-6">-->
-                                <br/>
+                                <!--<div class="1">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="name">이름</label>
                                     <input type="text" class="form-control" id="name"/>
-                                </div>
-
-                                <br/>
+                                </div><br/>
+                                <!--<div class="2">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="classification">분류</label>
@@ -41,148 +49,147 @@
                                             style="width: 100%;"
                                             tabindex="-1"
                                             aria-hidden="true">
-                                        <option selected="selected" value=""> 데이터 저장소</option>
-                                        <option value=""> 메시징 </option>
-                                        <option value=""> NoSQL 데이터베이스 </option>
-                                        <option value=""> 관계형 데이터베이스</option>
-                                        <option value=""> 어플리케이션 모니터링</option>
-                                        <option value=""> 개발 지원 도구</option>
                                     </select>
                                     <span class="select2 select2-container select2-container--default select2-container--below"
                                           dir="ltr" style="width: 100%;">
                                         <span class="selection"></span>
                                         <span class="dropdown-wrapper" aria-hidden="true"></span>
                                         </span>
-                                </div>
-
-
-                                <br/>
+                                </div><br/>
+                                <!--<div class="3">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="servicePackName">서비스</label>
-                                    <select id="servicePackName"
+                                    <select id="ServicePackName"
                                             class="form-control select2 select2-hidden-accessible"
                                             style="width: 100%;"
                                             tabindex="-1"
                                             aria-hidden="true">
-                                        <option selected="selected" th:value="glusterfs">glusterfs</option>
-                                        <option value="Mysql-DB">Mysql-DB</option>
-                                        <option value="redis">redis</option>
-                                        <option value="p-rabbitmq">p-rabbitmq</option>
-                                        <option value="delivery-pipeline-v2">delivery-pipeline-v2</option>
-                                        <option value="delivery-pipeline-service-broker-dev">delivery-pipeline-service-broker-dev</option>
-                                        <option value="p-paasta-sourcecontrol">p-paasta-sourcecontrol</option>
-                                        <option value="Mysql-DB-EDUxx">Mysql-DB-EDUxx</option>
-                                        <option value="LaaS-Service">LaaS-Service</option>
                                     </select>
                                     <span class="select2 select2-container select2-container--default select2-container--below"
                                           dir="ltr" style="width: 100%;">
                                         <span class="selection"></span>
                                         <span class="dropdown-wrapper" aria-hidden="true"></span>
                                         </span>
-                                </div>
-
-                                <!--</div>-->
-                                <br/>
+                                </div><br/>
+                                <!--<div class="4">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="thumbnail"> 썸네일(50X50)</label>
                                     <p/>
                                     <input type="file" id="thumbnail"/>
-                                </div><p/>
-
-                                <br/>
+                                </div><br/>
+                                <!--<div class="5">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
-                                    <label for="servicePackName"> 서비스 생성 파라미터</label>
-                                    <div>
-                                        <input type="text"/>
-                                        <select>
-                                            <option value="text">텍스트형</option>
-                                            <option value="password">패스워드형</option>
-                                            <option value="default">자동입력</option><option value="userAppointed">사용자 지정</option>
-                                        </select>
-                                        <button type="button" class="btn delete-service-parameter" style="margin-top:11px; margin-bottom:10px; margin-left:0px;" id="deleteServiceParameter">삭제</button>
-                                        <button type='button' class='btn btn-save btn-sm' style='margin-top:10px;margin-right:100px;' id='addServiceParameter'>추가</button>
+                                    <label for="serviceParameter">서비스 생성 파라미터</label><p/>
+                                    <label class="control-label col-sm-2" for="serviceParameter"></label>
+                                    <button type='button' class='btn btn-save btn-sm' style='margin-top:10px;margin-right:100px;' id='addServiceParameter'>추가</button>
+                                    <div id="serviceParameterArea" class="col-sm-7" style="width: 60%" align="left"></div>
+                                </div>
+                                <!--<div class="6">-->
+                                <div class="form-group">
+                                    <i class="fa fa-fw fa-check-square-o"></i>
+                                    <label for="appBindYn_Y">앱 바인드 사용</label><p/>
+                                    <div class="col-sm-9 mt10">
+                                        <label class="radio-inline">
+                                            <input type="radio" onclick="javascript:yesNoCheck();" id="appBindYn_Y"
+                                                   name="appBindYn"
+                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_Y}"/>Y
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" onclick="javascript:yesNoCheck();" id="appBindYn_N"
+                                                   name="appBindYn"
+                                                   th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_N}"/>N
+                                        </label>
                                     </div>
-                                </div>
-
-
-                                <br/>
-                                <div class="form-group">
+                                </div><br/><br/>
+                                <!--<div class="7">-->
+                                <div class="form-group" id="app_bind_parameter_form">
                                     <i class="fa fa-fw fa-check-square-o"></i>
-                                    <label for="appBindYn_Y">앱 바인드 사용</label>
-                                    <br/>
-                                    <label class="radio-inline">
-                                        <input type="radio" onclick="javascript:yesNoCheck();" id="appBindYn_Y" name="appBindYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_Y}"/> Y
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" onclick="javascript:yesNoCheck();" id="appBindYn_N" name="appBindYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_N}"/> N
-                                    </label>
-                                </div>
-
-                                <br/>
-                                <div id="serviceParameterArea">
-                                    <i class="fa fa-fw fa-check-square-o"></i>
-                                    <label for="thumbnail"> 앱 바인드 파라미터</label>
-                                    <div class="service_parameter_line1">
-                                        <input type="text" class="form-control-parameter1" id="parameterName1"/>
-                                        <select class="form-control-parameter2" id="serviceParameterSelectType1" style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
-                                            <option value="text">텍스트형</option>
-                                            <option value="password">패스워드형</option>
-                                            <option value="default">자동입력</option><option value="userAppointed">사용자 지정</option>
-                                        </select>
-                                        <button type="button" class="btn delete-service-parameter" style="margin-top:11px; margin-bottom:10px; margin-left:0px;" id="deleteAppBindParameter">삭제</button>
-                                        <button type="button" class="btn delete-service-parameter" style="margin-top:11px; margin-bottom:10px; margin-left:0px;" id="addAppBindParameter" >추가</button>
+                                    <label for="servicePackName">앱 바인드 파라미터</label><p/>
+                                    <!--<label for="appParameter">앱 바인드 파라미터</label><p/>-->
+                                    <button type='button' class='btn btn-save btn-sm' style='margin-top:10px;margin-right:100px;' id='addAppBindParameter'>추가</button>
+                                    <div id="appBindParameterArea" class="col-sm-7" style="width: 60%" align="left">
                                     </div>
-                                </div>
-
-
-                                <br/>
+                                </div><br/><br/>
+                                <!--<div class="8">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
-                                    <label for="useYn_Y">공개여부</label>
-                                    <br/>
+                                    <label for="useYn_Y">공개</label>
+                                    <p/>
+                                    <div class="col-sm-9 mt10">
                                     <label class="radio-inline">
-                                        <input type="radio" id="useYn_Y" name="useYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/> Y
+                                        <input type="radio" id="useYn_Y" name="useYn"
+                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>Y
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" id="useYn_N" name="useYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/> N
+                                        <input type="radio" id="useYn_N" name="useYn"
+                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/>N
                                     </label>
-                                </div>
-
-
-                                <br/>
+                                    </div>
+                                </div><br/><br/>
+                                <!--<div class="9">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="dashboardUseYn_Y">대시보드 사용</label>
-                                    <br/>
+                                    <p/>
+                                    <div class="col-sm-9 mt10">
                                     <label class="radio-inline">
-                                        <input type="radio" id="dashboardUseYn_Y" name="dashboardUseYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_Y}"/> Y
+                                        <input type="radio" id="dashboardUseYn_Y" name="dashboardUseYn"
+                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_Y}"/>Y
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" id="dashboardUseYn_N" name="dashboardUseYn" th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_N}"/> N
+                                        <input type="radio" id="dashboardUseYn_N" name="dashboardUseYn"
+                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_N}"/>N
                                     </label>
-                                </div>
-
-
-                                <br/>
+                                    </div>
+                                </div><br/><br/>
+                                <!--<div class="10">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="summary">요약</label>
                                     <input type="text" class="form-control" id="summary"/>
                                 </div>
-
-                                <br/>
+                                <!--<div class="11">-->
                                 <div class="form-group">
                                     <i class="fa fa-fw fa-check-square-o"></i>
                                     <label for="description">설명</label>
                                     <textarea class="form-control" rows="5" id="description"></textarea>
                                 </div>
+                                <!--<div class="12">-->
+                                <div class="form-group">
+                                    <div class="col-sm-offset-1 col-sm-9 " align="right" id="statusActivity">
+                                        <div class="divButtons" style="width:97.8%;">
+                                            <div th:with="insertFlag=${INSERT_FLAG}, checkCudU=${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}">
+                                                <choose>
+                                                    <p th:when="test=${insertFlag == checkCudU}">
 
-                                <button type="button" class="btn btn-sm pull-left btn-default" id="btnCancel">취소</button>
-                                <button type="button" class="btn btn-sm btn-primary btn-flat pull-right" id="btnRegist">등록</button>
+                                                        <button type="button" class="btn btn_del2 btn-primary btn-sm"
+                                                                id="btnDelete">삭제
+                                                        </button>
+                                                        <button type="button" class="btn btn-cancel btn-default btn-sm pull-left"
+                                                                id="btnCancel">취소
+                                                        </button>
+                                                        <button type="button" class="btn btn-save btn-primary btn-sm"
+                                                                id="btnRegist">저장
+                                                        </button>
+                                                    </p>
+                                                    <th:otherwise>
+                                                        <button type="button" class="btn btn-cancel btn-default btn-sm pull-left"
+                                                                id="btnCancel">취소
+                                                        </button>
+                                                        <button type="button" class="btn btn-save btn-primary btn-sm"
+                                                                id="btnRegist">등록
+                                                        </button>
+                                                    </th:otherwise>
+                                                </choose>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<END">-->
                             </div>
                         </div>
                     </div>
@@ -203,9 +210,9 @@
     /*<![CDATA[*/
 
     var CATEGORY_HOME_URL = "/catalog/catalogMain";
-    var CATALOG_LIST_PROC_URL = "/catalog/getBuildPackCatalogList";
-    var CATEGORY_LIST_PROC_URL = "/commonCode/getCommonCode";
-    var BUILD_PACK_LIST_PROC_URL = "/catalog/getBuildPackList";
+    var CATALOG_LIST_PROC_URL = "/catalog/servicePackCatalogs";
+    var CATEGORY_LIST_PROC_URL = "/code/codeDetail";
+    var SERVICE_PACK_LIST_PROC_URL = "/service/service_brokers";
     var DUPLICATED_PROC_URL = "/catalog/getBuildPackCatalogCount";
     var INSERT_PROC_URL = "'/catalog/insertBuildPackCatalog";
     var UPDATE_PROC_URL = "/catalog/updateBuildPackCatalog";
@@ -214,11 +221,11 @@
     var UPLOAD_IMAGE_PROC_URL = "/catalog/uploadThumbnailImage";
     var DELETE_IMAGE_PROC_URL = "/catalog/deleteThumbnailImage";
     var UPLOAD_APP_SAMPLE_PROC_URL = "/catalog/uploadAppSampleFile";
-    var DELETE_APP_SAMPLE_PROC_URL = "/catalog/deleteAppSampleFile';
-    var BUILD_PACK_CATALOG_ID = "<%= Constants.BUILD_PACK_CATALOG_ID %>";
-    var INSERT_FLAG = "<c:out value='${INSERT_FLAG}' default='' />";
-    var CUD_U = "<%= Constants.CUD_U %>";
-    var REQ_NO = "<c:out value='${REQUEST_NO}' default='' />";
+    var DELETE_APP_SAMPLE_PROC_URL = "/catalog/deleteAppSampleFile";
+    var SERVICE_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CATALOG_ID}]]*/ "";
+    var INSERT_FLAG = /*${INSERT_FLAG}*/"";
+    var CUD_U = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ "";
+    var REQ_NO = /*[[${REQUEST_NO}]]*/ null;
 
     var INIT_MESSAGE = "첨부된 파일이 없습니다.";
     var REQUEST_APP_SAMPLE_FILE;
@@ -226,13 +233,14 @@
     REQUEST_APP_SAMPLE_FILE_OBJECT = $('#appSampleFile');
 
     // GET CATEGORY LIST
-    var getCategoryList = function() {
-        procCallAjax(CATEGORY_LIST_PROC_URL + "/" + BUILD_PACK_CATALOG_ID, null, procCallbackCategoryList);
+    var getCategoryList = function () {
+        var param = {"groupId": SERVICE_PACK_CATALOG_ID};
+        procCallAjax2(CATEGORY_LIST_PROC_URL, 'GET', param, procCallbackCategoryList);
     };
 
 
     // GET CATEGORY LIST CALLBACK
-    var procCallbackCategoryList = function(data) {
+    var procCallbackCategoryList = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
         var objSelectBox = $('#classification');
@@ -245,21 +253,22 @@
 
         objSelectBox.append(htmlString);
 
-        getBuildPackList();
+        getServicePackList();
     };
 
 
-    // GET BUILD PACK LIST
-    var getBuildPackList = function() {
-        procCallAjax(BUILD_PACK_LIST_PROC_URL, {}, procCallbackBuildPackList);
+    // GET SERVICE PACK LIST
+    var getServicePackList = function () {
+        var param = "";
+        procCallAjax2(SERVICE_PACK_LIST_PROC_URL, 'GET', param, procCallbackServicePackList);
     };
 
 
-    // GET BUILD PACK LIST CALLBACK
-    var procCallbackBuildPackList = function(data) {
+    // GET SERVICE PACK LIST CALLBACK
+    var procCallbackServicePackList = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
-        var objSelectBox = $('#buildPackName');
+        var objSelectBox = $('#ServicePackName');
         var listLength = data.list.length;
         var htmlString = [];
 
@@ -276,24 +285,25 @@
         }
 
         var insertFlag = INSERT_FLAG;
-        if ("" != insertFlag && CUD_U == insertFlag) procUpdateForm();
+        if (REQ_NO != null) procUpdateForm();
     };
 
 
     // UPDATE FORM
-    var procUpdateForm = function() {
+    var procUpdateForm = function () {
+
         var reqNo = REQ_NO;
         if (null == reqNo || "" == reqNo) {
             procAlert("danger", '<spring:message code="common.system.error.message" />');
             return false;
         }
 
-        procCallAjax(CATALOG_LIST_PROC_URL, {no: reqNo}, procCallbackUpdateForm);
+        procCallAjax2(CATALOG_LIST_PROC_URL + "/" + reqNo, 'GET', '', procCallbackUpdateForm);
     };
 
 
     // CALL BACK UPDATE FORM
-    var procCallbackUpdateForm = function(data) {
+    var procCallbackUpdateForm = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
         if (data.list.length < 1) return false;
@@ -303,32 +313,157 @@
         var reqName = $('#name');
         var reqOrgName = $('#orgName');
         var reqClassification = $('#classification');
-        var reqBuildPackName = $('#buildPackName');
+        var reqServicePackName = $('#ServicePackName');
         var reqThumbImgPath = $("#thumbImgPath");
         var reqOrgThumbImgPath = $("#orgThumbImgPath");
         var reqThumbImgName = $("#thumbImgName");
         var reqUseYn = $('#useYn_' + resultData.useYn);
         var reqSummary = $('#summary');
         var reqDescription = $('#description');
-
+        var reqDashboardUseYn = $('#dashboardUseYn_' + resultData.dashboardUseYn);
         reqName.val(resultData.name);
         reqOrgName.val(resultData.name);
         reqClassification.val(resultData.classification);
-        reqBuildPackName.val(resultData.buildPackName);
+        reqServicePackName.val(resultData.serviceName);
         reqThumbImgPath.val(resultData.thumbImgPath);
         reqOrgThumbImgPath.val(resultData.thumbImgPath);
         reqThumbImgName.val(resultData.thumbImgName);
         reqUseYn.attr('checked', true);
         reqSummary.val(resultData.summary);
         reqDescription.val(resultData.description);
-
+        reqDashboardUseYn.attr('checked', true);
         var tempThumbImgPath = reqThumbImgPath.val();
+
+//======================================================================================================================
+//         서비스 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
+//         if (resultData.parameter != null || resultData.parameter != '' || resultData.parameter != undefined)
+//             $("#serviceParameterArea").empty();
+//         str = resultData.parameter.replace("}", "");
+//         var str2 = str.replace("{", "");
+//         var split = str2.split(",");
+//         count = split.length;
+//         var htmlString2 = [];
+//
+//         if (count > 0) {
+//             for (var j = 1; j < count + 1; j++) {
+//                 var html2 = "<div class=" + "service_parameter_line" + j + ">"
+//                     + "<input type='text' class='form-control-parameter1' id=" + "parameterName" + j + ">"
+//                     + "<select class='form-control-parameter2' id=" + "serviceParameterSelectType" + j + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
+//                     "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>";
+//                 html2 += "<button type='button' class='btn delete-service-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteServiceParameter' onclick='deleteLine(" + j + ")'>삭제</button></div>";
+//
+//                 htmlString2.push(html2);
+//             }
+//             var parameterInputBoxArea2 = $("#serviceParameterArea");
+//             parameterInputBoxArea2.append(htmlString2);
+//         } else {
+//             var html2 = "<div class='service_parameter_line1'><input type='text' class='form-control-parameter1' id=" + "parameterName1" + ">"
+//                 + "<select class='form-control-parameter2' id=" + "serviceParameterSelectType1" + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
+//                 "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>"
+//                 + "<button type='button' class='btn btn-save btn-sm' style='margin-top:-9px;margin-left:-6px;' id='addServiceParameter'>추가</button>";
+//             html2 += "<button type='button' class='btn delete-service-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteServiceParameter' onclick='deleteLine(1)'>삭제</button></div>";
+//
+//             htmlString2.push(html2);
+//         }
+//         for (var i = 0; i < split.length; i++) {
+//             var deleteSign = split[i].replace(/"/g, "");
+//
+//             splitSign = deleteSign.split(":");
+//             if (splitSign != null && splitSign != "undefined" && splitSign != "") {
+//                 var reqParameterName = $('#parameterName' + (i + 1));
+//                 var reqParameterType = $('#serviceParameterSelectType' + (i + 1));
+//
+//                 reqParameterName.val(splitSign[0]);
+//                 if (splitSign[1].length > 0) {
+//                     if (splitSign[1].trim() == "text") {
+//                         reqParameterType.val(splitSign[1]);
+//                     }
+//                     if (splitSign[1].trim() == "password") {
+//                         reqParameterType.val(splitSign[1]);
+//                     }
+//                     if (splitSign[1].trim() == "default") {
+//                         reqParameterType.val(splitSign[1]);
+//                     }
+//                     if (splitSign[1].trim() == "userAppointed") {
+//                         reqParameterType.val(splitSign[1]);
+//                     }
+//                 }
+//             }
+//         }
+//
+//
+//         // 앱 바인드 사용 유무에 따라 앱 바인드 파라미터 입력 창 show / hide 여부
+//         $('input[name="appBindYn"]').click(function () {
+//             if ($(this).attr('id') == 'appBindYn_Y') {
+//                 $('#app_bind_parameter_form').show();
+//             } else {
+//                 $('#app_bind_parameter_form').hide();
+//             }
+//         });
+//
+//
+//         // 앱 바인드 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
+//         if (resultData.app_bind_parameter != null || resultData.app_bind_parameter != '' || resultData.app_bind_parameter != undefined)
+//             $("#appBindParameterArea").empty();
+//         appParameterStr = resultData.app_bind_parameter.replace("}", "");
+//         var appParameterStr2 = appParameterStr.replace("{", "");
+//         var split = appParameterStr2.split(",");
+//         count2 = split.length;
+//         var htmlString2 = [];
+//
+//         if (count2 > 0) {
+//             for (var a = 1; a < count2 + 1; a++) {
+//                 var html2 = "<div class=" + "app_bind_parameter_line" + a + ">"
+//                     + "<input type='text' class='form-control-appBindParameter1' id=" + "appBindParameterName" + a + ">"
+//                     + "<select class='form-control-parameter2' id=" + "appBindParameterSelectType" + a + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
+//                     "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>";
+//                 html2 += "<button type='button' class='btn delete-appBind-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(" + a + ")'>삭제</button></div>";
+//
+//                 htmlString2.push(html2);
+//             }
+//             var appBindParameterInputBoxArea = $("#appBindParameterArea");
+//             appBindParameterInputBoxArea.append(htmlString2);
+//         } else {
+//             var html2 = "<div class='app_bind_parameter_line1'><input type='text' class='form-control-appBindParameter1' id=" + "appBindParameterName1" + ">"
+//                 + "<select class='form-control-parameter2' id=" + "appBindParameterSelectType1" + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
+//                 "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>"
+//                 + "<button type='button' class='btn btn-save btn-sm' style='margin-top:-9px;margin-left:-6px;' id='addAppBindParameter'>추가</button>";
+//             html2 += "<button type='button' class='btn delete-appBind-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(1)'>삭제</button></div>";
+//
+//             htmlString2.push(html2);
+//         }
+//         for (var b = 0; b < split.length; b++) {
+//             var deleteSign = split[b].replace(/"/g, "");
+//
+//             splitSign2 = deleteSign.split(":");
+//             if (splitSign2 != null && splitSign2 != "undefined" && splitSign2 != "") {
+//                 var reqParameterName = $('#appBindParameterName' + (b + 1));
+//                 var reqParameterType = $('#appBindParameterSelectType' + (b + 1));
+//
+//                 reqParameterName.val(splitSign2[0]);
+//                 if (splitSign2[1].length > 0) {
+//                     if (splitSign2[1].trim() == "text") {
+//                         reqParameterType.val(splitSign2[1]);
+//                     }
+//                     if (splitSign2[1].trim() == "password") {
+//                         reqParameterType.val(splitSign2[1]);
+//                     }
+//                     if (splitSign2[1].trim() == "default") {
+//                         reqParameterType.val(splitSign2[1]);
+//                     }
+//                     if (splitSign2[1].trim() == "userAppointed") {
+//                         reqParameterType.val(splitSign2[1]);
+//                     }
+//                 }
+//             }
+//         }
+//======================================================================================================================
 
         if (null != tempThumbImgPath && "" != tempThumbImgPath) {
             $('#divPreview').attr('style', 'display: block; height: 94px;');
         }
 
-        $('#preview').attr('src', IMAGE_PATH_PREFIX+tempThumbImgPath);
+        $('#preview').attr('src', IMAGE_PATH_PREFIX + tempThumbImgPath);
         $("#labelThumbName").text(reqThumbImgName.val());
 
         var appSampleFileName = resultData.appSampleFileName;
@@ -355,11 +490,12 @@
         } else {
             $('#appSampleFileNameLabel').text(INIT_MESSAGE);
         }
+
     };
 
 
     // CHECK DUPLICATED NAME
-    var procCheckDuplicatedName = function() {
+    var procCheckDuplicatedName = function () {
         if (!procCheckValidStringSpace()) return false;
         if (!procCheckValid()) return false;
 
@@ -370,14 +506,14 @@
         // CHECK DUPLICATED NAME
         var insertFlag = INSERT_FLAG;
         if ("" != insertFlag && CUD_U == insertFlag && reqName == orgName) {
-            procUploadThumbnailImageFile({RESULT : RESULT_STATUS_SUCCESS});
+            procUploadThumbnailImageFile({RESULT: RESULT_STATUS_SUCCESS});
         } else {
             procCallAjax(DUPLICATED_PROC_URL, {name: reqName}, procUploadThumbnailImageFile);
         }
     };
 
     // PROCESS CHECK VALID
-    var procCheckValid = function() {
+    var procCheckValid = function () {
 
         // name
         var name = $('#name').val();
@@ -399,7 +535,7 @@
     };
 
     // UPLOAD THUMBNAIL IMAGE FILE
-    var procUploadThumbnailImageFile = function(data) {
+    var procUploadThumbnailImageFile = function (data) {
         if (RESULT_STATUS_SUCCESS != data.RESULT) {
             $('#name').focus();
             return false;
@@ -416,7 +552,7 @@
 
 
     // UPLOAD APP SAMPLE FILE
-    var procUploadAppSampleFile = function() {
+    var procUploadAppSampleFile = function () {
         var formData = getAppSampleFileFormData();
 
         if (!formData) {
@@ -428,14 +564,14 @@
 
 
     // UPLOAD APP SAMPLE FILE CALLBACK
-    var procCallbackUploadAppSampleFile = function(data) {
+    var procCallbackUploadAppSampleFile = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) document.getElementById('appSampleFilePath').value = data.path;
         procInsert();
     };
 
 
     // APP SAMPLE FILE FORM DATA
-    var getAppSampleFileFormData = function() {
+    var getAppSampleFileFormData = function () {
         var reqFileObject = REQUEST_APP_SAMPLE_FILE;
         if (null == reqFileObject || undefined === reqFileObject) return false;
 
@@ -447,7 +583,7 @@
 
 
     // INSERT
-    var procInsert = function() {
+    var procInsert = function () {
         var doc = document;
         var reqUseYn = $("input:radio[name='useYn']:checked").val();
         var param = $("#catalogForm").serializeObject();
@@ -474,7 +610,7 @@
 
 
     // INSERT CALLBACK
-    var procCallbackInsert = function(data) {
+    var procCallbackInsert = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
             procAlert("success", '<spring:message code="common.info.result.success" />');
             procMovePage(CATEGORY_HOME_URL);
@@ -486,7 +622,7 @@
 
 
     // UPDATE CALLBACK
-    var procCallbackUpdate = function(data) {
+    var procCallbackUpdate = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
             procDeleteThumbnailImageFile();
             procAlert("success", '<spring:message code="common.info.result.success" />');
@@ -498,7 +634,7 @@
 
 
     // CHECK DELETE
-    var procCheckDelete = function() {
+    var procCheckDelete = function () {
         $('div.modal').modal('toggle');
 
         var reqNo = REQ_NO;
@@ -509,7 +645,7 @@
 
 
     // DELETE
-    var procDelete = function(data) {
+    var procDelete = function (data) {
         if (RESULT_STATUS_SUCCESS != data.RESULT) {
             procAlert("danger", data.RESULT_MESSAGE);
             return false;
@@ -522,7 +658,7 @@
 
 
     // DELETE CALLBACK
-    var procCallbackDelete = function(data) {
+    var procCallbackDelete = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
             procDeleteThumbnailImageFile();
             procAlert("success", '<spring:message code="common.info.result.success" />');
@@ -535,9 +671,9 @@
 
 
     // DELETE THUMBNAIL IMAGE FILE
-    var procDeleteThumbnailImageFile = function() {
+    var procDeleteThumbnailImageFile = function () {
         if (procCheckDeleteFileValid('<%= Constants.FILE_TYPE_IMAGE %>')) {
-            procCallAjax(DELETE_IMAGE_PROC_URL, {thumbImgPath : document.getElementById('orgThumbImgPath').value}, procDeleteAppSampleFile);
+            procCallAjax(DELETE_IMAGE_PROC_URL, {thumbImgPath: document.getElementById('orgThumbImgPath').value}, procDeleteAppSampleFile);
         } else {
             procDeleteAppSampleFile();
         }
@@ -545,9 +681,9 @@
 
 
     // DELETE APP SAMPLE FILE
-    var procDeleteAppSampleFile = function() {
+    var procDeleteAppSampleFile = function () {
         if (procCheckDeleteFileValid('<%= Constants.FILE_TYPE_APP_SAMPLE %>')) {
-            procCallAjax(DELETE_APP_SAMPLE_PROC_URL, {appSampleFilePath : document.getElementById('orgAppSampleFilePath').value}, procCallbackDeleteFile);
+            procCallAjax(DELETE_APP_SAMPLE_PROC_URL, {appSampleFilePath: document.getElementById('orgAppSampleFilePath').value}, procCallbackDeleteFile);
         } else {
             procMovePage(CATEGORY_HOME_URL);
         }
@@ -555,7 +691,7 @@
 
 
     // CHECK DELETE FILE VALID
-    var procCheckDeleteFileValid = function(reqFileType) {
+    var procCheckDeleteFileValid = function (reqFileType) {
         var doc = document;
         var orgFilePath = doc.getElementById('orgThumbImgPath').value;
         var filePath = doc.getElementById('thumbImgPath').value;
@@ -577,23 +713,23 @@
 
 
     // DELETE FILE CALLBACK
-    var procCallbackDeleteFile = function() {
+    var procCallbackDeleteFile = function () {
         procMovePage(CATEGORY_HOME_URL);
     };
 
 
     // RESET IMAGE
-    var procResetImage = function() {
+    var procResetImage = function () {
         var doc = document;
         doc.getElementById('thumbImgPath').value = '';
         doc.getElementById('thumbImgName').value = '';
 
-        resetThumbnail();
+        // resetThumbnail();
     };
 
 
     // SET FILE INFO
-    var procSetFileInfo = function(reqFile) {
+    var procSetFileInfo = function (reqFile) {
         var fileName = reqFile[0].name;
         var limitFileSizeMb = '<%= Constants.CATALOG_APP_SAMPLE_LIMIT_FILE_SIZE_MB %>';
         var limitFileSize = parseInt(limitFileSizeMb) << 20;
@@ -613,7 +749,7 @@
 
 
     // SET FILE LABEL
-    var procSetFileLabel = function(reqFileName, reqOrgFileSize, reqFilePath) {
+    var procSetFileLabel = function (reqFileName, reqOrgFileSize, reqFilePath) {
         if (null == reqFileName || '' == reqFileName) return false;
 
         var doc = document;
@@ -634,14 +770,14 @@
         $('#appSampleFileDeleteButtonArea').show();
 
         // BIND :: BUTTON EVENT
-        $("#btnDeleteFile").on("click", function() {
+        $("#btnDeleteFile").on("click", function () {
             procDeleteAppSampleFileLabel();
         });
     };
 
 
     // DELETE FILE LABEL
-    var procDeleteAppSampleFileLabel = function() {
+    var procDeleteAppSampleFileLabel = function () {
         var doc = document;
         var fileDeleteButtonArea = $('#appSampleFileDeleteButtonArea');
         var reqFileLabel = $('#appSampleFileNameLabel');
@@ -656,7 +792,7 @@
 
 
     // CALCULATE FLOOR
-    var procCalculateFloor = function(reqNumber, reqPosition) {
+    var procCalculateFloor = function (reqNumber, reqPosition) {
         var digits = Math.pow(10, reqPosition);
         var num = Math.round(reqNumber * digits) / digits;
 
@@ -671,18 +807,18 @@
 
 
     // INIT
-    var procInit = function() {
+    var procInit = function () {
         getCategoryList();
 
         $('#name').focus();
         $('#useYn_Y').attr('checked', true);
 
-        var insertFlag = INSERT_FLAG;
-        if ("" != insertFlag && CUD_U == insertFlag) procUpdateForm();
 
-        resetThumbnail();
+        if ("" != REQ_NO && REQ_NO != null) procUpdateForm();
 
-        $("#hiddenThumbnail").on("change", function() {
+        // resetThumbnail();
+
+        $("#hiddenThumbnail").on("change", function () {
             setPreView($(this));
         });
 
@@ -692,49 +828,50 @@
 
 
     // BIND :: BUTTON EVENT
-    $("#btnResetImg").on("click", function() {
+    $("#btnResetImg").on("click", function () {
         procResetImage();
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnDeleteAppSampleFile").on("click", function() {
+    $("#btnDeleteAppSampleFile").on("click", function () {
         procDeleteAppSampleFileLabel();
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnSearchAppSampleFile").on("click", function() {
+    $("#btnSearchAppSampleFile").on("click", function () {
         REQUEST_APP_SAMPLE_FILE_OBJECT.click();
     });
 
 
     // BIND :: FILE CHANGE
-    REQUEST_APP_SAMPLE_FILE_OBJECT.on("change", function() {
+    REQUEST_APP_SAMPLE_FILE_OBJECT.on("change", function () {
         procSetFileInfo($(this)[0].files);
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnRegist").on("click", function() {
+    $("#btnRegist").on("click", function () {
         procCheckDuplicatedName();
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnCancel").on("click", function() {
-        procMovePage(CATEGORY_HOME_URL + "/<%= Constants.TAB_NAME_BUILD_PACK %>");
+    $("#btnCancel").on("click", function () {
+        procMovePage(CATEGORY_HOME_URL);
+//        procMovePage(CATEGORY_HOME_URL + "/<%= Constants.TAB_NAME_Service_PACK %>");
     });
 
 
     // BIND :: BUTTON EVENT
-    $("#btnDelete").on("click", function() {
+    $("#btnDelete").on("click", function () {
         procPopup('카탈로그', DELETE_MESSAGE, 'procCheckDelete();');
     });
 
 
     // ON LOAD
-    $(document.body).ready(function() {
+    $(document.body).ready(function () {
         procInit();
     });
 

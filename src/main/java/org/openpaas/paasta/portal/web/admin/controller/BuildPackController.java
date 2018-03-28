@@ -46,7 +46,6 @@ public class BuildPackController extends Common {
     @RequestMapping(value = {"/buildPack/buildpacks"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
-
         return commonService.procCfApiRestTemplate("/buildPack/buildpacks", HttpMethod.GET, buildPack, getToken());
 
     }
