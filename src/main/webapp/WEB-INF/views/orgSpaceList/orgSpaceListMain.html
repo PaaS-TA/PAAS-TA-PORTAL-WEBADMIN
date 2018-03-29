@@ -58,12 +58,6 @@
             });
         };
 
-
-
-
-
-
-
         /*<![CDATA[*/
         function getDomains() {
 
@@ -116,13 +110,8 @@
                     $("#orgTable").append (
                         "<tr id='orgSpaceViewArea-table-content-org-no" + (i + 1) + "' name='" + orgName[i].toString().toLowerCase() + "' >" +
                         "<td>" + (i + 1) + "</td>" +
-                        "<td><a href='#none' onClick=\"selectOrg('" + idMap.get(orgName[i]) + "')\">" + orgName[i] + "</a> &nbsp;<a href='#none' onClick=\"procGetOrgSummary('" + idMap.get(orgName[i]) + "','" +  QuotaMap.get(orgName[i]) + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
+                        "<td><a style='color: black' href='#none' onClick=\"selectOrg('" + idMap.get(orgName[i]) + "')\">" + orgName[i] + "</a> &nbsp;<a href='#none' onClick=\"procGetOrgSummary('" + idMap.get(orgName[i]) + "','" +  QuotaMap.get(orgName[i]) + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
                         "</tr>"
-
-//                    "<div id='orgSpaceViewArea-table-content-org-no" + (i + 1) + "' class='mainViewArea-table-content' name='" + orgName[i].toString().toLowerCase() + "' >" +
-//                        "<div class='table-contentLeft' >" + (i + 1) + "</div>" +
-//                        "<div class='table-contentRight'><a href='#none' onClick=\"selectOrg('" + orgName[i] + "')\">" + orgName[i] + "</a> &nbsp;<a href='#none' onClick=\"procGetOrgSummary('" + orgName[i] + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></div>" +
-//                        "</div>"
                     )
                 }
                 $("#orgTable").append (
@@ -163,16 +152,11 @@
                         "<td>"+(eventId+1)+"</td>"+
                         "<td>" + space.entity.name + "&nbsp; <a href='#none' onClick=\"procGetSpaceSummary('"+ space.metadata.id +"','" + space.entity.spaceQuotaDefinitionId + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
                         "</tr>"
-//                    "<div id='orgSpaceViewArea-table-content-space-no"+(eventId+1)+"' class='mainViewArea-table-content' style='cursor: text'>"+
-//                        "<div class='table-contentLeft'>"+(eventId+1)+"</div>"+
-//                        "<div class='table-contentRight'>" + space.name + "&nbsp; <a href='#none'  data-toggle='modal' data-target='#modal-default'  onClick=\"procGetSpaceSummary('" + currentOrg + "','" + space.name + "')\" style='font-size:10px'>[상세정보]</a></div>" +
-//                        "</div>"
                     )
                 });
                 $("#orgTable").append (
                     "</tbody>"
                 )
-                //changeTableContentColor("space")
                 $("#spaceTable").show();
             }
         }
@@ -258,7 +242,6 @@
             } else {
                 spaceQuotaText = "";
             }
-
         }
 
         // GET ORG SUMMARY CALLBACK
@@ -345,7 +328,7 @@
 
                             <div class="box-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="org-searchKeyword"/>
+                                    <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="org-searchKeyword" onkeyup="searchOrg()"/>
                                     <div class="input-group-btn" >
                                         <button type="submit"  class="btn btn-default" onclick="searchOrg()"><i class="fa fa-search"></i></button>
                                     </div>
@@ -355,13 +338,13 @@
                                 <div style="height: 10px">
                             </div>
                             <div class="col-md-3 col-sm-6 col-xs-12" style="width: 49%">
-                                <table class="table table-striped" style="text-align: center; display: none" id="orgTable" >
+                                <table class="table table-bordered table-striped dataTable" style="text-align: center; display: none" id="orgTable" >
                                 </table>
                                 <div id="noOrgMessage" class='box-header with-border' style="display: none">생성된 조직이 없습니다.</div>
                                 <div id="noSearchOrgMessage" class='box-header with-border' style="display: none">검색된 조직이 없습니다.</div>
                             </div>
                             <div class="box-body table-responsive no-padding" style="width: 49%">
-                                <table class="table table-striped" style="text-align: center; display: none" id="spaceTable" >
+                                <table class="table table-bordered table-striped dataTable" style="text-align: center; display: none" id="spaceTable" >
                                 </table>
                                 <div id="noSpaceMessage" class='box-header with-border' style="display: none">생성된 공간이 없습니다.</div>
                             </div>
