@@ -95,8 +95,9 @@ public class CatalogService {
 
 
     public Map<String, Object> getBuildPackCatalogCount(Catalog param) {
-        return commonService.procCommonApiRestTemplate("/catalog/getBuildPackCatalogCount", HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs/count", HttpMethod.GET, param, null);
     }
+
 
     public Map<String, Object> getServicePackCatalogCount(Catalog param) {
         return commonService.procRestTemplate("/catalog/getServicePackCatalogCount", HttpMethod.POST, param, null);
