@@ -24,7 +24,7 @@
           th:href="@{/resources/dist/css/skins/_all-skins.min.css}"/>
 
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" type="text/css" href="/resources/css/bootstrap.css"
+    <link rel="stylesheet" type="text/css" href="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"
           th:href="@{/resources/bower_components/bootstrap/dist/css/bootstrap.min.css}"/>
 
     <!-- JQUERY -->
@@ -157,8 +157,8 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/buildPack/buildPackMain"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
-                        <li><a href="/service/serviceBrokerMain"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
+                        <li><a href="/buildpack"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
+                        <li><a href="/service"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
                     </ul>
                 </li>
 
@@ -190,5 +190,12 @@
 </div>
 <!-- ./wrapper -->
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script"></script>
+<script th:inline="javascript" type="text/javascript">
+    /*<![CDATA[*/
+    $(document.body).ready(function() {
+        procSetLeftMenu();
+    });
+    /*]]>*/
+</script>
 </body>
 </html>

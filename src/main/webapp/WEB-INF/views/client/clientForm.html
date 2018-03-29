@@ -167,12 +167,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     INSERT_FLAG = "";
   }
 
-  var TO_LIST = "/client/clientMain";
-
-  var GET_PROC_URL = "/client/getClient";
-  var REGISTER_PROC_URL = "/client/registerClient";
-  var UPDATE_PROC_URL = "/client/updateClient";
-  var DELETE_PROC_URL = "/client/deleteClient";
+  var CLIENT_PATH = "/client/clients";
 
   $(document).ready(function(){
     if (INSERT_FLAG != "" && INSERT_FLAG == CUD_U) { // get
@@ -187,7 +182,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     var param = {
       client_id : client_id
     }
-    procCallAjax(GET_PROC_URL, param, procCallbackGetClient);
+    procCallAjax2(CLIENT_PATH, "GET", param, procCallbackGetClient);
   }
 
   var procCallbackGetClient = function (data) {
@@ -292,10 +287,10 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
 
     // call ajax
     if (INSERT_FLAG != "" && INSERT_FLAG == CUD_U) { // update
-      procCallAjax(UPDATE_PROC_URL, param, procCallbackRegisterUpdateClient);
+      procCallAjax2(CLIENT_PATH, "PUT", param, procCallbackRegisterUpdateClient);
     } else { // register
       $.extend(param, {client_secret : $("#uaacClientPw").val()});
-      procCallAjax(REGISTER_PROC_URL, param, procCallbackRegisterUpdateClient);
+      procCallAjax2(CLIENT_PATH, "POST", param, procCallbackRegisterUpdateClient);
     }
   }
 
@@ -391,7 +386,8 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     var param = {
       client_id : client_id
     }
-    procCallAjax(DELETE_PROC_URL, param, procCallbackDeleteClient);
+    procCallAjax2(CLIENT_PATH, "DELETE" +
+            "", param, procCallbackDeleteClient);
 
   }
 

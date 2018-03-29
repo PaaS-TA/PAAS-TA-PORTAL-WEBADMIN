@@ -197,7 +197,7 @@
     function getServiceBrokerList() {
 
         $.ajax({
-            url: "/service/service_brokers",
+            url: "/service/service-brokers",
             method: "GET",
             dataType: 'json',
             contentType: "application/json",
@@ -238,7 +238,7 @@
         }
 
         $.ajax({
-            url: "/service/service_brokers",
+            url: "/service/service-brokers",
             method: "GET",
             data: param,
             dataType: 'json',
@@ -276,7 +276,7 @@
         }
 
         $.ajax({
-            url: "/service/service_brokers/"+guid,
+            url: "/service/service-brokers/"+guid,
             method: "PUT",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -314,7 +314,7 @@
         var guid = $('#guid').val();
 
         $.ajax({
-            url: "/service/service_brokers/"+guid,
+            url: "/service/service-brokers/"+guid,
             method: "DELETE",
             dataType: 'json',
             contentType: "application/json",
@@ -349,7 +349,7 @@
         }
 
         $.ajax({
-            url: "/service/service_brokers",
+            url: "/service/service-brokers",
             method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',

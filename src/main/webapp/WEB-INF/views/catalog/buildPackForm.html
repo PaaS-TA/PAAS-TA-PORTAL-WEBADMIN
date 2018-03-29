@@ -9,7 +9,8 @@
     <aside>/</aside>
 
     <!-- Content Header (Page header) -->
-    <div layout:fragment="content" class="content-wrapper" th:with="UPDATE_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}, INSERT_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C} ">
+    <div layout:fragment="content" class="content-wrapper"
+         th:with="UPDATE_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}, INSERT_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C} ">
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -122,42 +123,50 @@
                                 </div>
                                 <!--<div class="9"::button>-->
                                 <div class="form-group">
-                                    <div class="col-sm-offset-1 col-sm-9 " align="right" id="statusActivity">
+                                    <div class="form-group" align="right" id="statusActivity">
                                         <div class="divButtons" style="width:97.8%;">
-                                            <div th:with="insertFlag=${INSERT_FLAG}, checkCudU=${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}">
-                                                <choose>
-                                                    <p th:when="test=${insertFlag == checkCudU}">
-
-                                                        <button type="button" class="btn btn_del2 btn-primary btn-sm"
-                                                                id="btnDelete">삭제
-                                                        </button>
-                                                        <button type="button" class="btn btn-cancel btn-default btn-sm pull-left"
-                                                                id="btnCancel">취소
-                                                        </button>
-                                                        <button type="button" class="btn btn-save btn-primary btn-sm"
-                                                                id="btnRegist">저장
-                                                        </button>
-                                                    </p>
-                                                    <th:otherwise>
-                                                        <button type="button" class="btn btn-cancel btn-default btn-sm pull-left"
-                                                                id="btnCancel">취소
-                                                        </button>
-                                                        <button type="button" class="btn btn-save btn-primary btn-sm"
-                                                                id="btnRegist">등록
-                                                        </button>
-                                                    </th:otherwise>
-                                                </choose>
+                                            <div>
+                                                <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
+                                                    <button type="button" class="btn btn-cancel btn-default btn-sm pull-left"
+                                                            id="btnDelete">삭제
+                                                    </button>
+                                                    <button type="button"
+                                                            class="btn btn-cancel btn-default btn-sm"
+                                                            id="btnCancel">취소
+                                                    </button>
+                                                    <button type="button" class="btn btn-save btn-primary btn-sm"
+                                                            id="btnRegist">저장
+                                                    </button>
+                                                </div>
+                                                <div th:if=" ${INSERT_FLAG} == ${INSERT_CD} ">
+                                                    <button type="button"
+                                                            class="btn btn-cancel btn-default btn-sm"
+                                                            id="btnCancel">취소
+                                                    </button>
+                                                    <button type="button" class="btn btn-save btn-primary btn-sm"
+                                                            id="btnRegist">등록
+                                                    </button>
+                                                </div>
                                             </div>
-
                                         </div>
                                     </div>
-                                </div>
-                                <!--<div class="9"::button>-->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ▼row: 12   <div class="tab-content no-padding">-->
-                </div>
+                                </div>  <!--<div class="9"::button/>-->
+                            </div><!--<HIDDEN VALUE>-->
+                            <input type="hidden" id="orgThumbImgPath" name="orgThumbImgPath" value=""/>
+                            <input type="hidden" id="thumbImgPath" name="thumbImgPath" value=""/>
+                            <input type="hidden" id="thumbImgName" name="thumbImgName" value=""/>
+                            <input type="hidden" id="orgName" name="orgName" value=""/>
+
+                            <input type="hidden" id="no" name="no" value="${REQUEST_NO}"/>
+                            <input type="hidden" id="appSampleFileName" name="appSampleFileName" value=""/>
+                            <input type="hidden" id="appSampleFilePath" name="appSampleFilePath" value=""/>
+                            <input type="hidden" id="appSampleFileSize" name="appSampleFileSize" value=""/>
+                            <input type="hidden" id="orgAppSampleFileName" name="orgAppSampleFileName" value=""/>
+                            <input type="hidden" id="orgAppSampleFilePath" name="orgAppSampleFilePath" value=""/>
+                            <input type="hidden" id="orgAppSampleFileSize" name="orgAppSampleFileSize" value=""/>
+                        </div> <!-- <div class="box-body"/>>-->
+                    </div> <!--<div class="box box-default"/>-->
+                </div>  <!-- row: 12<div class="tab-content no-padding"/>-->
             </div>
         </section>
         <!-- /.content -->
@@ -175,17 +184,20 @@
     var CATALOG_LIST_PROC_URL = "/catalog/buildPackCatalogs";
     var CATEGORY_LIST_PROC_URL = "/code/codeDetail";  //공통코드 메인페이지로 이동한다.??
     var BUILD_PACK_LIST_PROC_URL = "/buildPack/buildpacks";
-    var DUPLICATED_PROC_URL = "/catalog/getBuildPackCatalogCount";
-    var INSERT_PROC_URL = "'/catalog/insertBuildPackCatalog";
+    //    var DUPLICATED_PROC_URL = "/catalog/getBuildPackCatalogCount";
+    var DUPLICATED_PROC_URL = "/catalog/buildpackCatalogs/count";
+    //    var INSERT_PROC_URL = "'/catalog/insertBuildPackCatalog";
+    var INSERT_PROC_URL = "/catalog/buildpackCatalogs";
     var UPDATE_PROC_URL = "/catalog/buildpackCatalogs/{no}";
-    var DELETE_PROC_URL = "/catalog/deleteBuildPackCatalog";
+    //    var DELETE_PROC_URL = "/catalog/deleteBuildPackCatalog";
+    var DELETE_PROC_URL = "/catalog/buildpackCatalogs/{no}";
     var CHECK_DELETE_PROC_URL = "/catalog/getCheckDeleteBuildPackCatalogCount";
     var UPLOAD_IMAGE_PROC_URL = "/catalog/uploadThumbnailImage";
     var DELETE_IMAGE_PROC_URL = "/catalog/deleteThumbnailImage";
     var UPLOAD_APP_SAMPLE_PROC_URL = "/catalog/uploadAppSampleFile";
     var DELETE_APP_SAMPLE_PROC_URL = "/catalog/deleteAppSampleFile";
     var BUILD_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).BUILD_PACK_CATALOG_ID}]]*/ "";
-    var INSERT_FLAG = "<>";
+    var INSERT_FLAG = /*[[${INSERT_FLAG}]]*/ null;
     var CUD_U = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ "";
     var REQ_NO = /*[[${REQUEST_NO}]]*/ null;
 
@@ -343,8 +355,9 @@
         if ("" != insertFlag && CUD_U == insertFlag && reqName == orgName) {
             procUploadThumbnailImageFile({RESULT: RESULT_STATUS_SUCCESS});
         } else {
-            procCallAjax(DUPLICATED_PROC_URL, {name: reqName}, procUploadThumbnailImageFile);
+            procCallAjax2(DUPLICATED_PROC_URL, "GET", {name: reqName}, procUploadThumbnailImageFile);
         }
+        alert(DUPLICATED_PROC_URL);
     };
 
     // PROCESS CHECK VALID
@@ -472,10 +485,13 @@
     var procCheckDelete = function () {
         $('div.modal').modal('toggle');
 
+        console("##procCheckDelete in##");
+
         var reqNo = REQ_NO;
         if (null == reqNo || "" == reqNo) return false;
 
         procCallAjax(CHECK_DELETE_PROC_URL, {no: reqNo}, procDelete);
+        console("##procCheckDelete in##");
     };
 
 
@@ -488,7 +504,8 @@
 
         document.getElementById('thumbImgPath').value = '';
 
-        procCallAjax(DELETE_PROC_URL, {no: REQ_NO}, procCallbackDelete);
+        alert(DELETE_PROC_URL);
+        procCallAjax2(DELETE_PROC_URL, "DELETE", {no: REQ_NO}, procCallbackDelete);
     };
 
 
@@ -702,6 +719,7 @@
     // BIND :: BUTTON EVENT
     $("#btnDelete").on("click", function () {
         procPopup('카탈로그', DELETE_MESSAGE, 'procCheckDelete();');
+        console.log("##btnDelete##");
     });
 
 
