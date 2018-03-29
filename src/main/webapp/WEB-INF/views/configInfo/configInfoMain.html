@@ -44,52 +44,32 @@
             });
         }
 
-        function initmodal(name, value)
+        function initmodal(Titlename, urlname, value)
         {
-            $("#urlname").html(name);
-            if(name == "API URL")
-            {
-                name = "api_url";
-            }
-            else if(name == "UAA URL")
-            {
-                name = "uaa_url ";
-            }
-            else if(name == "사용자포탈 URL")
-            {
-                name = "user_portal_url";
-            }
-            else if(name == "SMTP URL")
-            {
-                name = "smtp_url";
-            }
-            else if(name == "WEB IDE URL")
-            {
-                name = "web_ide_url";
-            }
-            getValue(name);
+            $("#titlename").html(Titlename);
+            $("#urlname").html(urlname);
+            getValue(urlname);
             $("#aftername").html(value);
         }
 
 
         function updateValue(name, value){
-
             if (0 != value.length) {
                 if (0 == value.replace(/ /g,"").length) {
                     $('#' + name).focus();
-                    procAlert("warning", '#{common.info.empty.req.data}');
+                    procAlert("warning", /*[[#{common.info.empty.req.data}]]*/ "");
                     return false;
                 }
 
                 if (value.includes(' ')) {
                     $('#' + name).focus();
-                    procAlert("warning",'#{common.url.validation.error.message}');
+                    procAlert("warning",/*[[#{common.url.validation.error.message}]]*/ "");
                     return false;
                 }
                 if(name!='smtp_url'){
                     if (!procCheckValidUrl(value)) {
                         $('#' + name).focus();
-                        procAlert("warning", '#{common.url.validation.error.message}');
+                        procAlert("warning", /*[[#{common.url.validation.error.message}]]*/ "");
                         return false;
                     }
                 }
@@ -147,7 +127,7 @@
                             <td width="10%" style="vertical-align: middle" align="center">API 내용</td>
                             <td width="70%" style="vertical-align: middle"><input type="text" maxlength="200" name="api_url" id="api_url" class="form-control"/></td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('API URL', $('#api_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('API URL','api_url', $('#api_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
                             </td>
                         </tr>
                         </tbody></table>
@@ -167,7 +147,7 @@
                             </td>
                             <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="uaa_url" id="uaa_url" size="150" class="form-control"/></td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('UAA URL', $('#uaa_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('UAA URL','uaa_url', $('#uaa_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
                             </td>
                         </tr>
                         </tbody></table>
@@ -187,7 +167,7 @@
                             </td>
                             <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="user_portal_url" id="user_portal_url" size="150" class="form-control"/></td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('사용자포탈 URL', $('#user_portal_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('사용자포탈 URL','user_portal_url', $('#user_portal_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
                             </td>
                         </tr>
                         </tbody></table>
@@ -207,7 +187,7 @@
                             </td>
                             <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="smtp_url" id="smtp_url" size="150" class="form-control"/></td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('SMTP URL', $('#smtp_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('SMTP URL', 'smtp_url',$('#smtp_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
                             </td>
                         </tr>
                         </tbody></table>
@@ -230,7 +210,7 @@
                                 <input type="text" maxlength="300" name="web_ide_url" id="web_ide_url" size="150" class="form-control"/>
                             </td>
                             <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('WEB IDE URL', $('#web_ide_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('WEB IDE URL','web_ide_url', $('#web_ide_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
                             </td>
                         </tr>
                         </tbody></table>
@@ -247,7 +227,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span></button>
-                            <h3 class="modal-title" id="urlname">Default Modal</h3>
+                            <h3 class="modal-title" id="titlename">Default Modal</h3><h3 id="urlname" style="display: none" ></h3>
                         </div>
                         <div></div>
                         <div class="modal-body">
@@ -258,7 +238,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal" >취소</button>
-                            <button type="button" class="btn btn-primary" onClick="updateValue($('#modaltitle').text(), $('#modalbody').text())" data-dismiss="modal">저장</button>
+                            <button type="button" class="btn btn-primary" onClick="updateValue($('#urlname').text(), $('#aftername').text())" data-dismiss="modal">저장</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
