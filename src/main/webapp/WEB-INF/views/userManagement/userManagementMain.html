@@ -284,16 +284,6 @@
             }
             return true;
         };
-
-
-        // CHECK SEARCH FORM KEY EVENT
-        var procCheckSearchFormKeyEvent = function(e) {
-            if (e.keyCode==13 && e.srcElement.type != 'textarea') {
-               getUserSearch();
-            }
-        };
-
-
         // INIT PAGE
         var procInitPage = function() {
             procAlert("info", WELCOME_MESSAGE);
@@ -323,7 +313,7 @@
                   <div class="box-header">
                   <div class="box-tools">
                       <div class="input-group input-group-sm" style="width: 150px;">
-                          <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="searchKeyword" onkeypress="procCheckSearchFormKeyEvent(event);"/>
+                          <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="searchKeyword" onkeyup="getUserSearch()"/>
                           <div class="input-group-btn" >
                               <button type="submit"  id="btnSearch" class="btn btn-default" onclick="getUserSearch()"><i class="fa fa-search"></i></button>
                           </div>
