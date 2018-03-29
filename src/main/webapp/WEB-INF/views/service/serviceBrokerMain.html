@@ -9,7 +9,7 @@
     <aside>/</aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div layout:fragment="content" class="content-wrapper">
+    <div layout:fragment="content" class="content-wrapper" >
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -28,7 +28,7 @@
                             <h3 class="box-title"></h3>
 
                             <div class="col-xs-2 col-xs-push-10">
-                                <button type="button" class="btn btn-block btn-primary btn-sm " data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceBroker-form">
+                                <button type="button" id="register" class="btn btn-block btn-primary btn-sm " data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceBrokerModal">
                                     등록
                                 </button>
                             </div>
@@ -63,14 +63,17 @@
             </div>
 
             <!-- Modal Layer-->
-            <div class="modal fade" id="serviceBroker-form" style="display: none;">
+            <div class="modal fade" id="serviceBrokerModal" style="display: none;" >
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span></button>
 
-                            <h4 class="modal-title">서비스 브로커 등록</h4>
+                            <h4 class="modal-title">
+                                <div id="titleReg">서비스 브로커 등록</div>
+                                <div id="titleDetail">서비스 브로커 상세</div>
+                            </h4>
                         </div>
                         <div class="modal-body">
 
@@ -78,51 +81,73 @@
                                 <!--<div class="box-header"></div>-->
                                 <!-- /.box-header -->
                                 <!-- form start -->
-                                <form class="form-horizontal">
+                                <form id="serviceBrokerForm" class="form-horizontal">
                                     <div class="box-body" style="padding: 0px">
 
                                         <div class="form-group">
                                             <label for="name" class="col-sm-2 control-label"><div class="word-break:normal,break-word;">서비스 브로커 이름</div></label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="name" placeholder="ex) rabbitmq-service-broker"/>
+                                                <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) rabbitmq-service-broker"/>
+                                                <input type="hidden" id="guid"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="username" class="col-sm-2 control-label">사용자 이름</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="username" placeholder="ex) admin"/>
+                                                <input type="text" class="form-control toCheckString" id="username" name="username" placeholder="ex) admin"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="password" class="col-sm-2 control-label">사용자 패스워드</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="password" placeholder="ex) admin"/>
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="url" class="col-sm-2 control-label">URL 정보</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="url" placeholder="ex) http://10.30.40.81:4567"/>
+                                                <input type="text" class="form-control toCheckString" id="url" name="url" placeholder="ex) http://10.30.40.81:4567"/>
                                             </div>
                                         </div>
-
                                     </div>
                                 </form>
                             </div>
 
                         </div>
                         <div class="modal-footer" style="border-top: 0px">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">삭제</button>
                             <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
-                            <button type="button" class="btn btn-sm btn-primary" onClick="createServiceBroker()">등록</button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary" data-dismiss="modal" onClick="updateServiceBroker();">저장</button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary" onClick="createServiceBroker();">등록</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
                 </div>
                 <!-- /.modal-dialog -->
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="serviceBrokerConfirmModal">
+                <div class="modal-dialog" style="width: 650px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
+                            <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" id="popupCancelButtonText"
+                                    onclick="procClosePopup('serviceBrokerConfirmModal');"> 취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Modal Layer-->
 
@@ -139,13 +164,35 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var serviceBrokerName = /*[[${name}]]*/ 'empty';
+    var serviceBrokerGuid = /*[[${guid}]]*/ 'empty';
 
 
     $(document).ready(function () {
-        getServiceBrokerList();
 
+        init();
+
+        $('#register').click(function(){
+
+            $('#titleDetail').hide();
+            $('#deleteBtn').hide();
+            $('#saveBtn').hide();
+
+            $('#titleReg').show();
+            $('#regBtn').show();
+            $('#closeBtn').show();
+
+            $("#name").val("");
+            $("#username").val("");
+            $("#password").val("");
+            $("#url").val("");
+            $("#guid").val("");
+        });
     });
+
+    function init(){
+        getServiceBrokerList();
+        $('#serviceBrokerModal').modal('hide');
+    }
 
     function getServiceBrokerList() {
 
@@ -157,25 +204,37 @@
             success: function (data) {
 
                 if (data.list) {
-                    var n = 0;
+                    $("#serviceBrokerList").html("");
+
                     $.each(data.list, function (id, data) {
 
                         $("#serviceBrokerList").append(" <tr class='table table-striped table-hover t1' style='cursor:pointer;'" +
-                                " onclick='javascript:getServiceBroker(\""+data.name+"\");'>" +
-                                "<td class='col-md-1' align='left'>" + data.name + "</td>" +
-                                "<td class='col-md-1' align='left'>" + data.url + "</td>"
+                                " onclick='javascript:getServiceBroker(\""+data.metadata.guid+"\");'>" +
+                                "<td class='col-md-1' align='left'>" + data.entity.name + "</td>" +
+                                "<td class='col-md-1' align='left'>" + data.entity.broker_url + "</td>"
                         );
 
+                    });
+
+                    $('.col-md-1').click(function(){
+
+                        $('#titleDetail').show();
+                        $('#deleteBtn').show();
+                        $('#saveBtn').show();
+
+                        $('#titleReg').hide();
+                        $('#regBtn').hide();
+                        $('#closeBtn').hide();
                     });
                 }
             }
         });
     }
 
-    function getServiceBroker(serviceBrokerName) {
+    function getServiceBroker(guid) {
 
         var param = {
-            name: serviceBrokerName
+            guid: guid,
         }
 
         $.ajax({
@@ -188,14 +247,15 @@
 
                 if (data.servicebroker) {
 
-                    $("#name").val(data.servicebroker.name);
-                    $("#username").val(data.servicebroker.username);
-                    $("#password").val(data.servicebroker.password);
-                    $("#url").val(data.servicebroker.url);
-
+                    $("#name").val(data.servicebroker.entity.name);
+                    $("#username").val(data.servicebroker.entity.auth_username);
+                    $("#password").val("");
+                    $("#url").val(data.servicebroker.entity.broker_url);
+                    $("#guid").val(data.servicebroker.metadata.guid);
                 }
 
-                $('div.modal').modal('toggle');
+                //$('div.modal').modal('toggle');
+                $('#serviceBrokerModal').modal('toggle');
             }
         });
     }
@@ -203,60 +263,30 @@
 
     function updateServiceBroker() {
 
-        if (!procCheckValidStringSpace()) return false;
+        var guid = $('#guid').val();
+
+        if (!procCheckValidStringSpace()){return false;}
 
         var param = {
-            name: serviceBrokerName,
+            guid: guid,
+            name: $("#name").val(),
             username: $("#username").val(),
             password: $("#password").val(),
             url: $("#url").val()
         }
 
         $.ajax({
-            url: "/service/updateServiceBroker",
-            method: "POST",
+            url: "/service/service_brokers/"+guid,
+            method: "PUT",
             data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
                 if (data) {
                     procAlert("success", /*[[#{service.update.result.success}]]*/ "");
-                    location.href = "/service/serviceBrokerMain";
-                }
-            },
-            error: function (xhr, status, error) {
-                procAlert('warning', "");
-            }
-
-        });
-
-    }
-
-
-    function renameServiceBroker() {
-
-        var objName = $("#name");
-        var reqName = objName.val();
-        if (!procCheckValidStringSpace(reqName)) {
-            procAlert('warning', /*[[#{service.validation.error}]]*/ "");
-            objName.focus();
-        } return false;
-
-        var param = {
-            name: serviceBrokerName,
-            newName: reqName
-        }
-
-        $.ajax({
-            url: "/service/renameServiceBroker",
-            method: "POST",
-            data: JSON.stringify(param),
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                if (data) {
-                    serviceBrokerName = reqName;
-                    procAlert("success", /*[[#{service.rename.result.success}]]*/ "");
+                    //location.href = "/service/serviceBrokerMain";
+                    //$('div.modal').modal('hide');
+                    init();
                 }
             },
             error: function (xhr, status, error) {
@@ -267,34 +297,32 @@
 
     }
 
-
     function deleteServiceBrokerModal() {
 
         $("#popupTitle").html("서비스 브로커 삭제");
-        $("#popupMessage").html("" + serviceBrokerName + " " + /*[[#{service.delete.confirm}]]*/ "");
+        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{service.delete.confirm}]]*/ "");
         $("#popupButtonText").text("삭제");
         $("#popupButtonText").show();
         $('#popupButtonText').attr('onclick', "deleteServiceBroker();");
 
-        $('div.modal').modal('toggle');
+        //$('div.modal').modal('toggle');
+        $('#serviceBrokerConfirmModal').modal('toggle');
     }
 
     function deleteServiceBroker() {
 
-        var param = {
-            name: serviceBrokerName
-        }
+        var guid = $('#guid').val();
 
         $.ajax({
-            url: "/service/deleteServiceBroker",
-            method: "POST",
-            data: JSON.stringify(param),
+            url: "/service/service_brokers/"+guid,
+            method: "DELETE",
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
                 if (data) {
                     procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
-                    location.href = "/service/serviceBrokerMain";
+                    //location.href = "/service/serviceBrokerMain";
+                    init();
                 }
             },
 
@@ -303,16 +331,15 @@
             },
 
             complete: function (data) {
-                $('div.modal').modal('hide');
+                //$('div.modal').modal('hide');
+                $('#serviceBrokerModal').modal('hide');
             }
         });
     }
 
     function createServiceBroker() {
 
-        if (!procCheckValidStringSpace()){
-            return false;
-        }
+        if (!procCheckValidStringSpace()){return false;}
 
         var param = {
             name: $("#name").val(),
@@ -322,15 +349,16 @@
         }
 
         $.ajax({
-            url: "/service/createServiceBroker",
+            url: "/service/service_brokers",
             method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    location.href = "/service/serviceBrokerMain";
+                    //location.href = "/service/serviceBrokerMain";
                     procAlert("success", /*[[#{service.insert.result.success}]]*/ "");
+                    init();
                 }
             },
             error: function (xhr, status, error) {
@@ -338,8 +366,8 @@
             }
 
         });
-
     }
+
 
     /*]]>*/
 </script>

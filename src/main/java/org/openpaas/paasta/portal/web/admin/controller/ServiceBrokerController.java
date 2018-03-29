@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 서비스 브로커 관리 컨트롤러 - 서비스 브로커를 관리하는 컨트롤러이다.
@@ -78,10 +79,10 @@ public class ServiceBrokerController extends Common {
      */
     @RequestMapping(value = {"/service/service_brokers"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker, @RequestParam(value="name", required = false, defaultValue = "") String serviceName) {
+    public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker, @RequestParam(value="guid", required = false, defaultValue = "") String guid) {
 
-        if(!serviceName.equals("")){
-            return commonService.procCfApiRestTemplate("/service/service_brokers?name="+serviceName, HttpMethod.GET, serviceBroker, this.getToken());
+        if(!guid.equals("")){
+            return commonService.procCfApiRestTemplate("/service/service_brokers?guid="+guid, HttpMethod.GET, serviceBroker, this.getToken());
         }else{
             return commonService.procCfApiRestTemplate("/service/service_brokers", HttpMethod.GET, serviceBroker, this.getToken());
         }
@@ -90,32 +91,17 @@ public class ServiceBrokerController extends Common {
 
     }
 
-//    /**
-//     * 서비스 브로커를 조회한다.
-//     *
-//     * @param serviceBroker serviceBroker
-//     * @return ModelAndView model
-//     */
-//    @RequestMapping(value = {"/service/service_brokers"}, method = RequestMethod.GET)
-//    @ResponseBody
-//    public Map<String, Object> getServiceBroker(@ModelAttribute ServiceBroker serviceBroker, @RequestParam("name") String serviceName) {
-//
-//        return commonService.procCfApiRestTemplate("/service_brokers?name="+serviceName, HttpMethod.GET, serviceBroker, this.getToken());
-//
-//    }
-
-
     /**
      * 서비스 브로커를 등록한다..
      *
      * @param serviceBroker the serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/service/createServiceBroker"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/service/service_brokers"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> createServiceBroker(@RequestBody ServiceBroker serviceBroker) {
 
-        return commonService.procCfApiRestTemplate("/service/createServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate("/service/service_brokers", HttpMethod.POST, serviceBroker, this.getToken());
     }
 
 
@@ -125,43 +111,27 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker the serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/service/updateServiceBroker"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/service/service_brokers/{guid}"}, method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, Object> updateServiceBroker(@RequestBody ServiceBroker serviceBroker) {
+    public Map<String, Object> updateServiceBroker(@RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
 
-        return commonService.procCfApiRestTemplate("/service/updateServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate("/service/service_brokers/guid="+guid, HttpMethod.PUT, serviceBroker, this.getToken());
     }
 
 
     /**
      * 서비스 브로커를 삭제한다.
      *
-     * @param serviceBroker the serviceBroker
-     * @return ModelAndView model
+     * @param guid the serviceBroker guid
+     * @return Map <String, Object>
      */
-    @RequestMapping(value = {"/service/deleteServiceBroker"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/service/service_brokers/{guid}"}, method = RequestMethod.DELETE)
     @ResponseBody
-    public Map<String, Object> deleteServiceBroker(@RequestBody ServiceBroker serviceBroker) {
+    public Map<String, Object> deleteServiceBroker(@PathVariable String guid ) {
 
-        return commonService.procCfApiRestTemplate("/service/deleteServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate("/service/service_brokers/"+guid, HttpMethod.DELETE, null, this.getToken());
 
     }
-
-
-    /**
-     * 서비스 브로커 이름을 수정한다.
-     *
-     * @param serviceBroker the serviceBroker
-     * @return ModelAndView model
-     */
-    @RequestMapping(value = {"/service/renameServiceBroker"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> renameServiceBroker(@RequestBody ServiceBroker serviceBroker) {
-
-        return commonService.procCfApiRestTemplate("/service/renameServiceBroker", HttpMethod.POST, serviceBroker, this.getToken());
-
-    }
-
 
 }
 
