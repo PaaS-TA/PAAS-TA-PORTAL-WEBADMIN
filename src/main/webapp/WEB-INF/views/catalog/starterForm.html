@@ -9,7 +9,8 @@
     <aside>/</aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div layout:fragment="content" class="content-wrapper" th:with="UPDATE_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}, INSERT_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C} ">
+    <div layout:fragment="content" class="content-wrapper"
+         th:with="UPDATE_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}, INSERT_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C} ">
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -42,23 +43,28 @@
                                         <i class="fa fa-fw fa-check-square-o"></i>
                                         <label for="starterName">이름</label>
                                         <input type="text" class="form-control" id="starterName"/>
-                                    </div><br/>
+                                    </div>
+                                    <br/>
 
                                     <div class="form-group">
                                         <i class="fa fa-fw fa-check-square-o"></i>
                                         <label for="categoryList">분류</label>
-                                        <select class="form-control" id="categoryList" style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
+                                        <select class="form-control" id="categoryList"
+                                                style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
                                             <!--Category Area-->
                                         </select>
-                                    </div><br/>
+                                    </div>
+                                    <br/>
 
                                     <div class="form-group">
                                         <i class="fa fa-fw fa-check-square-o"></i>
                                         <label for="buildPackList">앱 개발환경</label>
-                                        <select class="form-control" id="buildPackList" style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
+                                        <select class="form-control" id="buildPackList"
+                                                style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
                                             <!--build pack area-->
                                         </select>
-                                    </div><br/>
+                                    </div>
+                                    <br/>
 
 
                                     <div class="row invoice-info">
@@ -66,41 +72,55 @@
                                         <label for="servicePackList">서비스</label><br/>
 
                                         <div class="col-sm-5" style="width: 45.2%">
-                                            <select multiple="" class="form-control" id="servicePackList" name="servicePackList" style="height: 90px; line-height: 90px;">
+                                            <select multiple="" class="form-control" id="servicePackList"
+                                                    name="servicePackList" style="height: 90px; line-height: 90px;">
                                             </select>
                                         </div>
 
                                         <div class="col-sm-1" style="text-align:center; margin:20px 1.0% 0px 0.0%;">
-                                            <div><span type="button" class="glyphicon glyphicon-chevron-right" style="font-size:22px;color:#ababab; cursor: pointer;"
-                                                       onClick="SelectMoveRows(document.starterForm.servicePackList, document.starterForm.selectedServicePackList)"></span></div>
-                                            <div><span type="button" class="glyphicon glyphicon-chevron-left" style="font-size:22px;color:#818181; cursor: pointer;"
-                                                       onClick="SelectMoveRows(document.starterForm.selectedServicePackList, document.starterForm.servicePackList)"></span></div>
+                                            <div><span type="button" class="glyphicon glyphicon-chevron-right"
+                                                       style="font-size:22px;color:#ababab; cursor: pointer;"
+                                                       onClick="SelectMoveRows(document.starterForm.servicePackList, document.starterForm.selectedServicePackList)"></span>
+                                            </div>
+                                            <div><span type="button" class="glyphicon glyphicon-chevron-left"
+                                                       style="font-size:22px;color:#818181; cursor: pointer;"
+                                                       onClick="SelectMoveRows(document.starterForm.selectedServicePackList, document.starterForm.servicePackList)"></span>
+                                            </div>
                                         </div>
 
                                         <div class="col-sm-5" style="width: 45.2%">
-                                            <select multiple="" class="form-control" id="selectedServicePackList" name="selectedServicePackList" style="height: 90px; line-height: 90px;">
+                                            <select multiple="" class="form-control" id="selectedServicePackList"
+                                                    name="selectedServicePackList"
+                                                    style="height: 90px; line-height: 90px;">
                                             </select>
                                         </div>
-                                    </div><br/>
+                                    </div>
+                                    <br/>
 
                                     <div class="form-group">
                                         <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="thumbnail"> 썸네일(50X50)</label><p/>
+                                        <label for="thumbnail"> 썸네일(50X50)</label>
+                                        <p/>
                                         <input type="file" id="thumbnail"/>
-                                    </div><p/><br/>
+                                    </div>
+                                    <p/><br/>
 
                                     <div class="form-group">
                                         <i class="fa fa-fw fa-check-square-o"></i>
                                         <label for="useYn">공개여부</label><br/>
-                                        <label class="radio-inline"><input type="radio" id="useYn" name="useYn" value="Y" checked="checked"/>Y</label>
-                                        <label class="radio-inline"><input type="radio" name="useYn" value="N"/>N</label>
-                                    </div><br/>
+                                        <label class="radio-inline"><input type="radio" id="useYn" name="useYn"
+                                                                           value="Y" checked="checked"/>Y</label>
+                                        <label class="radio-inline"><input type="radio" name="useYn"
+                                                                           value="N"/>N</label>
+                                    </div>
+                                    <br/>
 
                                     <div class="form-group">
                                         <i class="fa fa-fw fa-check-square-o"></i>
                                         <label for="summary">요약</label>
                                         <input type="text" class="form-control" id="summary"/>
-                                    </div><br/>
+                                    </div>
+                                    <br/>
 
                                     <div class="form-group">
                                         <i class="fa fa-fw fa-check-square-o"></i>
@@ -109,46 +129,57 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="col-sm-offset-1 col-sm-9 " align="right" id = "statusActivity">
-                                            <div class="divButtons" style="width:97.8%;">
-                                                    <choose>
-                                                        <p th:when="test=${insertFlag == CONSTANT_CUD}">
-                                                            <button type="button" class="btn btn_del btn-primary btn-sm" id="btnDelete">삭제</button>
-                                                            <button type="button" class="btn btn-cancel btn-default btn-sm pull-left" id="btnCancel">취소</button>
-                                                            <button type="button" class="btn btn-save btn-primary btn-sm" id="btnRegist">저장</button>
-                                                        </p><!--btn-primary : 버튼 파란색  btn-sm : 글씨 작게 -->
-                                                        <th:otherwise>
-                                                            <button type="button" class="btn btn-cancel btn-default btn-sm pull-left" id="btnCancel">취소</button>
-                                                            <button type="button" class="btn btn-save btn-primary btn-sm " id="btnRegist">등록</button>
-                                                        </th:otherwise>
-                                                    </choose>
+                                        <div class="form-horizontal" align="right" id="statusActivity">
+                                            <div class="divButtons">
+                                                <div>
+                                                    <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
+                                                        <button type="button" class="btn btn-cancel btn-default btn-sm pull-left label-danger"
+                                                                id="btnDelete">삭제
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn btn-cancel btn-default btn-sm"
+                                                                id="btnCancel">취소
+                                                        </button>
+                                                        <button type="button" class="btn btn-save btn-primary btn-sm"
+                                                                id="btnRegist">저장
+                                                        </button>
+                                                    </div>
+                                                    <div th:if=" ${INSERT_FLAG} == ${INSERT_CD} ">
+                                                        <button type="button"
+                                                                class="btn btn-cancel btn-default btn-sm"
+                                                                id="btnCancel">취소
+                                                        </button>
+                                                        <button type="button" class="btn btn-save btn-primary btn-sm"
+                                                                id="btnRegist">등록
+                                                        </button>
+                                                    </div>
+                                                </div>
+
                                             </div>
+
                                         </div>
                                     </div>
-
                                 </div>
-                                <!--starterForm-->
-                                <input type="hidden" id="resInsertFlag" name="resInsertFlag" th:value="${INSERT_FLAG}"/>
-                                <input type="hidden" id="resCudU" name="resCudU" th:value="${CONSTANT_CUD}"/>
-
-                                <input type="hidden" id="oldThumbImgPath" name="oldThumbImgPath" value="" />
-
-                                <input type="hidden" id="thumbImgPath" name="thumbImgPath" value="" />
-                                <input type="hidden" id="thumbImgName" name="thumbImgName" value="" />
-                                <input type="hidden" id="no" name="no" th:value="${REQUEST_NO}"/>
-                            </form>
-                            <!--<div class="box-body">-->
-                        </div>
+                        <!--starterForm-->
+                        <input type="hidden" id="resInsertFlag" name="resInsertFlag" value="${INSERT_FLAG}"/>
+                        <input type="hidden" id="resCudU" name="resCudU" value="'${CONSTANT_CUD}"/>
+                        <input type="hidden" id="oldThumbImgPath" name="oldThumbImgPath" value=""/>
+                        <input type="hidden" id="thumbImgPath" name="thumbImgPath" value=""/>
+                        <input type="hidden" id="thumbImgName" name="thumbImgName" value=""/>
+                        <input type="hidden" id="no" name="no" value="${REQUEST_NO}"/>
+                        </form>
+                        <!--<div class="box-body">-->
                     </div>
-                    <!-- ▼row: 12  <div class="tab-content no-padding">-->
                 </div>
+                <!-- ▼row: 12  <div class="tab-content no-padding">-->
             </div>
-        </section>
-        <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
 
-    <footer></footer>
+<footer></footer>
 
 </div>
 <!-- ./wrapper -->
@@ -158,7 +189,7 @@
     var CATEGORY_HOME_URL = "/catalog/catalogMain";
     var CATEGORY_LIST_PROC_URL = "/commonCode/getCommonCode";
 
-    var INSERT_FLAG =  "";
+    var INSERT_FLAG = "";
     var DELETE_FLAG = false;
 
     var STARTER_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CATALOG_ID}]]*/ "";
@@ -170,7 +201,7 @@
     var INSERT_PROC_URL = "/catalog/insertStarterCatalog";
     var DUPLICATED_PROC_URL = "/catalog/getStarterCatalogCount";
     var UPDATE_PROC_URL = "/catalog/updateStarterCatalog";
-//    var DELETE_PROC_URL = "/catalog/deleteStarterCatalog";
+    //    var DELETE_PROC_URL = "/catalog/deleteStarterCatalog";
 
     var DELETE_PROC_URL = "/catalog/buildpackCatalogs";
 
@@ -211,15 +242,15 @@
         }
 
         param = {
-            name : starterName,
-            classification : categoryList,
-            thumbImgName : thumbname,
-            thumbImgPath : thumbpath,
-            useYn : useYn,
-            summary : summary,
-            description : description,
-            buildPackCategoryNo : buildPackList,
-            servicePackCategoryNoList : selectedServicePackList
+            name: starterName,
+            classification: categoryList,
+            thumbImgName: thumbname,
+            thumbImgPath: thumbpath,
+            useYn: useYn,
+            summary: summary,
+            description: description,
+            buildPackCategoryNo: buildPackList,
+            servicePackCategoryNoList: selectedServicePackList
         };
 
 
@@ -231,8 +262,8 @@
             var no = /*${REQUEST_NO}*/"";
 
             param2 = {
-                no : no,
-                starterCategoryNo : no
+                no: no,
+                starterCategoryNo: no
             }
             $.extend(param, param2);
             procCallAjax(UPDATE_PROC_URL, param, procCallbackCRUDStarterCatalog);
@@ -259,40 +290,40 @@
 
     /*<-CRUD*/
 
-   // PROCESS CHECK VALID
-    var procCheckValid = function() {
+    // PROCESS CHECK VALID
+    var procCheckValid = function () {
 
-            // starter name
-            var starterName = $('#starterName').val();
-            if (starterName == '') {
-                procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
-                $('#starterName').focus();
-                return false;
-            }
+        // starter name
+        var starterName = $('#starterName').val();
+        if (starterName == '') {
+            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            $('#starterName').focus();
+            return false;
+        }
 
-            // service pack list
-            var reqServicePack = [];
-            var getList = document.getElementById("selectedServicePackList");
-            for (var i = 0; i < getList.length; i++) {
-                reqServicePack[i] = getList.options[i].value;
-            }
+        // service pack list
+        var reqServicePack = [];
+        var getList = document.getElementById("selectedServicePackList");
+        for (var i = 0; i < getList.length; i++) {
+            reqServicePack[i] = getList.options[i].value;
+        }
 
-            if (reqServicePack == '') {
-                procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
-                $('#selectedServicePackList').focus();
-                return false;
-            }
+        if (reqServicePack == '') {
+            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            $('#selectedServicePackList').focus();
+            return false;
+        }
 
-            // summart
-            var summary = $('#summary').val();
-            if (summary == '') {
-                procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
-                $('#summary').focus();
-                return false;
-            }
+        // summart
+        var summary = $('#summary').val();
+        if (summary == '') {
+            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            $('#summary').focus();
+            return false;
+        }
 
-            return true;
-        };
+        return true;
+    };
 
 
     // PROCESS CHECK DUPLICATED NAME
@@ -336,28 +367,28 @@
     }
 
     // UPLOAD FILE
-    var uploadFile = function(formData) {
+    var uploadFile = function (formData) {
         $.ajax({
-            url : IMAGE_UPLOAD_PROC_URL
-            , method : "POST"
-            , processData : false
-            , contentType : false
-            , data : formData
-            , dataType : "json"
-            , success : function(data){
+            url: IMAGE_UPLOAD_PROC_URL
+            , method: "POST"
+            , processData: false
+            , contentType: false
+            , data: formData
+            , dataType: "json"
+            , success: function (data) {
 
                 procCallbackUploadFile(data);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 procAlert("danger", JSON.parse(xhr.responseText).customMessage);
             },
-            complete : function(data) {
+            complete: function (data) {
             }
         });
     };
 
     // UPLOAD FILE CALLBACK
-    var procCallbackUploadFile = function(data) {
+    var procCallbackUploadFile = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
 
             $("#thumbImgPath").val(data.path);
@@ -374,9 +405,9 @@
     };
 
     // PREVIEW
-    var setPreView = function(objThumbnail) {
+    var setPreView = function (objThumbnail) {
         var this_form = objThumbnail[0];
-        var file    = this_form.files[0];
+        var file = this_form.files[0];
         var preview = $('#preview');
         var img_size = 0;
 
@@ -398,7 +429,7 @@
             // file 읽어 오기
             var reader = new FileReader();
 
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('#divPreviewMessage').attr('style', 'display: none;');
                 var image = new Image();
                 // 파일의 내용을 읽어서 넣어준다.
@@ -420,7 +451,8 @@
 
                     return false;
                 }
-                $('#divPreview').attr('style', 'display: block; height: 94px;');e
+                $('#divPreview').attr('style', 'display: block; height: 94px;');
+                e
                 preview.attr("src", e.target.result);
 
                 $("#labelThumbName").text(filename);
@@ -435,7 +467,7 @@
     };
 
     // RESET THUMBNAIL
-    var resetThumbnail = function() {
+    var resetThumbnail = function () {
         //    $('#thumbnail').filestyle('clear');
         $('#preview').attr('src', '');
         $("#labelThumbName").text('');
@@ -445,12 +477,12 @@
 
     };
 
-    var procDeleteFile = function() {
+    var procDeleteFile = function () {
         var oldPath = $("#oldThumbImgPath").val();
 
         if (oldPath != null || oldPath != '') {
             var param = {
-                thumbImgPath : oldPath
+                thumbImgPath: oldPath
             };
 
             procCallAjax(IMAGE_DELETE_PROC_URL, param, procCallbackDeleteFile);
@@ -458,7 +490,7 @@
         }
     };
 
-    var procCallbackDeleteFile = function(data) {
+    var procCallbackDeleteFile = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
             $("#oldThumbImgPath").val('');
         }
@@ -468,8 +500,8 @@
             var no = /*${REQUEST_NO}*/"";
 
             param = {
-                no : no,
-                starterCategoryNo : no
+                no: no,
+                starterCategoryNo: no
             }
             procCallAjax(DELETE_PROC_URL, param, procCallbackCRUDStarterCatalog);
 
@@ -488,10 +520,8 @@
     /*******************/
     /* .ready function */
     /*******************/
-    $(document.body).ready(function() {
-        param = {
-
-        };
+    $(document.body).ready(function () {
+        param = {};
 
         if (INSERT_FLAG == "<%= Constants.CUD_C %>") { // 등록
 
@@ -509,7 +539,7 @@
 
             if (reqNo != -1) {
                 param = {
-                    no : reqNo
+                    no: reqNo
                 }
                 procCallAjax(GET_PROC_URL, param, procCallbackGetOneStarter);
 
@@ -518,7 +548,7 @@
         // init Thumbnail
         resetThumbnail();
 
-        $("#hiddenThumbnail").on("change", function(){
+        $("#hiddenThumbnail").on("change", function () {
             setPreView($(this));
         });
 
@@ -545,7 +575,7 @@
 
         } else {
             $('#divPreview').attr('style', 'display: block; height: 94px;');
-            $('#preview').attr('src', IMAGE_PATH_PREFIX+$("#thumbImgPath").val());
+            $('#preview').attr('src', IMAGE_PATH_PREFIX + $("#thumbImgPath").val());
         }
 
         var useYnValue = data.info.useYn;
@@ -567,16 +597,16 @@
     var procCallbackGetBuildPackNamesList = function (data) {
 
         if (buildPackCategoryNoFromDB == -1) {  // 등록
-            for (var i = 0; i < data.list.length; i ++) {
-                $("#buildPackList").append("<option value='"+data.list[i].no+"'> "+data.list[i].name+" </option>");
+            for (var i = 0; i < data.list.length; i++) {
+                $("#buildPackList").append("<option value='" + data.list[i].no + "'> " + data.list[i].name + " </option>");
             }
         }
         else {                                   // 상세
-            for (var i = 0; i < data.list.length; i ++) {
+            for (var i = 0; i < data.list.length; i++) {
                 if (data.list[i].no == buildPackCategoryNoFromDB)
-                    $("#buildPackList").append("<option value='"+data.list[i].no+"' selected='selected'> "+data.list[i].name+" </option>");
+                    $("#buildPackList").append("<option value='" + data.list[i].no + "' selected='selected'> " + data.list[i].name + " </option>");
                 else
-                    $("#buildPackList").append("<option value='"+data.list[i].no+"'> "+data.list[i].name+" </option>");
+                    $("#buildPackList").append("<option value='" + data.list[i].no + "'> " + data.list[i].name + " </option>");
             }
         }
     }
@@ -584,13 +614,13 @@
     var procCallbackGetServicePackNamesList = function (data) {
 
         if (servicePackCategoryNoListFromDB == null) { // 등록
-            for (var i = 0; i < data.list.length; i ++) {
-                $("#servicePackList").append("<option value='"+data.list[i].no+"'> "+data.list[i].name+" </option>");
+            for (var i = 0; i < data.list.length; i++) {
+                $("#servicePackList").append("<option value='" + data.list[i].no + "'> " + data.list[i].name + " </option>");
             }
         }
         else { // 상세
 
-            for (var i = 0; i < data.list.length; i ++) {
+            for (var i = 0; i < data.list.length; i++) {
 
                 if (servicePackCategoryNoListFromDB.includes(data.list[i].no)) {
                     $("#selectedServicePackList").append("<option value='" + data.list[i].no + "'> " + data.list[i].name + " </option>");
@@ -603,7 +633,7 @@
     }
 
     // GET CATEGORY LIST CALLBACK
-    var procCallbackCategoryList = function(data) {
+    var procCallbackCategoryList = function (data) {
 
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
@@ -623,42 +653,35 @@
     /************************************************************/
     /* service pack box moves 관련 (SelectMoveRows, SelectSort) */
     /************************************************************/
-    function SelectMoveRows(SS1,SS2)
-    {
-        var SelID='';
-        var SelText='';
+    function SelectMoveRows(SS1, SS2) {
+        var SelID = '';
+        var SelText = '';
         // Move rows from SS1 to SS2 from bottom to top
-        for (i=SS1.options.length - 1; i>=0; i--)
-        {
-            if (SS1.options[i].selected == true)
-            {
-                SelID=SS1.options[i].value;
-                SelText=SS1.options[i].text;
-                var newRow = new Option(SelText,SelID);
-                SS2.options[SS2.length]=newRow;
-                SS1.options[i]=null;
+        for (i = SS1.options.length - 1; i >= 0; i--) {
+            if (SS1.options[i].selected == true) {
+                SelID = SS1.options[i].value;
+                SelText = SS1.options[i].text;
+                var newRow = new Option(SelText, SelID);
+                SS2.options[SS2.length] = newRow;
+                SS1.options[i] = null;
             }
         }
         SelectSort(SS2);
     }
-    function SelectSort(SelList)
-    {
+    function SelectSort(SelList) {
 
-        var ID='';
-        var Text='';
-        for (x=0; x < SelList.length - 1; x++)
-        {
-            for (y=x + 1; y < SelList.length; y++)
-            {
-                if (SelList[x].value > SelList[y].value)
-                {
+        var ID = '';
+        var Text = '';
+        for (x = 0; x < SelList.length - 1; x++) {
+            for (y = x + 1; y < SelList.length; y++) {
+                if (SelList[x].value > SelList[y].value) {
                     // Swap rows
-                    ID=SelList[x].value;
-                    Text=SelList[x].text;
-                    SelList[x].value=SelList[y].value;
-                    SelList[x].text=SelList[y].text;
-                    SelList[y].value=ID;
-                    SelList[y].text=Text;
+                    ID = SelList[x].value;
+                    Text = SelList[x].text;
+                    SelList[x].value = SelList[y].value;
+                    SelList[x].text = SelList[y].text;
+                    SelList[y].value = ID;
+                    SelList[y].text = Text;
                 }
             }
         }
@@ -668,7 +691,7 @@
     /* Buttons */
     /***********/
     // BIND :: BUTTON EVENT
-    $("#btnRegist").on("click", function() {
+    $("#btnRegist").on("click", function () {
 
         // 이름 체크 -> 파일 체크 -> C/U 결정
         procCheckDuplicatedName();
@@ -676,20 +699,20 @@
     });
 
     // BIND :: BUTTON EVENT
-    $("#btnCancel").on("click", function() {
+    $("#btnCancel").on("click", function () {
         history.go(-1);
 //        procMovePage(CATEGORY_HOME_URL + "/" + /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}]]*/);
 //        procMovePage(CATEGORY_HOME_URL + "/<%= Constants.TAB_NAME_STARTER %>");
     });
 
     // BIND :: BUTTON EVENT
-    $("#btnDelete").on("click", function() {
+    $("#btnDelete").on("click", function () {
         DELETE_FLAG = true;
         procPopup('카탈로그', DELETE_MESSAGE, 'procDeleteFile();');
         $('#btnDelete').html("삭제");
     });
 
-    $("#btnResetImg").on("click", function() {
+    $("#btnResetImg").on("click", function () {
 
         $("#thumbImgPath").val('');
         $("#thumbImgName").val('');
