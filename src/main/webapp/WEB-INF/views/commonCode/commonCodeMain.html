@@ -2,7 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="../layout/default">
-<head></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXJ.css" th:href="@{/resources/axisj/ui/arongi/AXJ.css}"/>
+    <script type="text/javascript" src="/resources/axisj/lib/AXJ.js>" th:src="@{../../../resources/axisj/lib/AXJ.js}"></script>
+    <script type="text/javascript" src="/resources/axisj/lib/AXInput.js>" th:src="@{../../../resources/axisj/lib/AXInput.js}"></script>
+    <script type="text/javascript" src="/resources/axisj/lib/AXSelect.js>" th:src="@{../../../resources/axisj/lib/AXSelect.js}"></script>
+    <script type="text/javascript" src="/resources/axisj/lib/AXGrid.js>" th:src="@{../../../resources/axisj/lib/AXGrid.js}"></script>
+
+    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXInput.css" th:href="@{/resources/axisj/ui/arongi/AXInput.css}"/>
+    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXSelect.css" th:href="@{/resources/axisj/ui/arongi/AXSelect.css}"/>
+    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXGrid.css" th:href="@{/resources/axisj/ui/arongi/AXGrid.css}"/>
+
+</head>
 <body>
 <div>
     <header></header>
@@ -23,10 +34,26 @@
                     <div class="col-xs-12">
                         <div class="box box-default">
                             <!-- /.box-header -->
-                            <div class="box-body">
-                                <div class="row">
-                                    <div class="col-md-6">
+                            <div class="box box-default">
+                                <!-- /.box-header -->
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"><i class="fa fa-fw fa-search"></i>Search</h3>
+                                    <!-- [_]창)-->
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')"
+                                               aria-expanded="true"></a>
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="box-body">
+                                    <div class="content-box2 col-md-12 col-md-offset-13">
+                                        <!--<div class="row">-->
+                                        <!--<div class="col-md-6">-->
                                         <div class="selectbox select1">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
                                             <label for="searchType">사용여부</label>
                                             <select id="searchType" name="searchType"
                                                     class="form-control select2 select2-hidden-accessible"
@@ -37,10 +64,10 @@
                                                         th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
                                                     전체
                                                 </option>
-                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}">
+                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
                                                     사용
                                                 </option>
-                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}">
+                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}">
                                                     미사용
                                                 </option>
                                             </select>
@@ -51,6 +78,8 @@
                                         </span>
                                         </div>
                                         <div class="selectbox select2">
+                                            <p/>
+                                            <i class="fa fa-fw fa-check-square-o"></i>
                                             <label for="searchTypeColumn">검색유형</label>
                                             <select id="searchTypeColumn" name="searchTypeColumn"
                                                     class="form-control select2 select2-hidden-accessible"
@@ -58,14 +87,14 @@
                                                     tabindex="-1"
                                                     aria-hidden="true">
                                                 <option selected="selected"
-                                                         th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
-                                                전체
-                                            </option>
-                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_NAME}">
-                                                    코드 이름
+                                                        th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
+                                                    전체
                                                 </option>
-                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_VALUE}">
-                                                    Value
+                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}">
+                                                    코드이름
+                                                </option>
+                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_BUILD_PACK}">
+                                                    value
                                                 </option>
                                             </select>
                                             <span class="select2 select2-container select2-container--default select2-container--below"
@@ -74,10 +103,10 @@
                                         <span class="dropdown-wrapper" aria-hidden="true"></span>
                                         </span>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="selectbox select3">
+                                        <!--</div>-->
+                                        <div class="selectbox select4">
+                                            <p/>
+                                            <i class="fa fa-fw fa-check-square-o"></i>
                                             <label for="searchTypeColumn">검색어</label>
                                             <div class="box-tools">
                                                 <div class="input-group input-group-sm">
@@ -85,28 +114,66 @@
                                                            placeholder="검색어를 입력하세요"
                                                            onkeypress="procCheckSearchFormKeyEvent(event);"/>
                                                     <div class="input-group-btn">
-                                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                                        <button type="submit" id="btnSearch" class="btn btn-default"><i class="fa fa-search"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!--▼col-md-6 -->
+                                        <!--</div>-->
+                                        <!--▼row -->
+                                        <!--</div>-->
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- ▼탭 구현 설정 시작 -->
+
                         <section class="content">
                             <div class="row">
                                     <div class="box box-default">
                                         <div class="row">
                                             <!-- /.box-header -->
                                             <div class="box-body">
-                                             <!-- /.box-header end-->
+                                                <div class="panel content-box col-sm-12 col-md-12 mt-50 col-md-offset-13 w98">
+                                                    <div class="box">
+                                                        <div class="custom-boxL">
+
+                                                            <div class="clearfix custom-mb5">
+                                                                <div class="fr">
+                                                                    <button type="button" class="btn btn-cancel2 btn-sm" onclick="fnObj.append();">추가</button>
+                                                                    <button type="button" class="btn btn-save btn-sm" onclick="procSaveList(myGrid,
+                           'Constants.PROC_NAME_COMMON_CODE_GROUP');">저장</button>
+                                                                </div>
+                                                            </div>
+                                                            <div id="AXGridTarget">
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="custom-boxR">
+
+                                                            <div class="clearfix custom-mb5">
+                                                                <div class="fr">
+                                                                    <button type="button" class="btn btn-cancel2 btn-sm" onclick="fnObj2.append();">추가</button>
+                                                                    <button type="button" class="btn btn_del2 btn-sm" onclick="fnObj2.deleteListItem();">삭제</button>
+                                                                    <button type="button" class="btn btn-save btn-sm" onclick="procSaveList(myGrid2,
+                           'Constants.PROC_NAME_COMMON_CODE_DETAIL');">저장</button>
+
+                                                                </div>
+                                                            </div>
+                                                            <div id="AXGridTarget2">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                             </div>
                         </section>
+
                         <!-- 탭 구현설정 끝 -->
                         <!-- ▼row 12:설정 끝 -->
                     </div>
@@ -124,7 +191,896 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
     var error = /*[[${error}]]*/ null;
+    var LIST_PROC_URL = "/commonCode/getCommonCode";
+    var INSERT_PROC_URL = "/commonCode/insertCommonCode";
+    var UPDATE_PROC_URL = "/commonCode/updateCommonCode";
+    var DELETE_PROC_URL = "/commonCode/deleteCommonCode";
 
+    var GROUP_ID = "";
+    var LAST_USE_YN = "";
+    var LAST_CHECKED_LIST = [];
+    var EDIT_CELL_INDEX_GRID_01 = 0;
+    var EDIT_CELL_INDEX_GRID_02 = 0;
+var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/;
+
+
+    var myGrid = new AXGrid();
+    var fnObj = {
+        pageStart: function() {
+            myGrid.setConfig({
+                targetID : "AXGridTarget",
+                theme : "AXGrid",
+                fitToWidth: true,
+                colHeadAlign: "center",
+                height: "606",
+                colGroup : [
+                    {key:"id", label:"코드 ID", width:"150", tooltip:"true", formatter: function() {
+                        if ($('#orgId_' + this.index).length < 1) {
+                            var hiddenValues = $('#hiddenValuesCommonCodeGroup');
+                            var stringHiddenValue = '<input type="hidden" id="orgId_'
+                                + this.index + '" class="" value="' + this.item.id + '" />'
+                                + '<input type="hidden" id="flagModifyCommonCodeGroup_'
+                                + this.index + '" class="" value="'#{ppp}'"  />';
+
+                            hiddenValues.append(stringHiddenValue);
+                        }
+
+                        return this.item.id;
+
+                    },
+                        editor: {
+                            type: "text",
+                            maxLength: 50,
+                            disabled: function() {
+                                return ($('#flagModifyCommonCodeGroup_' + this.index).val() != '/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+                            },
+                            beforeUpdate: function (val) {
+                                return val;
+                            },
+                            afterUpdate: function (val) {
+                                return val;
+                            },
+                            updateWith: ["reqCud"]
+                        }
+                    },
+                    {key:"name", label:"코드 이름", width:"200", tooltip:"true", formatter: function() {
+                        if (this.item.reqCud == "C") {
+                            return this.item.name + ' <div class="createInputCommonCodeGroup btn_common_code_group_'
+                                + this.index + '" style="float:right; display:none;"> '
+                                + ' <button type="button" class="btn btn-cancel2 btn-sm" '
+                                + ' onclick="fnObj.CancelWriteForm(' + this.index + ', '
+                                + "'/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C}]]*/'" + ');"> 취소 </button> '
+                                + ' <button type="button" class="btn btn-save btn-sm" '
+                                + ' onclick="procInsertItem(' + this.index
+                                + ', myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/);"> 저장 </button> '
+                                + ' </div> ';
+                        }
+
+                        if (this.item.reqCud == "U") {
+                            return this.item.name + ' <div class="createInputCommonCodeGroup btn_common_code_group_'
+                                + this.index + '" style="float:right; display:none;"> '
+                                + ' <button type="button" class="btn btn-cancel2 btn-sm"'
+                                + ' onclick="fnObj.CancelWriteForm(' + this.index + ', '
+                                + "'*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/'" + ');"> 취소 </button> '
+                                + ' <button type="button" class="btn btn-save btn-sm"'
+                                + ' onclick="procPopup(' + "'코드'" + ', UPDATE_MESSAGE, ' + "'procUpdateItem("
+                                + this.index + ", myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/);'" + ')"> 저장 </button> '
+                                + ' </div> ';
+                        }
+
+                        if (this.item.reqCud == null) {
+                            return this.item.name + ' <div class="createInputCommonCodeGroup btn_common_code_group_'
+                                + this.index + '" style="float:right; display:none;"> '
+                                + ' <button type="button" class="btn btn-save btn-sm" '
+                                + ' onclick="fnObj.updateItem(' + this.index + ');"> 수정 </button> '
+                                + ' <button type="button" class="btn btn_del2 btn-sm" '
+                                + ' onclick="fnObj.deleteItem(' + this.index + ');"> 삭제 </button> '
+                                + ' </div> ';
+                        }
+                    },
+                        editor: {
+                            type: "text",
+                            maxLength: 50,
+                            disabled: function(){
+                                return ($('#flagModifyCommonCodeGroup_' + this.index).val() != '/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+                            },
+                            beforeUpdate: function (val) {
+                                return val;
+                            },
+                            afterUpdate: function (val) {
+                                return val;
+                            },
+                            updateWith: ["reqCud"]
+                        }
+                    }
+                ],
+                body: {
+                    onclick: function() {
+                    },
+                    ondblclick: function() {
+                        GROUP_ID = this.item.id;
+                        $('#hiddenValuesCommonCodeDetail').html('');
+
+                        if (GROUP_ID) procGetList(myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/, GROUP_ID);
+                    }
+                },
+                page: {
+                    paging:true,
+                    pageNo: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_NO}]]*/,
+                pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_SIZE}]]*/
+        }
+        });
+        },
+        append: function() {
+            $.Event(event).stopPropagation();
+
+            var param = {
+                id: "",
+                name: ""
+            };
+
+            myGrid.editCellClear(0, 0, EDIT_CELL_INDEX_GRID_01);
+            myGrid.pushList(param, 0);
+
+            var listSize = myGrid.getList().length;
+            var hiddenValues= $('#hiddenValuesCommonCodeGroup');
+            var arrayHiddenValues = [];
+            var stringHiddenValue = "";
+
+            for (var i = 0; i < listSize; i++) {
+                if (i > 0) {
+                    stringHiddenValue = '<input type="hidden" id="orgId_'
+                        + i + '" class="" value="' + $('#orgId_' + (i - 1)).val() + '" />'
+                        + '<input type="hidden" id="flagModifyCommonCodeGroup_'
+                        + i + '" class="" value="' + $('#flagModifyCommonCodeGroup_' + (i - 1)).val() + '" />';
+                } else {
+                    stringHiddenValue = '<input type="hidden" id="orgId_'
+                        + i + '" class="" value="" />'
+                        + '<input type="hidden" id="flagModifyCommonCodeGroup_'
+                        + i + '" class="" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" />';
+                }
+
+                arrayHiddenValues.push(stringHiddenValue);
+            }
+
+            hiddenValues.html(arrayHiddenValues.join(" "));
+
+            $('#flagModifyCommonCodeGroup_' + EDIT_CELL_INDEX_GRID_01).val('/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+            myGrid.editCell(0, 0, 0);
+            EDIT_CELL_INDEX_GRID_01++;
+        },
+        updateItem: function (index) {
+            $.Event(event).stopPropagation();
+
+            var item = myGrid.list[index];
+            $('#flagModifyCommonCodeGroup_' + index).val('/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+            item.reqCud = "U";
+
+            myGrid.editCell(0, 0, index);
+            var htmlString = ' <button type="button" class="btn btn-cancel2 btn-sm"'
+                + ' onclick="fnObj.CancelWriteForm(' + index + ', '
+                + "'*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/'" + ');"> 취소 </button> '
+                + ' <button type="button" class="btn btn-save btn-sm"'
+                + ' onclick="procPopup(' + "'코드'" + ', UPDATE_MESSAGE, ' + "'procUpdateItem("
+                + index + ", myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/);'" + ')"> 저장 </button> ';
+
+            $('.btn_common_code_group_' + index).html(htmlString);
+        },
+        CancelWriteForm: function (index, reqStatus) {
+            $.Event(event).stopPropagation();
+
+            // STATUS :: INSERT
+            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C}]]*/ == reqStatus) {
+
+                var listSize = myGrid.getList().length;
+                var hiddenValues = $('#hiddenValuesCommonCodeGroup');
+                var arrayHiddenValues = [];
+                var stringHiddenValue = "";
+
+                for (var i = 0; i < listSize; i++) {
+                    if (i < listSize - 1) {
+                        stringHiddenValue = '<input type="hidden" id="orgId_'
+                            + i + '" class="" value="' + $('#orgId_' + (i + 1)).val() + '" />'
+                            + '<input type="hidden" id="flagModifyCommonCodeGroup_'
+                            + i + '" class="" value="' + $('#flagModifyCommonCodeGroup_' + (i + 1)).val() + '" />';
+
+                        arrayHiddenValues.push(stringHiddenValue);
+                    }
+                }
+
+                hiddenValues.html(arrayHiddenValues.join(" "));
+
+                var removeList = [{index:index}];
+                myGrid.removeListIndex(removeList);
+            }
+
+            // STATUS :: MODIFY
+            if (*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ == reqStatus) {
+                var item = myGrid.list[index];
+                $('#flagModifyCommonCodeGroup_' + index).val('"/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/"');
+                item.reqCud = null;
+
+                myGrid.removeListIndex(-1);
+
+                var htmlString = ' <button type="button" class="btn btn-save btn-sm" '
+                    + ' onclick="fnObj.updateItem(' + index + ');"> 수정 </button> '
+                    + ' <button type="button" class="btn btn_del2 btn-sm" '
+                    + ' onclick="fnObj.deleteItem(' + index + ');"> 삭제 </button> ';
+
+                $('.btn_common_code_group_' + index).html(htmlString);
+            }
+        },
+        deleteItem: function (index) {
+            $.Event(event).stopPropagation();
+
+            procPopup('코드', DELETE_MESSAGE, 'procDeleteItem(' + index + ', myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/);');
+        }
+    };
+
+
+
+
+
+    var myGrid2 = new AXGrid();
+    var fnObj2 = {
+        pageStart: function() {
+            myGrid2.setConfig({
+                targetID : "AXGridTarget2",
+                theme : "AXGrid",
+                fitToWidth: true,
+                colHeadAlign: "center",
+                height: "606",
+                colGroup : [
+                    {key:"no", label:"checkbox", width:"30", align:"center", formatter:"checkbox"},
+                    {key:"key", label:"Key", width:"100", tooltip:"true", formatter: function() {
+                        if ($('#orgKey_' + this.index).length < 1) {
+                            var hiddenValues = $('#hiddenValuesCommonCodeDetail');
+                            var stringHiddenValue = '<input type="hidden" id="orgKey_'
+                                + this.index + '" class="" value="' + this.item.key + '" />'
+                                + '<input type="hidden" id="flagModifyCommonCodeDetail_'
+                                + this.index + '" class="" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/" />';
+
+                            hiddenValues.append(stringHiddenValue);
+                        }
+
+                        return this.item.key;
+
+                    },
+                        editor: {
+                            type: "text",
+                            maxLength: 50,
+                            disabled: function() {
+                                return ($('#flagModifyCommonCodeDetail_' + this.index).val() != /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/);
+                            },
+                            beforeUpdate: function (val) {
+                                return val;
+                            },
+                            afterUpdate: function (val) {
+                                return val;
+                            },
+                            updateWith: ["reqCud"]
+                        }
+                    },
+                    {key:"value", label:"Value", width:"100", tooltip:"true",
+                        editor: {
+                            type: "text",
+                            maxLength: 50,
+                            disabled: function(){
+                                return ($('#flagModifyCommonCodeDetail_' + this.index).val() != /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/);
+                            },
+                            beforeUpdate: function (val) {
+                                return val;
+                            },
+                            afterUpdate: function (val) {
+                                return val;
+                            },
+                            updateWith: ["reqCud"]
+                        }
+                    },
+                    {key:"summary", label:"요약", width:"150", tooltip:"true",
+                        editor: {
+                            type: "text",
+                            maxLength: 50,
+                            disabled: function(){
+                                return ($('#flagModifyCommonCodeDetail_' + this.index).val() != /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/);
+                            },
+                            beforeUpdate: function (val) {
+                                return val;
+                            },
+                            afterUpdate: function (val) {
+                                return val;
+                            },
+                            updateWith: ["reqCud"]
+                        }
+                    },
+                    {key:"useYn", label:"사용", width:"180", formatter: function() {
+                        if (this.item.reqCud == "C") {
+                            return ' <div><div class="radio_common_code_detail_' + this.index
+                                + '" style="float:left;"> '
+                                + ' <input type="radio" id="useYn_Y_' + this.index + '" name="useYn_'
+                                + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" checked /> Y '
+                                + ' <input type="radio" id="useYn_N_' + this.index + '" name="useYn_'
+                                + this.index + '" value=""/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/""> N '
+                                + ' </div> '
+                                + ' <div class="btn_common_code_detail_' + this.index
+                                + '" style="float:right; display:none;"> '
+                                + ' <button type="button" class="btn btn-cancel2 btn-sm" '
+                                + ' onclick="fnObj2.CancelWriteForm(' + this.index + ', '
+                                + "'/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C}]]*/'" + ');"> 취소 </button> '
+                                + ' <button type="button" class="btn btn-save btn-sm" '
+                                + ' onclick="procInsertItem(' + this.index
+                                + ', myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);"> 저장 </button> '
+                                + ' </div> '
+                                + ' </div> ';
+                        }
+
+                        if (this.item.reqCud == "U") {
+                            return ' <div><div class="radio_common_code_detail_' + this.index
+                                + '" style="float:left;"> '
+                                + ' <input type="radio" id="useYn_Y_' + this.index + '" name="useYn_'
+                                + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" checked /> Y '
+                                + ' <input type="radio" id="useYn_N_' + this.index + '" name="useYn_'
+                                + this.index + '" value=""/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/""> N '
+                                + ' </div> '
+                                + ' <div class="btn_common_code_detail_' + this.index
+                                + '" style="float:right; display:none;"> '
+                                + ' <button type="button" class="btn btn-cancel2 btn-sm" '
+                                + ' onclick="fnObj2.CancelWriteForm(' + this.index + ', '
+                                + "'*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/'" + ');"> 취소 </button> '
+                                + ' <button type="button" class="btn btn-save btn-sm" '
+                                + ' onclick="procInsertItem(' + this.index
+                                + ', myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);"> 저장 </button> '
+                                + ' </div> '
+                                + ' </div> ';
+                        }
+
+                        if (this.item.reqCud == null) {
+                            var useYnCheckY = "checked";
+                            var useYnCheckN = "checked";
+
+                            var useYn = this.item.useYn;
+
+                            if (undefined == useYn || 'undefined' == useYn) useYn = LAST_USE_YN;
+
+                            if (useYn == "Y") {
+                                useYnCheckN = "";
+                            } else {
+                                useYnCheckY = "";
+                            }
+
+                            return ' <div><div class="radio_common_code_detail_' + this.index
+                                + '" style="float:left;"> '
+                                + ' <input type="radio" id="useYn_Y_' + this.index + '" name="useYn_'
+                                + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" disabled ' + useYnCheckY + ' /> Y '
+                                + ' <input type="radio" id="useYn_N_' + this.index + '" name="useYn_'
+                                + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" disabled ' + useYnCheckN + '> N '
+                                + ' </div> '
+
+                                + ' <div class="btn_common_code_detail_' + this.index
+                                + '" style="float:right; display:none;"> '
+                                + ' <button type="button" class="btn btn-cancel2 btn-sm" '
+                                + ' onclick="fnObj2.updateItem(' + this.index + ');"> 수정 </button> '
+                                + ' <button type="button" class="btn btn_del2 btn-sm" '
+                                + ' onclick="fnObj2.deleteItem(' + this.index + ');"> 삭제 </button> '
+                                + ' </div> '
+                                + ' </div> ';
+                        }
+                    }
+                    }
+                ],
+                body: {
+                    onclick: function() {
+                    },
+                    ondblclick: function() {
+                    }
+                },
+                page: {
+                    paging:true,
+                    pageNo: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_NO}]]*/,
+                pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_SIZE}]]*/
+        }
+        });
+        },
+        append: function() {
+            $.Event(event).stopPropagation();
+
+            var param = {
+                key: "",
+                value: ""
+            };
+
+            myGrid2.editCellClear(0, 0, EDIT_CELL_INDEX_GRID_02);
+            myGrid2.pushList(param, 0);
+
+            var listSize = myGrid2.getList().length;
+            var hiddenValues= $('#hiddenValuesCommonCodeDetail');
+            var arrayHiddenValues = [];
+            var stringHiddenValue = "";
+
+            for (var i = 0; i < listSize; i++) {
+                if (i > 0) {
+                    stringHiddenValue = '<input type="hidden" id="orgKey_'
+                        + i + '" class="" value="' + $('#orgKey_' + (i - 1)).val() + '" />'
+                        + '<input type="hidden" id="flagModifyCommonCodeDetail_'
+                        + i + '" class="" value="' + $('#flagModifyCommonCodeDetail_' + (i - 1)).val() + '" />';
+                } else {
+                    stringHiddenValue = '<input type="hidden" id="orgKey_'
+                        + i + '" class="" value="" />'
+                        + '<input type="hidden" id="flagModifyCommonCodeDetail_'
+                        + i + '" class="" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" />';
+                }
+
+                arrayHiddenValues.push(stringHiddenValue);
+            }
+
+            hiddenValues.html(arrayHiddenValues.join(" "));
+
+            $('#flagModifyCommonCodeDetail_' + EDIT_CELL_INDEX_GRID_02).val('/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+            myGrid2.editCell(0, 1, 0);
+            EDIT_CELL_INDEX_GRID_02++;
+        },
+        updateItem: function (index) {
+            $.Event(event).stopPropagation();
+            $('#flagModifyCommonCodeDetail_' + index).val('/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+
+            var item = myGrid2.list[index];
+            item.reqCud = "U";
+
+            $("input:radio[name='useYn_" + index + "']").removeAttr("disabled");
+
+            myGrid2.editCell(0, 1, index);
+            var htmlString = ' <button type="button" class="btn btn-cancel2 btn-sm"'
+                + ' onclick="fnObj2.CancelWriteForm(' + index + ', '
+                + "'*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/'" + ');"> 취소 </button> '
+                + ' <button type="button" class="btn btn-save btn-sm"'
+                + ' onclick="procPopup(' + "'코드'" + ', UPDATE_MESSAGE, ' + "'procUpdateItem("
+                + index + ", myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);'" + ')"> 저장 </button> ';
+
+            $('.btn_common_code_detail_' + index).html(htmlString);
+
+            var useYnCheckY = "checked";
+            var useYnCheckN = "checked";
+
+            var useYn = item.useYn;
+
+            if (undefined == useYn || 'undefined' == useYn) useYn = LAST_USE_YN;
+
+            if (useYn == "Y") {
+                useYnCheckN = "";
+            } else {
+                useYnCheckY = "";
+            }
+
+            htmlString = ' <input type="radio" id="useYn_Y_' + index + '" name="useYn_'
+                + index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/"' + useYnCheckY + ' /> Y '
+                + ' <input type="radio" id="useYn_N_' + index + '" name="useYn_'
+                + index + '" value=""/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/""' + useYnCheckN + '> N ';
+
+            $('.radio_common_code_detail_' + index).html(htmlString);
+        },
+        CancelWriteForm: function (index, reqStatus) {
+            $.Event(event).stopPropagation();
+
+            // STATUS :: INSERT
+            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C}]]*/ == reqStatus) {
+
+                var listSize = myGrid.getList().length;
+                var hiddenValues = $('#hiddenValuesCommonCodeDetail');
+                var arrayHiddenValues = [];
+                var stringHiddenValue = "";
+
+                for (var i = 0; i < listSize; i++) {
+                    if (i < listSize - 1) {
+                        stringHiddenValue = '<input type="hidden" id="orgKey_'
+                            + i + '" class="" value="' + $('#orgKey_' + (i + 1)).val() + '" />'
+                            + '<input type="hidden" id="flagModifyCommonCodeDetail_'
+                            + i + '" class="" value="' + $('#flagModifyCommonCodeDetail_' + (i + 1)).val() + '" />';
+
+                        arrayHiddenValues.push(stringHiddenValue);
+                    }
+                }
+
+                hiddenValues.html(arrayHiddenValues.join(" "));
+
+                var removeList = [{index:index}];
+                myGrid2.removeListIndex(removeList);
+            }
+
+            // STATUS :: MODIFY
+            if (*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ == reqStatus) {
+                var item = myGrid2.list[index];
+                item.reqCud = null;
+
+                var useYn = item.useYn;
+
+                if (undefined == useYn || 'undefined' == useYn) useYn = LAST_USE_YN;
+
+                $('#flagModifyCommonCodeDetail_' + index).val(useYn);
+
+                myGrid2.removeListIndex(-1);
+
+                var htmlString = ' <button type="button" class="btn btn-save btn-sm" '
+                    + ' onclick="fnObj2.updateItem(' + index + ');"> 수정 </button> '
+                    + ' <button type="button" class="btn btn_del2 btn-sm" '
+                    + ' onclick="fnObj2.deleteItem(' + index + ');"> 삭제 </button> ';
+
+                $('.btn_common_code_detail_' + index).html(htmlString);
+            }
+        },
+        deleteItem: function (index) {
+            $.Event(event).stopPropagation();
+
+            procPopup('코드', DELETE_MESSAGE, 'procDeleteItem(' + index + ', myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);');
+        },
+        deleteListItem: function (index) {
+            $.Event(event).stopPropagation();
+
+            var checkedList = myGrid2.getCheckedList(0);
+
+            if (checkedList.length == 0) {
+                procAlert("danger", '<spring:message code="common.info.result.fail.delete" />');
+                return false;
+            } else {
+                procPopup('코드', DELETE_MESSAGE, 'procDeleteList(myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);');
+            }
+        }
+    };
+
+
+
+    var procGetList = function(objGrid, procType, groupId) {
+        var useYn = $("#useYn").val();
+        var searchType = $("#searchType").val();
+        var searchKeyword = $("#searchKeyword").val().toLowerCase();
+
+        var param = {
+            useYn: useYn,
+            groupId: groupId,
+            searchType: searchType,
+            searchKeyword: searchKeyword,
+            procType: procType
+        };
+
+        objGrid.setList({
+            contentType: "application/json; charset=UTF-8",
+            ajaxUrl:LIST_PROC_URL,
+            ajaxPars: param,
+            onLoad:function() {
+                if (myGrid == objGrid && objGrid.getList().length < 1) {
+                    var removeList = [];
+
+                    for (var i = 0; i < /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_SIZE}]]*/; i++) {
+                        removeList.push({index:i});
+                    }
+
+                    myGrid.removeListIndex(removeList);
+                    myGrid2.removeListIndex(removeList);
+
+                    procAlert("warning", '<spring:message code="common.info.empty.data" />');
+                    return false;
+                }
+
+                if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
+                    GROUP_ID = objGrid.list[0].id;
+                    objGrid.setFocus(0);
+                    procGetList (myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/, objGrid.list[0].id);
+                }
+            }
+        });
+    };
+
+
+    // COMMON PARAM
+    var procCommonParam = function(index, objGrid, procType) {
+        var item = objGrid.list[index];
+        var param = {};
+
+        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
+            var reqOrgId = $('#orgId_' + index).val();
+            var reqId = item.id;
+            var reqName = item.name;
+
+            if (!procCheckValidStringSpace(reqId)) {
+                window.setTimeout(function () {
+                    objGrid.editCell(0, 0, index);
+                }, 1000);
+                procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+                return false;
+            }
+
+            if (!procCheckValidStringSpace(reqName)) {
+                window.setTimeout(function() {
+                    objGrid.editCell(0, 1, index);
+                }, 1000);
+                procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+                return false;
+            }
+
+            param = {
+                orgId: reqOrgId,
+                id: reqId,
+                name: reqName,
+                procType: procType,
+                index: index
+            };
+        }
+
+        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/ == procType) {
+            var reqKey = item.key;
+            var reqValue = item.value;
+            var reqSummary = item.summary;
+            var reqOrgKey = $('#orgKey_' + index).val();
+
+            if (!procCheckValidStringSpace(reqKey)) {
+                window.setTimeout(function() {
+                    objGrid.editCell(0, 1, index);
+                }, 1000);
+                procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+                return false;
+
+            }
+
+            if (!procCheckValidStringSpace(reqValue)) {
+                window.setTimeout(function() {
+                    objGrid.editCell(0, 2, index);
+                }, 1000);
+                procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+                return false;
+            }
+
+            LAST_USE_YN = $("input:radio[name='useYn_" + index + "']:checked").val();
+
+            param = {
+                key: reqKey,
+                orgKey: reqOrgKey,
+                value: reqValue,
+                summary: reqSummary,
+                groupId: GROUP_ID,
+                useYn: LAST_USE_YN,
+                procType: procType,
+                index: index
+            };
+        }
+
+        return param;
+    };
+
+
+    // SAVE LIST
+    var procSaveList = function(objGrid, procType) {
+        window.setTimeout(function() {
+            var commonCodeList = objGrid.getList();
+            var listSize = commonCodeList.length;
+
+            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
+                for (var i = 0; i < listSize; i++) {
+                    var param = procCommonParam(i, objGrid, procType);
+
+                    if (!param) return false;
+                }
+            }
+
+            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/ == procType) {
+                for (var j = 0; j < listSize; j++) {
+                    var reqOrgKey = $('#orgKey_' + j);
+
+                    if (reqOrgKey.val() == 'null') {
+                        reqOrgKey.val(commonCodeList[j].key);
+                    }
+
+                    commonCodeList[j].useYn = $("input:radio[name='useYn_" + j + "']:checked").val();
+
+                    var param2 = procCommonParam(j, objGrid, procType);
+
+                    if (!param2) return false;
+                }
+            }
+
+            var listParam = {
+                commonCodeList: commonCodeList,
+                groupId: GROUP_ID,
+                procType: procType
+            };
+
+            procGridCallAjax(INSERT_PROC_URL, objGrid, procType, listParam, procCallbackSaveList);
+
+        }, 1);
+    };
+
+
+    // SAVE LIST CALLBACK
+    var procCallbackSaveList = function(objGrid, procType) {
+        objGrid.reloadList();
+
+        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) myGrid2.reloadList();
+
+        procAlert("success", '<spring:message code="common.info.result.success" />');
+    };
+
+
+    // MODIFY BUTTONS
+    var procModifyButtons = function(objGrid, procType, index) {
+        //FOR GRID BUG
+        window.setTimeout(function () {
+
+            var item = objGrid.list[index];
+            item.reqCud = null;
+            var htmlString = '';
+
+            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
+                $('#flagModifyCommonCodeGroup_' + index).val('"/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/"');
+
+                htmlString = ' <button type="button" class="btn btn-primary btn-sm" '
+                    + ' onclick="fnObj.updateItem(' + index + ');"> 수정 </button> '
+                    + ' <button type="button" class="btn btn-danger btn-sm" '
+                    + ' onclick="fnObj.deleteItem(' + index + ');"> 삭제 </button> ';
+
+                $('.btn_common_code_group_' + index).html(htmlString);
+                $('#orgId_' + index).val(item.id);
+            }
+
+            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/ == procType) {
+                $('#flagModifyCommonCodeDetail_' + index).val('"/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/"');
+
+                htmlString = ' <button type="button" class="btn btn-primary btn-sm" '
+                    + ' onclick="fnObj2.updateItem(' + index + ');"> 수정 </button> '
+                    + ' <button type="button" class="btn btn-danger btn-sm" '
+                    + ' onclick="fnObj2.deleteItem(' + index + ');"> 삭제 </button> ';
+
+                $('.btn_common_code_detail_' + index).html(htmlString);
+                $('#orgKey_' + index).val(item.key);
+
+                var useYnCheckY = "checked";
+                var useYnCheckN = "checked";
+
+                if (LAST_USE_YN == "Y") {
+                    useYnCheckN = "";
+                } else {
+                    useYnCheckY = "";
+                }
+
+                htmlString = ' <input type="radio" id="useYn_Y_' + this.index + '" name="useYn_'
+                    + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" disabled ' + useYnCheckY + ' /> Y '
+                    + ' <input type="radio" id="useYn_N_' + this.index + '" name="useYn_'
+                    + this.index + '" value=""/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/"" disabled ' + useYnCheckN + '> N '
+
+                $('.radio_common_code_detail_' + index).html(htmlString);
+            }
+        }, 1);
+    };
+
+
+    // INSERT
+    var procInsertItem = function(index, objGrid, procType) {
+        //FOR GRID BUG
+        window.setTimeout(function() {
+            var param = procCommonParam(index, objGrid, procType);
+            if (!param) return false;
+
+            procGridCallAjax(INSERT_PROC_URL, objGrid, procType, param, procCallbackInsertItem);
+
+        }, 1);
+    };
+
+
+    // INSERT CALLBACK
+    var procCallbackInsertItem = function(objGrid, procType, data, index) {
+        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
+            procGetList (myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/, objGrid.list[0].id);
+            GROUP_ID = objGrid.list[0].id;
+        }
+
+        //FOR GRID BUG
+        window.setTimeout(function () {
+            procModifyButtons(objGrid, procType, index);
+        }, 1);
+
+        procAlert("success", '<spring:message code="common.info.result.success" />');
+    };
+
+
+    // UPDATE
+    var procUpdateItem = function(index, objGrid, procType) {
+        $('div.modal').modal('toggle');
+
+        //FOR GRID BUG
+        window.setTimeout(function() {
+            var param = procCommonParam(index, objGrid, procType);
+            if (!param) return false;
+
+            procGridCallAjax(UPDATE_PROC_URL, objGrid, procType, param, procCallbackUpdateItem);
+
+        }, 1);
+    };
+
+
+    // UPDATE CALLBACK
+    var procCallbackUpdateItem = function(objGrid, procType, data, index) {
+        //FOR GRID BUG
+        window.setTimeout(function () {
+            procModifyButtons(objGrid, procType, index);
+        }, 1);
+
+        procAlert("success", '<spring:message code="common.info.result.success" />');
+    };
+
+
+    // DELETE
+    var procDeleteItem = function(index, objGrid, procType) {
+        $('div.modal').modal('toggle');
+
+        var param = procCommonParam(index, objGrid, procType);
+
+        if (!param) return false;
+
+        procGridCallAjax(DELETE_PROC_URL, objGrid, procType, param, procCallbackDeleteItem);
+    };
+
+
+    // DELETE CALLBACK
+    var procCallbackDeleteItem = function(objGrid, procType, data, index) {
+        var removeList = [{index:index}];
+        objGrid.removeListIndex(removeList);
+
+        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
+            procGetList (myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/, objGrid.list[0].id);
+        }
+
+        procAlert("success", '<spring:message code="common.info.result.success" />');
+    };
+
+
+    // DELETE CHECKED ITEMS
+    var procDeleteList = function(objGrid, procType) {
+        $('div.modal').modal('toggle');
+
+        LAST_CHECKED_LIST = objGrid.getCheckedList(0);
+
+        var param = {
+            commonCodeList: LAST_CHECKED_LIST,
+            procType: procType
+        };
+
+        procGridCallAjax(DELETE_PROC_URL, objGrid, procType, param, procCallbackDeleteList);
+    };
+
+
+    // DELETE CHECKED ITEMS CALLBACK
+    var procCallbackDeleteList = function(objGrid) {
+        var listSize = LAST_CHECKED_LIST.length;
+
+        for (var i = 0; i < listSize; i++) {
+            var removeList = [{index:i}];
+            objGrid.removeListIndex(removeList);
+        }
+
+        procAlert("success", '<spring:message code="common.info.result.success" />');
+    };
+
+
+    // BIND :: BUTTON EVENT
+    $("#btnSearch").on("click", function() {
+        procGetList(myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/, null);
+    });
+
+
+    // CHECK SEARCH FORM KEY EVENT
+    var procCheckSearchFormKeyEvent = function(e) {
+        if (e.keyCode==13 && e.srcElement.type != 'textarea') {
+            procGetList(myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/, null);
+        }
+    };
+
+
+    // ON LOAD
+    $(document.body).ready(function() {
+        fnObj.pageStart();
+        fnObj2.pageStart();
+
+        // GET LIST
+        procGetList (myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/, null);
+        procAlert("info", WELCOME_MESSAGE);
+    });
 
     /*]]>*/
 </script>

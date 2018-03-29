@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head>
+    <script th:inline="javascript" type="text/javascript">
+        /*<![CDATA[*/
+        var LIST_PROC_URL = "/userManagement/UserInfoList";
+        var PROC_RESET_PASSWORD_URL = "/userManagement/ResetPassword/";
+        var PROC_UPDATE_OPERATING_AUTHORITY_URL = "/userManagement/OperatingAuthority/";
+        var PROC_DELETE_USER_ACCOUNT_URL = "/userManagement/UserAccount/";
+        var LOADED_LIST_COUNT = 0;
+
+        var REQUEST_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
+        var REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY = "UPDATE_OPERATING_AUTHORITY";
+        var REQUEST_TYPE_DELETE_USER_ACCOUNT = "DELETE_USER_ACCOUNT";
+        var userManagementCallAjax = function(reqUrl, param, callback, type) {
+
+            $.ajax({
+                url: reqUrl,
+                method: type,
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(data) {
+
+                    if (data) {
+                        callback(data, param);
+                    } else {
+                        var resData = {RESULT : RESULT_STATUS_SUCCESS,
+                            RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
+
+                        callback(resData, param);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var resData = {RESULT : RESULT_STATUS_FAIL,
+                        RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
+
+                    callback(resData, param);
+
+                    console.log("ERROR :: error :: ", error);
+                    procAlert("danger", JSON.parse(xhr.responseText).message);
+                },
+                complete : function(data) {
+                    console.log("COMPLETE :: data :: ", data);
+                }
+            });
+        };
+
+        // GET LIST
+        var getUserInfoList = function(reqPageNo) {
+            $('#buttonGetMoreList').hide();
+
+            var param = {searchKeyword : document.getElementById('searchKeyword').value.toLowerCase(),
+                pageSize :  /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "" ,
+                pageNo : reqPageNo
+            };
+
+            userManagementCallAjax(LIST_PROC_URL, param, procCallbackGetUserInfoList,"GET");
+        };
+
+        var getUserSearch = function()
+        {
+            var input = $("#searchKeyword").val().toLowerCase();
+            if(input === ""){
+                $('#userInfoTableArea').show();
+                $('#userInfoTableArea tr[id*="Managementtable"]').show();
+
+            } else{
+                $('#userInfoTableArea tr[id*="Managementtable"]').hide();
+
+                if($('#userInfoTableArea tr[name*="'+input+'"]').length > 0){
+//                    $('#noSearchOrgMessage').hide();
+                    $('#userInfoTableArea').show();
+                    $('#userInfoTableArea tr[name*="'+input+'"]').show();
+
+                } else{
+                    $('#userInfoTableArea').hide();
+//                    $('#noSearchOrgMessage').show();
+                }
+            }
+        }
+
+
+
+        // GET LIST CALLBACK
+        var procCallbackGetUserInfoList = function(data, reqParam) {
+            if (RESULT_STATUS_FAIL == data.RESULT) return false;
+
+            var objTableArea = $('#userInfoTableArea');
+            var objTable = $('#userInfoTable');
+            var objMessageArea = $('#userInfoMessageArea');
+            var listLength = data.list.length;
+            var htmlString = [];
+
+            var reqPageNo = reqParam.pageNo;
+
+            document.getElementById('currentPageNo').value = reqPageNo;
+
+            if (reqPageNo == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "" ) {
+                LOADED_LIST_COUNT = 0;
+                objTable.html('');
+            }
+            objMessageArea.html('');
+
+            if (listLength < 1) {
+                objTableArea.hide();
+                objTable.hide();
+                objMessageArea.append('#{common.info.empty.data');
+                objMessageArea.show();
+
+            } else {
+                var resultList = data.list;
+                var totalListCount = resultList[0].totalCount;
+                var boldClass = '';
+                var menuText = '';
+
+                for (var i = 0; i < listLength; i++) {
+                    boldClass = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ ""== resultList[i].adminYn ? 'fwb' : '';
+                    menuText = '운영권한 부여';
+                    var telephone =  resultList[i].tellPhone == null ? '-' : resultList[i].tellPhone ;
+                    if ( resultList[i].adminYn  == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") menuText = '운영권한 삭제';
+
+                    if ( resultList[i].status == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_STATUS_APPROVAL}]]*/  "") {
+                        htmlString.push('<tr id="Managementtable' + i + '" name=" '+ resultList[i].userId + '">'
+                            + '<td class="col-md-4 ' + boldClass + '">' + resultList[i].userId + '</td>'
+                            + '<td class="col-md-2 ' + boldClass + '">' + resultList[i].userName + '</td>'
+                            + '<td class="col-md-2 ' + boldClass + '">'  + telephone  + '</td>'
+                            + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
+                            + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-primary">' + '승인' + '</span>'+'</td>'
+                            + '<td class="col-md-2 tac ' + boldClass + '">'
+                            + '<div class="dropdown">'
+                            + '<label class="fa fa-gears" id="dropdownMenu' + i + '" ' + 'data-toggle="dropdown" aria-expanded="false" aria-hidden="true" style="cursor: pointer;"></label>'
+                            + '<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu' + i + '">'
+                            + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId + '\')"> 비밀번호 초기화 </a></li>'
+                            + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY + '\', \'' + resultList[i].userId + '\')"> ' + menuText + ' </a></li>'
+                            + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\')"> 계정 삭제 </a></li>'
+                            + '</ul></div>');
+                    } else {
+                        htmlString.push('<tr id="Managementtable' + i + '">'
+                            + '<td class="col-md-4 ' + boldClass + '">' + resultList[i].userId + '</td>'
+                            + '<td class="col-md-3 ' + boldClass + '">' + resultList[i].userName + '</td>'
+                            + '<td class="col-md-2 ' + boldClass + '">' + telephone + '</td>'
+                            + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
+                            + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + '생성' + '</span>'+ '</td>'
+                            + '<td class="col-md-1 tac ' + boldClass + '">'
+                            + '<div class="dropdown"><label class="fa fa-gears" style="color: #dddddd;"></label>'
+                            + '</div>');
+                    }
+
+                    htmlString.push('</td></tr>');
+
+                }
+                LOADED_LIST_COUNT += listLength;
+
+                if (totalListCount > LOADED_LIST_COUNT) {
+                    $('#buttonGetMoreList').animate({
+                        opacity: "show"
+                    });
+                }
+                objMessageArea.hide();
+                objTable.append(htmlString);
+                objTable.show();
+                objTableArea.show();
+            }
+
+            $('#userInfoViewArea').show();
+        };
+
+
+        // GET MORE LIST
+        var procGetMoreList = function() {
+            getUserInfoList(parseInt(document.getElementById('currentPageNo').value) + 1);
+        };
+
+
+        // USER MANAGEMENT POPUP
+        var procUserManagementPopup = function (reqType, reqUserId) {
+            if (!procCheckEmailValidation(reqUserId)) return false;
+
+            var reqMessage = '';
+            var reqFunction = '';
+            var reqButton = '';
+
+            if (REQUEST_TYPE_RESET_PASSWORD == reqType) {
+                reqMessage = /*[[#{common.info.popup.reset.password.message}]]*/ "";
+                reqFunction = 'resetPassword("' + reqUserId + '");';
+                reqButton = '전송';
+            }
+
+            if (REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY == reqType) {
+                reqMessage = /*[[#{common.info.popup.update.operating.authority.message}]]*/ "";
+                reqFunction = 'updateOperatingAuthority("' + reqUserId + '");';
+                reqButton = '실행';
+            }
+
+            if (REQUEST_TYPE_DELETE_USER_ACCOUNT == reqType) {
+                reqMessage = /*[[#{common.info.popup.delete.user.account.message}]]*/ "";
+                reqFunction = 'deleteUserAccount("' + reqUserId + '");';
+                reqButton = '삭제';
+            }
+
+            modalInit('사용자 관리', reqMessage, reqFunction, reqButton);
+        };
+
+        var modalInit = function(reqTitle, reqMessage, procFunction, reqButtonText) {
+            if (reqTitle == null || reqTitle.length < 1) return false;
+            if (reqMessage == null || reqMessage.length < 1) return false;
+            if (procFunction == null) return false;
+            var objButtonText = $('#modalButtonText');
+            var buttonText = null == reqButtonText || '' == reqButtonText ? reqMessage.split(' ')[0] : reqButtonText;
+
+            $('#modaltitle').html(reqTitle);
+            $('#modalbody').html(reqMessage);
+
+            objButtonText.html(buttonText);
+            objButtonText.attr('onclick', procFunction);
+            $('#modal-default').modal();
+        };
+
+
+        // CLOSE POPUP
+        var procClosePopup = function() {
+            $('div.modal').modal();
+        };
+
+        // RESET PASSWORD
+        var resetPassword = function (reqUserId) {
+            userManagementCallAjax(PROC_RESET_PASSWORD_URL + reqUserId, {userId : reqUserId}, procCallbackResetPassword,"PUT");
+        };
+
+
+
+        // RESET PASSWORD CALLBACK
+        var procCallbackResetPassword = function(data) {
+            if (RESULT_STATUS_FAIL == data.RESULT) return false;
+
+            procAlert("success", /*[[#{common.info.result.success}]]*/ "");
+        };
+
+
+        // UPDATE OPERATING AUTHORITY
+        var updateOperatingAuthority = function (reqUserId) {
+            $('div.modal').modal('toggle');
+
+            userManagementCallAjax(PROC_UPDATE_OPERATING_AUTHORITY_URL + reqUserId, {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"DELETE");
+        };
+
+
+        // UPDATE OPERATING AUTHORITY CALLBACK
+        var procCallbackUpdateOperatingAuthority = function(data) {
+            if (RESULT_STATUS_FAIL == data.RESULT) return false;
+
+            procInitPage();
+            procAlert("success", /*[[#{common.info.result.success}]]*/ "");
+        };
+
+
+        // DELETE USER ACCOUNT
+        var deleteUserAccount = function (reqUserId) {
+            $('div.modal').modal('toggle');
+
+            userManagementCallAjax(PROC_DELETE_USER_ACCOUNT_URL + reqUserId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
+        };
+
+
+        // DELETE USER ACCOUNT CALLBACK
+        var procCallbackDeleteUserAccount = function(data) {
+            if (RESULT_STATUS_FAIL == data.RESULT) return false;
+
+            procInitPage();
+            procAlert("success", /*[[#{common.info.result.success}]]*/ "");
+        };
+
+
+        // CHECK EMAIL VALIDATION
+        var procCheckEmailValidation = function (reqUserId) {
+            if (!procCheckValidNull(reqUserId)) return false;
+
+            var regExpPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+            if (!regExpPattern.test(reqUserId)) {
+                procAlert("danger", /*[[#{common.email.validation.error.message}]]*/ "");
+                return false;
+            }
+            return true;
+        };
+
+
+        // CHECK SEARCH FORM KEY EVENT
+        var procCheckSearchFormKeyEvent = function(e) {
+            if (e.keyCode==13 && e.srcElement.type != 'textarea') {
+               getUserSearch();
+            }
+        };
+
+
+        // INIT PAGE
+        var procInitPage = function() {
+            procAlert("info", WELCOME_MESSAGE);
+            $('#userInfoViewArea').hide();
+            getUserInfoList( /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "");
+        };
+
+
+        // ON LOAD
+        $(document.body).ready(function() {
+            procInitPage();
+        });
+        /*]]>*/
+    </script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header></header>
+    <div layout:fragment="content">
+        <section class="content-header">
+            <h3>
+                사용자 관리
+            </h3>
+        </section>
+        <section class="content">
+              <div class="box" id="userInfoViewArea">
+                  <div class="box-header">
+                  <div class="box-tools">
+                      <div class="input-group input-group-sm" style="width: 150px;">
+                          <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="searchKeyword" onkeypress="procCheckSearchFormKeyEvent(event);"/>
+                          <div class="input-group-btn" >
+                              <button type="submit"  id="btnSearch" class="btn btn-default" onclick="getUserSearch()"><i class="fa fa-search"></i></button>
+                          </div>
+                      </div>
+                  </div>
+                      <div style="height: 30px">
+                      </div>
+                  </div>
+                    <div class="box-body" id="userInfoMessageArea"></div>
+                        <table id="userInfoTableArea" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center;"> 사용자 계정 </th>
+                                <th style="text-align: center;"> 이름 </th>
+                                <th style="text-align: center;"> 전화번호 </th>
+                                <th style="text-align: center;"> 관리자 유무 </th>
+                                <th style="text-align: center;"> 상태 </th>
+                                <th style="text-align: center;"> 관리 </th>
+                            </tr>
+                            </thead>
+                            <tbody id="userInfoTable" style="text-align: center;">
+                            </tbody>
+                        </table>
+                    <!-- /.box-body -->
+                </div>
+            <input type="hidden" id="currentPageNo" name="currentPageNo" value="" />
+            <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="modaltitle">Default Modal</h4>
+                        </div>
+                        <div class="modal-body" id="modalbody">
+                            <p>One fine body…</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="modalButtonText" data-dismiss="modal">확인</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </section>
+    </div>
+
+    <footer></footer>
+</div>
+
+</body>
+</html>
