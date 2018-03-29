@@ -9,9 +9,20 @@
     <aside>/</aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div layout:fragment="content" class="content-wrapper">
+    <div layout:fragment="content" class="content-wrapper" th:with="UPDATE_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}, INSERT_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C} ">
+
         <!-- Content Header (Page header) -->
-        <!-- Main content -->
+        <section class="content-header">
+            <h1>
+                <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
+                    앱 템플릿 상세
+                </div>
+                <div th:if=" ${INSERT_FLAG} == ${INSERT_CD} ">
+                    앱 개발환경 등록
+                </div>
+            </h1>
+        </section>
+
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
@@ -144,7 +155,7 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var CATEGORY_HOME_URL = "/catalog/catalogMain>";
+    var CATEGORY_HOME_URL = "/catalog/catalogMain";
     var CATEGORY_LIST_PROC_URL = "/commonCode/getCommonCode";
 
     var INSERT_FLAG =  "";
@@ -157,9 +168,11 @@
 
     var GET_PROC_URL = "/catalog/getOneStarterCatalog";
     var INSERT_PROC_URL = "/catalog/insertStarterCatalog";
-    var DUPLICATED_PROC_URL = "/catalog/getStarterCatalogCoun";
+    var DUPLICATED_PROC_URL = "/catalog/getStarterCatalogCount";
     var UPDATE_PROC_URL = "/catalog/updateStarterCatalog";
-    var DELETE_PROC_URL = "/catalog/deleteStarterCatalog";
+//    var DELETE_PROC_URL = "/catalog/deleteStarterCatalog";
+
+    var DELETE_PROC_URL = "/catalog/buildpackCatalogs";
 
     var SAVED_NAME = null;
     var SAVED_THUMBNAIL_NAME = '';
@@ -441,6 +454,7 @@
             };
 
             procCallAjax(IMAGE_DELETE_PROC_URL, param, procCallbackDeleteFile);
+            alert(DELETE_PROC_URL);
         }
     };
 
@@ -672,6 +686,7 @@
     $("#btnDelete").on("click", function() {
         DELETE_FLAG = true;
         procPopup('카탈로그', DELETE_MESSAGE, 'procDeleteFile();');
+        $('#btnDelete').html("삭제");
     });
 
     $("#btnResetImg").on("click", function() {
