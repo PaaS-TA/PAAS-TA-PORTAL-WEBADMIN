@@ -41,6 +41,9 @@ public class Common {
     @Autowired
     public OrgSpaceListService orgSpaceListService;
 
+    @Autowired
+    public UserManagementService userManagementService;
+
     /**
      * Get Token
      *
