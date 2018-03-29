@@ -27,7 +27,7 @@ public class BuildPackController extends Common {
      *
      * @return model and view
      */
-    @RequestMapping(value = {"/buildPack/buildPackMain"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/buildpack"}, method = RequestMethod.GET)
     public ModelAndView webIdeUser() {
         ModelAndView mv = new ModelAndView();
 
@@ -43,10 +43,10 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildPack/buildpacks"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/buildpack/buildpacks"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
-        return commonService.procCfApiRestTemplate("/buildPack/buildpacks", HttpMethod.GET, buildPack, getToken());
+        return commonService.procCfApiRestTemplate("/buildpack/buildpacks", HttpMethod.GET, buildPack, getToken());
 
     }
 
@@ -56,12 +56,12 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildPack/buildpacks/{guid}"}, method = RequestMethod.PUT)
+    @RequestMapping(value = {"/buildpack/buildpacks/{guid}"}, method = RequestMethod.PUT)
     @ResponseBody
         public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack , @PathVariable String guid) {
 
         buildPack.setGuid(UUID.fromString(guid));
-        return commonService.procCfApiRestTemplate("/buildPack/buildpacks/"+buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
+        return commonService.procCfApiRestTemplate("/buildpack/buildpacks/"+buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
     }
 
 

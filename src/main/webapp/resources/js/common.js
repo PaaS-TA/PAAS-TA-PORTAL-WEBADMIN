@@ -222,21 +222,32 @@ var procSetLeftMenu = function() {
 
     var currentPage = document.location.href;
 
-    if (currentPage.search("http://") > -1) {
+    if (currentPage.indexOf("http://") > -1) {
         currentPage = currentPage.substr(7);
         var tempArr = currentPage.split('/');
 
-        var tempObj = $('#' + tempArr[1]);
-        var cssString = "display: block; position: relative; line-height: 22px; " +
-            "color: #696e7e; background: #fff url(/resources/images/groupsmenu03.png) 0px 0px no-repeat; " +
-            "font-weight: bold;";
-        tempObj.attr('style', cssString);
+        //
+        //var tempObj = $('#' + tempArr[1]);
+        //var cssString = "display: block; position: relative; line-height: 22px; " +
+        //    "color: #696e7e; background: #fff url(/resources/images/groupsmenu03.png) 0px 0px no-repeat; " +
+        //    "font-weight: bold;";
+        //tempObj.attr('style', cssString);
+        //
+        //$('.panel-heading').attr('aria-expanded', false);
+        //$('.panel-collapse .collapse').removeClass('in');
+        //
+        //tempObj.parent().parent().parent().prev().attr('aria-expanded', true);
+        //tempObj.parent().parent().parent().addClass('in');
+        //
+        var currentPath = "";
+        for(var i = 1; i < tempArr.length; i++){
+            currentPath += "/"+tempArr[i];
+        }
 
-        $('.panel-heading').attr('aria-expanded', false);
-        $('.panel-collapse .collapse').removeClass('in');
+        $('a[href="'+currentPath+'"]').parent().addClass("active");
+        $('a[href="'+currentPath+'"]').parent().parent().css("display","block");
+        $('a[href="'+currentPath+'"]').parent().parent().parent().addClass("menu-open");
 
-        tempObj.parent().parent().parent().prev().attr('aria-expanded', true);
-        tempObj.parent().parent().parent().addClass('in');
     }
 };
 
