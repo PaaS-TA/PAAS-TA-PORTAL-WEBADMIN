@@ -2,15 +2,14 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.model.UserManagement;
+import org.openpaas.paasta.portal.web.admin.service.UserManagementService;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * 사용자 목록, 사용자 삭제 및 운영자 권한 부여 등의 API 를 호출 하는 컨트롤러이다.
@@ -30,58 +29,56 @@ public class UserManagementController extends Common {
      */
     @RequestMapping(value = {"/userManagementMain"}, method = RequestMethod.GET)
     public ModelAndView getUserInfoMain() {
-        return new ModelAndView(){{setViewName("/userManagement/userManagementMain");}};
+        return userManagementService.getUserInfoMain();
     }
 
 
     /**
      * 사용자 정보 목록을 조회한다.
      *
-     * @param param UserManagement(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getUserInfoList"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/UserInfoList"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getUserInfoList(@RequestBody UserManagement param) {
-        return commonService.procRestTemplate("/userManagement/getUserInfoList", HttpMethod.POST, param, this.getToken());
+    public Map<String, Object> getUserInfoList() {
+        return userManagementService.getUserInfoList("/userManagement/UserInfoList", HttpMethod.GET, null, null);
     }
 
 
     /**
      * 비밀번호를 초기화한다.
      *
-     * @param param UserManagement(모델클래스)
+     * @param userId user id
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/setResetPassword"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/ResetPassword/{userId}"}, method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, Object> setResetPassword(@RequestBody UserManagement param) {
-        return commonService.procRestTemplate("/userManagement/setResetPassword", HttpMethod.POST, param, this.getToken());
+    public Map<String, Object> setResetPassword(@PathVariable String userId) {
+        return userManagementService.setResetPassword("/userManagement/ResetPassword/"+userId, HttpMethod.PUT, null, null);
     }
 
 
     /**
      * 운영권한을 부여한다.
-     *
-     * @param param UserManagement(모델클래스)
+     * @param userId user id
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/updateOperatingAuthority"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/OperatingAuthority/{userId}"}, method = RequestMethod.DELETE)
     @ResponseBody
-    public Map<String, Object> updateOperatingAuthority(@RequestBody UserManagement param) {
-        return commonService.procRestTemplate("/userManagement/updateOperatingAuthority", HttpMethod.POST, param, this.getToken());
+    public Map<String, Object> updateOperatingAuthority(@PathVariable String userId) {
+        return userManagementService.updateOperatingAuthority("/userManagement/OperatingAuthority/" +userId, HttpMethod.DELETE, null, null);
     }
 
 
     /**
      * 사용자 계정을 삭제한다.
      *
-     * @param param UserManagement(모델클래스)
+     * @param userId userId
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/deleteUserAccount"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/UserAccount/{userId}"}, method = RequestMethod.DELETE)
     @ResponseBody
-    public Map<String, Object> deleteUserAccount(@RequestBody UserManagement param) {
-        return commonService.procRestTemplate("/userManagement/deleteUserAccount", HttpMethod.POST, param, this.getToken());
+    public Map<String, Object> deleteUserAccount(@PathVariable String userId) {
+        return userManagementService.deleteUserAccount("/userManagement/UserAccount/" + userId, HttpMethod.POST, null, null);
     }
 }

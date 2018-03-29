@@ -92,7 +92,7 @@
     <!--앱개발환경 서브메뉴-->
     <ul class="smenu">
         <li id="buildPack" class="on">
-            <a href="javascript:void(0);" onclick="procMovePage('<c:url value='/buildPack/buildPackMain'/>')"><span>빌드팩</span></a>
+            <a href="javascript:void(0);" onclick="procMovePage('<c:url value='/buildpack/buildPackMain'/>')"><span>빌드팩</span></a>
         </li>
         <li id="service">
             <a href="javascript:void(0);" onclick="procMovePage('<c:url
