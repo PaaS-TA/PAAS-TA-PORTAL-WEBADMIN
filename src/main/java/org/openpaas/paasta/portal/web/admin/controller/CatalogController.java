@@ -253,17 +253,17 @@ class CatalogController extends Common {
     }
 
 
-    /**
-     * 앱 개발환경 카탈로그를 삭제한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> deleteBuildPackCatalog(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/deleteBuildPackCatalog", HttpMethod.POST, param, null);
-    }
+//    /**
+//     * 앱 개발환경 카탈로그를 삭제한다.
+//     *
+//     * @param param Catalog(모델클래스)
+//     * @return Map(자바클래스)
+//     */
+//    @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Object> deleteBuildPackCatalog(@RequestBody Catalog param) {
+//        return commonService.procRestTemplate("/catalog/deleteBuildPackCatalog", HttpMethod.POST, param, null);
+//    }
 
 
     /**
@@ -575,7 +575,7 @@ class CatalogController extends Common {
     }
 
     /**
-     * 앱 개발환경 카탈로그 목로 조회
+     * 앱 개발환경 카탈로그 목록 조회
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -587,6 +587,17 @@ class CatalogController extends Common {
         return catalogService.getBuildPackCatalog(no, param);
     }
 
+//    /**
+//     * 앱 개발환경 카탈로그를 생성한다.
+//     *
+//     * @param param Catalog(모델클래스)
+//     * @return Map(자바클래스)
+//     * @RequestMapping(value = {"/insertBuildPackCatalog"}, method = RequestMethod.POST, consumes = "application/json")
+//     */
+//    @PostMapping("/buildpackCatalogs")
+//    public Map<String, Object> insertBuildPackCatalog(@RequestBody BuildpackCategory param) {
+//        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs", HttpMethod.POST, param, null);
+//    }
 
     /**
      * 앱 개발환경 카탈로그를 수정한다.
@@ -601,5 +612,16 @@ class CatalogController extends Common {
         return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs/{no}", HttpMethod.PUT, commonService.setUserId(param), null);
     }
 
+
+    /**
+     * 앱 개발환경 카탈로그를 삭제한다.
+     *
+     * @return Map(자바클래스)
+     * @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST, consumes = "application/json")
+     */
+    @DeleteMapping(value = {"buildpackCatalogs/{no}"})
+    public Map<String, Object> deleteBuildPackCatalog(@PathVariable int no) {
+        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs/{no}", HttpMethod.DELETE, no, null);
+    }
 
 }

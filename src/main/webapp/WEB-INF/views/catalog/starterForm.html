@@ -133,7 +133,8 @@
                                             <div class="divButtons">
                                                 <div>
                                                     <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
-                                                        <button type="button" class="btn btn-cancel btn-default btn-sm pull-left label-danger"
+                                                        <button type="button"
+                                                                class="btn btn-cancel btn-default btn-sm pull-left"
                                                                 id="btnDelete">삭제
                                                         </button>
                                                         <button type="button"
@@ -160,26 +161,26 @@
                                         </div>
                                     </div>
                                 </div>
-                        <!--starterForm-->
-                        <input type="hidden" id="resInsertFlag" name="resInsertFlag" value="${INSERT_FLAG}"/>
-                        <input type="hidden" id="resCudU" name="resCudU" value="'${CONSTANT_CUD}"/>
-                        <input type="hidden" id="oldThumbImgPath" name="oldThumbImgPath" value=""/>
-                        <input type="hidden" id="thumbImgPath" name="thumbImgPath" value=""/>
-                        <input type="hidden" id="thumbImgName" name="thumbImgName" value=""/>
-                        <input type="hidden" id="no" name="no" value="${REQUEST_NO}"/>
-                        </form>
-                        <!--<div class="box-body">-->
+                                <!--starterForm-->
+                                <input type="hidden" id="resInsertFlag" name="resInsertFlag" value="${INSERT_FLAG}"/>
+                                <input type="hidden" id="resCudU" name="resCudU" value="'${CONSTANT_CUD}"/>
+                                <input type="hidden" id="oldThumbImgPath" name="oldThumbImgPath" value=""/>
+                                <input type="hidden" id="thumbImgPath" name="thumbImgPath" value=""/>
+                                <input type="hidden" id="thumbImgName" name="thumbImgName" value=""/>
+                                <input type="hidden" id="no" name="no" value="${REQUEST_NO}"/>
+                            </form>
+                            <!--<div class="box-body">-->
+                        </div>
                     </div>
+                    <!-- ▼row: 12  <div class="tab-content no-padding">-->
                 </div>
-                <!-- ▼row: 12  <div class="tab-content no-padding">-->
             </div>
+        </section>
+        <!-- /.content -->
     </div>
-    </section>
-    <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+    <!-- /.content-wrapper -->
 
-<footer></footer>
+    <footer></footer>
 
 </div>
 <!-- ./wrapper -->
