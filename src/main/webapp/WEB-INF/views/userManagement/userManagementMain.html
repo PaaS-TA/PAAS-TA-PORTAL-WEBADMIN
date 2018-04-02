@@ -75,7 +75,7 @@
     var LIST_PROC_URL = "/userManagement/UserInfoList";
     var PROC_RESET_PASSWORD_URL = "/userManagement/ResetPassword/";
     var PROC_UPDATE_OPERATING_AUTHORITY_URL = "/userManagement/OperatingAuthority/";
-    var PROC_DELETE_USER_ACCOUNT_URL = "/userManagement/UserAccount/";
+    var PROC_DELETE_USER_ACCOUNT_URL = "/userManagement/deleteUserAccount/";
     var LOADED_LIST_COUNT = 0;
 
     var REQUEST_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
@@ -83,13 +83,20 @@
     var REQUEST_TYPE_DELETE_USER_ACCOUNT = "DELETE_USER_ACCOUNT";
     var userManagementCallAjax = function(reqUrl, param, callback, type) {
 
+
+        var reParam = null;
+        if((type == "PUT" || type =="DELETE") && param !=null)
+        {
+            reParam = JSON.stringify(param);
+        }
+
         $.ajax({
             url: reqUrl,
             method: type,
+            data: reParam,
             dataType: 'json',
             contentType: "application/json",
             success: function(data) {
-
                 if (data) {
                     callback(data, param);
                 } else {
@@ -248,7 +255,6 @@
         var reqMessage = '';
         var reqFunction = '';
         var reqButton = '';
-
         if (REQUEST_TYPE_RESET_PASSWORD == reqType) {
             reqMessage = /*[[#{common.info.popup.reset.password.message}]]*/ "";
             reqFunction = 'resetPassword("' + reqUserId + '");';
@@ -293,7 +299,9 @@
 
     // RESET PASSWORD
     var resetPassword = function (reqUserId) {
-        userManagementCallAjax(PROC_RESET_PASSWORD_URL + reqUserId, {userId : reqUserId}, procCallbackResetPassword,"PUT");
+        var reqId =  reqUserId.replace("@", "");
+        reqId =  reqId.replace(".", "");
+        userManagementCallAjax(PROC_RESET_PASSWORD_URL + reqId, {userId : reqUserId}, procCallbackResetPassword,"PUT");
     };
 
 
@@ -308,9 +316,9 @@
 
     // UPDATE OPERATING AUTHORITY
     var updateOperatingAuthority = function (reqUserId) {
-        $('div.modal').modal('toggle');
-
-        userManagementCallAjax(PROC_UPDATE_OPERATING_AUTHORITY_URL + reqUserId, {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"DELETE");
+       var reqId =  reqUserId.replace("@", "");
+       reqId =  reqId.replace(".", "");
+        userManagementCallAjax(PROC_UPDATE_OPERATING_AUTHORITY_URL + reqId, {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"PUT");
     };
 
 
@@ -325,9 +333,9 @@
 
     // DELETE USER ACCOUNT
     var deleteUserAccount = function (reqUserId) {
-        $('div.modal').modal('toggle');
-
-        userManagementCallAjax(PROC_DELETE_USER_ACCOUNT_URL + reqUserId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
+        var reqId =  reqUserId.replace("@", "");
+        reqId =  reqId.replace(".", "");
+        userManagementCallAjax(PROC_DELETE_USER_ACCOUNT_URL + reqId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
     };
 
 
