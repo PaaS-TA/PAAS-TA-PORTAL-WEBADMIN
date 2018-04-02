@@ -3,15 +3,23 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="../layout/default">
 <head>
-    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXJ.css" th:href="@{/resources/axisj/ui/arongi/AXJ.css}"/>
-    <script type="text/javascript" src="/resources/axisj/lib/AXJ.js>" th:src="@{../../../resources/axisj/lib/AXJ.js}"></script>
-    <script type="text/javascript" src="/resources/axisj/lib/AXInput.js>" th:src="@{../../../resources/axisj/lib/AXInput.js}"></script>
-    <script type="text/javascript" src="/resources/axisj/lib/AXSelect.js>" th:src="@{../../../resources/axisj/lib/AXSelect.js}"></script>
-    <script type="text/javascript" src="/resources/axisj/lib/AXGrid.js>" th:src="@{../../../resources/axisj/lib/AXGrid.js}"></script>
+    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXJ.css"
+          th:href="@{/resources/axisj/ui/arongi/AXJ.css}"/>
+    <script type="text/javascript" src="/resources/axisj/lib/AXJ.js>"
+            th:src="@{../../../resources/axisj/lib/AXJ.js}"></script>
+    <script type="text/javascript" src="/resources/axisj/lib/AXInput.js>"
+            th:src="@{../../../resources/axisj/lib/AXInput.js}"></script>
+    <script type="text/javascript" src="/resources/axisj/lib/AXSelect.js>"
+            th:src="@{../../../resources/axisj/lib/AXSelect.js}"></script>
+    <script type="text/javascript" src="/resources/axisj/lib/AXGrid.js>"
+            th:src="@{../../../resources/axisj/lib/AXGrid.js}"></script>
 
-    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXInput.css" th:href="@{/resources/axisj/ui/arongi/AXInput.css}"/>
-    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXSelect.css" th:href="@{/resources/axisj/ui/arongi/AXSelect.css}"/>
-    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXGrid.css" th:href="@{/resources/axisj/ui/arongi/AXGrid.css}"/>
+    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXInput.css"
+          th:href="@{/resources/axisj/ui/arongi/AXInput.css}"/>
+    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXSelect.css"
+          th:href="@{/resources/axisj/ui/arongi/AXSelect.css}"/>
+    <link rel="stylesheet" type="text/css" href="/resources/axisj/ui/arongi/AXGrid.css"
+          th:href="@{/resources/axisj/ui/arongi/AXGrid.css}"/>
 
 </head>
 <body>
@@ -27,160 +35,66 @@
             <h1>
                 코드 관리
             </h1>
-
-            <!-- Main content -->
-            <section class="content">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="box box-default">
-                            <!-- /.box-header -->
-                            <div class="box box-default">
-                                <!-- /.box-header -->
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-fw fa-search"></i>Search</h3>
-                                    <!-- [_]창)-->
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                            <a href="#STARTER" data-toggle="tab" onclick="procSelectTab('STARTER')"
-                                               aria-expanded="true"></a>
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="box-body">
-                                    <div class="content-box2 col-md-12 col-md-offset-13">
-                                        <!--<div class="row">-->
-                                        <!--<div class="col-md-6">-->
-                                        <div class="selectbox select1">
-                                            <i class="fa fa-fw fa-check-square-o"></i>
-                                            <label for="searchType">사용여부</label>
-                                            <select id="searchType" name="searchType"
-                                                    class="form-control select2 select2-hidden-accessible"
-                                                    style="width: 100%;"
-                                                    tabindex="-1"
-                                                    aria-hidden="true">
-                                                <option selected="selected"
-                                                        th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
-                                                    전체
-                                                </option>
-                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
-                                                    사용
-                                                </option>
-                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}">
-                                                    미사용
-                                                </option>
-                                            </select>
-                                            <span class="select2 select2-container select2-container--default select2-container--below"
-                                                  dir="ltr" style="width: 100%;">
-                                        <span class="selection"></span>
-                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                        </span>
-                                        </div>
-                                        <div class="selectbox select2">
-                                            <p/>
-                                            <i class="fa fa-fw fa-check-square-o"></i>
-                                            <label for="searchTypeColumn">검색유형</label>
-                                            <select id="searchTypeColumn" name="searchTypeColumn"
-                                                    class="form-control select2 select2-hidden-accessible"
-                                                    style="width: 100%;"
-                                                    tabindex="-1"
-                                                    aria-hidden="true">
-                                                <option selected="selected"
-                                                        th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).SEARCH_TYPE_ALL}">
-                                                    전체
-                                                </option>
-                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}">
-                                                    코드이름
-                                                </option>
-                                                <option th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_BUILD_PACK}">
-                                                    value
-                                                </option>
-                                            </select>
-                                            <span class="select2 select2-container select2-container--default select2-container--below"
-                                                  dir="ltr" style="width: 100%;">
-                                        <span class="selection"></span>
-                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                        </span>
-                                        </div>
-                                        <!--</div>-->
-                                        <div class="selectbox select4">
-                                            <p/>
-                                            <i class="fa fa-fw fa-check-square-o"></i>
-                                            <label for="searchTypeColumn">검색어</label>
-                                            <div class="box-tools">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" id="searchKeyword" class="form-control pull-right"
-                                                           placeholder="검색어를 입력하세요"
-                                                           onkeypress="procCheckSearchFormKeyEvent(event);"/>
-                                                    <div class="input-group-btn">
-                                                        <button type="submit" id="btnSearch" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--▼col-md-6 -->
-                                        <!--</div>-->
-                                        <!--▼row -->
-                                        <!--</div>-->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ▼탭 구현 설정 시작 -->
-
-                        <section class="content">
-                            <div class="row">
-                                    <div class="box box-default">
-                                        <div class="row">
-                                            <!-- /.box-header -->
-                                            <div class="box-body">
-                                                <div class="panel content-box col-sm-12 col-md-12 mt-50 col-md-offset-13 w98">
-                                                    <div class="box">
-                                                        <div class="custom-boxL">
-
-                                                            <div class="clearfix custom-mb5">
-                                                                <div class="fr">
-                                                                    <button type="button" class="btn btn-cancel2 btn-sm" onclick="fnObj.append();">추가</button>
-                                                                    <button type="button" class="btn btn-save btn-sm" onclick="procSaveList(myGrid,
-                           'Constants.PROC_NAME_COMMON_CODE_GROUP');">저장</button>
-                                                                </div>
-                                                            </div>
-                                                            <div id="AXGridTarget">
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="custom-boxR">
-
-                                                            <div class="clearfix custom-mb5">
-                                                                <div class="fr">
-                                                                    <button type="button" class="btn btn-cancel2 btn-sm" onclick="fnObj2.append();">추가</button>
-                                                                    <button type="button" class="btn btn_del2 btn-sm" onclick="fnObj2.deleteListItem();">삭제</button>
-                                                                    <button type="button" class="btn btn-save btn-sm" onclick="procSaveList(myGrid2,
-                           'Constants.PROC_NAME_COMMON_CODE_DETAIL');">저장</button>
-
-                                                                </div>
-                                                            </div>
-                                                            <div id="AXGridTarget2">
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                            </div>
-                        </section>
-
-                        <!-- 탭 구현설정 끝 -->
-                        <!-- ▼row 12:설정 끝 -->
-                    </div>
-                    <!-- ▼content설정 끝 -->
-                </div>
-            </section>
         </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-header">
+                        <!-- Search a box -->
+                        <form id="searchForm" onsubmit="return false;">
+                            <div class="input-group input-group-sm pull-right header" style="width: 300px;">
+                                <input type="text" id="searchKeyword" class="form-control pull-right"
+                                       placeholder="Search"
+                                       onkeyup="procCheckSearchFormKeyEvent(event);"/>
+                                <div class="input-group-btn">
+                                    <button type="button" id="btnSearch" class="btn btn-default"><i
+                                            class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="hiddenValuesCommonCodeGroup"></div>
+                            <div id="hiddenValuesCommonCodeDetail"></div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Tab a box -->
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="custom-boxL">
+                            <!--<div class="custom-content-box">-->
+                            <div class="clearfix custom-mb5">
+                                <div class="fr">
+                                    <button type="button" class="btn btn-cancel2 btn-sm" onclick="fnObj.append();">추가</button>
+                                    <button type="button" class="btn btn-save btn-sm" th:attr="onclick='procSaveList(myGrid,' +
+                           ${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}+  ');'">저장</button>
+
+                                </div>
+                            </div>
+                            <div id="AXGridTarget">
+                            </div>
+                            <!--</div>-->
+                        </div>
+                        <div class="custom-boxR">
+                            <!--<div class="content-box">-->
+                            <div class="clearfix custom-mb5">
+                                <div class="fr">
+                                    <button type="button" class="btn btn-cancel2 btn-sm" onclick="fnObj2.append();">추가</button>
+                                    <button type="button" class="btn btn_del2 btn-sm" onclick="fnObj2.deleteListItem();">삭제</button>
+                                    <button type="button" class="btn btn-save btn-sm" th:attr="onclick='procSaveList(myGrid2,' +
+                           ${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}+  ');'">저장</button>
+                                </div>
+                            </div>
+                            <div id="AXGridTarget2">
+                            </div>
+                            <!--</div>-->
+                        </div>
+                    </div> <!--<div class="box">-->
+                </div>
+            </div>
+        </section>
+
+
     </div>
     <!-- /.content-wrapper -->
 
@@ -190,18 +104,22 @@
 </div>
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var error = /*[[${error}]]*/ null;
+
     var LIST_PROC_URL = "/commonCode/getCommonCode";
     var INSERT_PROC_URL = "/commonCode/insertCommonCode";
     var UPDATE_PROC_URL = "/commonCode/updateCommonCode";
     var DELETE_PROC_URL = "/commonCode/deleteCommonCode";
+
+    var PROC_TYPE_COMMON_CODE_GROUP = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ "";
+    var PROC_TYPE_COMMON_CODE_DETAIL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/ "";
+    var RESULT_STATUS_FAIL_DUPLICATED = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).RESULT_STATUS_FAIL_DUPLICATED}]]*/ "";
 
     var GROUP_ID = "";
     var LAST_USE_YN = "";
     var LAST_CHECKED_LIST = [];
     var EDIT_CELL_INDEX_GRID_01 = 0;
     var EDIT_CELL_INDEX_GRID_02 = 0;
-var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/;
+
 
 
     var myGrid = new AXGrid();
@@ -220,8 +138,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             var stringHiddenValue = '<input type="hidden" id="orgId_'
                                 + this.index + '" class="" value="' + this.item.id + '" />'
                                 + '<input type="hidden" id="flagModifyCommonCodeGroup_'
-                                + this.index + '" class="" value="'#{ppp}'"  />';
-
+                                + this.index + '" class="" value=/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/ "";/>';
                             hiddenValues.append(stringHiddenValue);
                         }
 
@@ -232,7 +149,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             type: "text",
                             maxLength: 50,
                             disabled: function() {
-                                return ($('#flagModifyCommonCodeGroup_' + this.index).val() != '/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+                                return ($('#flagModifyCommonCodeGroup_' + this.index).val() != /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/);
                             },
                             beforeUpdate: function (val) {
                                 return val;
@@ -249,10 +166,10 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                                 + this.index + '" style="float:right; display:none;"> '
                                 + ' <button type="button" class="btn btn-cancel2 btn-sm" '
                                 + ' onclick="fnObj.CancelWriteForm(' + this.index + ', '
-                                + "'/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C}]]*/'" + ');"> 취소 </button> '
+                                + "/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/" + ');"> 취소 </button> '
                                 + ' <button type="button" class="btn btn-save btn-sm" '
                                 + ' onclick="procInsertItem(' + this.index
-                                + ', myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/);"> 저장 </button> '
+                                + ', myGrid, PROC_TYPE_COMMON_CODE_GROUP);"> 저장 </button> '
                                 + ' </div> ';
                         }
 
@@ -261,10 +178,10 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                                 + this.index + '" style="float:right; display:none;"> '
                                 + ' <button type="button" class="btn btn-cancel2 btn-sm"'
                                 + ' onclick="fnObj.CancelWriteForm(' + this.index + ', '
-                                + "'*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/'" + ');"> 취소 </button> '
+                                + "/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/" + ');"> 취소 </button> '
                                 + ' <button type="button" class="btn btn-save btn-sm"'
                                 + ' onclick="procPopup(' + "'코드'" + ', UPDATE_MESSAGE, ' + "'procUpdateItem("
-                                + this.index + ", myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/);'" + ')"> 저장 </button> '
+                                + this.index + ", myGrid, PROC_TYPE_COMMON_CODE_GROUP);'" + ')"> 저장 </button> '
                                 + ' </div> ';
                         }
 
@@ -282,7 +199,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             type: "text",
                             maxLength: 50,
                             disabled: function(){
-                                return ($('#flagModifyCommonCodeGroup_' + this.index).val() != '/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+                                return ($('#flagModifyCommonCodeGroup_' + this.index).val() != /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/);
                             },
                             beforeUpdate: function (val) {
                                 return val;
@@ -301,13 +218,13 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                         GROUP_ID = this.item.id;
                         $('#hiddenValuesCommonCodeDetail').html('');
 
-                        if (GROUP_ID) procGetList(myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/, GROUP_ID);
+                        if (GROUP_ID) procGetList(myGrid2, PROC_TYPE_COMMON_CODE_DETAIL, GROUP_ID);
                     }
                 },
                 page: {
                     paging:true,
-                    pageNo: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_NO}]]*/,
-                pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_SIZE}]]*/
+                    pageNo: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_NO}]]*/ ,
+                    pageSize :  /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_SIZE}]]*/
         }
         });
         },
@@ -337,7 +254,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                     stringHiddenValue = '<input type="hidden" id="orgId_'
                         + i + '" class="" value="" />'
                         + '<input type="hidden" id="flagModifyCommonCodeGroup_'
-                        + i + '" class="" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" />';
+                        + i + '" class="" value=/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/ "";/>';
                 }
 
                 arrayHiddenValues.push(stringHiddenValue);
@@ -345,7 +262,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
 
             hiddenValues.html(arrayHiddenValues.join(" "));
 
-            $('#flagModifyCommonCodeGroup_' + EDIT_CELL_INDEX_GRID_01).val('/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+            $('#flagModifyCommonCodeGroup_' + EDIT_CELL_INDEX_GRID_01).val(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/);
             myGrid.editCell(0, 0, 0);
             EDIT_CELL_INDEX_GRID_01++;
         },
@@ -353,16 +270,16 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             $.Event(event).stopPropagation();
 
             var item = myGrid.list[index];
-            $('#flagModifyCommonCodeGroup_' + index).val('/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+            $('#flagModifyCommonCodeGroup_' + index).val(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/);
             item.reqCud = "U";
 
             myGrid.editCell(0, 0, index);
             var htmlString = ' <button type="button" class="btn btn-cancel2 btn-sm"'
                 + ' onclick="fnObj.CancelWriteForm(' + index + ', '
-                + "'*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/'" + ');"> 취소 </button> '
+                + "/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/" + ');"> 취소 </button> '
                 + ' <button type="button" class="btn btn-save btn-sm"'
                 + ' onclick="procPopup(' + "'코드'" + ', UPDATE_MESSAGE, ' + "'procUpdateItem("
-                + index + ", myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/);'" + ')"> 저장 </button> ';
+                + index + ", myGrid, PROC_TYPE_COMMON_CODE_GROUP);'" + ')"> 저장 </button> ';
 
             $('.btn_common_code_group_' + index).html(htmlString);
         },
@@ -370,7 +287,9 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             $.Event(event).stopPropagation();
 
             // STATUS :: INSERT
-            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C}]]*/ == reqStatus) {
+            var CUD = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C}]]*/ null;
+            if (CUD == reqStatus) {
+            }
 
                 var listSize = myGrid.getList().length;
                 var hiddenValues = $('#hiddenValuesCommonCodeGroup');
@@ -395,9 +314,9 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             }
 
             // STATUS :: MODIFY
-            if (*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ == reqStatus) {
+            if ('<%= Constants.CUD_U%>' == reqStatus) {
                 var item = myGrid.list[index];
-                $('#flagModifyCommonCodeGroup_' + index).val('"/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/"');
+                $('#flagModifyCommonCodeGroup_' + index).val('<%= Constants.USE_YN_N %>');
                 item.reqCud = null;
 
                 myGrid.removeListIndex(-1);
@@ -413,12 +332,9 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
         deleteItem: function (index) {
             $.Event(event).stopPropagation();
 
-            procPopup('코드', DELETE_MESSAGE, 'procDeleteItem(' + index + ', myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/);');
+            procPopup('코드', DELETE_MESSAGE, 'procDeleteItem(' + index + ', myGrid, PROC_TYPE_COMMON_CODE_GROUP);');
         }
     };
-
-
-
 
 
     var myGrid2 = new AXGrid();
@@ -438,7 +354,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             var stringHiddenValue = '<input type="hidden" id="orgKey_'
                                 + this.index + '" class="" value="' + this.item.key + '" />'
                                 + '<input type="hidden" id="flagModifyCommonCodeDetail_'
-                                + this.index + '" class="" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/" />';
+                                + this.index + '" class="" value="<%= Constants.USE_YN_N %>" />';
 
                             hiddenValues.append(stringHiddenValue);
                         }
@@ -450,7 +366,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             type: "text",
                             maxLength: 50,
                             disabled: function() {
-                                return ($('#flagModifyCommonCodeDetail_' + this.index).val() != /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/);
+                                return ($('#flagModifyCommonCodeDetail_' + this.index).val() != '<%= Constants.USE_YN_Y %>');
                             },
                             beforeUpdate: function (val) {
                                 return val;
@@ -466,7 +382,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             type: "text",
                             maxLength: 50,
                             disabled: function(){
-                                return ($('#flagModifyCommonCodeDetail_' + this.index).val() != /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/);
+                                return ($('#flagModifyCommonCodeDetail_' + this.index).val() != '<%= Constants.USE_YN_Y %>');
                             },
                             beforeUpdate: function (val) {
                                 return val;
@@ -482,7 +398,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             type: "text",
                             maxLength: 50,
                             disabled: function(){
-                                return ($('#flagModifyCommonCodeDetail_' + this.index).val() != /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/);
+                                return ($('#flagModifyCommonCodeDetail_' + this.index).val() != '<%= Constants.USE_YN_Y %>');
                             },
                             beforeUpdate: function (val) {
                                 return val;
@@ -498,18 +414,19 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             return ' <div><div class="radio_common_code_detail_' + this.index
                                 + '" style="float:left;"> '
                                 + ' <input type="radio" id="useYn_Y_' + this.index + '" name="useYn_'
-                                + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" checked /> Y '
+                                + this.index + '" value="<%= Constants.USE_YN_Y %>" checked /> Y '
                                 + ' <input type="radio" id="useYn_N_' + this.index + '" name="useYn_'
-                                + this.index + '" value=""/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/""> N '
+                                + this.index + '" value="<%= Constants.USE_YN_N %>"> N '
                                 + ' </div> '
+
                                 + ' <div class="btn_common_code_detail_' + this.index
                                 + '" style="float:right; display:none;"> '
                                 + ' <button type="button" class="btn btn-cancel2 btn-sm" '
                                 + ' onclick="fnObj2.CancelWriteForm(' + this.index + ', '
-                                + "'/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C}]]*/'" + ');"> 취소 </button> '
+                                + "'<%= Constants.CUD_C%>'" + ');"> 취소 </button> '
                                 + ' <button type="button" class="btn btn-save btn-sm" '
                                 + ' onclick="procInsertItem(' + this.index
-                                + ', myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);"> 저장 </button> '
+                                + ', myGrid2, PROC_TYPE_COMMON_CODE_DETAIL);"> 저장 </button> '
                                 + ' </div> '
                                 + ' </div> ';
                         }
@@ -518,18 +435,19 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             return ' <div><div class="radio_common_code_detail_' + this.index
                                 + '" style="float:left;"> '
                                 + ' <input type="radio" id="useYn_Y_' + this.index + '" name="useYn_'
-                                + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" checked /> Y '
+                                + this.index + '" value="<%= Constants.USE_YN_Y %>" checked /> Y '
                                 + ' <input type="radio" id="useYn_N_' + this.index + '" name="useYn_'
-                                + this.index + '" value=""/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/""> N '
+                                + this.index + '" value="<%= Constants.USE_YN_N %>"> N '
                                 + ' </div> '
+
                                 + ' <div class="btn_common_code_detail_' + this.index
                                 + '" style="float:right; display:none;"> '
                                 + ' <button type="button" class="btn btn-cancel2 btn-sm" '
                                 + ' onclick="fnObj2.CancelWriteForm(' + this.index + ', '
-                                + "'*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/'" + ');"> 취소 </button> '
+                                + "'<%= Constants.CUD_U%>'" + ');"> 취소 </button> '
                                 + ' <button type="button" class="btn btn-save btn-sm" '
                                 + ' onclick="procInsertItem(' + this.index
-                                + ', myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);"> 저장 </button> '
+                                + ', myGrid2, PROC_TYPE_COMMON_CODE_DETAIL);"> 저장 </button> '
                                 + ' </div> '
                                 + ' </div> ';
                         }
@@ -551,9 +469,9 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                             return ' <div><div class="radio_common_code_detail_' + this.index
                                 + '" style="float:left;"> '
                                 + ' <input type="radio" id="useYn_Y_' + this.index + '" name="useYn_'
-                                + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" disabled ' + useYnCheckY + ' /> Y '
+                                + this.index + '" value="<%= Constants.USE_YN_Y %>" disabled ' + useYnCheckY + ' /> Y '
                                 + ' <input type="radio" id="useYn_N_' + this.index + '" name="useYn_'
-                                + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" disabled ' + useYnCheckN + '> N '
+                                + this.index + '" value="<%= Constants.USE_YN_N %>" disabled ' + useYnCheckN + '> N '
                                 + ' </div> '
 
                                 + ' <div class="btn_common_code_detail_' + this.index
@@ -576,8 +494,8 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                 },
                 page: {
                     paging:true,
-                    pageNo: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_NO}]]*/,
-                pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_SIZE}]]*/
+                    pageNo: <%= Constants.COMMON_CODE_PAGE_NO %>,
+                pageSize:<%= Constants.COMMON_CODE_PAGE_SIZE %>
         }
         });
         },
@@ -607,7 +525,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                     stringHiddenValue = '<input type="hidden" id="orgKey_'
                         + i + '" class="" value="" />'
                         + '<input type="hidden" id="flagModifyCommonCodeDetail_'
-                        + i + '" class="" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" />';
+                        + i + '" class="" value="<%= Constants.USE_YN_Y %>" />';
                 }
 
                 arrayHiddenValues.push(stringHiddenValue);
@@ -615,13 +533,13 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
 
             hiddenValues.html(arrayHiddenValues.join(" "));
 
-            $('#flagModifyCommonCodeDetail_' + EDIT_CELL_INDEX_GRID_02).val('/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+            $('#flagModifyCommonCodeDetail_' + EDIT_CELL_INDEX_GRID_02).val('<%= Constants.USE_YN_Y %>');
             myGrid2.editCell(0, 1, 0);
             EDIT_CELL_INDEX_GRID_02++;
         },
         updateItem: function (index) {
             $.Event(event).stopPropagation();
-            $('#flagModifyCommonCodeDetail_' + index).val('/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/');
+            $('#flagModifyCommonCodeDetail_' + index).val('<%= Constants.USE_YN_Y %>');
 
             var item = myGrid2.list[index];
             item.reqCud = "U";
@@ -631,10 +549,10 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             myGrid2.editCell(0, 1, index);
             var htmlString = ' <button type="button" class="btn btn-cancel2 btn-sm"'
                 + ' onclick="fnObj2.CancelWriteForm(' + index + ', '
-                + "'*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/'" + ');"> 취소 </button> '
+                + "'<%= Constants.CUD_U%>'" + ');"> 취소 </button> '
                 + ' <button type="button" class="btn btn-save btn-sm"'
                 + ' onclick="procPopup(' + "'코드'" + ', UPDATE_MESSAGE, ' + "'procUpdateItem("
-                + index + ", myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);'" + ')"> 저장 </button> ';
+                + index + ", myGrid2, PROC_TYPE_COMMON_CODE_DETAIL);'" + ')"> 저장 </button> ';
 
             $('.btn_common_code_detail_' + index).html(htmlString);
 
@@ -652,9 +570,9 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             }
 
             htmlString = ' <input type="radio" id="useYn_Y_' + index + '" name="useYn_'
-                + index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/"' + useYnCheckY + ' /> Y '
+                + index + '" value="<%= Constants.USE_YN_Y %>"' + useYnCheckY + ' /> Y '
                 + ' <input type="radio" id="useYn_N_' + index + '" name="useYn_'
-                + index + '" value=""/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/""' + useYnCheckN + '> N ';
+                + index + '" value="<%= Constants.USE_YN_N %>"' + useYnCheckN + '> N ';
 
             $('.radio_common_code_detail_' + index).html(htmlString);
         },
@@ -662,7 +580,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             $.Event(event).stopPropagation();
 
             // STATUS :: INSERT
-            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C}]]*/ == reqStatus) {
+            if ('<%= Constants.CUD_C%>' == reqStatus) {
 
                 var listSize = myGrid.getList().length;
                 var hiddenValues = $('#hiddenValuesCommonCodeDetail');
@@ -687,7 +605,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             }
 
             // STATUS :: MODIFY
-            if (*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ == reqStatus) {
+            if ('<%= Constants.CUD_U%>' == reqStatus) {
                 var item = myGrid2.list[index];
                 item.reqCud = null;
 
@@ -710,7 +628,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
         deleteItem: function (index) {
             $.Event(event).stopPropagation();
 
-            procPopup('코드', DELETE_MESSAGE, 'procDeleteItem(' + index + ', myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);');
+            procPopup('코드', DELETE_MESSAGE, 'procDeleteItem(' + index + ', myGrid2, PROC_TYPE_COMMON_CODE_DETAIL);');
         },
         deleteListItem: function (index) {
             $.Event(event).stopPropagation();
@@ -721,13 +639,16 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                 procAlert("danger", '<spring:message code="common.info.result.fail.delete" />');
                 return false;
             } else {
-                procPopup('코드', DELETE_MESSAGE, 'procDeleteList(myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/);');
+                procPopup('코드', DELETE_MESSAGE, 'procDeleteList(myGrid2, PROC_TYPE_COMMON_CODE_DETAIL);');
             }
         }
     };
 
 
 
+
+
+    // GET LIST
     var procGetList = function(objGrid, procType, groupId) {
         var useYn = $("#useYn").val();
         var searchType = $("#searchType").val();
@@ -749,7 +670,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                 if (myGrid == objGrid && objGrid.getList().length < 1) {
                     var removeList = [];
 
-                    for (var i = 0; i < /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).COMMON_CODE_PAGE_SIZE}]]*/; i++) {
+                    for (var i = 0; i < <%= Constants.COMMON_CODE_PAGE_SIZE %>; i++) {
                         removeList.push({index:i});
                     }
 
@@ -760,10 +681,10 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                     return false;
                 }
 
-                if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
+                if (PROC_TYPE_COMMON_CODE_GROUP == procType) {
                     GROUP_ID = objGrid.list[0].id;
                     objGrid.setFocus(0);
-                    procGetList (myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/, objGrid.list[0].id);
+                    procGetList (myGrid2, PROC_TYPE_COMMON_CODE_DETAIL, objGrid.list[0].id);
                 }
             }
         });
@@ -775,7 +696,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
         var item = objGrid.list[index];
         var param = {};
 
-        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
+        if (PROC_TYPE_COMMON_CODE_GROUP == procType) {
             var reqOrgId = $('#orgId_' + index).val();
             var reqId = item.id;
             var reqName = item.name;
@@ -805,7 +726,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             };
         }
 
-        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/ == procType) {
+        if (PROC_TYPE_COMMON_CODE_DETAIL == procType) {
             var reqKey = item.key;
             var reqValue = item.value;
             var reqSummary = item.summary;
@@ -852,7 +773,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             var commonCodeList = objGrid.getList();
             var listSize = commonCodeList.length;
 
-            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
+            if (PROC_TYPE_COMMON_CODE_GROUP == procType) {
                 for (var i = 0; i < listSize; i++) {
                     var param = procCommonParam(i, objGrid, procType);
 
@@ -860,7 +781,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                 }
             }
 
-            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/ == procType) {
+            if (PROC_TYPE_COMMON_CODE_DETAIL == procType) {
                 for (var j = 0; j < listSize; j++) {
                     var reqOrgKey = $('#orgKey_' + j);
 
@@ -892,7 +813,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
     var procCallbackSaveList = function(objGrid, procType) {
         objGrid.reloadList();
 
-        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) myGrid2.reloadList();
+        if (PROC_TYPE_COMMON_CODE_GROUP == procType) myGrid2.reloadList();
 
         procAlert("success", '<spring:message code="common.info.result.success" />');
     };
@@ -907,8 +828,8 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
             item.reqCud = null;
             var htmlString = '';
 
-            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
-                $('#flagModifyCommonCodeGroup_' + index).val('"/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/"');
+            if (PROC_TYPE_COMMON_CODE_GROUP == procType) {
+                $('#flagModifyCommonCodeGroup_' + index).val('<%= Constants.USE_YN_N %>');
 
                 htmlString = ' <button type="button" class="btn btn-primary btn-sm" '
                     + ' onclick="fnObj.updateItem(' + index + ');"> 수정 </button> '
@@ -919,8 +840,8 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                 $('#orgId_' + index).val(item.id);
             }
 
-            if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/ == procType) {
-                $('#flagModifyCommonCodeDetail_' + index).val('"/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/"');
+            if (PROC_TYPE_COMMON_CODE_DETAIL == procType) {
+                $('#flagModifyCommonCodeDetail_' + index).val('<%= Constants.USE_YN_N %>');
 
                 htmlString = ' <button type="button" class="btn btn-primary btn-sm" '
                     + ' onclick="fnObj2.updateItem(' + index + ');"> 수정 </button> '
@@ -940,9 +861,9 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
                 }
 
                 htmlString = ' <input type="radio" id="useYn_Y_' + this.index + '" name="useYn_'
-                    + this.index + '" value="/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/" disabled ' + useYnCheckY + ' /> Y '
+                    + this.index + '" value="<%= Constants.USE_YN_Y %>" disabled ' + useYnCheckY + ' /> Y '
                     + ' <input type="radio" id="useYn_N_' + this.index + '" name="useYn_'
-                    + this.index + '" value=""/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}]]*/"" disabled ' + useYnCheckN + '> N '
+                    + this.index + '" value="<%= Constants.USE_YN_N %>" disabled ' + useYnCheckN + '> N '
 
                 $('.radio_common_code_detail_' + index).html(htmlString);
             }
@@ -965,8 +886,8 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
 
     // INSERT CALLBACK
     var procCallbackInsertItem = function(objGrid, procType, data, index) {
-        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
-            procGetList (myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/, objGrid.list[0].id);
+        if (PROC_TYPE_COMMON_CODE_GROUP == procType) {
+            procGetList (myGrid2, PROC_TYPE_COMMON_CODE_DETAIL, objGrid.list[0].id);
             GROUP_ID = objGrid.list[0].id;
         }
 
@@ -1022,8 +943,8 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
         var removeList = [{index:index}];
         objGrid.removeListIndex(removeList);
 
-        if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ == procType) {
-            procGetList (myGrid2, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/, objGrid.list[0].id);
+        if (PROC_TYPE_COMMON_CODE_GROUP == procType) {
+            procGetList (myGrid2, PROC_TYPE_COMMON_CODE_DETAIL, objGrid.list[0].id);
         }
 
         procAlert("success", '<spring:message code="common.info.result.success" />');
@@ -1060,14 +981,14 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
 
     // BIND :: BUTTON EVENT
     $("#btnSearch").on("click", function() {
-        procGetList(myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/, null);
+        procGetList(myGrid, PROC_TYPE_COMMON_CODE_GROUP, null);
     });
 
 
     // CHECK SEARCH FORM KEY EVENT
     var procCheckSearchFormKeyEvent = function(e) {
         if (e.keyCode==13 && e.srcElement.type != 'textarea') {
-            procGetList(myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/, null);
+            procGetList(myGrid, PROC_TYPE_COMMON_CODE_GROUP, null);
         }
     };
 
@@ -1078,7 +999,7 @@ var ppp = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_
         fnObj2.pageStart();
 
         // GET LIST
-        procGetList (myGrid, /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/, null);
+        procGetList (myGrid, PROC_TYPE_COMMON_CODE_GROUP, null);
         procAlert("info", WELCOME_MESSAGE);
     });
 
