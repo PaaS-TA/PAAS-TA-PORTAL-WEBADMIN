@@ -183,7 +183,7 @@
     var CATEGORY_HOME_URL = "/catalog/catalogMain";
     var CATALOG_LIST_PROC_URL = "/catalog/buildPackCatalogs";
     var CATEGORY_LIST_PROC_URL = "/code/codeDetail";  //공통코드 메인페이지로 이동한다.??
-    var BUILD_PACK_LIST_PROC_URL = "/buildPack/buildpacks";
+    var BUILD_PACK_LIST_PROC_URL = "/buildpack/buildpacks";
     //    var DUPLICATED_PROC_URL = "/catalog/getBuildPackCatalogCount";
     var DUPLICATED_PROC_URL = "/catalog/buildpackCatalogs/count";
     //    var INSERT_PROC_URL = "'/catalog/insertBuildPackCatalog";
@@ -351,13 +351,14 @@
         var orgName = doc.getElementById('orgName').value;
 
         // CHECK DUPLICATED NAME
-        var insertFlag = INSERT_FLAG;
-        if ("" != insertFlag && CUD_U == insertFlag && reqName == orgName) {
-            procUploadThumbnailImageFile({RESULT: RESULT_STATUS_SUCCESS});
-        } else {
-            procCallAjax2(DUPLICATED_PROC_URL, "GET", {name: reqName}, procUploadThumbnailImageFile);
-        }
-        alert(DUPLICATED_PROC_URL);
+//        var insertFlag = INSERT_FLAG;
+//        if ("" != insertFlag && CUD_U == insertFlag && reqName == orgName) {
+//            procUploadThumbnailImageFile({RESULT: RESULT_STATUS_SUCCESS});
+//        } else {
+//            procCallAjax2(DUPLICATED_PROC_URL, "GET", {name: reqName}, procUploadThumbnailImageFile);
+//        }
+        procInsert();
+
     };
 
     // PROCESS CHECK VALID
@@ -404,7 +405,8 @@
         var formData = getAppSampleFileFormData();
 
         if (!formData) {
-            procInsert();
+            //섬네일 되면 여기 살려~
+//            procInsert();
         } else {
             procUploadFile(formData, UPLOAD_APP_SAMPLE_PROC_URL, procCallbackUploadAppSampleFile);
         }
@@ -448,11 +450,11 @@
         // UPDATE
         var insertFlag = INSERT_FLAG;
         if ("" != insertFlag && CUD_U == insertFlag) {
-            procCallAjax(UPDATE_PROC_URL, param, procCallbackUpdate);
+            procCallAjax2(UPDATE_PROC_URL,"PUT", param, procCallbackUpdate);
 
             // INSERT
         } else {
-            procCallAjax(INSERT_PROC_URL, param, procCallbackInsert);
+            procCallAjax2(INSERT_PROC_URL,"POST" ,param, procCallbackInsert);
         }
     };
 
