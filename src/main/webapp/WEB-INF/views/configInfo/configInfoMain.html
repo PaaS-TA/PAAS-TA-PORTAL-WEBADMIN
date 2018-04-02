@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="../layout/default">
 <head>
-    <script type="text/javascript">
+    <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
 
         $(document).ready(function(){
             getValues();
