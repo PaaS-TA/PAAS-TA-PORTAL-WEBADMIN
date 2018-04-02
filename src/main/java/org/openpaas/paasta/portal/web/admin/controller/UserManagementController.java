@@ -2,14 +2,15 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.model.UserManagement;
-import org.openpaas.paasta.portal.web.admin.service.UserManagementService;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.UnsupportedEncodingException;
+
 import java.util.Map;
-import java.util.logging.Logger;
+
 
 /**
  * 사용자 목록, 사용자 삭제 및 운영자 권한 부여 등의 API 를 호출 하는 컨트롤러이다.
@@ -53,8 +54,8 @@ public class UserManagementController extends Common {
      */
     @RequestMapping(value = {"/ResetPassword/{userId}"}, method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, Object> setResetPassword(@PathVariable String userId) {
-        return userManagementService.setResetPassword("/userManagement/ResetPassword/"+userId, HttpMethod.PUT, null, null);
+    public Map<String, Object> setResetPassword(@PathVariable String userId, @RequestBody UserManagement param) {
+        return userManagementService.setResetPassword("/userManagement/ResetPassword/"+userId, HttpMethod.PUT, param, null);
     }
 
 
@@ -63,10 +64,10 @@ public class UserManagementController extends Common {
      * @param userId user id
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/OperatingAuthority/{userId}"}, method = RequestMethod.DELETE)
+    @RequestMapping(value = {"/OperatingAuthority/{userId}"}, method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, Object> updateOperatingAuthority(@PathVariable String userId) {
-        return userManagementService.updateOperatingAuthority("/userManagement/OperatingAuthority/" +userId, HttpMethod.DELETE, null, null);
+    public Map<String, Object> updateOperatingAuthority(@PathVariable String userId, @RequestBody UserManagement param ) throws UnsupportedEncodingException {
+        return userManagementService.updateOperatingAuthority("/userManagement/OperatingAuthority/"+ userId, HttpMethod.PUT, param, null);
     }
 
 
@@ -76,9 +77,9 @@ public class UserManagementController extends Common {
      * @param userId userId
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/UserAccount/{userId}"}, method = RequestMethod.DELETE)
+    @RequestMapping(value = {"/deleteUserAccount/{userId}"}, method = RequestMethod.DELETE)
     @ResponseBody
-    public Map<String, Object> deleteUserAccount(@PathVariable String userId) {
-        return userManagementService.deleteUserAccount("/userManagement/UserAccount/" + userId, HttpMethod.POST, null, null);
+    public Map<String, Object> deleteUserAccount(@PathVariable String userId, @RequestBody UserManagement param) {
+        return userManagementService.deleteUserAccount("/userManagement/deleteUserAccount/" + userId, HttpMethod.DELETE, param, null);
     }
 }
