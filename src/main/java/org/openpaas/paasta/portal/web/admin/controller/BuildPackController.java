@@ -18,6 +18,7 @@ import java.util.UUID;
  * @since 2016.4.4 최초작성
  */
 @Controller
+@RequestMapping(value = {"/buildpacks"})
 public class BuildPackController extends Common {
 
     //private static final Logger LOGGER = LoggerFactory.getLogger(BuildPackController.class);
@@ -27,7 +28,7 @@ public class BuildPackController extends Common {
      *
      * @return model and view
      */
-    @RequestMapping(value = {"/buildpack"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/buildpackMain"}, method = RequestMethod.GET)
     public ModelAndView webIdeUser() {
         ModelAndView mv = new ModelAndView();
 
@@ -43,7 +44,7 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildpack/buildpacks"}, method = RequestMethod.GET)
+    @RequestMapping(value = {""}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
         return commonService.procCfApiRestTemplate("/buildpack/buildpacks", HttpMethod.GET, buildPack, getToken());
@@ -56,7 +57,7 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/buildpack/buildpacks/{guid}"}, method = RequestMethod.PUT)
+    @RequestMapping(value = {"/{guid}"}, method = RequestMethod.PUT)
     @ResponseBody
         public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack , @PathVariable String guid) {
 

@@ -99,11 +99,13 @@
                                         <label for="serviceParameter">서비스 생성 파라미터</label>
                                         <p/>
                                         <label class="control-label col-sm-2" for="serviceParameter"></label>
-                                        <button type='button' class='btn btn-save btn-sm'
+                                        <button type="button" class="btn btn-success btn-primary btn-sm"
                                                 style='margin-top:10px;margin-right:100px;' id='addServiceParameter'>추가
                                         </button>
-                                        <div id="serviceParameterArea" class="col-sm-7" style="width: 60%"
-                                             align="left"></div>
+                                        <div id="serviceParameterArea" class="form-group" style="width: 60%"
+                                             align="left">
+
+                                        </div>
                                     </div>
                                     <!--<div class="6">-->
                                     <div class="form-group">
@@ -112,12 +114,12 @@
                                         <p/>
                                         <div class="col-sm-9 mt10">
                                             <label class="radio-inline">
-                                                <input type="radio" onclick="javascript:yesNoCheck();" id="appBindYn_Y"
+                                                <input type="radio" id="appBindYn_Y"
                                                        name="appBindYn"
                                                        th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_Y}"/>Y
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" onclick="javascript:yesNoCheck();" id="appBindYn_N"
+                                                <input type="radio" id="appBindYn_N"
                                                        name="appBindYn"
                                                        th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_N}"/>N
                                             </label>
@@ -127,13 +129,14 @@
                                     <!--<div class="7">-->
                                     <div class="form-group" id="app_bind_parameter_form">
                                         <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="servicePackName">앱 바인드 파라미터</label>
+                                        <label for="appBindParameter">앱 바인드 파라미터</label>
                                         <p/>
                                         <!--<label for="appParameter">앱 바인드 파라미터</label><p/>-->
-                                        <button type='button' class='btn btn-save btn-sm'
-                                                style='margin-top:10px;margin-right:100px;' id='addAppBindParameter'>추가
+                                        <button type="button" class="btn btn-success btn-primary btn-sm"
+                                                id="addAppBindParameter">추가
                                         </button>
-                                        <div id="appBindParameterArea" class="col-sm-7" style="width: 60%" align="left">
+                                        <div id="appBindParameterArea" class="form-group" style="width: 60%"
+                                             align="left">
                                         </div>
                                     </div>
                                     <br/><br/>
@@ -234,10 +237,10 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
 
-    var CATEGORY_HOME_URL = "/catalog/catalogMain";
-    var CATALOG_LIST_PROC_URL = "/catalog/servicePackCatalogs";
+    var CATEGORY_HOME_URL = "/catalogs/catalogMain";
+    var CATALOG_LIST_PROC_URL = "/catalogs/servicepacks";
     var CATEGORY_LIST_PROC_URL = "/code/codeDetail";
-    var SERVICE_PACK_LIST_PROC_URL = "/service/service_brokers";
+    var SERVICE_PACK_LIST_PROC_URL = "/servicebrokers";
     var DUPLICATED_PROC_URL = "/catalog/getBuildPackCatalogCount";
     var INSERT_PROC_URL = "'/catalog/insertBuildPackCatalog";
     var UPDATE_PROC_URL = "/catalog/updateBuildPackCatalog";
@@ -256,6 +259,9 @@
     var REQUEST_APP_SAMPLE_FILE;
     var REQUEST_APP_SAMPLE_FILE_OBJECT;
     REQUEST_APP_SAMPLE_FILE_OBJECT = $('#appSampleFile');
+    var parameterCount = 0;
+    var appbindCount = 0;
+
 
     // GET CATEGORY LIST
     var getCategoryList = function () {
@@ -298,7 +304,7 @@
         var htmlString = [];
 
         for (var i = 0; i < listLength; i++) {
-            htmlString.push("<option value='" + data.list[i].name + "'>" + data.list[i].name + "</option>");
+            htmlString.push("<option value='" + data.list[i].entity.name + "'>" + data.list[i].entity.name + "</option>");
         }
 
         objSelectBox.append(htmlString);
@@ -361,127 +367,153 @@
 
 //======================================================================================================================
 //         서비스 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
-//         if (resultData.parameter != null || resultData.parameter != '' || resultData.parameter != undefined)
-//             $("#serviceParameterArea").empty();
-//         str = resultData.parameter.replace("}", "");
-//         var str2 = str.replace("{", "");
-//         var split = str2.split(",");
-//         count = split.length;
-//         var htmlString2 = [];
-//
-//         if (count > 0) {
-//             for (var j = 1; j < count + 1; j++) {
-//                 var html2 = "<div class=" + "service_parameter_line" + j + ">"
-//                     + "<input type='text' class='form-control-parameter1' id=" + "parameterName" + j + ">"
-//                     + "<select class='form-control-parameter2' id=" + "serviceParameterSelectType" + j + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
-//                     "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>";
-//                 html2 += "<button type='button' class='btn delete-service-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteServiceParameter' onclick='deleteLine(" + j + ")'>삭제</button></div>";
-//
-//                 htmlString2.push(html2);
-//             }
-//             var parameterInputBoxArea2 = $("#serviceParameterArea");
-//             parameterInputBoxArea2.append(htmlString2);
-//         } else {
-//             var html2 = "<div class='service_parameter_line1'><input type='text' class='form-control-parameter1' id=" + "parameterName1" + ">"
-//                 + "<select class='form-control-parameter2' id=" + "serviceParameterSelectType1" + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
-//                 "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>"
-//                 + "<button type='button' class='btn btn-save btn-sm' style='margin-top:-9px;margin-left:-6px;' id='addServiceParameter'>추가</button>";
-//             html2 += "<button type='button' class='btn delete-service-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteServiceParameter' onclick='deleteLine(1)'>삭제</button></div>";
-//
-//             htmlString2.push(html2);
-//         }
-//         for (var i = 0; i < split.length; i++) {
-//             var deleteSign = split[i].replace(/"/g, "");
-//
-//             splitSign = deleteSign.split(":");
-//             if (splitSign != null && splitSign != "undefined" && splitSign != "") {
-//                 var reqParameterName = $('#parameterName' + (i + 1));
-//                 var reqParameterType = $('#serviceParameterSelectType' + (i + 1));
-//
-//                 reqParameterName.val(splitSign[0]);
-//                 if (splitSign[1].length > 0) {
-//                     if (splitSign[1].trim() == "text") {
-//                         reqParameterType.val(splitSign[1]);
-//                     }
-//                     if (splitSign[1].trim() == "password") {
-//                         reqParameterType.val(splitSign[1]);
-//                     }
-//                     if (splitSign[1].trim() == "default") {
-//                         reqParameterType.val(splitSign[1]);
-//                     }
-//                     if (splitSign[1].trim() == "userAppointed") {
-//                         reqParameterType.val(splitSign[1]);
-//                     }
-//                 }
-//             }
-//         }
-//
-//
-//         // 앱 바인드 사용 유무에 따라 앱 바인드 파라미터 입력 창 show / hide 여부
-//         $('input[name="appBindYn"]').click(function () {
-//             if ($(this).attr('id') == 'appBindYn_Y') {
-//                 $('#app_bind_parameter_form').show();
-//             } else {
-//                 $('#app_bind_parameter_form').hide();
-//             }
-//         });
-//
-//
-//         // 앱 바인드 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
-//         if (resultData.app_bind_parameter != null || resultData.app_bind_parameter != '' || resultData.app_bind_parameter != undefined)
-//             $("#appBindParameterArea").empty();
-//         appParameterStr = resultData.app_bind_parameter.replace("}", "");
-//         var appParameterStr2 = appParameterStr.replace("{", "");
-//         var split = appParameterStr2.split(",");
-//         count2 = split.length;
-//         var htmlString2 = [];
-//
-//         if (count2 > 0) {
-//             for (var a = 1; a < count2 + 1; a++) {
-//                 var html2 = "<div class=" + "app_bind_parameter_line" + a + ">"
-//                     + "<input type='text' class='form-control-appBindParameter1' id=" + "appBindParameterName" + a + ">"
-//                     + "<select class='form-control-parameter2' id=" + "appBindParameterSelectType" + a + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
-//                     "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>";
-//                 html2 += "<button type='button' class='btn delete-appBind-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(" + a + ")'>삭제</button></div>";
-//
-//                 htmlString2.push(html2);
-//             }
-//             var appBindParameterInputBoxArea = $("#appBindParameterArea");
-//             appBindParameterInputBoxArea.append(htmlString2);
-//         } else {
-//             var html2 = "<div class='app_bind_parameter_line1'><input type='text' class='form-control-appBindParameter1' id=" + "appBindParameterName1" + ">"
-//                 + "<select class='form-control-parameter2' id=" + "appBindParameterSelectType1" + " " + "style='background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;'>" +
-//                 "<option value='text'>텍스트형</option><option value='password'>패스워드형</option><option value='default'>자동입력</option><option value='userAppointed'>관리자 지정</option></select>"
-//                 + "<button type='button' class='btn btn-save btn-sm' style='margin-top:-9px;margin-left:-6px;' id='addAppBindParameter'>추가</button>";
-//             html2 += "<button type='button' class='btn delete-appBind-parameter' style='margin-top:11px; margin-bottom:10px; margin-left:0px;' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(1)'>삭제</button></div>";
-//
-//             htmlString2.push(html2);
-//         }
-//         for (var b = 0; b < split.length; b++) {
-//             var deleteSign = split[b].replace(/"/g, "");
-//
-//             splitSign2 = deleteSign.split(":");
-//             if (splitSign2 != null && splitSign2 != "undefined" && splitSign2 != "") {
-//                 var reqParameterName = $('#appBindParameterName' + (b + 1));
-//                 var reqParameterType = $('#appBindParameterSelectType' + (b + 1));
-//
-//                 reqParameterName.val(splitSign2[0]);
-//                 if (splitSign2[1].length > 0) {
-//                     if (splitSign2[1].trim() == "text") {
-//                         reqParameterType.val(splitSign2[1]);
-//                     }
-//                     if (splitSign2[1].trim() == "password") {
-//                         reqParameterType.val(splitSign2[1]);
-//                     }
-//                     if (splitSign2[1].trim() == "default") {
-//                         reqParameterType.val(splitSign2[1]);
-//                     }
-//                     if (splitSign2[1].trim() == "userAppointed") {
-//                         reqParameterType.val(splitSign2[1]);
-//                     }
-//                 }
-//             }
-//         }
+        if (resultData.parameter != null || resultData.parameter != '' || resultData.parameter != undefined)
+            $("#serviceParameterArea").empty();
+        str = resultData.parameter.replace("}", "");
+        var str2 = str.replace("{", "");
+        var split = str2.split(",");
+        parameterCount = split.length;
+        var htmlString2 = [];
+
+        if (parameterCount > 0) {
+            for (var j = 1; j < parameterCount + 1; j++) {
+                var html2 = "<div class=" + "service_parameter_line" + j + ">"
+                    + "<div class='.col-xs-5'><input type='text' class='form-control' id=" + "parameterName" + j + "></div>"
+                    + "<div class='.col-xs-5'>"
+                    + "<select class='form-control select2 select2-hidden-accessible' id=" + "serviceParameterSelectType" + j + " " + " style='width:40%;'>"
+                    + "<option value='text'>텍스트형</option>"
+                    + "<option value='password'>패스워드형</option>"
+                    + "<option value='default'>자동입력</option>"
+                    + "<option value='userAppointed'>관리자 지정</option>"
+                    + "</select>"
+                    + "</div>"
+                    + "<button type='button' class='btn btn-danger btn-sm' id='deleteServiceParameter' onclick='deleteLine(" + j + ")'>삭제</button>"
+                    + "</div>";
+
+                htmlString2.push(html2);
+            }
+            var parameterInputBoxArea2 = $("#serviceParameterArea");
+            parameterInputBoxArea2.append(htmlString2);
+        } else {
+            var html2 = "<div class='service_parameter_line1'>"
+                + "<div class='.col-xs-5'><input type='text' class='form-control' id=" + "parameterName1" + "></div>"
+                + "<div class='.col-xs-5'>"
+                + "<select class='form-control select2 select2-hidden-accessible' id=" + "serviceParameterSelectType1" + " " + " style='width:40%;'>"
+                + "<option value='text'>텍스트형</option>"
+                + "<option value='password'>패스워드형</option>"
+                + "<option value='default'>자동입력</option>"
+                + "<option value='userAppointed'>관리자 지정</option>"
+                + "</select>"
+                + "</div>"
+                + "<button type='button' class='btn btn-save btn-sm' style='margin-top:-9px;margin-left:-6px;' id='addServiceParameter'>추가</button>"
+                + "<button type='button' class='btn btn-danger btn-sm' id='deleteServiceParameter' onclick='deleteLine(1)'>삭제</button>"
+                + "</div>";
+            htmlString2.push(html2);
+        }
+        for (var i = 0; i < split.length; i++) {
+            var deleteSign = split[i].replace(/"/g, "");
+
+            splitSign = deleteSign.split(":");
+            if (splitSign != null && splitSign != "undefined" && splitSign != "") {
+                var reqParameterName = $('#parameterName' + (i + 1));
+                var reqParameterType = $('#serviceParameterSelectType' + (i + 1));
+
+                reqParameterName.val(splitSign[0]);
+                if (splitSign[1].length > 0) {
+                    if (splitSign[1].trim() == "text") {
+                        reqParameterType.val(splitSign[1]);
+                    }
+                    if (splitSign[1].trim() == "password") {
+                        reqParameterType.val(splitSign[1]);
+                    }
+                    if (splitSign[1].trim() == "default") {
+                        reqParameterType.val(splitSign[1]);
+                    }
+                    if (splitSign[1].trim() == "userAppointed") {
+                        reqParameterType.val(splitSign[1]);
+                    }
+                }
+            }
+        }
+
+
+        // 앱 바인드 사용 유무에 따라 앱 바인드 파라미터 입력 창 show / hide 여부
+        $('input[name="appBindYn"]').click(function () {
+            if ($(this).attr('id') == 'appBindYn_Y') {
+                $('#app_bind_parameter_form').show();
+            } else {
+                $('#app_bind_parameter_form').hide();
+            }
+        });
+
+
+        // 앱 바인드 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
+        if (resultData.appBindParameter != null || resultData.appBindParameter != '' || resultData.appBindParameter != undefined)
+            $("#appBindParameterArea").empty();
+
+        appParameterStr = resultData.appBindParameter.replace("}", "");
+        var appParameterStr2 = appParameterStr.replace("{", "");
+        var split = appParameterStr2.split(",");
+        appbindCount = split.length;
+        var htmlString2 = [];
+
+        if (appbindCount > 0) {
+            for (var a = 1; a < appbindCount + 1; a++) {
+                var html2 = "<div class=" + "app_bind_parameter_line" + a + ">"
+                    + "<input type='text' class='form-control' id=" + "appBindParameterName" + a + " style='width:60%;'>"
+                    + "<select class='form-control select2 select2-hidden-accessible' style='width:40%;'id=" + "appBindParameterSelectType" + a + " " + " style='width:40%;'>"
+                    + "<option value='text'>텍스트형</option>"
+                    + "<option value='password'>패스워드형</option>"
+                    + "<option value='default'>자동입력</option>"
+                    + "<option value='userAppointed'>관리자 지정</option>"
+                    + "</select>"
+                    + "<button type='button' class='btn btn-danger btn-sm'  id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(" + a + ")'>삭제</button>"
+                    + "</div>";
+
+                htmlString2.push(html2);
+            }
+            var appBindParameterInputBoxArea = $("#appBindParameterArea");
+            appBindParameterInputBoxArea.append(htmlString2);
+        } else {
+            var html2 = "<div class='app_bind_parameter_line1'>"
+                + "<input type='text' class='form-form-control' id=" + "appBindParameterName1" + " style='width:60%;'>"
+                + "<select class='form-control select2 select2-hidden-accessible' id=" + "appBindParameterSelectType1" + " " + " style='width:40%;'>"
+                + "<option value='text'>텍스트형</option>"
+                + "<option value='password'>패스워드형</option>"
+                + "<option value='default'>자동입력</option>"
+                + "<option value='userAppointed'>관리자 지정</option>"
+                + "</select>"
+                + "<button type='button' class='btn btn-save btn-sm' id='addAppBindParameter'>추가</button>"
+                + "<button type='button' class='btn btn-danger btn-sm' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(1)'>삭제</button>"
+                + "</div>";
+
+            htmlString2.push(html2);
+        }
+        for (var b = 0; b < split.length; b++) {
+            var deleteSign = split[b].replace(/"/g, "");
+
+            splitSign2 = deleteSign.split(":");
+            if (splitSign2 != null && splitSign2 != "undefined" && splitSign2 != "") {
+                var reqParameterName = $('#appBindParameterName' + (b + 1));
+                var reqParameterType = $('#appBindParameterSelectType' + (b + 1));
+
+                reqParameterName.val(splitSign2[0]);
+                if (splitSign2[1].length > 0) {
+                    if (splitSign2[1].trim() == "text") {
+                        reqParameterType.val(splitSign2[1]);
+                    }
+                    if (splitSign2[1].trim() == "password") {
+                        reqParameterType.val(splitSign2[1]);
+                    }
+                    if (splitSign2[1].trim() == "default") {
+                        reqParameterType.val(splitSign2[1]);
+                    }
+                    if (splitSign2[1].trim() == "userAppointed") {
+                        reqParameterType.val(splitSign2[1]);
+                    }
+                }
+            }
+        }
 //======================================================================================================================
 
         if (null != tempThumbImgPath && "" != tempThumbImgPath) {
@@ -893,6 +925,93 @@
     $("#btnDelete").on("click", function () {
         procPopup('카탈로그', DELETE_MESSAGE, 'procCheckDelete();');
     });
+
+
+    $("#addServiceParameter").on("click", function () {
+        ++appbindCount;
+        var htmlString = [];
+        var html = "<div class='service_parameter_line" + appbindCount + "'>"
+            + "<div class='.col-xs-5'><input type='text' class='form-form-control' id=" + "parameterName" + appbindCount + "></div>"
+            + "<div class='.col-xs-5'>"
+            + "<select class='form-control select2 select2-hidden-accessible' id=" + "serviceParameterSelectType" + appbindCount + " >"
+            + "<option value='text'>텍스트형</option>"
+            + "<option value='password'>패스워드형</option>"
+            + "<option value='default'>자동입력</option>"
+            + "<option value='userAppointed'>관리자 지정</option>"
+            + "</select>"
+            + "</div>"
+            + "<button type='button' class='btn btn-danger btn-sm' id='deleteServiceParameter' onclick='deleteLine(" + appbindCount + ")'>삭제</button>"
+            + "</div>";
+
+        htmlString.push(html);
+
+        var parameterInputBoxArea = $("#serviceParameterArea");
+        parameterInputBoxArea.append(htmlString);
+
+    });
+
+
+    $("#addAppBindParameter").on("click", function () {
+        ++parameterCount;
+        var htmlString = [];
+
+
+        var html = "<div class=" + "app_bind_parameter_line" + parameterCount + ">"
+            + "<input type='text' class='form-form-control' id=" + "appBindParameterName" + parameterCount + ">"
+            + "<select class='form-control select2 select2-hidden-accessible' style='width:40%;'id=" + "appBindParameterSelectType" + parameterCount + ">"
+            + "<option value='text'>텍스트형</option>"
+            + "<option value='password'>패스워드형</option>"
+            + "<option value='default'>자동입력</option>"
+            + "<option value='userAppointed'>관리자 지정</option>"
+            + "</select>"
+            + "<button type='button' class='btn btn-danger btn-sm' id='deleteAppBindParameter' onclick='appBindParameterDeleteLine(" + parameterCount + ")'>삭제</button>"
+            + "</div>";
+
+
+        htmlString.push(html);
+
+
+        var parameterInputBoxArea = $("#appBindParameterArea");
+        parameterInputBoxArea.append(htmlString);
+
+    });
+
+
+    // 서비스 생성 파라미터 행 삭제
+    function deleteLine(number) {
+        var cntParameter = 0;
+
+        for (var i = 0; i <= parameterCount; i++) {
+            if ($(".service_parameter_line" + i).length > 0) {
+                cntParameter++;
+            }
+        }
+        alert(cntParameter);
+        if (cntParameter > 0) {
+            var serviceParameterLine = "service_parameter_line" + number;
+            $('.' + serviceParameterLine).remove();
+        } else {
+            $("#parameterName" + number).val("");
+        }
+    }
+
+
+    // 앱 바인드 생성 파라미터 행 삭제
+    function appBindParameterDeleteLine(number) {
+        var cntBindParameter = 0;
+        for (var i = 1; i <= parameterCount; i++) {
+            if ($(".app_bind_parameter_line" + i).length > 0) {
+                cntBindParameter++;
+            }
+        }
+
+        if (cntBindParameter > 0) {
+            var appBindParameterLine = "app_bind_parameter_line" + number;
+            $('.' + appBindParameterLine).remove();
+        } else {
+            $("#appBindParameterName" + number).val("");
+        }
+    }
 
 
     // ON LOAD

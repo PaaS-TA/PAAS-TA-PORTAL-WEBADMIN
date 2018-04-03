@@ -16,39 +16,87 @@ public class CatalogService {
     @Autowired
     public CommonService commonService;
 
+    private final String REQ_URL = "/catalogs";
+
     /**
-     * 앱 템플릿명 목록을 조회한다.
+     * 스타터 팩 목록을 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getStarterNamesList(Catalog param) {
+    public Map<String, Object> getStarterPacksList(Catalog param) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate("/catalog/starternameCatalogs" + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/starterpacks" + search, HttpMethod.GET, param, null);
     }
 
-
     /**
-     * 앱 개발환경 카탈로그 목로 조회
+     * 스타터 팩 목록을 조회한다.
      *
-     * @param param Catalog(모델클래스)
+     * @param no int,param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getBuildPackCatalog(int no, Catalog param) {
+    public Map<String, Object> getStarterPack(int no, Catalog param) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs/" + no + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/starterpacks/" + no + search, HttpMethod.GET, param, null);
+    }
+
+
+    /**
+     * 스타터 팩 카운터를 조회한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> getStarterPackCount(Catalog param) {
+        String search = "";
+        if (param.getSearchKeyword() != null) {
+            search = "?";
+            search += "searchKeyword=" + param.getSearchKeyword();
+        }
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/starterpacks" + search, HttpMethod.GET, param, null);
     }
 
     /**
-     * 앱 개발환경 카탈로그 목로 조회
+     * 스타터 팩을 저장한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> insertStarterPack(Catalog param) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/starterpacks", HttpMethod.POST, param, null);
+    }
+
+    /**
+     * 스타터 팩을 수정한다.
+     *
+     * @param no int param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> updateStarterPack(int no, Catalog param) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/starterpacks/" + no, HttpMethod.PUT, param, null);
+    }
+
+    /**
+     * 스타터 팩을 삭제한다.
+     *
+     * @param no
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> deleteStarterPack(int no) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/starterpacks/" + no, HttpMethod.DELETE, null, null);
+    }
+
+
+    /**
+     * 앱 개발환경 카탈로그 목록 조회
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -59,14 +107,72 @@ public class CatalogService {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs" + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/buildpacks" + search, HttpMethod.GET, param, null);
     }
 
 
     /**
-     * 서비스 카탈로그 목록을 조회한다.
+     * 앱 개발환경 카탈로그 목록 조회
      *
      * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> getBuildPackCatalog(int no, Catalog param) {
+        String search = "";
+        if (param.getSearchKeyword() != null) {
+            search = "?";
+            search += "searchKeyword=" + param.getSearchKeyword();
+        }
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/buildpacks/" + no + search, HttpMethod.GET, param, null);
+    }
+
+
+    /**
+     * 앱 개발환경 카탈로그 카운터를 조회한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+
+    public Map<String, Object> getBuildPackCatalogCount(Catalog param) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/buildpacks/count", HttpMethod.GET, param, null);
+    }
+
+    /**
+     * 빌드 팩을 저장한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> insertBuildPackCatalog(Catalog param) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/buildpacks", HttpMethod.POST, param, null);
+    }
+
+    /**
+     * 빌드 팩을 수정한다.
+     *
+     * @param no int param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> updateBuildPackCatalog(int no, Catalog param) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/buildpacks/" + no, HttpMethod.PUT, param, null);
+    }
+
+    /**
+     * 빌드 팩을 삭제한다.
+     *
+     * @param no
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> deleteBuildPackCatalog(int no) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/buildpacks/" + no, HttpMethod.DELETE, null, null);
+    }
+
+
+    /**
+     * 서비스 팩 목록을 조회한다.
+     *
+     * @param no int, param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
     public Map<String, Object> getServicePackCatalog(int no, Catalog param) {
@@ -75,11 +181,11 @@ public class CatalogService {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate("/catalog/servicepackCatalogs/" + no + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/servicepacks/" + no + search, HttpMethod.GET, param, null);
     }
 
     /**
-     * 서비스 카탈로그 목록을 조회한다.
+     * 서비스 팩 목록을 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -90,16 +196,48 @@ public class CatalogService {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate("/catalog/servicepackCatalogs" + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/servicepacks" + search, HttpMethod.GET, param, null);
     }
 
-
-    public Map<String, Object> getBuildPackCatalogCount(Catalog param) {
-        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs/count", HttpMethod.GET, param, null);
-    }
-
-
+    /**
+     * 서비스 팩 카운터를 조회한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
     public Map<String, Object> getServicePackCatalogCount(Catalog param) {
-        return commonService.procRestTemplate("/catalog/getServicePackCatalogCount", HttpMethod.POST, param, null);
+        return commonService.procRestTemplate(REQ_URL + "/servicepacks/count", HttpMethod.POST, param, null);
     }
+
+
+    /**
+     * 빌드 팩을 저장한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> insertServicePackCatalog(Catalog param) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/servicepacks", HttpMethod.POST, param, null);
+    }
+
+    /**
+     * 빌드 팩을 수정한다.
+     *
+     * @param no int param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> updateServicePackCatalog(int no, Catalog param) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/servicepacks/" + no, HttpMethod.PUT, param, null);
+    }
+
+    /**
+     * 빌드 팩을 삭제한다.
+     *
+     * @param no
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> deleteServicePackCatalog(int no) {
+        return commonService.procCommonApiRestTemplate(REQ_URL + "/servicepacks/" + no, HttpMethod.DELETE, null, null);
+    }
+
 }

@@ -22,7 +22,7 @@ import java.util.Map;
  * @since 2016.07.04 최초작성
  */
 @Controller
-@RequestMapping(value = {"/catalog"})
+@RequestMapping(value = {"/catalogs"})
 class CatalogController extends Common {
     private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
 
@@ -58,84 +58,6 @@ class CatalogController extends Common {
             setViewName("/catalog/catalogMain");
             addObject("TAB_NAME", finalReqTabName);
         }};
-    }
-
-
-    /**
-     * 앱 개발환경 목록을 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getBuildPackList"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getBuildPackList(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getBuildPackList", HttpMethod.POST, param, this.getToken());
-    }
-
-
-    /**
-     * 서비스 목록을 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/servicePackList"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getServicePackList(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getServicePackList", HttpMethod.GET, param, this.getToken());
-    }
-
-
-//    /**
-//     * 앱 개발환경 카탈로그 목로 조회
-//     *
-//     * @param param Catalog(모델클래스)
-//     * @return Map(자바클래스)
-//     */
-//    @RequestMapping(value = {"/getBuildPackCatalogList"}, method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> getBuildPackCatalogList(@RequestBody Catalog param) {
-//        return commonService.procCommonApiRestTemplate("/catalog/getBuildPackCatalogList", HttpMethod.POST, param, null);
-//    }
-
-
-    /**
-     * 서비스 카탈로그 목록을 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-//    @RequestMapping(value = {"/getServicePackCatalogList"}, method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> getServicePackCatalogList(@RequestBody Catalog param) {
-//        return commonService.procCommonApiRestTemplate("/catalog/getServicePackCatalogList", HttpMethod.POST, param, null);
-//    }
-
-//
-//    /**
-//     * 앱 개발환경 카탈로그 개수 조회
-//     *
-//     * @param param Catalog(모델클래스)
-//     * @return Map(자바클래스)
-//     */
-//    @RequestMapping(value = {"/getBuildPackCatalogCount"}, method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> getBuildPackCatalogCount(@RequestBody Catalog param) {
-//        return commonService.procRestTemplate("/catalog/getBuildPackCatalogCount", HttpMethod.POST, param, null);
-//    }
-
-
-    /**
-     * 서비스 카탈로그 개수 조회
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getServicePackCatalogCount"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getServicePackCatalogCount(@RequestBody Catalog param) {
-        return catalogService.getServicePackCatalogCount(param);
     }
 
 
@@ -197,114 +119,6 @@ class CatalogController extends Common {
     }
 
 
-//    /**
-//     * 앱 개발환경 카탈로그를 저장한다.
-//     *
-//     * @param param Catalog(모델클래스)
-//     * @return Map(자바클래스)
-//     * @throws Exception Exception(자바클래스)
-//     */
-//    @RequestMapping(value = {"/insertBuildPackCatalog"}, method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> insertBuildPackCatalog(@RequestBody Catalog param) throws Exception {
-//        return commonService.procRestTemplate("/catalog/insertBuildPackCatalog", HttpMethod.POST, commonService.setUserId(param), null);
-//    }
-
-
-    /**
-     * 서비스 카탈로그를 저장한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     * @throws Exception Exception(자바클래스)
-     */
-    @RequestMapping(value = {"/insertServicePackCatalog"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> insertServicePackCatalog(@RequestBody Catalog param) throws Exception {
-        return commonService.procRestTemplate("/catalog/insertServicePackCatalog", HttpMethod.POST, commonService.setUserId(param), null);
-    }
-
-//
-//    /**
-//     * 앱 개발환경 카탈로그를 수정한다.
-//     *
-//     * @param param Catalog(모델클래스)
-//     * @return Map(자바클래스)
-//     * @throws Exception Exception(자바클래스)
-//     */
-//    @RequestMapping(value = {"/updateBuildPackCatalog"}, method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> updateBuildPackCatalog(@RequestBody Catalog param) throws Exception {
-//        return commonService.procRestTemplate("/catalog/updateBuildPackCatalog", HttpMethod.PUT, commonService.setUserId(param), null);
-//    }
-
-
-    /**
-     * 서비스 카탈로그를 수정한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     * @throws Exception Exception(자바클래스)
-     */
-    @RequestMapping(value = {"/updateServicePackCatalog"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> updateServicePackCatalog(@RequestBody Catalog param) throws Exception {
-        return commonService.procRestTemplate("/catalog/updateServicePackCatalog", HttpMethod.PUT, commonService.setUserId(param), null);
-    }
-
-
-//    /**
-//     * 앱 개발환경 카탈로그를 삭제한다.
-//     *
-//     * @param param Catalog(모델클래스)
-//     * @return Map(자바클래스)
-//     */
-//    @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> deleteBuildPackCatalog(@RequestBody Catalog param) {
-//        return commonService.procRestTemplate("/catalog/deleteBuildPackCatalog", HttpMethod.POST, param, null);
-//    }
-
-
-    /**
-     * 서비스 카탈로그를 삭제한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/deleteServicePackCatalog"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> deleteServicePackCatalog(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/deleteServicePackCatalog", HttpMethod.POST, param, null);
-    }
-
-
-    /**
-     * 앱 개발환경 카탈로그 삭제 가능여부를 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getCheckDeleteBuildPackCatalogCount"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getCheckDeleteBuildPackCatalogCount(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getCheckDeleteBuildPackCatalogCount", HttpMethod.POST, param, null);
-    }
-
-
-    /**
-     * 서비스 카탈로그 삭제 가능여부를 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getCheckDeleteServicePackCatalogCount"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getCheckDeleteServicePackCatalogCount(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getCheckDeleteServicePackCatalogCount", HttpMethod.POST, param, null);
-    }
-
-
     /**
      * 이미지 파일을 업로드한다.
      *
@@ -360,124 +174,18 @@ class CatalogController extends Common {
 
 
     /**
-     * 앱 템플릿 카탈로그 개수를 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getStarterCatalogCount"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getStarterCatalogCount(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getStarterCatalogCount", HttpMethod.POST, param, null);
-    }
-
-
-//    /**
-//     * 앱 템플릿명 목록을 조회한다.
-//     *
-//     * @param param Catalog(모델클래스)
-//     * @return Map(자바클래스)
-//     */
-//    @RequestMapping(value = {"/getStarterNamesList"}, method = RequestMethod.POST) // names
-//    @ResponseBody
-//    public Map<String, Object> getStarterNamesList(@RequestBody Catalog param) {
-//        return commonService.procCommonApiRestTemplate("/catalog/getStarterNamesList", HttpMethod.POST, param, null);
-//    }
-
-
-    /**
-     * 앱 개발환경명 목록을 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getBuildPackNamesList"}, method = RequestMethod.POST) // names
-    @ResponseBody
-    public Map<String, Object> getBuildPackNamesList(@RequestBody Catalog param) {
-        return commonService.procCommonApiRestTemplate("/catalog/getBuildPackNamesList", HttpMethod.POST, param, null);
-    }
-
-
-    /**
-     * 서비스명 목록을 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getServicePackNamesList"}, method = RequestMethod.POST) // names
-    @ResponseBody
-    public Map<String, Object> getServicePackNamesList(@RequestBody Catalog param) {
-        return commonService.procCommonApiRestTemplate("/catalog/getServicePackNamesList", HttpMethod.POST, param, null);
-    }
-
-
-    /**
-     * 앱 템플릿 카탈로그를 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getOneStarterCatalog"}, method = RequestMethod.POST) // names
-    @ResponseBody
-    public Map<String, Object> getOneStarterCatalog(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getOneStarterCatalog", HttpMethod.POST, param, null);
-    }
-
-
-//    /**
-//     * 앱 템플릿 카탈로그를 저장한다.
-//     *
-//     * @param param Catalog(모델클래스)
-//     * @return Map(자바클래스)
-//     * @throws Exception Exception(자바클래스)
-//     */
-//    @RequestMapping(value = {"/insertStarterCatalog"}, method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> insertStarterCatalog(@RequestBody Catalog param) throws Exception {
-//        return commonService.procRestTemplate("/catalog/insertStarterCatalog", HttpMethod.POST, commonService.setUserId(param), null);
-//    }
-
-
-    /**
-     * 앱 템플릿 카탈로그를 수정한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     * @throws Exception Exception(자바클래스)
-     */
-    @RequestMapping(value = {"/updateStarterCatalog"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> updateStarterCatalog(@RequestBody Catalog param) throws Exception {
-        return commonService.procRestTemplate("/catalog/updateStarterCatalog", HttpMethod.PUT, commonService.setUserId(param), null);
-    }
-
-
-    /**
-     * 앱 템플릿 카탈로그를 삭제한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/deleteStarterCatalog"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> deleteStarterCatalog(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/deleteStarterCatalog", HttpMethod.POST, param, null);
-    }
-
-
-    /**
      * 앱 템플릿 저장페이지로 이동한다.
      *
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/starterForm"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/starterPackForm"}, method = RequestMethod.GET)
     public ModelAndView getStarterForm() {
         ModelAndView mv = new ModelAndView();
 
         mv.addObject("INSERT_FLAG", Constants.CUD_C);
         mv.addObject("REQUEST_NO", -1);
 
-        mv.setViewName("/catalog/starterForm");
+        mv.setViewName("/catalog/starterPackForm");
 
         return mv;
     }
@@ -502,10 +210,15 @@ class CatalogController extends Common {
         return mv;
     }
 
-    /**
-     * @REST API
-     * by.SEJI
+
+
+
+
+
+    /*
+     * ------------------------------------------------------------------------------------조회
      */
+
 
     /**
      * 앱 템플릿명 목록을 조회한다.
@@ -513,10 +226,36 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/starterNames")
+    @GetMapping("/starterpacks")
     @ResponseBody
     public Map<String, Object> getStarterNamesList(@ModelAttribute Catalog param) {
-        return catalogService.getStarterNamesList(param);
+        return catalogService.getStarterPacksList(param);
+    }
+
+
+    /**
+     * 앱 템플릿명 목록을 조회한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping("/starterpacks/{no}")
+    @ResponseBody
+    public Map<String, Object> getStarterNames(@PathVariable("no") int no, @ModelAttribute Catalog param) {
+        return catalogService.getStarterPack(no, param);
+    }
+
+
+    /**
+     * 앱 템플릿명 목록을 조회한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping("/starterpacks/count")
+    @ResponseBody
+    public Map<String, Object> getStarterNamesCount(@PathVariable("no") int no, @ModelAttribute Catalog param) {
+        return catalogService.getStarterPackCount(param);
     }
 
 
@@ -526,12 +265,36 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/buildpackCatalogs/count")
+    @GetMapping("/buildpacks")
+    @ResponseBody
+    public Map<String, Object> getBuildPackCatalogList(@ModelAttribute Catalog param) {
+        return catalogService.getBuildPackCatalogList(param);
+    }
+
+    /**
+     * 앱 개발환경 카탈로그 개수 조회
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping("/buildpacks/{no}")
+    @ResponseBody
+    public Map<String, Object> getBuildPackCatalog(@PathVariable("no") int no, @ModelAttribute Catalog param) {
+        return catalogService.getBuildPackCatalog(no, param);
+    }
+
+
+    /**
+     * 앱 개발환경 카탈로그 개수 조회
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping("/buildpacks/count")
     @ResponseBody
     public Map<String, Object> getBuildPackCatalogCount(@ModelAttribute Catalog param) {
         return catalogService.getBuildPackCatalogCount(param);
     }
-
 
     /**
      * 서비스 카탈로그 목록을 조회한다.
@@ -539,8 +302,8 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    //move::catalogMain.html
-    @GetMapping("/servicePackCatalogs")
+
+    @GetMapping("/servicepacks")
     @ResponseBody
     public Map<String, Object> getServicePackCatalogList(@ModelAttribute Catalog param) {
         return catalogService.getServicePackCatalogList(param);
@@ -553,89 +316,194 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    //move::catalogMain.html
-    @GetMapping("/servicePackCatalogs/{no}")
+    @GetMapping("/servicepacks/{no}")
     @ResponseBody
     public Map<String, Object> getServicePackCatalog(@PathVariable("no") int no, @ModelAttribute Catalog param) {
-        param.setServicePackCategoryNo(no);
         return catalogService.getServicePackCatalog(no, param);
     }
 
-
     /**
-     * 앱 개발환경 카탈로그 목록 조회
+     * 서비스 카탈로그 목록을 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/buildPackCatalogs")
+    @GetMapping("/servicepacks/count")
     @ResponseBody
-    public Map<String, Object> getBuildPackCatalogList(@ModelAttribute Catalog param) {
-        return catalogService.getBuildPackCatalogList(param);
+    public Map<String, Object> getServicePackCatalogCount(@ModelAttribute Catalog param) {
+        return catalogService.getServicePackCatalogCount(param);
     }
-
-    /**
-     * 앱 개발환경 카탈로그 목록 조회
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
+    /*
+     * ------------------------------------------------------------------------------------조회 끝
      */
-    @GetMapping("/buildPackCatalogs/{no}")
-    @ResponseBody
-    public Map<String, Object> getBuildPackCatalogList(@PathVariable("no") int no, @ModelAttribute Catalog param) {
 
-        return catalogService.getBuildPackCatalog(no, param);
-    }
+
+    /*
+     * ------------------------------------------------------------------------------------추가
+     */
 
     /**
-     * 앱 템플릿 카탈로그를 저장한다.
+     * 스타터 팩을 저장한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @PostMapping("/insertStarterCatalogs")
+    @PostMapping(value = {"/starterpacks"})
     @ResponseBody
-    public Map<String, Object> insertStarterCatalog(@RequestBody Catalog param) throws Exception {
-        return commonService.procCommonApiRestTemplate("/catalog/insertStarterCatalogs", HttpMethod.POST, commonService.setUserId(param), null);
+    public Map<String, Object> insertStarterPackCatalog(@RequestBody Catalog param) throws Exception {
+        return catalogService.insertStarterPack(param);
     }
 
-
     /**
-     * 앱 개발환경 카탈로그를 수정한다.
+     * 빌드 팩을 저장한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @PutMapping(value = {"buildpackCatalogs/{no}"})
+    @PostMapping(value = {"/buildpacks"})
+    @ResponseBody
+    public Map<String, Object> insertBuildPackCatalog(@RequestBody Catalog param) throws Exception {
+        return catalogService.insertBuildPackCatalog(param);
+    }
+
+    /**
+     * 서비스 팩을 저장한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     * @throws Exception Exception(자바클래스)
+     */
+    @PostMapping(value = {"/servicepacks"})
+    @ResponseBody
+    public Map<String, Object> insertServicePack(@RequestBody Catalog param) throws Exception {
+        return catalogService.insertServicePackCatalog(param);
+    }
+
+
+    /*
+     * ------------------------------------------------------------------------------------추가 끝
+     */
+
+
+
+    /*
+     * ------------------------------------------------------------------------------------수정
+     */
+
+    /**
+     * 스타터 팩을 수정한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     * @throws Exception Exception(자바클래스)
+     */
+    @PutMapping(value = {"/starterpacks/{no}"})
+    @ResponseBody
+    public Map<String, Object> updateStarterPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
+        return catalogService.updateStarterPack(no, param);
+    }
+
+    /**
+     * 빌드 팩을 수정한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     * @throws Exception Exception(자바클래스)
+     */
+    @PutMapping(value = {"/buildpacks/{no}"})
     @ResponseBody
     public Map<String, Object> updateBuildPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
-        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs/{no}", HttpMethod.PUT, commonService.setUserId(param), null);
+        return catalogService.updateBuildPackCatalog(no, param);
     }
 
+    /**
+     * 서비스 팩을 수정한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     * @throws Exception Exception(자바클래스)
+     */
+    @PutMapping(value = {"/servicepacks/{no}"})
+    @ResponseBody
+    public Map<String, Object> updateServicePack(@PathVariable int no, @RequestBody Catalog param) throws Exception {
+        return catalogService.updateServicePackCatalog(no, param);
+    }
+
+    /*
+     * ------------------------------------------------------------------------------------수정 끝
+     */
+
+    /*
+     * ------------------------------------------------------------------------------------삭제
+     */
 
     /**
-     * 앱 개발환경 카탈로그를 삭제한다.
+     * 스타터 팩을 삭제한다.
      *
      * @return Map(자바클래스)
      * @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST, consumes = "application/json")
      */
-    @DeleteMapping(value = {"buildpackCatalogs/{no}"})
-    public Map<String, Object> deleteBuildPackCatalog(@PathVariable int no) {
-        return commonService.procCommonApiRestTemplate("/catalog/buildpackCatalogs/{no}", HttpMethod.DELETE, no, null);
+    @DeleteMapping(value = {"/starterpacks/{no}"})
+    public Map<String, Object> deleteStarterPackCatalog(@PathVariable int no) {
+        return catalogService.deleteStarterPack(no);
     }
 
+
     /**
-     * 앱 개발환경 카탈로그를 생성(저장)한다.
+     * 빌드 팩을 삭제한다.
+     *
+     * @return Map(자바클래스)
+     * @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST, consumes = "application/json")
+     */
+    @DeleteMapping(value = {"/buildpacks/{no}"})
+    public Map<String, Object> deleteBuildPackCatalog(@PathVariable int no) {
+        return catalogService.deleteBuildPackCatalog(no);
+    }
+
+
+    /**
+     * 서비스 팩을 삭제한다.
+     *
+     * @return Map(자바클래스)
+     * @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST, consumes = "application/json")
+     */
+    @DeleteMapping(value = {"/servicepacks/{no}"})
+    public Map<String, Object> deleteServicePackCatalog(@PathVariable int no) {
+        return catalogService.deleteServicePackCatalog(no);
+    }
+
+
+    /**
+     * 앱 개발환경 카탈로그 삭제 가능여부를 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
-     * @RequestMapping(value = {"/insertBuildPackCatalog"}, method = RequestMethod.POST, consumes = "application/json")
      */
-    @PostMapping("/buildpackCatalogs")
-    public Map<String, Object> insertBuildPackCatalog(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/buildpackCatalogs", HttpMethod.POST, param, null);
+    @RequestMapping(value = {"/getCheckDeleteBuildPackCatalogCount"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getCheckDeleteBuildPackCatalogCount(@RequestBody Catalog param) {
+        return commonService.procRestTemplate("/catalog/getCheckDeleteBuildPackCatalogCount", HttpMethod.POST, param, null);
     }
+
+
+    /**
+     * 서비스 카탈로그 삭제 가능여부를 조회한다.
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @RequestMapping(value = {"/getCheckDeleteServicePackCatalogCount"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getCheckDeleteServicePackCatalogCount(@RequestBody Catalog param) {
+        return commonService.procRestTemplate("/catalog/getCheckDeleteServicePackCatalogCount", HttpMethod.POST, param, null);
+    }
+
+
+    /*
+     * ------------------------------------------------------------------------------------삭제 끝
+     */
+
 
 }

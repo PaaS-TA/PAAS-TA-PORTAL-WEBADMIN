@@ -20,6 +20,7 @@ import java.util.UUID;
  * @since 2016.4.4 최초작성
  */
 @Controller
+@RequestMapping(value = {"/servicebrokers"})
 public class ServiceBrokerController extends Common {
 
     //private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBrokerController.class);
@@ -32,7 +33,7 @@ public class ServiceBrokerController extends Common {
      *
      * @return model and view
      */
-    @RequestMapping(value = {"/service"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/servicebrokerMain"}, method = RequestMethod.GET)
     public ModelAndView serviceBroker() {
         ModelAndView mv = new ModelAndView();
 
@@ -77,7 +78,7 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/service/service-brokers"}, method = RequestMethod.GET)
+    @GetMapping(value = {""})
     @ResponseBody
     public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker, @RequestParam(value="guid", required = false, defaultValue = "") String guid) {
 
@@ -86,9 +87,6 @@ public class ServiceBrokerController extends Common {
         }else{
             return commonService.procCfApiRestTemplate("/service/service-brokers", HttpMethod.GET, serviceBroker, this.getToken());
         }
-
-
-
     }
 
     /**
@@ -97,7 +95,7 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker the serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/service/service-brokers"}, method = RequestMethod.POST)
+    @RequestMapping(value = {""}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> createServiceBroker(@RequestBody ServiceBroker serviceBroker) {
 
@@ -111,7 +109,7 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker the serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/service/service-brokers/{guid}"}, method = RequestMethod.PUT)
+    @RequestMapping(value = {"/{guid}"}, method = RequestMethod.PUT)
     @ResponseBody
     public Map<String, Object> updateServiceBroker(@RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
 
@@ -125,7 +123,7 @@ public class ServiceBrokerController extends Common {
      * @param guid the serviceBroker guid
      * @return Map <String, Object>
      */
-    @RequestMapping(value = {"/service/service-brokers/{guid}"}, method = RequestMethod.DELETE)
+    @RequestMapping(value = {"/{guid}"}, method = RequestMethod.DELETE)
     @ResponseBody
     public Map<String, Object> deleteServiceBroker(@PathVariable String guid ) {
 
