@@ -73,7 +73,7 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
     var V2_URL = "/v2";
-    var REST_URL = V2_URL+ "/usermanagements/";
+    var REST_URL = V2_URL+ "/usermanagements";
     var LOADED_LIST_COUNT = 0;
 
     var REQUEST_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
@@ -299,7 +299,7 @@
     var resetPassword = function (reqUserId) {
         var reqId =  reqUserId.replace("@", "");
         reqId =  reqId.replace(".", "");
-        userManagementCallAjax(REST_URL + reqId + "/resetpassword", {userId : reqUserId}, procCallbackResetPassword,"PUT");
+        userManagementCallAjax(REST_URL+"/" + reqId + "/resetpassword", {userId : reqUserId}, procCallbackResetPassword,"PUT");
     };
 
 
@@ -316,7 +316,7 @@
     var updateOperatingAuthority = function (reqUserId) {
        var reqId =  reqUserId.replace("@", "");
        reqId =  reqId.replace(".", "");
-        userManagementCallAjax(REST_URL + reqId + "/authority", {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"PUT");
+        userManagementCallAjax(REST_URL+"/" + reqId + "/authority", {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"PUT");
     };
 
 
@@ -333,7 +333,7 @@
     var deleteUserAccount = function (reqUserId) {
         var reqId =  reqUserId.replace("@", "");
         reqId =  reqId.replace(".", "");
-        userManagementCallAjax(REST_URL + reqId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
+        userManagementCallAjax(REST_URL+"/" + reqId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
     };
 
 
