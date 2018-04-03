@@ -21,10 +21,10 @@ import java.util.Map;
  * @version 1.0
  * @since 2016.4.4 최초작성
  */
-@Controller
+@RestController
 public class ConfigInfoController extends Common {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigInfoController.class);
-
+    private final String V2_URL = "/v2";
     /**
      * 설정 정보 메인 화면이다.
      *
@@ -34,7 +34,8 @@ public class ConfigInfoController extends Common {
     @Autowired
     ConfigInfoService configInfoService;
 
-    @RequestMapping(value = {"/configInfo/configInfoMain"}, method = RequestMethod.GET)
+
+    @GetMapping("/configInfos")
     public ModelAndView configInfo() {
         return configInfoService.configInfo();
     }
@@ -46,7 +47,7 @@ public class ConfigInfoController extends Common {
      * @param configInfo the ConfigInfo
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/configInfos"}, method = RequestMethod.GET)
+    @GetMapping(V2_URL+ "/configInfos")
     @ResponseBody
     public Map<String, Object> getValues(@ModelAttribute ConfigInfo configInfo) {
         return configInfoService.getValues("/configInfos", HttpMethod.GET, configInfo, null);
@@ -57,7 +58,7 @@ public class ConfigInfoController extends Common {
      * @param name - primary key
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/configInfos/{name}"}, method = RequestMethod.GET)
+    @GetMapping(V2_URL+ "/configInfos/{name}")
     @ResponseBody
     public Map<String, Object> getValue(@PathVariable String name) {
         return configInfoService.getValue("/configInfos/"+name, HttpMethod.GET, null, null);
@@ -73,7 +74,7 @@ public class ConfigInfoController extends Common {
      * @param configInfo the configInfo
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/configInfos/{name}"}, method = RequestMethod.PUT)
+    @PutMapping(V2_URL+ "/configInfos/{name}")
     @ResponseBody
     public Map<String, Object> updateValue(@PathVariable String name, @RequestBody ConfigInfo configInfo) {
         return configInfoService.updateValue("/configInfos/"+name, HttpMethod.PUT, configInfo, null);

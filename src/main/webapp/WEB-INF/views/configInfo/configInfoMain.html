@@ -4,6 +4,8 @@
       layout:decorator="../layout/default">
 <head>
     <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+        var V2_URL = "/v2";
+        var REST_URL = V2_URL + "/configInfos"
 
         $(document).ready(function(){
             getValues();
@@ -11,11 +13,8 @@
 
         function getValues(){
 
-            // var param = {};
-
             $.ajax({
-                url: "/configInfos",
-                // data: JSON.stringify(param),
+                url: REST_URL,
                 dataType: 'json',
                 success: function(data){
                     if(data.list){
@@ -30,9 +29,8 @@
         function getValue(name)
         {
             $.ajax({
-                url: "/configInfos/" + name,
+                url: REST_URL + "/" + name,
                 method: "GET",
-                // data: JSON.stringify(param),
                 dataType: 'json',
                 success: function(data){
                     if(data.list){
@@ -83,7 +81,7 @@
             }
 
             $.ajax({
-                url: "/configInfos/"+name,
+                url: REST_URL+"/"+name,
                 method: "PUT",
                 data: JSON.stringify(param),
                 dataType: 'json',

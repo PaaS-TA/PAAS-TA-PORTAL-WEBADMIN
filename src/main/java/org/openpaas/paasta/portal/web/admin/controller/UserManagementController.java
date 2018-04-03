@@ -29,6 +29,7 @@ public class UserManagementController extends Common {
      * @return ModelAndView(Spring 클래스)
      */
     @RequestMapping(value = {"/usermanagements"}, method = RequestMethod.GET)
+    @ResponseBody
     public ModelAndView getUserInfoMain() {
         return userManagementService.getUserInfoMain();
     }
@@ -40,6 +41,7 @@ public class UserManagementController extends Common {
      * @return Map(자바클래스)
      */
     @GetMapping(V2_URL + "/usermanagements")
+    @ResponseBody
     public Map<String, Object> getUserInfoList() {
         return userManagementService.getUserInfoList("/usermanagements", HttpMethod.GET, null, null);
     }
@@ -78,6 +80,7 @@ public class UserManagementController extends Common {
      * @return Map(자바클래스)
      */
     @DeleteMapping(V2_URL + "/usermanagements/{userid}")
+    @ResponseBody
     public Map<String, Object> deleteUserAccount(@PathVariable String userid, @RequestBody UserManagement param) {
         return userManagementService.deleteUserAccount("/usermanagements/" + userid, HttpMethod.DELETE, param, null);
     }
