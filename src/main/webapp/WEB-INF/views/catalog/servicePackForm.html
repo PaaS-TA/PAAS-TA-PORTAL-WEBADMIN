@@ -24,6 +24,8 @@
         </section>
         <!-- Content Header (Page header) -->
         <section class="content">
+            <form class="form-horizontal" role="form" id="catalogForm" name="catalogForm">
+                <input type="hidden" id="thumb_image_path"/>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-default">
@@ -80,16 +82,28 @@
                                     <!--<div class="4">-->
                                     <div class="form-group">
                                         <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="thumbnail"> 썸네일<font
+                                        <label for="hiddenThumbnail"> 썸네일<font
                                                 style="font-size:13px;color:#ababab;">(50X50)</font></label>
-                                        <input type="file" id="thumbnail"/>
+                                        <input type="file" id="hiddenThumbnail" style="display: none/"/>
                                     </div>
-
                                     <div class="form-group">
                                         <label id="labelThumbName"></label>
-                                        <button id="btnResetImg" type="button" class="btn-del" aria-label="썸네일 지우기">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        </button>
+                                        <div id="divPreview" class="divPreview"  style="width: 99.9%;">
+                                            <div class="fl">
+                                                <a href="javascript:void(0);" class="custom-thumbnail">
+                                                    <img id="preview" src="" />
+                                                </a>
+                                            </div>
+                                            <div class="fl" style="padding:15px 10px;">
+                                                <a id="thumbname"></a>
+                                            </div>
+                                            <div class="divImageInfo fl ml20">
+                                                <label id="labelThumbName" style="padding-right: 20px"></label>
+                                                <button id="btnResetImg" type="button" class="btn-del" aria-label="썸네일 지우기">
+                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <br/>
                                     <br/>
@@ -121,7 +135,7 @@
                                             <label class="radio-inline">
                                                 <input type="radio" id="appBindYn_N"
                                                        name="appBindYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_N}"/>N
+                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_N}" th:checked="true"/>N
                                             </label>
                                         </div>
                                     </div>
@@ -148,11 +162,11 @@
                                         <div class="col-sm-9 mt10">
                                             <label class="radio-inline">
                                                 <input type="radio" id="useYn_Y" name="useYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>Y
+                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}" />Y
                                             </label>
                                             <label class="radio-inline">
                                                 <input type="radio" id="useYn_N" name="useYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/>N
+                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}" th:checked="true"/>N
                                             </label>
                                         </div>
                                     </div>
@@ -169,7 +183,7 @@
                                             </label>
                                             <label class="radio-inline">
                                                 <input type="radio" id="dashboardUseYn_N" name="dashboardUseYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_N}"/>N
+                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_N}" th:checked="true"/>N
                                             </label>
                                         </div>
                                     </div>
@@ -224,10 +238,19 @@
                     </div>
                 </div>
             </div>
+                <input type="hidden" id="orgThumbImgPath" name="orgThumbImgPath" value=""/>
+                <input type="hidden" id="thumbImgPath" name="thumbImgPath" value=""/>
+                <input type="hidden" id="thumbImgName" name="thumbImgName" value=""/>
+                <input type="hidden" id="orgName" name="orgName" value=""/>
+            </form>
         </section>
         <!-- /.content -->
+
+
+
     </div>
     <!-- /.content-wrapper -->
+
 
     <footer></footer>
 
@@ -241,15 +264,16 @@
     var CATALOG_LIST_PROC_URL = "/catalogs/servicepacks";
     var CATEGORY_LIST_PROC_URL = "/code/codeDetail";
     var SERVICE_PACK_LIST_PROC_URL = "/servicebrokers";
-    var DUPLICATED_PROC_URL = "/catalog/getBuildPackCatalogCount";
-    var INSERT_PROC_URL = "'/catalog/insertBuildPackCatalog";
-    var UPDATE_PROC_URL = "/catalog/updateBuildPackCatalog";
-    var DELETE_PROC_URL = "/catalog/deleteBuildPackCatalog";
-    var CHECK_DELETE_PROC_URL = "/catalog/getCheckDeleteBuildPackCatalogCount";
-    var UPLOAD_IMAGE_PROC_URL = "/catalog/uploadThumbnailImage";
-    var DELETE_IMAGE_PROC_URL = "/catalog/deleteThumbnailImage";
-    var UPLOAD_APP_SAMPLE_PROC_URL = "/catalog/uploadAppSampleFile";
-    var DELETE_APP_SAMPLE_PROC_URL = "/catalog/deleteAppSampleFile";
+    var DUPLICATED_PROC_URL = "/catalogs/servicepacks/count";
+    var PROC_URL = "/catalogs/servicepacks";
+    var INSERT_PROC_METHOD = "POST";
+    var UPDATE_PROC_METHOD = "PUT";
+    var DELETE_PROC_URL = "/catalogs/deleteBuildPackCatalog";
+    var CHECK_DELETE_PROC_URL = "/catalogs/getCheckDeleteBuildPackCatalogCount";
+    var UPLOAD_IMAGE_PROC_URL = "/catalogs/uploadThumbnailImage";
+    var DELETE_IMAGE_PROC_URL = "/catalogs/deleteThumbnailImage";
+    var UPLOAD_APP_SAMPLE_PROC_URL = "/catalogs/uploadAppSampleFile";
+    var DELETE_APP_SAMPLE_PROC_URL = "/catalogs/deleteAppSampleFile";
     var SERVICE_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CATALOG_ID}]]*/ "";
     var INSERT_FLAG = /*[[${INSERT_FLAG}]]*/ null;
     var CUD_U = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ "";
@@ -339,31 +363,33 @@
 
         if (data.list.length < 1) return false;
 
+
         var resultData = data.list[0];
 
         var reqName = $('#name');
         var reqOrgName = $('#orgName');
         var reqClassification = $('#classification');
-        var reqServicePackName = $('#ServicePackName');
+        var reqServicePackName = $('#servicePackName');
         var reqThumbImgPath = $("#thumbImgPath");
         var reqOrgThumbImgPath = $("#orgThumbImgPath");
         var reqThumbImgName = $("#thumbImgName");
-        var reqUseYn = $('#useYn_' + resultData.useYn);
+        var reqUseYn = $('#useYn_' + data.list[0].useYn);
+        var reqDashboardUseYn = $('#dashboardUseYn_' + data.list[0].dashboardUseYn);
         var reqSummary = $('#summary');
         var reqDescription = $('#description');
-        var reqDashboardUseYn = $('#dashboardUseYn_' + resultData.dashboardUseYn);
+        var reqAppBindYn = $('#appBindYn_' + data.list[0].appBindYn);
         reqName.val(resultData.name);
         reqOrgName.val(resultData.name);
         reqClassification.val(resultData.classification);
-        reqServicePackName.val(resultData.serviceName);
+        reqServicePackName.val(resultData.servicePackName);
         reqThumbImgPath.val(resultData.thumbImgPath);
         reqOrgThumbImgPath.val(resultData.thumbImgPath);
         reqThumbImgName.val(resultData.thumbImgName);
         reqUseYn.attr('checked', true);
+        reqDashboardUseYn.attr('checked', true);
         reqSummary.val(resultData.summary);
         reqDescription.val(resultData.description);
-        reqDashboardUseYn.attr('checked', true);
-        var tempThumbImgPath = reqThumbImgPath.val();
+        reqAppBindYn.attr('checked', true);
 
 //======================================================================================================================
 //         서비스 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
@@ -442,10 +468,14 @@
             if ($(this).attr('id') == 'appBindYn_Y') {
                 $('#app_bind_parameter_form').show();
             } else {
-                $('#app_bind_parameter_form').hide();
+
             }
         });
 
+
+        if(data.list[0].appBindYn == 'N'){
+            $('#app_bind_parameter_form').hide();
+        }
 
         // 앱 바인드 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
         if (resultData.appBindParameter != null || resultData.appBindParameter != '' || resultData.appBindParameter != undefined)
@@ -558,15 +588,41 @@
 
         var doc = document;
         var reqName = doc.getElementById('name').value;
-        var orgName = doc.getElementById('orgName').value;
 
-        // CHECK DUPLICATED NAME
-        var insertFlag = INSERT_FLAG;
-        if ("" != insertFlag && CUD_U == insertFlag && reqName == orgName) {
-            procUploadThumbnailImageFile({RESULT: RESULT_STATUS_SUCCESS});
+        if (REQ_NO == null || REQ_NO == 0) {
+            procUploadFile({RESULT: RESULT_STATUS_SUCCESS});
         } else {
-            procCallAjax(DUPLICATED_PROC_URL, {name: reqName}, procUploadThumbnailImageFile);
+            procCallAjax2(DUPLICATED_PROC_URL, 'GET', {name: reqName}, procUploadFile);
         }
+    };
+
+    // UPLOAD FILE
+    var procUploadFile = function (data) {
+        if (data.servicepackcount > 0) {
+            $('#name').focus();
+            return false;
+        }
+
+        var formData = getFileFormData();
+
+        if (formData != undefined) {
+            uploadFile(formData, UPLOAD_IMAGE_PROC_URL, procInsert);
+        } else {
+            procInsert();
+        }
+    };
+
+    // FILE FORM DATA
+    var getFileFormData = function() {
+        var reqThumbnail = $("#hiddenThumbnail");
+
+        if (reqThumbnail[0].files[0] === undefined) return undefined;
+
+        var formData = new FormData();
+
+        formData.append("file", reqThumbnail[0].files[0]);
+
+        return formData;
     };
 
     // PROCESS CHECK VALID
@@ -593,6 +649,7 @@
 
     // UPLOAD THUMBNAIL IMAGE FILE
     var procUploadThumbnailImageFile = function (data) {
+        console.log("procUploadThumbnailImageFile");
         if (RESULT_STATUS_SUCCESS != data.RESULT) {
             $('#name').focus();
             return false;
@@ -601,8 +658,10 @@
         var formData = getFileFormData();
 
         if (formData != undefined) {
+            console.log("formData != undefined");
             uploadFile(formData, UPLOAD_IMAGE_PROC_URL, procUploadAppSampleFile);
         } else {
+            console.log("procUploadAppSampleFile");
             procUploadAppSampleFile();
         }
     };
@@ -643,25 +702,38 @@
     var procInsert = function () {
         var doc = document;
         var reqUseYn = $("input:radio[name='useYn']:checked").val();
+        var reqDashboardUseYn = $("input:radio[name='dashboardUseYn']:checked").val();
+        var reqAppBindYn = $("input:radio[name='appBindYn']:checked").val();
         var param = $("#catalogForm").serializeObject();
+        //var reqAppBindParameter = doc.getElementById('app_bind_parameter').value;
+
+        if (reqAppBindYn == 'N') {
+            completeParameter2 = '';
+        } else {
+            completeParameter2;
+        }
 
         var param2 = {
             useYn: reqUseYn,
+            dashboardUseYn: reqDashboardUseYn,
+            classification: doc.getElementById('classification').value,
             summary: doc.getElementById('summary').value,
             description: doc.getElementById('description').value,
-            classification: doc.getElementById('classification').value
+            parameter: completeParameter,
+            app_bind_parameter: completeParameter2,
+            appBindYn: reqAppBindYn
         };
 
-        $.extend(param, param2);
 
+        $.extend(param, param2);
+        //return false;
         // UPDATE
-        var insertFlag = INSERT_FLAG;
-        if ("" != insertFlag && CUD_U == insertFlag) {
-            procCallAjax(UPDATE_PROC_URL, param, procCallbackUpdate);
+        if (REQ_NO == null || REQ_NO == 0) {
+            procCallAjax2(PROC_URL, INSERT_PROC_METHOD, JSON.stringify(param), procCallbackUpdate);
 
             // INSERT
         } else {
-            procCallAjax(INSERT_PROC_URL, param, procCallbackInsert);
+            procCallAjax2(PROC_URL, UPDATE_PROC_METHOD, JSON.stringify(param), procCallbackUpdate);
         }
     };
 
@@ -868,12 +940,12 @@
         getCategoryList();
 
         $('#name').focus();
-        $('#useYn_Y').attr('checked', true);
+
 
 
         if ("" != REQ_NO && REQ_NO != null) procUpdateForm();
 
-        // resetThumbnail();
+        resetThumbnail();
 
         $("#hiddenThumbnail").on("change", function () {
             setPreView($(this));
@@ -907,9 +979,55 @@
         procSetFileInfo($(this)[0].files);
     });
 
+    var medium2Parameter = '';
+    var completeParameter;
+    var appBindMedium2Parameter = '';
+    var completeParameter2;
+
 
     // BIND :: BUTTON EVENT
     $("#btnRegist").on("click", function () {
+        // 서비스 생성 파라미터 합치는 부분
+        for (var i = 0; i < 100; i++) {
+            var parameterName = $("#parameterName" + (i + 1)).val();
+            if (parameterName != null && parameterName != '' && parameterName != undefined) {
+                if ($("#serviceParameterSelectType" + (i + 1)).val() != null) {
+                    var parameterType = $("#serviceParameterSelectType" + (i + 1)).val();
+                    var mediumParameter = '"' + parameterName + '"' + ":" + '"' + parameterType + '"';
+                    medium2Parameter += "," + mediumParameter;
+                }
+            }
+        }
+        var deleteComma = medium2Parameter.replace(",", "");
+        deleteComma = deleteComma.replace(/(\s*)/g, "");
+
+        if (deleteComma != null && deleteComma != '' && deleteComma != undefined) {
+            completeParameter = "{" + deleteComma + "}";
+        } else {
+            completeParameter = '';
+        }
+
+
+        // 앱 바인드 파라미터 합치는 부분
+        for (var i = 0; i < 100; i++) {
+            var appBindParameterName = $("#appBindParameterName" + (i + 1)).val();
+            if (appBindParameterName != null && appBindParameterName != '' && appBindParameterName != undefined) {
+                if ($("#appBindParameterSelectType" + (i + 1)).val() != null) {
+                    var appBindParameterType = $("#appBindParameterSelectType" + (i + 1)).val();
+                    var appBindMediumParameter = '"' + appBindParameterName + '"' + ":" + '"' + appBindParameterType + '"';
+                    appBindMedium2Parameter += "," + appBindMediumParameter;
+                }
+            }
+        }
+        var deleteComma = appBindMedium2Parameter.replace(",", "");
+        deleteComma = deleteComma.replace(/(\s*)/g, "");
+
+        if (deleteComma != null && deleteComma != '' && deleteComma != undefined) {
+            completeParameter2 = "{" + deleteComma + "}";
+        } else {
+            completeParameter2 = '';
+        }
+
         procCheckDuplicatedName();
     });
 

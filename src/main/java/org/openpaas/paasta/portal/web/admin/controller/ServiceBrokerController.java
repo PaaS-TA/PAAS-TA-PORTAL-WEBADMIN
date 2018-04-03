@@ -20,7 +20,7 @@ import java.util.UUID;
  * @since 2016.4.4 최초작성
  */
 @Controller
-@RequestMapping(value = {"/servicebrokers"})
+
 public class ServiceBrokerController extends Common {
 
     //private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBrokerController.class);
@@ -33,7 +33,7 @@ public class ServiceBrokerController extends Common {
      *
      * @return model and view
      */
-    @RequestMapping(value = {"/servicebrokerMain"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/servicebrokers"}, method = RequestMethod.GET)
     public ModelAndView serviceBroker() {
         ModelAndView mv = new ModelAndView();
 
@@ -78,7 +78,7 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker serviceBroker
      * @return ModelAndView model
      */
-    @GetMapping(value = {""})
+    @GetMapping(value = {"/data/servicebrokers"})
     @ResponseBody
     public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker, @RequestParam(value="guid", required = false, defaultValue = "") String guid) {
 

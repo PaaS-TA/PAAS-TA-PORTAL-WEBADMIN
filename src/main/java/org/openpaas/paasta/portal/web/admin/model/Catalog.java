@@ -890,6 +890,8 @@ public class Catalog {
         this.dashboardUseYn = dashboardUseYn;
     }
 
+
+
     @Override
     public String toString() {
         return "Catalog{" +
