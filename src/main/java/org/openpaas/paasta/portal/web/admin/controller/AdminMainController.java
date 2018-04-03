@@ -16,9 +16,10 @@ import java.util.Map;
  * @version 1.0
  * @since 2016.09.08 최초작성
  */
-@Controller
-@RequestMapping(value = {"/main"})
+@RestController
 public class AdminMainController extends Common {
+
+    private final String V2_URL = "/v2";
 
     /**
      * 관리자포탈 조직 선택 메인페이지로 이동한다.
@@ -26,7 +27,7 @@ public class AdminMainController extends Common {
      * @param organizationId 조직 아이디(String)
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/organization/{organizationId}"}, method = RequestMethod.GET)
+    @GetMapping(value = {V2_URL + "/statistics/organizations/{organizationId}"})
     public ModelAndView getAdminMain(@PathVariable("organizationId") String organizationId) {
         return new ModelAndView() {{
             setViewName("/main/main");
@@ -41,10 +42,10 @@ public class AdminMainController extends Common {
 //     * @param param AdminMain(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getTotalCountList"}, method = RequestMethod.GET)
+    @GetMapping(value = {V2_URL + "/statistics"})
     @ResponseBody
     public Map<String, Object> getTotalCountList() {
-        return commonService.procCommonApiRestTemplate("/adminMain/getTotalCountList", HttpMethod.GET, null, null);
+        return commonService.procCommonApiRestTemplate(V2_URL + "/statistics", HttpMethod.GET, null, null);
     }
 
 
@@ -55,24 +56,23 @@ public class AdminMainController extends Common {
 //     * @param param AdminMain(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getTotalOrganizationList"}, method = RequestMethod.GET)
+    @GetMapping(value = {V2_URL + "/statistics/organizations"})
     @ResponseBody
-    public Map<String, Object> getTotalOrganizationList() { //@RequestBody AdminMain param
-        return commonService.procCommonApiRestTemplate("/adminMain/getTotalOrganizationList", HttpMethod.GET, null, null);
+    public Map<String, Object> getTotalOrganizationList() {
+        return commonService.procCommonApiRestTemplate(V2_URL + "/statistics/organizations", HttpMethod.GET, null, null);
     }
 
 
     /**
-     * 전체 공간 통계 목록을 조회한다.
+     * 해당 조직에 대한 공간들의 통계 목록들을 조회한다.
      * *
-     *
-     * @param param AdminMain(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getTotalSpaceList"}, method = RequestMethod.GET)
+    @GetMapping(value = {V2_URL + "/statistics/organizations/{organizationId}/spaces"})
     @ResponseBody
-    public Map<String, Object> getTotalSpaceList(@RequestBody AdminMain param) {
-        return commonService.procCommonApiRestTemplate("/adminMain/getTotalSpaceList", HttpMethod.GET, param, null);
+    public Map<String, Object> getTotalSpaceList(@PathVariable String organizationId) {
+        // spaceId, spaceName, applicationCount Info
+        return commonService.procCommonApiRestTemplate(V2_URL + "/statistics/organizations/"+organizationId+"/spaces", HttpMethod.GET, null, null);
     }
 
 }

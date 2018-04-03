@@ -55,10 +55,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
                 .authorizeRequests()
 				.antMatchers("/**").permitAll()
-				.antMatchers("/main").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/dashboard").access("hasRole('ROLE_ADMIN')")
 				.and()
 				.formLogin().loginPage("/index")
-				.defaultSuccessUrl("/main")
+				.defaultSuccessUrl("/dashboard")
 				.failureUrl("/index?error")
 				.usernameParameter("id").passwordParameter("password");
 
