@@ -4,9 +4,10 @@
       layout:decorator="../layout/default">
 <head>
     <script layout:fragment="custom-script">
-        var GET_ORGS_FOR_ADMIN_URL = "/orgSpaceList/OrgAndSpace";
+        var V2_URL = "/v2";
+        var GET_ORGS_FOR_ADMIN_URL = V2_URL + "/orgs";
         var GET_SPACES_FOR_ADMIN_URL = "/orgSpaceList/Space/";
-        var OrgSpaceList = "/orgSpaceList/";
+        var OrgSpaceList = V2_URL + "/spaces/";
         var OrgAndSpace = "/OrgAndSpace";
         var Space = "/Space";
         var domainNames;
@@ -28,7 +29,6 @@
         });
 
         function getOrgsForAdmin(reqUrl, param, callback) {
-
 
               $.ajax({
                 url: reqUrl,
@@ -127,7 +127,7 @@
             $("#spaceTable").hide();
             $("#noSpaceMessage").hide();
             currentOrg = orgName;
-            getOrgsForAdmin(OrgSpaceList+orgName+Space, {"orgName":orgName},procCallbackGetSpaces)
+            getOrgsForAdmin(OrgSpaceList+orgName, {"orgName":orgName},procCallbackGetSpaces)
         }
 
         var procCallbackGetSpaces = function(data) {
@@ -166,12 +166,12 @@
         }
 
         // GET ORG SUMMARY
-        var procGetOrgSummary = function (orgName, quotaName) {
+        var procGetOrgSummary = function (orgid, quotaid) {
             $("#modaltitle").html("로딩중");
             $("#modalbody").html("데이터를 불러오고 있습니다.");
-            getOrgsForAdmin("/orgSpaceList/"+quotaName+"/OrgByName", {orgName: quotaName}, procCallbackGetOrgQuota);
+            getOrgsForAdmin(V2_URL + "/orgs/"+quotaid+"/quota", {}, procCallbackGetOrgQuota);
 
-            getOrgsForAdmin("/orgSpaceList/"+orgName+"/OrgSummary", {orgName: orgName}, procCallbackGetOrgSummary);
+            getOrgsForAdmin(V2_URL + "/orgs/"+orgid+"/summary", {}, procCallbackGetOrgSummary);
 
         };
 
@@ -219,7 +219,7 @@
             else{
                 spaceQuotaText = "";
             }
-            getOrgsForAdmin("/orgSpaceList/"+spaceId+"/SpaceSummary", {
+            getOrgsForAdmin(V2_URL + "/spaces/"+spaceId+"/summary", {
                spaceName: spaceId
             }, procCallbackGetSpaceSummary);
         };

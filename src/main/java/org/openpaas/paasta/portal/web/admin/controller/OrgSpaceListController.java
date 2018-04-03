@@ -20,98 +20,96 @@ import java.util.Map;
  * @version 1.0
  * @since 2016 -09-06
  */
-@Controller
-@RequestMapping(value = {"/orgSpaceList"})
+@RestController
 public class OrgSpaceListController extends Common {
+
+    private final String V2_URL = "/v2";
+
+
 
     /**
      * Gets org space list main.
      *
      * @return the org space list main
      */
-    @RequestMapping(value = {"/orgSpaceListMain"}, method = RequestMethod.GET)
+    @GetMapping("/orgspacelist")
     public ModelAndView getOrgSpaceListMain() {
         return orgSpaceListService.getOrgSpaceListMain();
     }
 
 
+    //----------------------------------------------------------------------------------------------------------//
+
     /**
      * admin 유저로 접근 가능한 조직 목록(모든 조직 목록)을 조회한다.
      *
-     * @param param (자바 Map 클래스)
      * @return Map (자바 Map 클래스)
      * @throws Exception the exception
      * @author 김도준
      * @thorws Exception
      */
-    @RequestMapping(value = {"/OrgAndSpace"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getOrgsForAdmin(@ModelAttribute String param) throws Exception {
-        return orgSpaceListService.getOrgsForAdmin("/org/OrgAndSpace", HttpMethod.GET, param, null);
+    @GetMapping(V2_URL + "/orgs")
+    public Map<String, Object> getOrgsForAdmin() throws Exception {
+        return orgSpaceListService.getOrgsForAdmin("/orgs", HttpMethod.GET, null, null);
     }
 
     /**
      * admin 유저로 접근 가능한 영역 목록(모든 영역 목록)을 조회한다.
      *
-     * @param orgName (자바 Map 클래스)
+     * @param orgid org id
      * @return Map (자바 Map 클래스)
      * @throws Exception the exception
      * @author 김도준
      */
-    @RequestMapping(value = {"/{orgName}/Space"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getSpacesForAdmin(@PathVariable String orgName) throws Exception {
-        return orgSpaceListService.getSpacesForAdmin("/"+orgName+"/space", HttpMethod.GET, null, getToken());
+    @GetMapping(V2_URL + "/spaces/{orgid}")
+    public Map<String, Object> getSpacesForAdmin(@PathVariable String orgid) throws Exception {
+        return orgSpaceListService.getSpacesForAdmin("/spaces/"+orgid, HttpMethod.GET, null, getToken());
     }
 
     /**
      * 조직 요약 정보를 조회한다.
      *
-     * @param orgName 조직 객체
+     * @param orgid org id
      * @return Org 조직 객체
      */
-    @RequestMapping(value = {"/{orgName}/OrgSummary"}, method = RequestMethod.GET)
-    @ResponseBody
-    public  Map<String, Object> getOrgSummary(@PathVariable String orgName) {
-        return orgSpaceListService.getOrgSummary("/org/"+orgName+"/OrgSummary", HttpMethod.GET, null, getToken());
+    @GetMapping(V2_URL + "/orgs/{orgid}/summary")
+    public  Map<String, Object> getOrgSummary(@PathVariable String orgid) {
+        return orgSpaceListService.getOrgSummary("/orgs/"+orgid+"/summary", HttpMethod.GET, null, getToken());
     }
 
 
     /**
      * 조직 이름으로 조직의 정보를 조회한다.
      *
-     * @param orgName 조직 이름
+     * @param orgid orgid
      * @return Org 조직 객체
      */
-    @RequestMapping(value = {"/{orgName}/OrgByName"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getOrgByName(@PathVariable String orgName) {
-        return orgSpaceListService.getOrgByName("/org/"+orgName+"/OrgByName", HttpMethod.GET, null, getToken());
+    @GetMapping(V2_URL + "/orgs/{orgid}/quota")
+    public Map<String, Object> getOrgByName(@PathVariable String orgid) {
+        return orgSpaceListService.getOrgByName("/orgs/"+orgid+"/quota", HttpMethod.GET, null, getToken());
     }
 
 
     /**
      * 영역 요약 정보를 조회한다.
      *
-     * @param spaceId space id값
+     * @param spaceid space id값
      * @return Space 영역 객체
      */
-    @RequestMapping(value = {"/{spaceId}/SpaceSummary"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getSpaceSummary(@PathVariable String spaceId) {
-        return orgSpaceListService.getSpaceSummary("/space/"+ spaceId+ "/SpaceSummary", HttpMethod.GET, null, getToken());
+    @GetMapping(V2_URL + "/spaces/{spaceid}/summary")
+    public Map<String, Object> getSpaceSummary(@PathVariable String spaceid) {
+        return orgSpaceListService.getSpaceSummary("/spaces/"+ spaceid+ "/summary", HttpMethod.GET, null, getToken());
     }
 
     /**
      * 영역 쿼터 정보를 조회한다.
      *
-     * @param spaceQuotaId 영역 객체
+     * @param spacequtaid spacequta id
      * @return Map (자바 Map 클래스)
      */
-    @RequestMapping(value = {"/{spaceQuotaId}/SpaceQuota"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> getSpaceQuota(@PathVariable String spaceQuotaId) {
-        return orgSpaceListService.getSpaceQuota("/space/"+ spaceQuotaId+"/SpaceQuota", HttpMethod.GET, null, getToken());
+    @GetMapping(V2_URL + "/spaces/{spacequtaid}/quota")
+    public Map<String, Object> getSpaceQuota(@PathVariable String spacequtaid) {
+        return orgSpaceListService.getSpaceQuota("/spaces/"+ spacequtaid+"/quota", HttpMethod.GET, null, getToken());
     }
 
     /**
@@ -119,11 +117,9 @@ public class OrgSpaceListController extends Common {
      *
      * @return Map (자바 Map 클래스)
      */
-    @RequestMapping(value = {"/getSpace"}, method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping(V2_URL + "/spaces")
     public Map<String, Object> getSpace() {
-
-        return orgSpaceListService.getSpace("/space/getSpace", HttpMethod.POST, null, getToken());
+        return orgSpaceListService.getSpace("/spaces", HttpMethod.GET, null, getToken());
 
     }
 

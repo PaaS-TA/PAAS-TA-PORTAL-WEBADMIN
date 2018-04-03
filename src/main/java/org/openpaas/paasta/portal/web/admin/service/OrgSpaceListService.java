@@ -19,6 +19,8 @@ import java.util.Map;
 @Service
 public class OrgSpaceListService extends Common {
 
+
+    private final String V2_URL = "/v2";
     /**
      * Gets org space list main.
      *
@@ -45,7 +47,7 @@ public class OrgSpaceListService extends Common {
      * @author 김도준
      */
     public Map<String, Object> getOrgsForAdmin(String reqUrl, HttpMethod httpMethod, String param, String reqToken) throws Exception {
-        return commonService.procCfApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
     /**
@@ -60,7 +62,7 @@ public class OrgSpaceListService extends Common {
      * @author 김도준
      */
     public Map<String, Object> getSpacesForAdmin(String reqUrl, HttpMethod httpMethod, String param, String reqToken) throws Exception {
-        return commonService.procCfApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
     /**
@@ -73,7 +75,7 @@ public class OrgSpaceListService extends Common {
      * @return Map (자바 Map 클래스)
      */
     public  Map<String, Object> getOrgSummary(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
 
@@ -87,7 +89,7 @@ public class OrgSpaceListService extends Common {
      * @return Map (자바 Map 클래스)
      */
     public Map<String, Object> getOrgByName(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
 
@@ -101,7 +103,7 @@ public class OrgSpaceListService extends Common {
      * @return Map (자바 Map 클래스)
      */
     public Map<String, Object> getSpaceSummary(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
     /**
@@ -114,7 +116,7 @@ public class OrgSpaceListService extends Common {
      * @return Map (자바 Map 클래스)
      */
     public Map<String, Object> getSpaceQuota(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
     /**
@@ -127,6 +129,6 @@ public class OrgSpaceListService extends Common {
      * @return Map (자바 Map 클래스)
      */
     public Map<String, Object> getSpace(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 }
