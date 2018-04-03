@@ -56,7 +56,7 @@ public class LoginController {
             mv.setViewName("/index");
         }else {
 //            mv.setViewName("redirect:/main");
-            mv.setViewName("redirect:/client/clientMain");
+            mv.setViewName("redirect:/dashboard");
         }
         return mv;
     }
@@ -67,7 +67,7 @@ public class LoginController {
      *
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/main"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/dashboard"}, method = RequestMethod.GET)
     public ModelAndView homePage(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
         if (!request.isUserInRole("ROLE_ADMIN")) {

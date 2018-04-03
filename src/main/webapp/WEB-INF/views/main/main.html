@@ -116,7 +116,7 @@
               </div>
               <div class="box-body">
                 <div class="chart">
-                  <canvas id="barChart" style="height: 400px; width: 341px;" width="341" height="180"></canvas>
+                  <canvas id="barChart" style="position: relative; height:50vh; width:80vw"></canvas>
                 </div>
               </div>
               <!-- /.box-body -->
@@ -141,11 +141,11 @@
   /*<![CDATA[*/
 
 
-  var MAIN_DASH_BOARD_URL = "/main";
-  var MAIN_DASH_BOARD_ORGANIZATION_URL = "/main/organization";
-  var TOTAL_COUNT_LIST_PROC_URL = "/main/getTotalCountList";
-  var TOTAL_ORGANIZATION_LIST_PROC_URL = "/main/getTotalOrganizationList";
-  var TOTAL_SPACE_LIST_PROC_URL = "/main/getTotalSpaceList";
+  var MAIN_DASH_BOARD_URL = "/dashboard";
+  var MAIN_DASH_BOARD_ORGANIZATION_URL = "/v2/statistics/organizations";
+  var TOTAL_COUNT_LIST_PROC_URL = "/v2/statistics";
+  var TOTAL_ORGANIZATION_LIST_PROC_URL = "/v2/statistics/organizations";
+  var TOTAL_SPACE_LIST_PROC_URL = "/v2/statistics/organizations/{organizationId}/spaces";
 
   // ON LOAD
   $(document.body).ready(function() {
@@ -182,9 +182,11 @@
   var getChartList = function(){
     var organizationId = $('#organizationId').val();
     if ('' == organizationId) {
+      // 조직 공간 앱 사용자 통계정보
       procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList);
     } else {
-      procCallAjax2(TOTAL_SPACE_LIST_PROC_URL,"GET", {organizationId : organizationId}, procCallbackGetTotalSpaceList);
+      // 해당 조직의 공간정보 통계정보
+      procCallAjax2(MAIN_DASH_BOARD_ORGANIZATION_URL+"/"+organizationId+"/spaces" ,"GET", {}, procCallbackGetTotalSpaceList);
     }
   };
 
