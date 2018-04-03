@@ -23,16 +23,18 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="box">
-
-              <div class="box-body no-padding">
-                <table class="table table-striped"> <!-- table-responsive -->
+              <!--<div class="box-header">-->
+                <!--<h3 class="box-title"></h3>-->
+              <!--</div>-->
+              <div class="box-body">
+                <table class="table table-striped text-center"> <!-- table-responsive --> <!-- table-bordered --> <!-- table-striped -->
                   <thead>
-                  <tr class="text-center">
-                    <td width="30%"><b>이름</b></td>
-                    <td width="30%"><b>파일명</b></td>
-                    <td width="13%"><b>순서</b></td>
-                    <td width="13%"><b>사용유무</b></td>
-                    <td width="13%"><b>Lock유무</b></td>
+                  <tr>
+                    <th width="30%">이름</th>
+                    <th width="30%">파일명</th>
+                    <th width="13%">순서</th>
+                    <th width="13%">사용유무</th>
+                    <th width="13%">Lock유무</th>
                   </tr>
                   </thead>
                   <tbody id="buildPackList" th:remove="body">
@@ -112,9 +114,9 @@
               locked = "checked";
             }
 
-            $("#buildPackList").append(" <tr class='table table-striped table-hover t1'>" +
-                    "<td class='col-md-1' align='left'> " + data.entity.name + "</td>" +
-                    "<td class='col-md-1' align='left'> " + data.entity.filename + "</td>" +
+            $("#buildPackList").append(" <tr align='center'>" +
+                    "<td> " + data.entity.name + "</td>" +
+                    "<td> " + data.entity.filename + "</td>" +
                     "<td class='col-md-1' align='center'><select id='position"+ n +"' style='width:50px;' onChange=updateBuildPack('"+ data.metadata.guid +"'," + n + ",true); >" + positionOption + "</select></td>" +
                     "<td class='col-md-1' align='center'><input type='checkbox' id='enabled"+ n +"' "+ enabled + " onChange=updateBuildPack('"+ data.metadata.guid +"'," + n + ",false); ></td>" +
                     "<td class='col-md-1' align='center'><input type='checkbox' id='locked"+ n +"' "+ locked + " onChange=updateBuildPack('"+ data.metadata.guid +"'," + n + ",false); ></td>"
