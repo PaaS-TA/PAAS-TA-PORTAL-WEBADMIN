@@ -19,16 +19,16 @@ import java.util.Map;
  * @version 1.0
  * @since 2016.08.31 최초작성
  */
-@Controller
-@RequestMapping(value = {"/userManagement"})
+@RestController
 public class UserManagementController extends Common {
+    private final String V2_URL = "/v2";
 
     /**
      * 사용자 정보 메인페이지로 이동한다.
      *
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/userManagementMain"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/usermanagements"}, method = RequestMethod.GET)
     public ModelAndView getUserInfoMain() {
         return userManagementService.getUserInfoMain();
     }
@@ -39,47 +39,44 @@ public class UserManagementController extends Common {
      *
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/UserInfoList"}, method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping(V2_URL + "/usermanagements")
     public Map<String, Object> getUserInfoList() {
-        return userManagementService.getUserInfoList("/userManagement/UserInfoList", HttpMethod.GET, null, null);
+        return userManagementService.getUserInfoList("/usermanagements", HttpMethod.GET, null, null);
     }
 
 
     /**
      * 비밀번호를 초기화한다.
      *
-     * @param userId user id
+     * @param userid user id
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/ResetPassword/{userId}"}, method = RequestMethod.PUT)
+    @PutMapping(V2_URL + "/usermanagements/{userid}/resetpassword")
     @ResponseBody
-    public Map<String, Object> setResetPassword(@PathVariable String userId, @RequestBody UserManagement param) {
-        return userManagementService.setResetPassword("/userManagement/ResetPassword/"+userId, HttpMethod.PUT, param, null);
+    public Map<String, Object> setResetPassword(@PathVariable String userid, @RequestBody UserManagement param) {
+        return userManagementService.setResetPassword("/usermanagements/"+userid+"/resetpassword", HttpMethod.PUT, param, null);
     }
 
-
     /**
-     * 운영권한을 부여한다.
-     * @param userId user id
+     * 운영권한을 수정한다.
+     * @param userid user id
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/OperatingAuthority/{userId}"}, method = RequestMethod.PUT)
+    @PutMapping(V2_URL + "/usermanagements/{userid}/authority")
     @ResponseBody
-    public Map<String, Object> updateOperatingAuthority(@PathVariable String userId, @RequestBody UserManagement param ) throws UnsupportedEncodingException {
-        return userManagementService.updateOperatingAuthority("/userManagement/OperatingAuthority/"+ userId, HttpMethod.PUT, param, null);
+    public Map<String, Object> updateOperatingAuthority(@PathVariable String userid, @RequestBody UserManagement param ) throws UnsupportedEncodingException {
+        return userManagementService.updateOperatingAuthority("/usermanagements/"+userid+"/authority", HttpMethod.PUT, param, null);
     }
 
 
     /**
      * 사용자 계정을 삭제한다.
      *
-     * @param userId userId
+     * @param param model UserManagement
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/deleteUserAccount/{userId}"}, method = RequestMethod.DELETE)
-    @ResponseBody
-    public Map<String, Object> deleteUserAccount(@PathVariable String userId, @RequestBody UserManagement param) {
-        return userManagementService.deleteUserAccount("/userManagement/deleteUserAccount/" + userId, HttpMethod.DELETE, param, null);
+    @DeleteMapping(V2_URL + "/usermanagements")
+    public Map<String, Object> deleteUserAccount(@RequestBody UserManagement param) {
+        return userManagementService.deleteUserAccount("/usermanagements", HttpMethod.DELETE, param, null);
     }
 }

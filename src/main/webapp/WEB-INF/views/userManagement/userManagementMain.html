@@ -72,10 +72,8 @@
 </div>
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var LIST_PROC_URL = "/userManagement/UserInfoList";
-    var PROC_RESET_PASSWORD_URL = "/userManagement/ResetPassword/";
-    var PROC_UPDATE_OPERATING_AUTHORITY_URL = "/userManagement/OperatingAuthority/";
-    var PROC_DELETE_USER_ACCOUNT_URL = "/userManagement/deleteUserAccount/";
+    var V2_URL = "/v2";
+    var REST_URL = V2_URL+ "/usermanagements/";
     var LOADED_LIST_COUNT = 0;
 
     var REQUEST_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
@@ -130,7 +128,7 @@
             pageNo : reqPageNo
         };
 
-        userManagementCallAjax(LIST_PROC_URL, param, procCallbackGetUserInfoList,"GET");
+        userManagementCallAjax(REST_URL, param, procCallbackGetUserInfoList,"GET");
     };
 
     var getUserSearch = function()
@@ -301,7 +299,7 @@
     var resetPassword = function (reqUserId) {
         var reqId =  reqUserId.replace("@", "");
         reqId =  reqId.replace(".", "");
-        userManagementCallAjax(PROC_RESET_PASSWORD_URL + reqId, {userId : reqUserId}, procCallbackResetPassword,"PUT");
+        userManagementCallAjax(REST_URL + reqId + "/resetpassword", {userId : reqUserId}, procCallbackResetPassword,"PUT");
     };
 
 
@@ -318,7 +316,7 @@
     var updateOperatingAuthority = function (reqUserId) {
        var reqId =  reqUserId.replace("@", "");
        reqId =  reqId.replace(".", "");
-        userManagementCallAjax(PROC_UPDATE_OPERATING_AUTHORITY_URL + reqId, {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"PUT");
+        userManagementCallAjax(REST_URL + reqId + "/authority", {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"PUT");
     };
 
 
@@ -335,7 +333,7 @@
     var deleteUserAccount = function (reqUserId) {
         var reqId =  reqUserId.replace("@", "");
         reqId =  reqId.replace(".", "");
-        userManagementCallAjax(PROC_DELETE_USER_ACCOUNT_URL + reqId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
+        userManagementCallAjax(REST_URL + reqId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
     };
 
 

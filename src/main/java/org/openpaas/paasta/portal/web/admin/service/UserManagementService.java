@@ -14,6 +14,7 @@ import java.util.Map;
 @Service
 public class UserManagementService extends Common {
 
+    private final String V2_URL = "/v2";
     @Autowired
     CommonService commonService;
 
@@ -28,7 +29,7 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> getUserInfoList(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
     }
 
 
@@ -39,7 +40,7 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> setResetPassword(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
     }
 
 
@@ -50,7 +51,7 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> updateOperatingAuthority(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
     }
 
 
@@ -61,7 +62,7 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> deleteUserAccount(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
     }
 
 
