@@ -49,6 +49,7 @@ public class UserManagementController extends Common {
      * 비밀번호를 초기화한다.
      *
      * @param userid user id
+     * @param param model UserManagement
      * @return Map(자바클래스)
      */
     @PutMapping(V2_URL + "/usermanagements/{userid}/resetpassword")
@@ -60,6 +61,7 @@ public class UserManagementController extends Common {
     /**
      * 운영권한을 수정한다.
      * @param userid user id
+     * @param param model UserManagement
      * @return Map(자바클래스)
      */
     @PutMapping(V2_URL + "/usermanagements/{userid}/authority")
@@ -71,12 +73,12 @@ public class UserManagementController extends Common {
 
     /**
      * 사용자 계정을 삭제한다.
-     *
+     * @param userid user id
      * @param param model UserManagement
      * @return Map(자바클래스)
      */
-    @DeleteMapping(V2_URL + "/usermanagements")
-    public Map<String, Object> deleteUserAccount(@RequestBody UserManagement param) {
-        return userManagementService.deleteUserAccount("/usermanagements", HttpMethod.DELETE, param, null);
+    @DeleteMapping(V2_URL + "/usermanagements/{userid}")
+    public Map<String, Object> deleteUserAccount(@PathVariable String userid, @RequestBody UserManagement param) {
+        return userManagementService.deleteUserAccount("/usermanagements/" + userid, HttpMethod.DELETE, param, null);
     }
 }
