@@ -14,10 +14,10 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
+                <div th:if="${REQUEST_NO} != ''">
                     서비스 상세
                 </div>
-                <div th:if=" ${INSERT_FLAG} == ${INSERT_CD} ">
+                <div th:if="${REQUEST_NO} == ''">
                     서비스 등록
                 </div>
             </h1>
@@ -26,218 +26,225 @@
         <section class="content">
             <form class="form-horizontal" role="form" id="catalogForm" name="catalogForm">
                 <input type="hidden" id="thumb_image_path"/>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-default">
-                        <!-- /.box-header -->
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-fw fa-chrome"></i> Service</h3>
-                        </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-default">
+                            <!-- /.box-header -->
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-fw fa-chrome"></i> Service</h3>
+                            </div>
 
-                        <div class="box-body">
-                            <form class="form-horizontal" role="form" id="starterForm" name="starterForm">
-                                <!--html Start class-->
-                                <div class="content-box2 col-md-12 col-md-offset-13">
-                                    <!--<div class="1">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="name">이름</label>
-                                        <input type="text" class="form-control" id="name"/>
-                                    </div>
-                                    <br/>
-                                    <!--<div class="2">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="classification">분류</label>
-                                        <select id="classification"
-                                                class="form-control select2 select2-hidden-accessible"
-                                                style="width: 100%;"
-                                                tabindex="-1"
-                                                aria-hidden="true">
-                                        </select>
-                                        <span class="select2 select2-container select2-container--default select2-container--below"
-                                              dir="ltr" style="width: 100%;">
+                            <div class="box-body">
+                                <form class="form-horizontal" role="form" id="starterForm" name="starterForm">
+                                    <!--html Start class-->
+                                    <div class="content-box2 col-md-12 col-md-offset-13">
+                                        <!--<div class="1">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label for="name">이름</label>
+                                            <input type="text" class="form-control" id="name"/>
+                                        </div>
+                                        <br/>
+                                        <!--<div class="2">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label for="classification">분류</label>
+                                            <select id="classification"
+                                                    class="form-control select2 select2-hidden-accessible"
+                                                    style="width: 100%;"
+                                                    tabindex="-1"
+                                                    aria-hidden="true">
+                                            </select>
+                                            <span class="select2 select2-container select2-container--default select2-container--below"
+                                                  dir="ltr" style="width: 100%;">
                                         <span class="selection"></span>
                                         <span class="dropdown-wrapper" aria-hidden="true"></span>
                                         </span>
-                                    </div>
-                                    <br/>
-                                    <!--<div class="3">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="servicePackName">서비스</label>
-                                        <select id="ServicePackName"
-                                                class="form-control select2 select2-hidden-accessible"
-                                                style="width: 100%;"
-                                                tabindex="-1"
-                                                aria-hidden="true">
-                                        </select>
-                                        <span class="select2 select2-container select2-container--default select2-container--below"
-                                              dir="ltr" style="width: 100%;">
+                                        </div>
+                                        <br/>
+                                        <!--<div class="3">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label>서비스</label>
+                                            <select id="ServicePackName"
+                                                    class="form-control select2 select2-hidden-accessible"
+                                                    style="width: 100%;"
+                                                    tabindex="-1"
+                                                    aria-hidden="true">
+                                            </select>
+                                            <span class="select2 select2-container select2-container--default select2-container--below"
+                                                  dir="ltr" style="width: 100%;">
                                         <span class="selection"></span>
                                         <span class="dropdown-wrapper" aria-hidden="true"></span>
                                         </span>
-                                    </div>
-                                    <br/>
-                                    <!--<div class="4">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="hiddenThumbnail"> 썸네일<font
-                                                style="font-size:13px;color:#ababab;">(50X50)</font></label>
-                                        <input type="file" id="hiddenThumbnail" style="display: none/"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label id="labelThumbName"></label>
-                                        <div id="divPreview" class="divPreview"  style="width: 99.9%;">
-                                            <div class="fl">
-                                                <a href="javascript:void(0);" class="custom-thumbnail">
-                                                    <img id="preview" src="" />
-                                                </a>
-                                            </div>
-                                            <div class="fl" style="padding:15px 10px;">
-                                                <a id="thumbname"></a>
-                                            </div>
-                                            <div class="divImageInfo fl ml20">
-                                                <label id="labelThumbName" style="padding-right: 20px"></label>
-                                                <button id="btnResetImg" type="button" class="btn-del" aria-label="썸네일 지우기">
-                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                                </button>
-                                            </div>
                                         </div>
-                                    </div>
-                                    <br/>
-                                    <br/>
-                                    <!--<div class="5">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="serviceParameter">서비스 생성 파라미터</label>
-                                        <p/>
-                                        <label class="control-label col-sm-2" for="serviceParameter"></label>
-                                        <button type="button" class="btn btn-success btn-primary btn-sm"
-                                                style='margin-top:10px;margin-right:100px;' id='addServiceParameter'>추가
-                                        </button>
-                                        <div id="serviceParameterArea" class="form-group" style="width: 60%"
-                                             align="left">
-
+                                        <br/>
+                                        <!--<div class="4">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label for="hiddenThumbnail"> 썸네일<font
+                                                    style="font-size:13px;color:#ababab;">(50X50)</font></label>
+                                            <input type="file" id="hiddenThumbnail" style="display: none/"/>
                                         </div>
-                                    </div>
-                                    <!--<div class="6">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="appBindYn_Y">앱 바인드 사용</label>
-                                        <p/>
-                                        <div class="col-sm-9 mt10">
-                                            <label class="radio-inline">
-                                                <input type="radio" id="appBindYn_Y"
-                                                       name="appBindYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_Y}"/>Y
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" id="appBindYn_N"
-                                                       name="appBindYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_N}" th:checked="true"/>N
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <br/><br/>
-                                    <!--<div class="7">-->
-                                    <div class="form-group" id="app_bind_parameter_form">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="appBindParameter">앱 바인드 파라미터</label>
-                                        <p/>
-                                        <!--<label for="appParameter">앱 바인드 파라미터</label><p/>-->
-                                        <button type="button" class="btn btn-success btn-primary btn-sm"
-                                                id="addAppBindParameter">추가
-                                        </button>
-                                        <div id="appBindParameterArea" class="form-group" style="width: 60%"
-                                             align="left">
-                                        </div>
-                                    </div>
-                                    <br/><br/>
-                                    <!--<div class="8">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="useYn_Y">공개</label>
-                                        <p/>
-                                        <div class="col-sm-9 mt10">
-                                            <label class="radio-inline">
-                                                <input type="radio" id="useYn_Y" name="useYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}" />Y
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" id="useYn_N" name="useYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}" th:checked="true"/>N
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <br/><br/>
-                                    <!--<div class="9">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="dashboardUseYn_Y">대시보드 사용</label>
-                                        <p/>
-                                        <div class="col-sm-9 mt10">
-                                            <label class="radio-inline">
-                                                <input type="radio" id="dashboardUseYn_Y" name="dashboardUseYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_Y}"/>Y
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" id="dashboardUseYn_N" name="dashboardUseYn"
-                                                       th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_N}" th:checked="true"/>N
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <br/><br/>
-                                    <!--<div class="10">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="summary">요약</label>
-                                        <input type="text" class="form-control" id="summary"/>
-                                    </div>
-                                    <!--<div class="11">-->
-                                    <div class="form-group">
-                                        <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="description">설명</label>
-                                        <textarea class="form-control" rows="5" id="description"></textarea>
-                                    </div>
-                                    <!--<div class="12">-->
-                                    <div class="form-group">
-                                        <div class="form-horizontal" align="right" id="statusActivity">
-                                            <div class="divButtons">
-                                                <div>
-                                                    <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
-                                                        console(INSERT_FLAG);
-                                                        <button type="button"
-                                                                class="btn btn-cancel btn-default btn-sm pull-left label-danger"
-                                                                id="btnDelete">삭제
-                                                        </button>
-                                                        <button type="button"
-                                                                class="btn btn-cancel btn-default btn-sm"
-                                                                id="btnCancel">취소
-                                                        </button>
-                                                        <button type="button" class="btn btn-save btn-primary btn-sm"
-                                                                id="btnRegist">저장
-                                                        </button>
-                                                    </div>
-                                                    <div>
-                                                        <button type="button"
-                                                                class="btn btn-cancel btn-default btn-sm"
-                                                                id="btnCancel">취소
-                                                        </button>
-                                                        <button type="button" class="btn btn-save btn-primary btn-sm"
-                                                                id="btnRegist">등록
-                                                        </button>
-                                                    </div>
+                                        <div class="form-group">
+                                            <label id="labelThumbName"></label>
+                                            <div id="divPreview" class="divPreview" style="width: 99.9%;">
+                                                <div class="fl">
+                                                    <a href="javascript:void(0);" class="custom-thumbnail">
+                                                        <img id="preview" src=""/>
+                                                    </a>
+                                                </div>
+                                                <div class="fl" style="padding:15px 10px;">
+                                                    <a id="thumbname"></a>
+                                                </div>
+                                                <div class="divImageInfo fl ml20">
+                                                    <label id="labelThumbName" style="padding-right: 20px"></label>
+                                                    <button id="btnResetImg" type="button" class="btn-del"
+                                                            aria-label="썸네일 지우기">
+                                                        <span class="glyphicon glyphicon-trash"
+                                                              aria-hidden="true"></span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div><!--<END">-->
-                                </div>
-                            </form>
-                        </div><!--<div class="box-body">-->
+                                        <br/>
+                                        <br/>
+                                        <!--<div class="5">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label>서비스 생성 파라미터</label>
+                                            <button type="button" class="btn btn-success btn-primary btn-sm"
+                                                    style='margin-top:10px;margin-right:100px;'
+                                                    id='addServiceParameter'>추가
+                                            </button>
+                                            <p/>
+                                            <label class="control-label col-sm-2"></label>
+
+                                            <div id="serviceParameterArea" class="form-group" style="width: 60%"
+                                                 align="left">
+
+                                            </div>
+                                        </div>
+                                        <!--<div class="6">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label for="appBindYn_Y">앱 바인드 사용</label>
+                                            <p/>
+                                            <div class="col-sm-9 mt10">
+                                                <label class="radio-inline">
+                                                    <input type="radio" id="appBindYn_Y"
+                                                           name="appBindYn"
+                                                           th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_Y}"/>Y
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" id="appBindYn_N"
+                                                           name="appBindYn"
+                                                           th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).APP_BIND_YN_N}"
+                                                           th:checked="true"/>N
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <br/><br/>
+                                        <!--<div class="7">-->
+                                        <div class="form-group" id="app_bind_parameter_form">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label>앱 바인드 파라미터</label>
+                                            <button type="button" class="btn btn-success btn-primary btn-sm"
+                                                    id="addAppBindParameter">추가
+                                            </button>
+                                            <p/>
+                                            <div id="appBindParameterArea" class="form-group" style="width: 60%"
+                                                 align="left">
+                                            </div>
+                                        </div>
+                                        <br/><br/>
+                                        <!--<div class="8">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label for="useYn_Y">공개</label>
+                                            <p/>
+                                            <div class="col-sm-9 mt10">
+                                                <label class="radio-inline">
+                                                    <input type="radio" id="useYn_Y" name="useYn"
+                                                           th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>Y
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" id="useYn_N" name="useYn"
+                                                           th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"
+                                                           th:checked="true"/>N
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <br/><br/>
+                                        <!--<div class="9">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label for="dashboardUseYn_Y">대시보드 사용</label>
+                                            <p/>
+                                            <div class="col-sm-9 mt10">
+                                                <label class="radio-inline">
+                                                    <input type="radio" id="dashboardUseYn_Y" name="dashboardUseYn"
+                                                           th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_Y}"/>Y
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" id="dashboardUseYn_N" name="dashboardUseYn"
+                                                           th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).DASHBOARD_YN_N}"
+                                                           th:checked="true"/>N
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <br/><br/>
+                                        <!--<div class="10">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label for="summary">요약</label>
+                                            <input type="text" class="form-control" id="summary"/>
+                                        </div>
+                                        <!--<div class="11">-->
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                            <label for="description">설명</label>
+                                            <textarea class="form-control" rows="5" id="description"></textarea>
+                                        </div>
+                                        <!--<div class="12">-->
+                                        <div class="form-group">
+                                            <div class="form-horizontal" align="right" id="statusActivity">
+                                                <div class="divButtons">
+                                                    <div>
+                                                        <div th:if="${REQUEST_NO} != ''">
+                                                            <button type="button"
+                                                                    class="btn btn-cancel btn-default btn-sm pull-left label-danger"
+                                                                    id="btnDelete">삭제
+                                                            </button>
+                                                            <button type="button"
+                                                                    class="btn btn-cancel btn-default btn-sm"
+                                                                    id="btnCancel">취소
+                                                            </button>
+                                                            <button type="button"
+                                                                    class="btn btn-save btn-primary btn-sm"
+                                                                    id="btnRegist">저장
+                                                            </button>
+                                                        </div>
+                                                        <div th:if="${REQUEST_NO} == ''">
+                                                            <button type="button"
+                                                                    class="btn btn-cancel btn-default btn-sm"
+                                                                    id="btnCancel">취소
+                                                            </button>
+                                                            <button type="button"
+                                                                    class="btn btn-save btn-primary btn-sm"
+                                                                    id="btnRegist">등록
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!--<END">-->
+                                    </div>
+                                </form>
+                            </div><!--<div class="box-body">-->
+                        </div>
                     </div>
                 </div>
-            </div>
                 <input type="hidden" id="orgThumbImgPath" name="orgThumbImgPath" value=""/>
                 <input type="hidden" id="thumbImgPath" name="thumbImgPath" value=""/>
                 <input type="hidden" id="thumbImgName" name="thumbImgName" value=""/>
@@ -245,7 +252,6 @@
             </form>
         </section>
         <!-- /.content -->
-
 
 
     </div>
@@ -260,24 +266,27 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
 
-    var CATEGORY_HOME_URL = "/catalogs/catalogMain";
-    var CATALOG_LIST_PROC_URL = "/catalogs/servicepacks";
+    var CATEGORY_HOME_URL = "/catalogs";
+    var CATALOG_LIST_PROC_URL = "/v2/servicepacks";
     var CATEGORY_LIST_PROC_URL = "/code/codeDetail";
-    var SERVICE_PACK_LIST_PROC_URL = "/servicebrokers";
-    var DUPLICATED_PROC_URL = "/catalogs/servicepacks/count";
-    var PROC_URL = "/catalogs/servicepacks";
+    var SERVICE_PACK_LIST_PROC_URL = "/v2/servicebrokers";
+    var DUPLICATED_PROC_URL = "/v2/servicepacks/count";
+    var PROC_URL = "/v2/servicepacks";
     var INSERT_PROC_METHOD = "POST";
     var UPDATE_PROC_METHOD = "PUT";
+    var DELETE_PROC_METHOD = "DELETE";
     var DELETE_PROC_URL = "/catalogs/deleteBuildPackCatalog";
-    var CHECK_DELETE_PROC_URL = "/catalogs/getCheckDeleteBuildPackCatalogCount";
     var UPLOAD_IMAGE_PROC_URL = "/catalogs/uploadThumbnailImage";
     var DELETE_IMAGE_PROC_URL = "/catalogs/deleteThumbnailImage";
-    var UPLOAD_APP_SAMPLE_PROC_URL = "/catalogs/uploadAppSampleFile";
-    var DELETE_APP_SAMPLE_PROC_URL = "/catalogs/deleteAppSampleFile";
+    var UPLOAD_APP_SAMPLE_PROC_URL = "/v2/uploadAppSampleFile";
+    var DELETE_APP_SAMPLE_PROC_URL = "/v2/deleteAppSampleFile";
     var SERVICE_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CATALOG_ID}]]*/ "";
     var INSERT_FLAG = /*[[${INSERT_FLAG}]]*/ null;
     var CUD_U = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ "";
-    var REQ_NO = /*[[${REQUEST_NO}]]*/ null;
+    var REQ_NO = /*[[${REQUEST_NO}]]*/ 0;
+    var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
+    var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
+
 
     var INIT_MESSAGE = "첨부된 파일이 없습니다.";
     var REQUEST_APP_SAMPLE_FILE;
@@ -339,7 +348,6 @@
             $('#appSampleFileNameLabel').text(INIT_MESSAGE);
         }
 
-        var insertFlag = INSERT_FLAG;
         if (REQ_NO != null) procUpdateForm();
     };
 
@@ -369,7 +377,7 @@
         var reqName = $('#name');
         var reqOrgName = $('#orgName');
         var reqClassification = $('#classification');
-        var reqServicePackName = $('#servicePackName');
+        var reqServicePackName = $('#ServicePackName');
         var reqThumbImgPath = $("#thumbImgPath");
         var reqOrgThumbImgPath = $("#orgThumbImgPath");
         var reqThumbImgName = $("#thumbImgName");
@@ -381,7 +389,7 @@
         reqName.val(resultData.name);
         reqOrgName.val(resultData.name);
         reqClassification.val(resultData.classification);
-        reqServicePackName.val(resultData.servicePackName);
+        reqServicePackName.val(resultData.serviceName);
         reqThumbImgPath.val(resultData.thumbImgPath);
         reqOrgThumbImgPath.val(resultData.thumbImgPath);
         reqThumbImgName.val(resultData.thumbImgName);
@@ -473,7 +481,7 @@
         });
 
 
-        if(data.list[0].appBindYn == 'N'){
+        if (data.list[0].appBindYn == 'N') {
             $('#app_bind_parameter_form').hide();
         }
 
@@ -545,7 +553,7 @@
             }
         }
 //======================================================================================================================
-
+        var tempThumbImgPath = reqThumbImgPath.val();
         if (null != tempThumbImgPath && "" != tempThumbImgPath) {
             $('#divPreview').attr('style', 'display: block; height: 94px;');
         }
@@ -589,7 +597,7 @@
         var doc = document;
         var reqName = doc.getElementById('name').value;
 
-        if (REQ_NO == null || REQ_NO == 0) {
+        if (REQ_NO != null || REQ_NO != 0) {
             procUploadFile({RESULT: RESULT_STATUS_SUCCESS});
         } else {
             procCallAjax2(DUPLICATED_PROC_URL, 'GET', {name: reqName}, procUploadFile);
@@ -613,7 +621,7 @@
     };
 
     // FILE FORM DATA
-    var getFileFormData = function() {
+    var getFileFormData = function () {
         var reqThumbnail = $("#hiddenThumbnail");
 
         if (reqThumbnail[0].files[0] === undefined) return undefined;
@@ -705,15 +713,15 @@
         var reqDashboardUseYn = $("input:radio[name='dashboardUseYn']:checked").val();
         var reqAppBindYn = $("input:radio[name='appBindYn']:checked").val();
         var param = $("#catalogForm").serializeObject();
-        //var reqAppBindParameter = doc.getElementById('app_bind_parameter').value;
+        var servicePackName = doc.getElementById('ServicePackName').value;
 
         if (reqAppBindYn == 'N') {
             completeParameter2 = '';
-        } else {
-            completeParameter2;
         }
 
         var param2 = {
+            name: doc.getElementById('name').value,
+            servicePackName: servicePackName,
             useYn: reqUseYn,
             dashboardUseYn: reqDashboardUseYn,
             classification: doc.getElementById('classification').value,
@@ -724,28 +732,35 @@
             appBindYn: reqAppBindYn
         };
 
-
+        console.log("PARAM : " + JSON.stringify(param));
+        console.log("PARAM2 : " + JSON.stringify(param2));
         $.extend(param, param2);
-        //return false;
-        // UPDATE
+
+
         if (REQ_NO == null || REQ_NO == 0) {
+            // INSERT
+            console.log("INSERT");
             procCallAjax2(PROC_URL, INSERT_PROC_METHOD, JSON.stringify(param), procCallbackUpdate);
 
-            // INSERT
+
         } else {
-            procCallAjax2(PROC_URL, UPDATE_PROC_METHOD, JSON.stringify(param), procCallbackUpdate);
+            // UPDATE
+            console.log("UPDATE" + REQ_NO);
+            procCallAjax2(PROC_URL + '/' + REQ_NO, UPDATE_PROC_METHOD, JSON.stringify(param), procCallbackUpdate);
         }
+
+
     };
 
 
     // INSERT CALLBACK
     var procCallbackInsert = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
-            procAlert("success", '<spring:message code="common.info.result.success" />');
+            procAlert("success", SUCCESS_MSG);
             procMovePage(CATEGORY_HOME_URL);
 
         } else {
-            procAlert("danger", data.RESULT_MESSAGE);
+            procAlert("danger", FAIL_MSG);
         }
     };
 
@@ -753,12 +768,15 @@
     // UPDATE CALLBACK
     var procCallbackUpdate = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
-            procDeleteThumbnailImageFile();
-            procAlert("success", '<spring:message code="common.info.result.success" />');
 
+            procDeleteThumbnailImageFile();
+            procAlert("success", SUCCESS_MSG);
+            procMovePage(CATEGORY_HOME_URL + "/SERVICE_PACK");
         } else {
-            procAlert("danger", data.RESULT_MESSAGE);
+
+            procAlert("danger", FAIL_MSG);
         }
+
     };
 
 
@@ -769,20 +787,20 @@
         var reqNo = REQ_NO;
         if (null == reqNo || "" == reqNo) return false;
 
-        procCallAjax(CHECK_DELETE_PROC_URL, {no: reqNo}, procDelete);
+
+        procDelete();
     };
 
 
     // DELETE
     var procDelete = function (data) {
-        if (RESULT_STATUS_SUCCESS != data.RESULT) {
-            procAlert("danger", data.RESULT_MESSAGE);
-            return false;
-        }
+        // if (RESULT_STATUS_SUCCESS != data.RESULT) {
+        //     procAlert("danger", FAIL_MSG);
+        //     return false;
+        // }
 
         document.getElementById('thumbImgPath').value = '';
-
-        procCallAjax(DELETE_PROC_URL, {no: REQ_NO}, procCallbackDelete);
+        procCallAjax2(PROC_URL + "/" + REQ_NO, DELETE_PROC_METHOD, null, procCallbackDelete);
     };
 
 
@@ -790,11 +808,11 @@
     var procCallbackDelete = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
             procDeleteThumbnailImageFile();
-            procAlert("success", '<spring:message code="common.info.result.success" />');
-            procMovePage(CATEGORY_HOME_URL);
+            procAlert("success", SUCCESS_MSG);
+            procMovePage(CATEGORY_HOME_URL + "/SERVICE_PACK");
 
         } else {
-            procAlert("danger", data.RESULT_MESSAGE);
+            procAlert("danger", FAIL_MSG);
         }
     };
 
@@ -937,15 +955,14 @@
 
     // INIT
     var procInit = function () {
+
         getCategoryList();
-
         $('#name').focus();
+        if ("" != REQ_NO && REQ_NO != null) {
+            procUpdateForm();
+        }
 
-
-
-        if ("" != REQ_NO && REQ_NO != null) procUpdateForm();
-
-        resetThumbnail();
+        //resetThumbnail();
 
         $("#hiddenThumbnail").on("change", function () {
             setPreView($(this));
@@ -1028,20 +1045,22 @@
             completeParameter2 = '';
         }
 
-        procCheckDuplicatedName();
+        procCheckDuplicatedName(CATEGORY_HOME_URL + "/SERVICE_PACK");
     });
 
 
     // BIND :: BUTTON EVENT
     $("#btnCancel").on("click", function () {
-        procMovePage(CATEGORY_HOME_URL);
-//        procMovePage(CATEGORY_HOME_URL + "/<%= Constants.TAB_NAME_Service_PACK %>");
+        procMovePage(CATEGORY_HOME_URL + "/SERVICE_PACK");
     });
 
 
     // BIND :: BUTTON EVENT
     $("#btnDelete").on("click", function () {
-        procPopup('카탈로그', DELETE_MESSAGE, 'procCheckDelete();');
+        // TODO 팝업추가되면 변경필요
+        // procPopup('카탈로그', DELETE_MESSAGE, '');
+        procCheckDelete();
+
     });
 
 
@@ -1104,7 +1123,7 @@
                 cntParameter++;
             }
         }
-        alert(cntParameter);
+
         if (cntParameter > 0) {
             var serviceParameterLine = "service_parameter_line" + number;
             $('.' + serviceParameterLine).remove();

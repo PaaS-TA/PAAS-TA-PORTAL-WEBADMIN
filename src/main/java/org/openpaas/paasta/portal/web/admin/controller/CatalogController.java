@@ -23,9 +23,11 @@ import java.util.Map;
  * @since 2016.07.04 최초작성
  */
 @Controller
-
 class CatalogController extends Common {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
+
+    private final String V2_URL = "/v2";
 
     /**
      * 카탈로그 메인페이지로 이동한다.
@@ -50,7 +52,7 @@ class CatalogController extends Common {
     public ModelAndView getCatalogMain(@PathVariable("tabName") String tabName) {
         String reqTabName = Constants.TAB_NAME_STARTER;
 
-        if (Constants.TAB_NAME_BUILD_PACK.equals(tabName)) reqTabName = Constants.TAB_NAME_BUILD_PACK;
+        if (Constants.TAB_NAME_DEVELOP_PACK.equals(tabName)) reqTabName = Constants.TAB_NAME_DEVELOP_PACK;
         if (Constants.TAB_NAME_SERVICE_PACK.equals(tabName)) reqTabName = Constants.TAB_NAME_SERVICE_PACK;
         if (Constants.TAB_NAME_STARTER.equals(tabName)) reqTabName = Constants.TAB_NAME_STARTER;
 
@@ -67,10 +69,10 @@ class CatalogController extends Common {
      *
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/catalogs/buildPackForm"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/developpackForm"}, method = RequestMethod.GET)
     public ModelAndView getBuildPackForm() {
         return new ModelAndView() {{
-            setViewName("/catalog/buildPackForm");
+            setViewName("/catalog/developPackForm");
             addObject("INSERT_FLAG", Constants.CUD_C);
         }};
     }
@@ -82,11 +84,10 @@ class CatalogController extends Common {
      * @param req HttpServletRequest(자바클래스)
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/catalogs/buildPackForm"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/developpackForm"}, method = RequestMethod.POST)
     public ModelAndView getBuildPackForm(HttpServletRequest req) {
         return new ModelAndView() {{
-            setViewName("/catalog/buildPackForm");
-            addObject("INSERT_FLAG", Constants.CUD_U);
+            setViewName("/catalog/developPackForm");
             addObject("REQUEST_NO", req.getParameter("no"));
         }};
     }
@@ -97,10 +98,11 @@ class CatalogController extends Common {
      *
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/catalogs/servicePackForm"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/servicepackForm"}, method = RequestMethod.GET)
     public ModelAndView getServicePackForm() {
         return new ModelAndView() {{
             setViewName("/catalog/servicePackForm");
+            addObject("REQUEST_NO", "");
         }};
     }
 
@@ -111,8 +113,9 @@ class CatalogController extends Common {
      * @param req HttpServletRequest(자바클래스)
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/catalogs/servicePackForm"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/servicepackForm"}, method = RequestMethod.POST)
     public ModelAndView getServicePackForm(HttpServletRequest req) {
+
         return new ModelAndView() {{
             setViewName("/catalog/servicePackForm");
             addObject("REQUEST_NO", req.getParameter("no"));
@@ -125,7 +128,7 @@ class CatalogController extends Common {
      *
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/catalogs/starterPackForm"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/starterpackForm"}, method = RequestMethod.GET)
     public ModelAndView getStarterForm() {
         ModelAndView mv = new ModelAndView();
 
@@ -144,7 +147,7 @@ class CatalogController extends Common {
      * @param req HttpServletRequest(자바클래스)
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/catalogs/starterForm"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/starterpackForm"}, method = RequestMethod.POST)
     public ModelAndView getStarterForm(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
 
@@ -156,7 +159,6 @@ class CatalogController extends Common {
 
         return mv;
     }
-
 
 
     /**
@@ -183,7 +185,7 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/v2/deleteThumbnailImage"}, method = RequestMethod.POST)
+    @RequestMapping(value = {V2_URL + "/deleteThumbnailImage"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> deleteThumbnailImage(@RequestBody Catalog param) {
 //        return commonService.procRestTemplate("/catalog/deleteThumbnailImage", HttpMethod.POST, param, null);
@@ -201,7 +203,7 @@ class CatalogController extends Common {
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @RequestMapping(value = {"/v2/uploadAppSampleFile"}, method = RequestMethod.POST)
+    @RequestMapping(value = {V2_URL + "/uploadAppSampleFile"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> uploadAppSampleFile(@RequestParam("file") MultipartFile multipartFile) throws Exception {
 //        return commonService.procRestTemplate("/catalog/uploadAppSampleFile", multipartFile, null);
@@ -218,7 +220,7 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/v2/deleteAppSampleFile"}, method = RequestMethod.POST)
+    @RequestMapping(value = {V2_URL + "/deleteAppSampleFile"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> deleteAppSampleFile(@RequestBody Catalog param) {
 //        return commonService.procRestTemplate("/catalog/deleteAppSampleFile", HttpMethod.POST, param, null);
@@ -248,7 +250,7 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/v2/starterpacks")
+    @GetMapping(V2_URL + "/starterpacks")
     @ResponseBody
     public Map<String, Object> getStarterNamesList(@ModelAttribute Catalog param) {
         return catalogService.getStarterPacksList(param);
@@ -261,7 +263,7 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/v2/starterpacks/{no}")
+    @GetMapping(V2_URL + "/starterpacks/{no}")
     @ResponseBody
     public Map<String, Object> getStarterNames(@PathVariable("no") int no, @ModelAttribute Catalog param) {
         return catalogService.getStarterPack(no, param);
@@ -274,7 +276,7 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/v2/starterpacks/count")
+    @GetMapping(V2_URL + "/starterpacks/count")
     @ResponseBody
     public Map<String, Object> getStarterNamesCount(@PathVariable("no") int no, @ModelAttribute Catalog param) {
         return catalogService.getStarterPackCount(param);
@@ -287,10 +289,10 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/v2/developpacks")
+    @GetMapping(V2_URL + "/developpacks")
     @ResponseBody
     public Map<String, Object> getBuildPackCatalogList(@ModelAttribute Catalog param) {
-        return catalogService.getBuildPackCatalogList(param);
+        return catalogService.getDevelopPackCatalogList(param);
     }
 
     /**
@@ -299,10 +301,10 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/v2/developpacks/{no}")
+    @GetMapping(V2_URL + "/developpacks/{no}")
     @ResponseBody
     public Map<String, Object> getBuildPackCatalog(@PathVariable("no") int no, @ModelAttribute Catalog param) {
-        return catalogService.getBuildPackCatalog(no, param);
+        return catalogService.getDevelopPackCatalog(no, param);
     }
 
 
@@ -312,10 +314,10 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/v2/developpacks/count")
+    @GetMapping(V2_URL + "/developpacks/count")
     @ResponseBody
     public Map<String, Object> getBuildPackCatalogCount(@ModelAttribute Catalog param) {
-        return catalogService.getBuildPackCatalogCount(param);
+        return catalogService.getDevelopPackCatalogCount(param);
     }
 
     /**
@@ -325,7 +327,7 @@ class CatalogController extends Common {
      * @return Map(자바클래스)
      */
 
-    @GetMapping("/v2/servicepacks")
+    @GetMapping(V2_URL + "/servicepacks")
     @ResponseBody
     public Map<String, Object> getServicePackCatalogList(@ModelAttribute Catalog param) {
         return catalogService.getServicePackCatalogList(param);
@@ -338,7 +340,7 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/v2/servicepacks/{no}")
+    @GetMapping(V2_URL + "/servicepacks/{no}")
     @ResponseBody
     public Map<String, Object> getServicePackCatalog(@PathVariable("no") int no, @ModelAttribute Catalog param) {
         return catalogService.getServicePackCatalog(no, param);
@@ -350,7 +352,7 @@ class CatalogController extends Common {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    @GetMapping("/v2/servicepacks/count")
+    @GetMapping(V2_URL + "/servicepacks/count")
     @ResponseBody
     public Map<String, Object> getServicePackCatalogCount(@ModelAttribute Catalog param) {
         return catalogService.getServicePackCatalogCount(param);
@@ -371,7 +373,7 @@ class CatalogController extends Common {
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @PostMapping(value = {"/v2/starterpacks"})
+    @PostMapping(value = {V2_URL + "/starterpacks"})
     @ResponseBody
     public Map<String, Object> insertStarterPackCatalog(@RequestBody Catalog param) throws Exception {
         return catalogService.insertStarterPack(param);
@@ -384,10 +386,10 @@ class CatalogController extends Common {
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @PostMapping(value = {"/v2/developpacks"})
+    @PostMapping(value = {V2_URL + "/developpacks"})
     @ResponseBody
     public Map<String, Object> insertBuildPackCatalog(@RequestBody Catalog param) throws Exception {
-        return catalogService.insertBuildPackCatalog(param);
+        return catalogService.insertDevelopPackCatalog(param);
     }
 
     /**
@@ -397,9 +399,10 @@ class CatalogController extends Common {
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @PostMapping(value = {"/v2/servicepacks"})
+    @PostMapping(value = {V2_URL + "/servicepacks"})
     @ResponseBody
     public Map<String, Object> insertServicePack(@RequestBody Catalog param) throws Exception {
+        LOGGER.info("############# " + param.toString());
         return catalogService.insertServicePackCatalog(param);
     }
 
@@ -421,7 +424,7 @@ class CatalogController extends Common {
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @PutMapping(value = {"/v2/starterpacks/{no}"})
+    @PutMapping(value = {V2_URL + "/starterpacks/{no}"})
     @ResponseBody
     public Map<String, Object> updateStarterPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
         return catalogService.updateStarterPack(no, param);
@@ -434,10 +437,10 @@ class CatalogController extends Common {
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @PutMapping(value = {"/v2/developpacks/{no}"})
+    @PutMapping(value = {V2_URL + "/developpacks/{no}"})
     @ResponseBody
     public Map<String, Object> updateBuildPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
-        return catalogService.updateBuildPackCatalog(no, param);
+        return catalogService.updateDevelopPackCatalog(no, param);
     }
 
     /**
@@ -447,9 +450,11 @@ class CatalogController extends Common {
      * @return Map(자바클래스)
      * @throws Exception Exception(자바클래스)
      */
-    @PutMapping(value = {"/v2/servicepacks/{no}"})
+    @PutMapping(value = {V2_URL + "/servicepacks/{no}"})
     @ResponseBody
     public Map<String, Object> updateServicePack(@PathVariable int no, @RequestBody Catalog param) throws Exception {
+        LOGGER.info(param.toString());
+
         return catalogService.updateServicePackCatalog(no, param);
     }
 
@@ -465,9 +470,9 @@ class CatalogController extends Common {
      * 스타터 팩을 삭제한다.
      *
      * @return Map(자바클래스)
-     * @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST, consumes = "application/json")
      */
-    @DeleteMapping(value = {"/v2/starterpacks/{no}"})
+    @DeleteMapping(value = {V2_URL + "/starterpacks/{no}"})
+    @ResponseBody
     public Map<String, Object> deleteStarterPackCatalog(@PathVariable int no) {
         return catalogService.deleteStarterPack(no);
     }
@@ -477,9 +482,9 @@ class CatalogController extends Common {
      * 빌드 팩을 삭제한다.
      *
      * @return Map(자바클래스)
-     * @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST, consumes = "application/json")
      */
-    @DeleteMapping(value = {"/v2/developpacks/{no}"})
+    @DeleteMapping(value = {V2_URL + "/developpacks/{no}"})
+    @ResponseBody
     public Map<String, Object> deleteBuildPackCatalog(@PathVariable int no) {
         return catalogService.deleteBuildPackCatalog(no);
     }
@@ -489,9 +494,9 @@ class CatalogController extends Common {
      * 서비스 팩을 삭제한다.
      *
      * @return Map(자바클래스)
-     * @RequestMapping(value = {"/deleteBuildPackCatalog"}, method = RequestMethod.POST, consumes = "application/json")
      */
-    @DeleteMapping(value = {"/v2/servicepacks/{no}"})
+    @DeleteMapping(value = {V2_URL + "/servicepacks/{no}"})
+    @ResponseBody
     public Map<String, Object> deleteServicePackCatalog(@PathVariable int no) {
         return catalogService.deleteServicePackCatalog(no);
     }
