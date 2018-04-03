@@ -38,13 +38,13 @@ public class AdminMainController extends Common {
     /**
      * 전체 조직 수, 영역 수, APPLICATION 수, 사용자 수 목록을 조회한다.
      *
-     * @param param AdminMain(모델클래스)
+//     * @param param AdminMain(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getTotalCountList"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/getTotalCountList"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getTotalCountList(@RequestBody AdminMain param) {
-        return commonService.procCommonApiRestTemplate("/adminMain/getTotalCountList", HttpMethod.POST, param, null);
+    public Map<String, Object> getTotalCountList() {
+        return commonService.procCommonApiRestTemplate("/adminMain/getTotalCountList", HttpMethod.GET, null, null);
     }
 
 
@@ -52,13 +52,13 @@ public class AdminMainController extends Common {
      * 전체 조직 통계 목록을 조회한다.
      * *
      *
-     * @param param AdminMain(모델클래스)
+//     * @param param AdminMain(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getTotalOrganizationList"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/getTotalOrganizationList"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getTotalOrganizationList(@RequestBody AdminMain param) {
-        return commonService.procCommonApiRestTemplate("/adminMain/getTotalOrganizationList", HttpMethod.POST, param, null);
+    public Map<String, Object> getTotalOrganizationList() { //@RequestBody AdminMain param
+        return commonService.procCommonApiRestTemplate("/adminMain/getTotalOrganizationList", HttpMethod.GET, null, null);
     }
 
 
@@ -69,10 +69,10 @@ public class AdminMainController extends Common {
      * @param param AdminMain(모델클래스)
      * @return Map(자바클래스)
      */
-    @RequestMapping(value = {"/getTotalSpaceList"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/getTotalSpaceList"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getTotalSpaceList(@RequestBody AdminMain param) {
-        return commonService.procCommonApiRestTemplate("/adminMain/getTotalSpaceList", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate("/adminMain/getTotalSpaceList", HttpMethod.GET, param, null);
     }
 
 }
