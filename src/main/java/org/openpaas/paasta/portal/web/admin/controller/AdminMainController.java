@@ -44,7 +44,7 @@ public class AdminMainController extends Common {
     @RequestMapping(value = {"/getTotalCountList"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getTotalCountList(@RequestBody AdminMain param) {
-        return commonService.procRestTemplate("/adminMain/getTotalCountList", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate("/adminMain/getTotalCountList", HttpMethod.POST, param, null);
     }
 
 
@@ -58,7 +58,7 @@ public class AdminMainController extends Common {
     @RequestMapping(value = {"/getTotalOrganizationList"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getTotalOrganizationList(@RequestBody AdminMain param) {
-        return commonService.procRestTemplate("/adminMain/getTotalOrganizationList", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate("/adminMain/getTotalOrganizationList", HttpMethod.POST, param, null);
     }
 
 
@@ -72,7 +72,7 @@ public class AdminMainController extends Common {
     @RequestMapping(value = {"/getTotalSpaceList"}, method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getTotalSpaceList(@RequestBody AdminMain param) {
-        return commonService.procRestTemplate("/adminMain/getTotalSpaceList", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate("/adminMain/getTotalSpaceList", HttpMethod.POST, param, null);
     }
 
 }
