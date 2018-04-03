@@ -39,7 +39,7 @@ public class ConfigInfoService extends Common {
      * @return Map (자바 Map 클래스)
      */
     public Map<String, Object> getValues(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(reqUrl, httpMethod, param, reqToken);
     }
 
     /**
@@ -51,7 +51,7 @@ public class ConfigInfoService extends Common {
      * @return Map (자바 Map 클래스)
      */
     public Map<String, Object> getValue(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(reqUrl, httpMethod, param, reqToken);
     }
 
 
@@ -67,6 +67,6 @@ public class ConfigInfoService extends Common {
      * @return Map (자바 Map 클래스)
      */
     public Map<String, Object> updateValue(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(reqUrl, httpMethod, param, reqToken);
     }
 }
