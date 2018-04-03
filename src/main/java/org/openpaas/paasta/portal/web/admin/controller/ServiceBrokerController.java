@@ -19,11 +19,11 @@ import java.util.UUID;
  * @version 1.0
  * @since 2016.4.4 최초작성
  */
-@Controller
-
+@RestController
 public class ServiceBrokerController extends Common {
 
     //private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBrokerController.class);
+    private final String V2_URL = "/v2";
 
     @Autowired
     private CommonService commonService;
@@ -33,7 +33,7 @@ public class ServiceBrokerController extends Common {
      *
      * @return model and view
      */
-    @RequestMapping(value = {"/servicebrokers"}, method = RequestMethod.GET)
+    @GetMapping(value = {"/servicebrokers"})
     public ModelAndView serviceBroker() {
         ModelAndView mv = new ModelAndView();
 
@@ -42,35 +42,33 @@ public class ServiceBrokerController extends Common {
         return mv;
     }
 
-    /**
-     * 서비스 브로커 상세 화면이다.
-     *
-     * @return model and view
-     */
-    @RequestMapping(value = {"/service/serviceBrokerDetail"}, method = RequestMethod.GET)
-    public ModelAndView serviceBrokerDetail() {
-        ModelAndView mv = new ModelAndView();
+//    /**
+//     * 서비스 브로커 상세 화면이다.
+//     *
+//     * @return model and view
+//     */
+//    @RequestMapping(value = {"/service/serviceBrokerDetail"}, method = RequestMethod.GET)
+//    public ModelAndView serviceBrokerDetail() {
+//        ModelAndView mv = new ModelAndView();
+//
+//        mv.setViewName("service/serviceBrokerDetail");
+//
+//        return mv;
+//    }
 
-        mv.setViewName("service/serviceBrokerDetail");
-
-        return mv;
-    }
-
-
-    /**
-     * 서비스 브로커 등록 화면이다.
-     *
-     * @return model and view
-     */
-    @RequestMapping(value = {"/service/serviceBrokerCreate"}, method = RequestMethod.GET)
-    public ModelAndView serviceBrokerCreate() {
-        ModelAndView mv = new ModelAndView();
-
-        mv.setViewName("service/serviceBrokerCreate");
-
-        return mv;
-    }
-
+//    /**
+//     * 서비스 브로커 등록 화면이다.
+//     *
+//     * @return model and view
+//     */
+//    @RequestMapping(value = {"/service/serviceBrokerCreate"}, method = RequestMethod.GET)
+//    public ModelAndView serviceBrokerCreate() {
+//        ModelAndView mv = new ModelAndView();
+//
+//        mv.setViewName("service/serviceBrokerCreate");
+//
+//        return mv;
+//    }
 
     /**
      * 서비스 브로커 리스트를 조회한다.
@@ -78,15 +76,23 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker serviceBroker
      * @return ModelAndView model
      */
-    @GetMapping(value = {"/data/servicebrokers"})
+    @GetMapping(value = {V2_URL + "/servicebrokers"})
     @ResponseBody
-    public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker, @RequestParam(value="guid", required = false, defaultValue = "") String guid) {
+    public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker) {
+       return commonService.procCfApiRestTemplate(V2_URL + "/servicebrokers", HttpMethod.GET, serviceBroker, this.getToken());
+    }
 
-        if(!guid.equals("")){
-            return commonService.procCfApiRestTemplate("/service/service-brokers?guid="+guid, HttpMethod.GET, serviceBroker, this.getToken());
-        }else{
-            return commonService.procCfApiRestTemplate("/service/service-brokers", HttpMethod.GET, serviceBroker, this.getToken());
-        }
+
+    /**
+     * 서비스 브로커를 조회한다.
+     *
+     * @param serviceBroker serviceBroker
+     * @return ModelAndView model
+     */
+    @GetMapping(value = {V2_URL + "/servicebrokers/{guid}"})
+    @ResponseBody
+    public Map<String, Object> getServiceBroker(@ModelAttribute ServiceBroker serviceBroker, @PathVariable String guid) {
+        return commonService.procCfApiRestTemplate(V2_URL + "/servicebrokers/"+guid, HttpMethod.GET, serviceBroker, this.getToken());
     }
 
     /**
@@ -95,11 +101,11 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker the serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {""}, method = RequestMethod.POST)
+    @PostMapping(value = {V2_URL + "/servicebrokers"})
     @ResponseBody
     public Map<String, Object> createServiceBroker(@RequestBody ServiceBroker serviceBroker) {
 
-        return commonService.procCfApiRestTemplate("/service/service-brokers", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate(V2_URL + "/servicebrokers", HttpMethod.POST, serviceBroker, this.getToken());
     }
 
 
@@ -109,11 +115,11 @@ public class ServiceBrokerController extends Common {
      * @param serviceBroker the serviceBroker
      * @return ModelAndView model
      */
-    @RequestMapping(value = {"/{guid}"}, method = RequestMethod.PUT)
+    @PutMapping(value = {V2_URL + "/servicebrokers/{guid}"})
     @ResponseBody
     public Map<String, Object> updateServiceBroker(@RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
 
-        return commonService.procCfApiRestTemplate("/service/service-brokers/guid="+guid, HttpMethod.PUT, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate(V2_URL + "/servicebrokers/"+guid, HttpMethod.PUT, serviceBroker, this.getToken());
     }
 
 
@@ -123,11 +129,11 @@ public class ServiceBrokerController extends Common {
      * @param guid the serviceBroker guid
      * @return Map <String, Object>
      */
-    @RequestMapping(value = {"/{guid}"}, method = RequestMethod.DELETE)
+    @DeleteMapping(value = {V2_URL + "/servicebrokers/{guid}"})
     @ResponseBody
     public Map<String, Object> deleteServiceBroker(@PathVariable String guid ) {
 
-        return commonService.procCfApiRestTemplate("/service/service-brokers/"+guid, HttpMethod.DELETE, null, this.getToken());
+        return commonService.procCfApiRestTemplate(V2_URL + "/servicebrokers/"+guid, HttpMethod.DELETE, null, this.getToken());
 
     }
 

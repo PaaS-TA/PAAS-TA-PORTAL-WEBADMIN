@@ -84,7 +84,7 @@
 
   function getList(){
     $.ajax({
-      url: "/buildpack/buildpacks",
+      url: "/v2/buildpacks",
       method: "GET",
       dataType: 'json',
       contentType: "application/json",
@@ -138,7 +138,7 @@
     }
 
     $.ajax({
-      url: "/buildpack/buildpacks/"+guid,
+      url: "/v2/buildpacks/"+guid,
       method: "PUT",
       data: JSON.stringify(param),
       dataType: 'json',

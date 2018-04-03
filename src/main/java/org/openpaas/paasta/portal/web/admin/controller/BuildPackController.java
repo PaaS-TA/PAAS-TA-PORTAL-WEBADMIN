@@ -18,17 +18,16 @@ import java.util.UUID;
  * @since 2016.4.4 최초작성
  */
 @Controller
-@RequestMapping(value = {"/buildpacks"})
 public class BuildPackController extends Common {
 
-    //private static final Logger LOGGER = LoggerFactory.getLogger(BuildPackController.class);
+    private final String V2_URL = "/v2";
 
     /**
      * 빌드팩 화면
      *
      * @return model and view
      */
-    @RequestMapping(value = {"/buildpackMain"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/buildpacks"}, method = RequestMethod.GET)
     public ModelAndView webIdeUser() {
         ModelAndView mv = new ModelAndView();
 
@@ -44,10 +43,10 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {""}, method = RequestMethod.GET)
+    @RequestMapping(value = {V2_URL + "/buildpacks"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
-        return commonService.procCfApiRestTemplate("/buildpack/buildpacks", HttpMethod.GET, buildPack, getToken());
+        return commonService.procCfApiRestTemplate(V2_URL+"/buildpacks", HttpMethod.GET, buildPack, getToken());
 
     }
 
@@ -57,12 +56,12 @@ public class BuildPackController extends Common {
      * @param buildPack the buildPack
      * @return String rspApp
      */
-    @RequestMapping(value = {"/{guid}"}, method = RequestMethod.PUT)
+    @RequestMapping(value = {V2_URL + "/buildpacks/{guid}"}, method = RequestMethod.PUT)
     @ResponseBody
         public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack , @PathVariable String guid) {
 
         buildPack.setGuid(UUID.fromString(guid));
-        return commonService.procCfApiRestTemplate("/buildpack/buildpacks/"+buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
+        return commonService.procCfApiRestTemplate(V2_URL+"/buildpacks/"+buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
     }
 
 

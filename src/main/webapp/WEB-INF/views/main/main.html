@@ -116,7 +116,7 @@
               </div>
               <div class="box-body">
                 <div class="chart">
-                  <canvas id="barChart" style="height: 125px; width: 341px;" width="341" height="125"></canvas>
+                  <canvas id="barChart" style="height: 400px; width: 341px;" width="341" height="180"></canvas>
                 </div>
               </div>
               <!-- /.box-body -->
@@ -127,7 +127,7 @@
           <!-- /.col (RIGHT) -->
         </div>
         <!-- /.row -->
-
+        <input type="hidden" id="organizationId" name="organizationId" th:value="${ORGANIZATION_ID}" th:default="''"/>
       </section>
       <!-- /.content -->
     </div>
@@ -147,12 +147,23 @@
   var TOTAL_ORGANIZATION_LIST_PROC_URL = "/main/getTotalOrganizationList";
   var TOTAL_SPACE_LIST_PROC_URL = "/main/getTotalSpaceList";
 
+  // ON LOAD
+  $(document.body).ready(function() {
+    procInitPage();
+//    drawChart();
+    //procAlert("normal", '<spring:message code="common.system.welcome.message" />');
+  });
+
+  // Init
+  var procInitPage = function() {
+    getTotalCountList();  // 조직 / 공간 / 앱 /사용자 수 조회
+    getChartList();       // 조직 / 공간 차트 조회
+  };
 
   // GET LIST
   var getTotalCountList = function() {
-    procCallAjax(TOTAL_COUNT_LIST_PROC_URL, {}, procCallbackGetTotalCountList);
+    procCallAjax2(TOTAL_COUNT_LIST_PROC_URL,"GET", {}, procCallbackGetTotalCountList);
   };
-
 
   // GET LIST CALLBACK
   var procCallbackGetTotalCountList = function(data) {
@@ -166,374 +177,121 @@
     spaceCount.text(resultList.spaceCount);
     applicationCount.text(resultList.applicationCount);
     userCount.text(resultList.userCount);
+  };
 
-//    organizationCount.fadeIn();
-//    spaceCount.fadeIn();
-//    applicationCount.fadeIn();
-//    userCount.fadeIn();
-
+  var getChartList = function(){
     var organizationId = $('#organizationId').val();
-
     if ('' == organizationId) {
-      getTotalOrganizationList();
+      procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList);
     } else {
-      getTotalSpaceList(organizationId);
+      procCallAjax2(TOTAL_SPACE_LIST_PROC_URL,"GET", {organizationId : organizationId}, procCallbackGetTotalSpaceList);
     }
   };
 
+  // '조직'차트 CALLBACK
+    var procCallbackGetTotalOrganizationList = function(data) {
+      var resultList = data.list;
+      var listLength = resultList.length;
+      var arrayOrganizationName = [];
+      var arraySpaceCount = [];
+      var arrayApplicationCount = [];
+      var arrayUserCount = [];
+      var organizationName = '';
 
-  // GET LIST
-  var getTotalOrganizationList = function() {
-    procCallAjax(TOTAL_ORGANIZATION_LIST_PROC_URL, {}, procCallbackGetTotalOrganizationList);
-  };
+      for (var i = 0; i < listLength; i++) {
+        organizationName = resultList[i].organizationName;
+        arrayOrganizationName.push(organizationName);
 
+        for (var j = 0; j < listLength; j++) {
+          if (organizationName == resultList[j].organizationName) {
+            arraySpaceCount.push(resultList[j].spaceCount);
+            arrayApplicationCount.push(resultList[j].applicationCount);
+            arrayUserCount.push(resultList[j].userCount);
+          }
+        }
+      }
 
-  // GET LIST CALLBACK
-  var procCallbackGetTotalOrganizationList = function(data) {
-    setOrganizationChart(data);
-  };
+      arrayOrganizationName.join(',');
+      arraySpaceCount.join(',');
+      arrayApplicationCount.join(',');
+      arrayUserCount.join(',');
 
-
-  // GET LIST
-  var getTotalSpaceList = function(reqOrganizationId) {
-    procCallAjax(TOTAL_SPACE_LIST_PROC_URL, {organizationId : reqOrganizationId}, procCallbackGetTotalSpaceList);
-  };
-
-
-  // GET LIST CALLBACK
-  var procCallbackGetTotalSpaceList = function(data) {
-    setSpaceChart(data);
-  };
-
-
-
-
-  // SET MAIN CHART
-  var setOrganizationChart = function(data) {
-    var resultList = data.list;
-    var chartContainer = $('#chartContainer');
-    var listLength = resultList.length;
-
-    // SET OPTIONS
-    var chartOptions = setOrganizationChartOptions(resultList);
-
-    // EXECUTE CHART
-    chartContainer.css('height', listLength * 80 + 'px');
-    chartContainer.fadeIn();
-    chartContainer.highcharts(chartOptions);
-
-    // SET LINK
-    var arrayOrganizationName = $('.highcharts-xaxis-labels text');
-
-    for (var i = 0; i < listLength; i++) {
-      arrayOrganizationName[i].onclick = function() {
-        procMovePage(MAIN_DASH_BOARD_ORGANIZATION_URL + "/" + getOrganizationId($(this).children().text(), resultList));
+      var chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
       };
-    }
 
-    $('.highcharts-xaxis-labels tspan').on("mouseover", function() {
-      $(this).attr('style', 'cursor: pointer;');
-    });
-  };
-
-
-
-
-
-
-  // GET ORGANIZATION ID
-  var getOrganizationId = function(reqOrganizationName, reqList) {
-    var resultList = reqList;
-    var listLength = resultList.length;
-    var resultOrganizationId = '';
-
-    for (var i = 0; i < listLength; i++) {
-      if (reqOrganizationName == resultList[i].organizationName) {
-        resultOrganizationId = resultList[i].organizationId;
-      }
-    }
-
-    return resultOrganizationId;
-  };
-
-
-  // SET CHART OPTIONS
-  var setOrganizationChartOptions = function(resultList) {
-    var listLength = resultList.length;
-    var arrayOrganizationName = [];
-    var arraySpaceCount = [];
-    var arrayApplicationCount = [];
-    var arrayUserCount = [];
-    var organizationName = '';
-
-    for (var i = 0; i < listLength; i++) {
-      organizationName = resultList[i].organizationName;
-      arrayOrganizationName.push(organizationName);
-
-      for (var j = 0; j < listLength; j++) {
-        if (organizationName == resultList[j].organizationName) {
-          arraySpaceCount.push(resultList[j].spaceCount);
-          arrayApplicationCount.push(resultList[j].applicationCount);
-          arrayUserCount.push(resultList[j].userCount);
-        }
-      }
-    }
-
-    arrayOrganizationName.join(',');
-    arraySpaceCount.join(',');
-    arrayApplicationCount.join(',');
-    arrayUserCount.join(',');
-
-    return {
-      legend: {
-        verticalAlign: 'top',
-        align: 'left',
-        itemStyle: {
-          'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'
-        }
-      },
-      colors: ['#77807e', '#c0c0c0', '#738de0'],
-      chart: {
-        type: 'bar'
-      },
-      title: {
-        text: ''
-      },
-      subtitle: {
-        text: ''
-      },
-      xAxis: {
-        categories: arrayOrganizationName,
-        labels: {
-          style: {'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'}
-        }
-      },
-      yAxis: {
-        min: 0,
-        title: {
-          text: ''
-        }
-      },
-      plotOptions: {
-        bar: {
-          dataLabels: {
-            enabled: true
+      var horizontalBarChartData = {
+        labels: arrayOrganizationName,
+        datasets: [
+          {
+            label: "APP",
+            backgroundColor: Chart.helpers.color(chartColors.red).alpha(0.5).rgbString(), //"#00b0f0",
+            borderColor: chartColors.red,
+            borderWidth: 1,
+            data: arrayApplicationCount //조직의 APP 수치
+          },
+          {
+            label: "공간",
+            backgroundColor: Chart.helpers.color(chartColors.blue).alpha(0.5).rgbString(), //"#00b0f0",
+            borderColor: chartColors.blue,
+            borderWidth: 1,
+            data: arraySpaceCount  // 조작의 공간 수치
+          },
+          {
+            label: "사용자",
+            backgroundColor: Chart.helpers.color(chartColors.purple).alpha(0.5).rgbString(), //"#00b0f0",
+            borderColor: chartColors.purple,
+            borderWidth: 1,
+            data: arrayUserCount  // 조직의 사용자 수
           }
-        }
-      },
-      credits: {
-        enabled: false
-      },
-      series: [{
-        name: 'APP',
-        data: arrayApplicationCount
-      }, {
-        name: '공간',
-        data: arraySpaceCount
-      }, {
-        name: '사용자',
-        data: arrayUserCount
-      }]
-    };
-  };
+        ]
+      };
 
-
-  // SET MAIN CHART
-  var setSpaceChart = function(data) {
-    var resultList = data.list;
-    var chartContainer = $('#chartContainer');
-    var listLength = resultList.length;
-
-    // CHECK EMPTY SPACE
-    if (0 == listLength) {
-      //setViewEmptySpaceMessageArea();
-      return false;
-    }
-
-    // SET OPTIONS
-    var chartOptions = setSpaceChartOptions(resultList);
-
-    // EXECUTE CHART
-//    chartContainer.css('height', listLength * 80 + 'px');
-//    chartContainer.fadeIn();
-//    chartContainer.highcharts(chartOptions);
-
-    // VIEW BUTTON
-    $('#btnMoveMainArea').fadeIn();
-
-    // BIND :: BUTTON EVENT
-    $("#btnMoveMain").on("click", function() {
-      procMovePage(MAIN_DASH_BOARD_URL);
-    });
-  };
-
-
-  // VIEW EMPTY SPACE MESSAGE AREA
-//  var setViewEmptySpaceMessageArea = function () {
-//    $('#emptySpaceMessageArea').fadeIn();
-//    $('#btnMoveMainArea').fadeIn();
-//
-//    $("#btnMoveMain").on("click", function() {
-//      procMovePage(MAIN_DASH_BOARD_URL);
-//    });
-//  };
-
-
-  // SET CHART OPTIONS
-  var setSpaceChartOptions = function(resultList) {
-    var listLength = resultList.length;
-    var arraySpaceName = [];
-    var arrayApplicationCount = [];
-    var spaceName = '';
-
-    for (var i = 0; i < listLength; i++) {
-      spaceName = resultList[i].spaceName;
-      arraySpaceName.push(spaceName);
-
-      for (var j = 0; j < listLength; j++) {
-        if (spaceName == resultList[j].spaceName) {
-          arrayApplicationCount.push(resultList[j].applicationCount);
-        }
-      }
-    }
-
-    arraySpaceName.join(',');
-    arrayApplicationCount.join(',');
-
-    return {
-      colors: ['#77807e', '#c0c0c0', '#738de0'],
-
-      chart: {
-        type: 'bar'
-      },
-      title: {
-        text: ''
-      },
-      subtitle: {
-        text: ''
-      },
-      xAxis: {
-        categories: arraySpaceName,
-        labels: {
-          style: {'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'}
-        }
-      },
-      yAxis: {
-        min: 0,
-        title: {
-          text: ''
-        }
-      },
-      plotOptions: {
-        bar: {
-          dataLabels: {
-            enabled: true
-          }
-        }
-      },
-      legend: {
-        verticalAlign: 'top',
-        align: 'left',
-        itemStyle: {
-          'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'
-        }
-      },
-      credits: {
-        enabled: false
-      },
-      series: [{
-        name: 'APP',
-        data: arrayApplicationCount
-      }]
-    };
-  };
-
-
-  // INIT PAGE
-  var procInitPage = function() {
-    getTotalCountList();
-  };
-
-
-  // ON LOAD
-  $(document.body).ready(function() {
-    procInitPage();
-    //procAlert("normal", '<spring:message code="common.system.welcome.message" />');
-
-    console.log("ASJKJASLJDK");
-    var horizontalBarChartData = {
-      labels: ["Category 1", "Category 2", "Category 3", "Interview 4", "Category 5", "Category 6", "Category 7"],
-      datasets: [{
-        backgroundColor: "#00b0f0",
-        data: [80,10,15,5,20,3,25]
-      }]
-
-    };
+    //차트 그리기
     var ctx = document.getElementById("barChart").getContext("2d");
     var myHorizontalBar = new Chart(ctx, {
       type: 'horizontalBar',
       data: horizontalBarChartData,
       options: {
 
-        scales: {
-          yAxes:[{
-            barThickness: 20,
-            ticks: {
-              beginAtZero:true,
-              mirror: true,
-            },
-          }],
+        elements: {
+          rectangle: {
+            borderWidth: 2,
+          }
         },
         responsive: true,
         legend: {
-          display: false,
+          position: 'right', // display: false,
         },
         title: {
-          display: true,
-          text: 'Horizontal Bar Chart'
+          display: false,
+          text: 'Chart.js Horizontal Bar Chart'
         },
-        animation: {
-          duration: 1,
-          onComplete () {
-            const chartInstance = this.chart;
-            const ctx = chartInstance.ctx;
-            const dataset = this.data.datasets[0];
-            const meta = chartInstance.controller.getDatasetMeta(0);
+        scales: {
+          yAxes:[{
+            //barThickness: 20,
+            ticks: {
+              beginAtZero:true,
+              mirror: false,
+            },
+          }],
+        },
 
-            Chart.helpers.each(meta.data.forEach((bar, index) => {
-                      const label = this.data.labels[index];
-            const labelPositionX = 20;
-            const labelWidth = ctx.measureText(label).width + labelPositionX;
-
-            ctx.textBaseline = 'middle';
-            ctx.textAlign = 'left';
-            ctx.fillStyle = '#333';
-            ctx.fillText(label, labelPositionX, bar._model.y);
-          }));
-          }
-        }
       }
     });
 
+  };
 
-  });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // '공간'차트 CALLBACK
+  var procCallbackGetTotalSpaceList = function(data) {
+    //setSpaceChart(data);
+  };
 
 
 //

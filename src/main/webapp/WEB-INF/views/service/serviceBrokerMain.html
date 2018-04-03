@@ -114,7 +114,7 @@
                         <div class="modal-footer">
                             <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">삭제</button>
                             <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
-                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" data-dismiss="modal" onClick="updateServiceBroker();">저장</button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">저장</button>
                             <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">등록</button>
                             <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
                         </div>
@@ -192,7 +192,7 @@
     function getServiceBrokerList() {
 
         $.ajax({
-            url: "/service/service-brokers",
+            url: "/v2/servicebrokers",
             method: "GET",
             dataType: 'json',
             contentType: "application/json",
@@ -228,14 +228,14 @@
 
     function getServiceBroker(guid) {
 
-        var param = {
-            guid: guid,
-        }
+//        var param = {
+//            guid: guid,
+//        }
 
         $.ajax({
-            url: "/service/service-brokers",
+            url: "/v2/servicebrokers/"+guid,
             method: "GET",
-            data: param,
+            //data: param,
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
@@ -271,7 +271,7 @@
         }
 
         $.ajax({
-            url: "/service/service-brokers/"+guid,
+            url: "/v2/servicebrokers/"+guid,
             method: "PUT",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -280,7 +280,7 @@
                 if (data) {
                     procAlert("success", /*[[#{service.update.result.success}]]*/ "");
                     //location.href = "/service/serviceBrokerMain";
-                    //$('div.modal').modal('hide');
+                    $('div.modal').modal('hide');
                     init();
                 }
             },
@@ -309,7 +309,7 @@
         var guid = $('#guid').val();
 
         $.ajax({
-            url: "/service/service-brokers/"+guid,
+            url: "/v2/servicebrokers/"+guid,
             method: "DELETE",
             dataType: 'json',
             contentType: "application/json",
@@ -344,7 +344,7 @@
         }
 
         $.ajax({
-            url: "/service/service-brokers",
+            url: "/v2/servicebrokers"+guid,
             method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
