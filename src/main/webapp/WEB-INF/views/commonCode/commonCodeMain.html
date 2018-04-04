@@ -58,8 +58,7 @@
                                     <div class="form-group">
 
                                         <div class="b-group pull-right">
-                                            <button type="button" id="register" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#codeGrouprModal">추가</button>
-                                            <button type="button" class="b btn btn-sm btn-primary" onclick="procMovePage();">저장</button>
+                                            <button type="button" id="GroupRegister" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#codeGrouprModal">등록</button>
                                         </div><br/>
                                         <label>Group Table</label>
                                         <!--Table -->
@@ -82,9 +81,7 @@
                                 <div class="col-md-6">
                                     <!-- /.form-group -->
                                     <div class="b-group pull-right">
-                                        <button type="button" class="btn btn-sm btn-warning" onclick="procMovePage();">추가</button>
-                                        <button type="button" class="btn btn-sm btn-danger" onclick="procMovePage();">삭제</button>
-                                        <button type="button" class="b btn btn-sm btn-primary" onclick="procMovePage();">저장</button>
+                                        <button type="button" id="register2" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#codeDetailModal">등록</button>
                                     </div><br/>
                                     <label>Detail Table</label>
                                     <!--Table -->
@@ -157,9 +154,9 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">삭제</button>
-                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">저장</button>
-                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">등록</button>
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteGroupModal();">삭제</button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateGroup();">저장</button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createGroup();">등록</button>
                             <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
                         </div>
                     </div>
@@ -201,13 +198,13 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
 
-    var LIST_PROC_URL= "/v2/commoncode"
+//    var LIST_PROC_URL= "/v2/commoncode"
 
-    var LIST_GROUP_PROC_URL ="/v2/groupdetail"
+    var LIST_GROUP_PROC_URL ="/v2/codegroup"
     var LIST_DETAIL_PROC_URL ="/v2/codedetail"
 
-    var INSERT_GROUP_PROC_URL = "/groupdetailForm"
-    var INSERT_DETAIL_PROC_URL = "/codedetailForm"
+//    var INSERT_GROUP_PROC_URL = "/codegroup"
+//    var INSERT_DETAIL_PROC_URL = "/codedetailForm"
 
 
 //    var UPDATE_PROC_URL =
@@ -231,12 +228,9 @@
     //  procGetSearchList
     $(document.body).ready(function () {
 
-        getCodeGroupDetail();
-        getCodeDetailList();
-
         init();
 
-        $('#register').click(function(){
+        $('#GroupRegister').click(function(){
 
             $('#titleDetail').hide();
             $('#deleteBtn').hide();
@@ -253,21 +247,20 @@
             $("#guid").val("");
         });
 
+
     });
 
     function init(){
-        getServiceBrokerList();
+        getCodeGroupList();
+        getCodeDetailList();
+
         $('#codeGrouprModal').modal('hide');
 //        $('#serviceBrokerModal').modal({backdrop:'static', keyboard:false});
     }
 
-    getSearchList = function () {
-        getCodeGroupDetail();
-        getCodeDetailList();
-    }
 
     // GET GroupList
-    var getCodeGroupDetail = function (reqParam) {
+    var getCodeGroupList = function (reqParam) {
         var doc = document;
         var searchKeyword = document.getElementById('searchKeyword').value;
         var param = "";
@@ -349,7 +342,6 @@
         }
     };
 
-
     // MOVE PAGE DetailInsertForm
     var procMoveDetailInsertForm = function (reqParam) {
         var hiddenForm = $('#codeListGroupHiddenForm');
@@ -357,12 +349,43 @@
         hiddenForm.attr({action: INSERT_GROUP_PROC_URL, method: "POST"}).submit();
     };
 
+
     // MOVE PAGE GroupInsertForm
     var procMoveGroupInsertForm = function (reqParam) {
         var hiddenForm = $('#codeDetailListGroupHiddenForm');
         $('#codeDetailListGroupHiddenFormkey').val(reqParam);
         hiddenForm.attr({action: INSERT_DETAIL_PROC_URL, method: "POST"}).submit();
     };
+
+
+    function createGroup() {
+
+        if (!procCheckValidStringSpace()){return false;}
+
+        var param = {
+            id: $("#id").val(),
+            name: $("#name").val(),
+        }
+
+        $.ajax({
+            url: "/v2/codegroup",
+            method: "POST",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    procAlert("success", /*[[#{service.insert.result.success}]]*/ "");
+                    init();
+                }
+            },
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            }
+
+        });
+    }
+
 
     /*]]>*/
 </script>

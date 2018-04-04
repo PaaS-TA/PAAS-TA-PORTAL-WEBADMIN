@@ -1,86 +1,167 @@
 package org.openpaas.paasta.portal.web.admin.service;
 
 
-import org.openpaas.paasta.portal.web.admin.controller.CommonCodeController;
 import org.openpaas.paasta.portal.web.admin.model.CommonCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
 @Service
 public class CommonCodeService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommonCodeController.class);
-
     @Autowired
     public CommonService commonService;
 
+    private final String V2_URL = "/v2";
 
     /**
      * 공통코드 목록을 조회한다.
      *
-     * @param key String(아이디)
+     * @param param CommonCode
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getCommonCode(String key) {
-        return commonService.procCommonApiRestTemplate("/code/codeDetail/" + key, HttpMethod.GET, new CommonCode(), null);
+    public Map<String,Object> getCodeDetailList(CommonCode param) {
+        String search = "";
+        if (param.getSearchKeyword() != null) {
+            search = "?";
+            search += "searchKeyword=" + param.getSearchKeyword();
+        }
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + search, HttpMethod.GET, param, null);
     }
 
 
     /**
      * 공통코드 목록을 조회한다.
      *
-     * @param commonCode the param
+     * @param param CommonCode
      * @return Map(자바클래스)
      */
-
-    public Map<String, Object> getCommonCode(CommonCode commonCode) {
-
-        StringBuffer param = new StringBuffer();
-        param.append("?");
-        param.append("groupId=" + commonCode.getGroupId());
-        param.append("&key=" + commonCode.getKey());
-        return commonService.procCommonApiRestTemplate("/code/codeDetail" + param, HttpMethod.GET, param, null);
+    public Map<String,Object> getCodeDetail(String key, CommonCode param) {
+        String search = "";
+        if (param.getSearchKeyword() != null) {
+            search = "?";
+            search += "searchKeyword=" + param.getSearchKeyword();
+        }
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + key + search, HttpMethod.GET, param, null);
     }
 
 
     /**
-     * 공통코드를 저장한다.
+     * 공통그룹 목록을 조회한다.
      *
-     * @param param the param
+     * @param param CodeGroup(아이디)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> insertCommonCode(CommonCode param) {
-        return commonService.procCommonApiRestTemplate("/code/codeDetail", HttpMethod.POST, param, null);
+    public Map<String,Object> getGroupDetailList(CommonCode param) {
+        String search = "";
+        if (param.getSearchKeyword() != null) {
+            search = "?";
+            search += "searchKeyword=" + param.getSearchKeyword();
+        }
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + search, HttpMethod.GET, param, null);
+    }
+
+
+
+    /**
+     * 공통그룹 목록을 조회한다.
+     *
+     * @param param CodeGroup(아이디)
+     * @return Map(자바클래스)
+     */
+    public Map<String,Object> getGroupDetail(String id, CommonCode param) {
+        String search = "";
+        if (param.getSearchKeyword() != null) {
+            search = "?";
+            search += "searchKeyword=" + param.getSearchKeyword();
+        }
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + id + search, HttpMethod.GET, param, null);
     }
 
 
     /**
-     * 공통코드를 수정한다.
+     * 공통코드 및 그룹 목록을 조회한다.
      *
-     * @param param the param
+     * @param param odeDetail,CodeGroup (모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> updateCommonCode(CommonCode param) {
-        return commonService.procCommonApiRestTemplate("/code/codeDetail", HttpMethod.PUT, param, null);
+    public Map<String,Object> getCommonCodeJoinGroup(CommonCode param) {
+        String search = "";
+        if (param.getSearchKeyword() != null) {
+            search = "?";
+            search += "searchKeyword=" + param.getSearchKeyword();
+        }
+        return commonService.procCommonApiRestTemplate(V2_URL + "/commoncode/" + search, HttpMethod.GET, param, null);
     }
 
 
     /**
-     * 공통코드를 삭제한다.
+     * 공통 코드 그룹을 등록한다.
      *
-     * @param param the param
+     * @param param CodeGroup (모델클래스)
      * @return Map(자바클래스)
-     */
-    public Map<String, Object> deleteCommonCode(CommonCode param) {
-        return commonService.procCommonApiRestTemplate("/code/codeDetail", HttpMethod.DELETE, param, null);
+     */  public Map<String,Object> insertDetailGroup(CommonCode param) {
+        param.setUserId(commonService.getUserId());
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup", HttpMethod.POST, param, null);
     }
 
+    /**
+     * 공통 코드을 등록한다.
+     *
+     * @param param CodeDetail (모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String,Object> insertDetail(CommonCode param) {
+        param.setUserId(commonService.getUserId());
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail", HttpMethod.POST, param, null);
+    }
+
+
+    /**
+     * 공통 코드 그룹을 수정한다.
+     *
+     * @param param CodeGroup (모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String,Object> updateCommonGroup(String id, CommonCode param) {
+        param.setUserId(commonService.getUserId());
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + id, HttpMethod.PUT, param, null);
+    }
+
+
+    /**
+     * 공통 코드을 수정한다.
+     *
+     * @param param CodeDetail (모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String,Object> updateCommonDetail(int no, CommonCode param) {
+        param.setUserId(commonService.getUserId());
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + no, HttpMethod.PUT, param, null);
+    }
+
+
+    /**
+     * 공통 코드 그룹을 삭제한다.
+     *
+     * @param id
+     * * @return Map(자바클래스)
+     */
+    public Map<String,Object> deleteCommonGroup(String id) {
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + id, HttpMethod.DELETE, null, null);
+    }
+
+
+    /**
+     * 공통 코드을 삭제한다.
+     *
+     * @param no
+     * @return Map(자바클래스)
+     */
+    public Map<String,Object> deleteCommonDetail(int no) {
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + no, HttpMethod.DELETE, null, null);
+    }
 
 }
