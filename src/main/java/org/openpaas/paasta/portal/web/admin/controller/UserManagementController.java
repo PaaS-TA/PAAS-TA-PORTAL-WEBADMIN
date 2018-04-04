@@ -3,6 +3,7 @@ package org.openpaas.paasta.portal.web.admin.controller;
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.model.UserManagement;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,6 +45,12 @@ public class UserManagementController extends Common {
     @ResponseBody
     public Map<String, Object> getUserInfoList() {
         return userManagementService.getUserInfoList("/usermanagements", HttpMethod.GET, null, null);
+    }
+
+    @GetMapping(V2_URL + "/usermanagements/{userid}")
+    @ResponseBody
+    public Map<String, Object> getUserInfoList(@PathVariable String userid) {
+        return userManagementService.getUserInfoList("/usermanagements/" + userid, HttpMethod.GET, null, null);
     }
 
 
