@@ -58,7 +58,7 @@
                                     <div class="form-group">
 
                                         <div class="b-group pull-right">
-                                            <button type="button" class="btn btn-sm btn-warning" onclick="procMovePage();">추가</button>
+                                            <button type="button" id="register" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#codeGrouprModal">추가</button>
                                             <button type="button" class="b btn btn-sm btn-primary" onclick="procMovePage();">저장</button>
                                         </div><br/>
                                         <label>Group Table</label>
@@ -66,8 +66,8 @@
                                         <div id="codeGroupMessageArea" class="table-responsive">
                                             <table class="table table-striped">
                                                 <tr>
-                                                    <th style="width:200px">코드</th>
-                                                    <th>코드이름</th>
+                                                    <th style="width:200px">코드 ID</th>
+                                                    <th>코드 이름</th>
                                                 </tr>
                                                 <tbody id="codeGroupTableArea">
                                                 </tbody>
@@ -115,6 +115,80 @@
                 </div>
             </div>
 
+            <!-- Modal Layer-->
+            <div class="modal fade" id="codeGrouprModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+
+                            <h4 class="modal-title">
+                                <div id="titleReg">코드 등록</div>
+                                <div id="titleDetail">코드 상세</div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <!--<div class="box-header"></div>-->
+                                <!-- /.box-header -->
+                                <!-- form start -->
+                                <form id="codeGrouprForm" class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group">
+                                            <label for="id" class="col-sm-4 control-label">코드 ID</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control toCheckString" id="id" name="id" placeholder="ex) STARTER_CATALOG"/>
+                                                <!--<input type="hidden" id="id"/>-->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-4 control-label">코드 이름</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) 앱 템플릿 카탈로그"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">삭제</button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">저장</button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">등록</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="codeGroupConfirmModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
+                                    onclick="procClosePopup('codeGroupConfirmModal');"> 취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Layer-->
+
         </section>
         <!-- /.content -->
     </div>
@@ -156,12 +230,38 @@
 
     //  procGetSearchList
     $(document.body).ready(function () {
+
         getCodeGroupDetail();
         getCodeDetailList();
+
+        init();
+
+        $('#register').click(function(){
+
+            $('#titleDetail').hide();
+            $('#deleteBtn').hide();
+            $('#saveBtn').hide();
+
+            $('#titleReg').show();
+            $('#regBtn').show();
+            $('#closeBtn').show();
+
+            $("#name").val("");
+            $("#username").val("");
+            $("#password").val("");
+            $("#url").val("");
+            $("#guid").val("");
+        });
+
     });
 
-    getSearchList = function () {
+    function init(){
+        getServiceBrokerList();
+        $('#codeGrouprModal').modal('hide');
+//        $('#serviceBrokerModal').modal({backdrop:'static', keyboard:false});
+    }
 
+    getSearchList = function () {
         getCodeGroupDetail();
         getCodeDetailList();
     }
