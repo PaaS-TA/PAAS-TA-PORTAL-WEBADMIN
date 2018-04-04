@@ -43,7 +43,7 @@
                                                 </div>
                                                 <input type="text" name="table_search" id="searchKeyword"
                                                        class="form-control" style="margin-left:-1px;"
-                                                       placeholder="Search" onkeyup="procSearchByKeyword(event);"/>
+                                                       placeholder="Search" onkeyup="getSearchList(event);"/>
                                             </div>
                                         </div>
                                     </div>
@@ -61,18 +61,21 @@
                                             <button type="button" class="btn btn-sm btn-warning" onclick="procMovePage();">추가</button>
                                             <button type="button" class="b btn btn-sm btn-primary" onclick="procMovePage();">저장</button>
                                         </div><br/>
-                                        <label>Table</label>
+                                        <label>Group Table</label>
                                         <!--Table -->
-                                        <div id="starterListMessageArea" class="table-responsive">
+                                        <div id="codeGroupMessageArea" class="table-responsive">
                                             <table class="table table-striped">
                                                 <tr>
-                                                    <th>코드</th>
+                                                    <th style="width:200px">코드</th>
                                                     <th>코드이름</th>
                                                 </tr>
-                                                <tbody id="starterListTableArea">
+                                                <tbody id="codeGroupTableArea">
                                                 </tbody>
                                             </table>
                                         </div> <!--Table -->
+                                        <form id="codeListGroupHiddenForm">
+                                            <input type="hidden" id="codeListGroupHiddenFormId" name="no" value=""/>
+                                        </form>
                                     </div>
                                 </div>
                                 <!-- boxR -->
@@ -83,21 +86,23 @@
                                         <button type="button" class="btn btn-sm btn-danger" onclick="procMovePage();">삭제</button>
                                         <button type="button" class="b btn btn-sm btn-primary" onclick="procMovePage();">저장</button>
                                     </div><br/>
-                                    <label>Table</label>
+                                    <label>Detail Table</label>
                                     <!--Table -->
-                                    <div id="starterListMessageArea" class="table-responsive">
+                                    <div id="codeDetailMessageArea" class="table-responsive">
                                         <table class="table table-striped">
                                             <tr>
-                                                <th style="width: 10px">#</th>
-                                                <th>Key</th>
-                                                <th>Value</th>
-                                                <th>요약</th>
-                                                <th>사용</th>
+                                                <th style="width:200px">Key</th>
+                                                <th style="width:200px">Value</th>
+                                                <th style="width:200px">요약</th>
+                                                <th style="width:200px">사용</th>
                                             </tr>
-                                            <tbody id="starterListTableArea">
+                                            <tbody id="codeDetailGroupTableArea">
                                             </tbody>
                                         </table>
                                     </div> <!--Table -->
+                                    <form id="codeDetailListGroupHiddenForm">
+                                        <input type="hidden" id="codeDetailListGroupHiddenFormkey" name="no" value=""/>
+                                    </form>
                                     <!-- /.form-group -->
                                 </div>
                             </div>
@@ -122,10 +127,22 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
 
-    var LIST_PROC_URL = "/commonCode/getCommonCode";
-    var INSERT_PROC_URL = "/commonCode/insertCommonCode";
-    var UPDATE_PROC_URL = "/commonCode/updateCommonCode";
-    var DELETE_PROC_URL = "/commonCode/deleteCommonCode";
+    var LIST_PROC_URL= "/v2/commoncode"
+
+    var LIST_GROUP_PROC_URL ="/v2/groupdetail"
+    var LIST_DETAIL_PROC_URL ="/v2/codedetail"
+
+    var INSERT_GROUP_PROC_URL = "/groupdetailForm"
+    var INSERT_DETAIL_PROC_URL = "/codedetailForm"
+
+
+//    var UPDATE_PROC_URL =
+//    var UPDATE_GROUP_PROC_URL =
+//
+//    var DELETE_DETAIL_PROC_URL = "
+//    var DELETE_GROUP_PROC_URL = "
+
+    var CLIENT_LIST = new Array();
 
     var PROC_TYPE_COMMON_CODE_GROUP = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ "";
     var PROC_TYPE_COMMON_CODE_DETAIL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/ "";
@@ -137,6 +154,115 @@
     var EDIT_CELL_INDEX_GRID_01 = 0;
     var EDIT_CELL_INDEX_GRID_02 = 0;
 
+    //  procGetSearchList
+    $(document.body).ready(function () {
+        getCodeGroupDetail();
+        getCodeDetailList();
+    });
+
+    getSearchList = function () {
+
+        getCodeGroupDetail();
+        getCodeDetailList();
+    }
+
+    // GET GroupList
+    var getCodeGroupDetail = function (reqParam) {
+        var doc = document;
+        var searchKeyword = document.getElementById('searchKeyword').value;
+        var param = "";
+        if (null != searchKeyword && "" != searchKeyword) {
+            param = {"searchKeyword": searchKeyword};
+        }
+        procCallAjax2(LIST_GROUP_PROC_URL, "GET", param, procCallbackGetCodeGroupList);
+    };
+
+
+    // GET CodeDetailList
+    var getCodeDetailList = function (reqParam) {
+        var doc = document;
+        var searchKeyword = document.getElementById('searchKeyword').value;
+        var param = "";
+        if (null != searchKeyword && "" != searchKeyword) {
+            param = {"searchKeyword": searchKeyword};
+        }
+        procCallAjax2(LIST_DETAIL_PROC_URL, "GET", param, procCallbackGetCodeDetailList);
+    };
+
+
+    // GET LIST CALLBACK CodeDetailList
+    var procCallbackGetCodeGroupList = function (data) {
+        var objTable = $("#codeGroupList");
+        var objTableArea = $('#codeGroupTableArea');
+        var objMessageArea = $('#codeGroupMessageArea');
+        var listLength = data.list.length;
+        var htmlString = [];
+
+        objTableArea.html('');
+
+        if (listLength < 1) {
+            objMessageArea.append('<spring:message code="common.info.empty.data" />');
+            objMessageArea.show();
+
+        } else {
+            var codeGroupList = data.list;
+
+            for (var i = 0; i < listLength; i++) {
+                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveDetailInsertForm(\'' + codeGroupList[i].id + '\')">'
+                    + '<td>' + codeGroupList[i].id + '</td>'
+                    + '<td>' + codeGroupList[i].name + '</td>'
+                    + '</tr>');
+            }
+
+            objTableArea.append(htmlString).trigger("create");
+        }
+    };
+
+
+    // GET LIST CALLBACK CodeDetailList
+    var procCallbackGetCodeDetailList = function (data) {
+        var objTable = $("#codeDetailList");
+        var objTableArea = $('#codeDetailGroupTableArea');
+        var objMessageArea = $('#codeDetailMessageArea');
+        var listLength = data.list.length;
+        var htmlString = [];
+
+        objTableArea.html('');
+
+        if (listLength < 1) {
+            objMessageArea.append('<spring:message code="common.info.empty.data" />');
+            objMessageArea.show();
+
+        } else {
+            var codeDetailList = data.list;
+
+            for (var i = 0; i < listLength; i++) {
+                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveGroupInsertForm(\'' + codeDetailList[i].no + '\')">'
+                    + '<td>' + codeDetailList[i].key + '</td>'
+                    + '<td>' + codeDetailList[i].value + '</td>'
+                    + '<td>' + codeDetailList[i].summary + '</td>'
+                    + '<td>' + codeDetailList[i].useYn + '</td>'
+                    + '</tr>');
+            }
+
+            objTableArea.append(htmlString).trigger("create");
+        }
+    };
+
+
+    // MOVE PAGE DetailInsertForm
+    var procMoveDetailInsertForm = function (reqParam) {
+        var hiddenForm = $('#codeListGroupHiddenForm');
+        $('#codeListGroupHiddenFormId').val(reqParam);
+        hiddenForm.attr({action: INSERT_GROUP_PROC_URL, method: "POST"}).submit();
+    };
+
+    // MOVE PAGE GroupInsertForm
+    var procMoveGroupInsertForm = function (reqParam) {
+        var hiddenForm = $('#codeDetailListGroupHiddenForm');
+        $('#codeDetailListGroupHiddenFormkey').val(reqParam);
+        hiddenForm.attr({action: INSERT_DETAIL_PROC_URL, method: "POST"}).submit();
+    };
 
     /*]]>*/
 </script>
