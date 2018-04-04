@@ -18,10 +18,10 @@
               <div class="box" id="userInfoViewArea">
                   <div class="box-header">
                   <div class="box-tools">
-                      <div class="input-group input-group-sm" style="width: 150px;">
-                          <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="searchKeyword" onkeyup="getUserSearch()"/>
+                      <div class="input-group input-group-sm" style="width: 450px;">
+                          <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="searchKeyword" onkeypress="procCheckSearchFormKeyEvent(event);"/>
                           <div class="input-group-btn" >
-                              <button type="submit"  id="btnSearch" class="btn btn-default" onclick="getUserSearch()"><i class="fa fa-search"></i></button>
+                              <button type="submit"  id="btnSearch" class="btn btn-default" onclick="procButtonClick()"><i class="fa fa-search"></i></button>
                           </div>
                       </div>
                   </div>
@@ -75,7 +75,7 @@
     var V2_URL = "/v2";
     var REST_URL = V2_URL+ "/usermanagements";
     var LOADED_LIST_COUNT = 0;
-
+    var BOOLEN_SEARCH = false;
     var REQUEST_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
     var REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY = "UPDATE_OPERATING_AUTHORITY";
     var REQUEST_TYPE_DELETE_USER_ACCOUNT = "DELETE_USER_ACCOUNT";
@@ -127,38 +127,32 @@
             pageSize :  /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "" ,
             pageNo : reqPageNo
         };
-
-        userManagementCallAjax(REST_URL, param, procCallbackGetUserInfoList,"GET");
+        if(BOOLEN_SEARCH)
+        {
+            userManagementCallAjax(REST_URL+"/"+document.getElementById('searchKeyword').value.toLowerCase(), param, procCallbackGetUserInfoList,"GET");
+            BOOLEN_SEARCH =false;
+        }
+        else{
+            userManagementCallAjax(REST_URL, param, procCallbackGetUserInfoList,"GET");
+        }
     };
 
-    var getUserSearch = function()
+    var procButtonClick = function()
     {
-        var input = $("#searchKeyword").val().toLowerCase();
-        if(input === ""){
-            $('#userInfoTableArea').show();
-            $('#userInfoTableArea tr[id*="Managementtable"]').show();
-
-        } else{
-            $('#userInfoTableArea tr[id*="Managementtable"]').hide();
-
-            if($('#userInfoTableArea tr[name*="'+input+'"]').length > 0){
-//                    $('#noSearchOrgMessage').hide();
-                $('#userInfoTableArea').show();
-                $('#userInfoTableArea tr[name*="'+input+'"]').show();
-
-            } else{
-                $('#userInfoTableArea').hide();
-//                    $('#noSearchOrgMessage').show();
-            }
-        }
+        BOOLEN_SEARCH = true;
+        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "");
     }
 
-
+    var procCheckSearchFormKeyEvent = function(e) {
+        if (e.keyCode==13 && e.srcElement.type != 'textarea') {
+            BOOLEN_SEARCH = true;
+            getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "");
+        }
+    };
 
     // GET LIST CALLBACK
     var procCallbackGetUserInfoList = function(data, reqParam) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
-
         var objTableArea = $('#userInfoTableArea');
         var objTable = $('#userInfoTable');
         var objMessageArea = $('#userInfoMessageArea');
