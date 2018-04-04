@@ -634,7 +634,6 @@
     function clickAddUsersBtn(){
         //한명의 유저만 등록
         var memberList = [$("#user-add-name-input").val()];
-        console.log(getCheckedGroup().val().groupGuid + ":"+memberList);
         addAuthorityGroupMembers(getCheckedGroup().val().groupGuid, memberList, refreshUserTable);
     }
 
