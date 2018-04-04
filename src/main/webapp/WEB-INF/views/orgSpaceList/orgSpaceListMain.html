@@ -167,7 +167,7 @@
 
         // GET ORG SUMMARY
         var procGetOrgSummary = function (orgid, quotaid) {
-            $("#modaltitle").html("로딩중");
+            $("#modaltitle").html("조직 상세 정보");
             $("#modalbody").html("데이터를 불러오고 있습니다.");
             getOrgsForAdmin(V2_URL + "/orgs/"+quotaid+"/quota", {}, procCallbackGetOrgQuota);
 
@@ -197,9 +197,6 @@
                 if (i != 0) spaces += " , ";
                 spaces += data.spaces[i].name;
             }
-
-
-            $("#modaltitle").html("조직 상세 정보");
             $("#modalbody").html("<b>Domains</b> : " + domainNames +
                 "<br><b>Quota</b> : " + quotaName + " (" + MemoryLimit + "M memory limit, " + totalRoutes + " routes, " + totalServices + " services, " + paidServices + ")" +
                 "<br><b>Spaces</b> : " + spaces);
@@ -208,7 +205,7 @@
 
         // GET SPACE SUMMARY
         var procGetSpaceSummary = function (spaceId, spaceQuotaId) {
-            $("#modaltitle").html("로딩중");
+            $("#modaltitle").html("영역 상세 정보");
             $("#modalbody").html("데이터를 불러오고 있습니다.");
 
             if(spaceQuotaId != "null") {
@@ -259,7 +256,6 @@
                 services += data.services[i].name;
             }
 
-            $("#modaltitle").html("영역 상세 정보");
             $("#modalbody").html("<b>Org</b> : " + data.name + "<br><b>Apps</b> : " + apps +
                 "<br><b>Domains</b> : " + domainNames +
                 "<br><b>Services</b> : " + services +

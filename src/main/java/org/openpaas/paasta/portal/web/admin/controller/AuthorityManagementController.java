@@ -1,14 +1,12 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.service.AuthorityManagementService;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
@@ -20,47 +18,45 @@ import java.util.Map;
  * @version 1.0
  * @since 2016.09.19 최초작성
  */
-@Controller
-@RequestMapping(value = {"/authority"})
+@RestController
 public class AuthorityManagementController extends Common{
 
     @Autowired
-    private CommonService commonService;
-
+    private AuthorityManagementService authorityManagementService;
+    private final String V2_URL = "/v2";
     /**
      * Gets org space list main.
      *
      * @return the org space list main
      */
-    @RequestMapping(value = {"/authorityMain"}, method = RequestMethod.GET)
+    @GetMapping("/authority")
     public ModelAndView getOrgSpaceListMain() {
-        return new ModelAndView(){{setViewName("/authority/authorityMain");}};
+        return authorityManagementService.getOrgSpaceListMain();
     }
 
     /**
      * Gets authority groups.
      *
-     * @param param the param
+     *
      * @return the authority groups
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/getAuthorityGroups"}, method = RequestMethod.POST)
+    @GetMapping(V2_URL+"/authority")
     @ResponseBody
-    public Map<String, Object> getAuthorityGroups(@RequestBody Map param) throws Exception {
-        return commonService.procRestTemplate("/authority/getAuthorityGroups", HttpMethod.POST, param, null);
+    public Map<String, Object> getAuthorityGroups() throws Exception {
+        return authorityManagementService.getAuthorityGroups("/authority", HttpMethod.GET, null, null);
     }
 
     /**
      * Gets uaa user info.
      *
-     * @param param the param
      * @return the uaa user info
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/getGroupMembersInfo"}, method = RequestMethod.POST)
+    @GetMapping(V2_URL+"/authority/group")
     @ResponseBody
-    public Map<String, Object> getUaaUserInfo(@RequestBody Map param) throws Exception {
-        return commonService.procRestTemplate("/authority/getGroupMembersInfo", HttpMethod.POST, param, null);
+    public Map<String, Object> getUaaUserInfo() throws Exception {
+        return authorityManagementService.getUaaUserInfo("/authority/group", HttpMethod.GET, null, null);
     }
 
     /**
@@ -70,23 +66,23 @@ public class AuthorityManagementController extends Common{
      * @return the map
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/createAuthorityGroup"}, method = RequestMethod.POST)
+    @PostMapping(V2_URL+"/authority/group")
     @ResponseBody
     public Map<String, Object> createAuthorityGroup(@RequestBody Map param) throws Exception {
-        return commonService.procRestTemplate("/authority/createAuthorityGroup", HttpMethod.POST, param, null);
+        return authorityManagementService.createAuthorityGroup("/authority/group", HttpMethod.POST, param, null);
     }
 
     /**
      * Delete authority group map.
-     *
+     * @param groupguid the group guid
      * @param param the param
      * @return the map
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/deleteAuthorityGroup"}, method = RequestMethod.POST)
+    @DeleteMapping(V2_URL+"/authority/group/{groupguid}")
     @ResponseBody
-    public Map<String, Object> deleteAuthorityGroup(@RequestBody Map param) throws Exception {
-        return commonService.procRestTemplate("/authority/deleteAuthorityGroup", HttpMethod.POST, param, null);
+    public Map<String, Object> deleteAuthorityGroup(@PathVariable String groupguid, @RequestBody Map param) throws Exception {
+        return authorityManagementService.deleteAuthorityGroup("/authority/group/" + groupguid, HttpMethod.DELETE, param, null);
     }
 
     /**
@@ -96,10 +92,10 @@ public class AuthorityManagementController extends Common{
      * @return the map
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/addGroupMembers"}, method = RequestMethod.POST)
+    @PostMapping(V2_URL+"/authority/member")
     @ResponseBody
     public Map<String, Object> addGroupMembers(@RequestBody Map param) throws Exception {
-        return commonService.procRestTemplate("/authority/addGroupMembers", HttpMethod.POST, param, null);
+        return authorityManagementService.addGroupMembers("/authority/member", HttpMethod.POST, param, null);
     }
 
     /**
@@ -109,22 +105,22 @@ public class AuthorityManagementController extends Common{
      * @return the map
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/deleteGroupMembers"}, method = RequestMethod.POST)
+    @DeleteMapping(V2_URL+"/authority/member/{groupguid}")
     @ResponseBody
-    public Map<String, Object> deleteGroupMembers(@RequestBody Map param) throws Exception {
-        return commonService.procRestTemplate("/authority/deleteGroupMembers", HttpMethod.POST, param, null);
+    public Map<String, Object> deleteGroupMembers(@PathVariable String groupguid, @RequestBody Map param) throws Exception {
+        return authorityManagementService.deleteGroupMembers("/authority/member/"+groupguid, HttpMethod.DELETE, param, null);
     }
 
     /**
      * Gets user name list.
      *
-     * @param param the param
      * @return the user name list
      * @throws Exception the exception
+     *
      */
-    @RequestMapping(value = {"/getUserInfo"}, method = RequestMethod.POST)
+    @GetMapping(V2_URL+"/users")
     @ResponseBody
-    public Map<String, Object> getUserNameList(@RequestBody Map param) throws Exception {
-        return commonService.procRestTemplate("/user/getUserInfo", HttpMethod.GET, param, null);
+    public Map<String, Object> getUserNameList() throws Exception {
+        return authorityManagementService.getUserNameList("/users", HttpMethod.GET, null, null);
     }
 }

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head>
+
+
+</head>
+<body>
+<div class="wrapper">
+    <header></header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <!-- Content Wrapper. Contains page content -->
+    <!-- ===================================================================================== -->
+    <!-- Content Header (Page header) -->
+    <div layout:fragment="content">
+        <section class="content-header">
+            <h3>
+                권한 관리
+            </h3>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+
+                <div class="col-sm-6 pt5">
+
+                    <div style="margin: 10px 0 0 10px; width:98%; height: 60%;">
+                        <div class="box" align="center">
+                            <div style="width:100%; overflow: hidden; margin-top: 10px;margin-bottom: 10px">
+                                <div class="box-tools" >
+                                <button type="button" id="groupArea-create-group-btn" class="btn btn-primary btn-sm" style="float:right; margin-right: 15px;" onclick="showAddBox('createAuthorityGroupBox')">
+                                    그룹 생성
+                                </button>
+                                <button type="button" id="groupArea-delete-group-btn" class="btn btn-primary btn-sm" style="float:right;margin-right: 15px;" disabled="true" onclick="clickDeleteAuthorityGroupBtn()">
+                                    그룹 삭제
+                                </button>
+                                    <div class="input-group input-group-sm" style="width: 550px; margin: 3px;">
+                                        <input type="text" id="group-searchKeyword" name="table_search" class="form-control input-sm" placeholder="Search" onkeyup="searchAuthorituyGroup()"/>
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="createAuthorityGroupBox" class="addBox" style="display: none; width:100%">
+                                <div style="float: left; width: 70%;">
+                                    <div class="form-group has-feedback has-feedback-right" style="margin: 7px">
+                                        <input id="group-create-name-input" type="text"
+                                               class="form-control form-control-warning" placeholder="그룹 이름을 입력하세요."
+                                               onkeyup="createGroupValidation()" style="margin-top: -3px"/>
+                                        <span id="group-create-name-input-icon" class="form-control-feedback glyphicon status-icon-warning"></span>
+                                        <div id="group-create-name-input-statusMessage"
+                                             style="display: none; font-size:10pt; color: #ca0020; margin-top: 2px; padding-left: 12px">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" id="group-create-name-input-save-btn" class="btn btn-primary btn-sm" style="margin: 7px; float: left; width: 10%;" disabled="true" onclick="clickCreateAuthorityGroupBtn()">
+                                    저장
+                                </button>
+                            </div>
+
+                            <table class="table table-bordered table-striped dataTable" id="groupTable-contents">
+                            </table>
+                            <div id="noGroupMessage" class='mainViewArea-message' style="display: none; ">생성된 그룹이 없습니다.</div>
+                            <div id="noSearchGroupMessage" class='mainViewArea-message' style="display: none;">검색된 그룹이 없습니다.</div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-6 pt5" style="width: 49.5%">
+                    <div style="margin: 10px 0 0 10px; width:98%; height: 60%;">
+                    <div id="userArea" class="box" style="display: none">
+                        <div style="width:100%; overflow: hidden; margin-top: 10px;margin-bottom: 10px">
+                        <div class="box-tools" >
+                            <button type="button" id="userArea-add-user-btn" class="btn btn-primary btn-sm" style="float:right; margin-right: 15px;" onclick="clickAddAuthorityGroupMembersBtn()">
+                                유저 등록
+                            </button>
+                            <button type="button" id="userArea-delete-user-btn" class="btn btn-primary btn-sm" style="float:right; margin-right: 15px;" disabled="true" onclick="clickDeleteAuthorityGroupMembersBtn()">
+                                유저 삭제
+                            </button>
+                        </div>
+                        </div>
+                        <div id="addAuthorityGroupMemeberBox" class="addBox" style="display: none; width:100%">
+                            <div style="float: left; width: 70%;">
+                                <div class="form-group has-feedback has-feedback-right" style="margin: 7px">
+                                    <input id="user-add-name-input" type="hidden"
+                                           class="form-control form-control-warning" style="margin-top: -3px"
+                                           placeholder="유저이름을 입력하세요."/>
+                                    <span id="user-add-name-input-icon" class="form-control-feedback glyphicon status-icon-warning"></span>
+                                    <div id="userName-auto-complete-area" class="form-group">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" id="user-add-name-input-save-btn" class="btn btn-primary btn-sm" style="margin:7px; float: left; width: 10%;" onclick="clickAddUsersBtn()">
+                                저장
+                            </button>
+                        </div>
+
+                        <table class="table table-bordered table-striped dataTable" id="userTable-contents">
+                        </table>
+                        <div id="noUserMessage" style="width: 100%; text-align: center; overflow:hidden; display:none;"><h5>등록된 사용자가 없습니다.</h5></div>
+                    </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="modaltitle">Default Modal</h4>
+                        </div>
+                        <div class="modal-body" id="modalbody">
+                            <p>One fine body…</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="modalButtonText" data-dismiss="modal">확인</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </section>
+    </div>
+    <footer></footer>
+</div>
+<script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+    /*<![CDATA[*/
+    var V2_URL = "/v2";
+    var GET_AUTHORITY_GROUPS_URL = V2_URL+"/authority";
+    var AUTHORITY_GROUPS_URL = V2_URL+"/authority/group";
+    var AUTHORITY_MEMBER_URL = V2_URL+"/authority/member";
+    var GET_USER_INFO = V2_URL+"/users";
+    var authorityname = "권한그룹";
+    var authorityuser = "사용자";
+    var userInfo;
+    var autoCompleteIndex;
+
+    $(document).ready(function(){
+        getAuthGroups(setAuthGroupTable)
+        getUserInfo(setUserInfo)
+
+        $("#user-add-name-input").keyup(function(event) {
+            switch (event.which){
+                case 8: var isDeletingInput = true; userNameAutoComplete(isDeletingInput);break; //백스페이스
+                case 13: pushEnter(); break; //엔터
+                case 38: break; //방향키(상)
+                case 40: break; //방향키(하)
+                default: var isDeletingInput = false; delayAutoComplete(isDeletingInput); break;
+            }
+        });
+
+        $("#user-add-name-input").keydown(function(event) {
+            switch (event.which){
+                case 38: moveAutoCompleteKey("up"); break; //방향키(상)
+                case 40: moveAutoCompleteKey("down"); break; //방향키(하)
+                default: break;
+            }
+        });
+
+    });
+    var AuthorityCallAjax = function(reqUrl, reqMethod ,param, callback) {
+
+        var reqData = JSON.stringify(param);
+        if(reqMethod =="GET")
+        {
+            reqData =null;
+        }
+        $.ajax({
+            url: reqUrl,
+            method: reqMethod,
+            data: reqData,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(data) {
+
+                if (data) {
+                    callback(data, param);
+                } else {
+                    var resData = {RESULT : RESULT_STATUS_SUCCESS,
+                        RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
+
+                    callback(resData, param);
+                }
+            },
+            error: function(xhr, status, error) {
+                var resData = {RESULT : RESULT_STATUS_FAIL,
+                    RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
+
+                callback(resData, param);
+
+                console.log("ERROR :: error :: ", error);
+                procAlert("danger", JSON.parse(xhr.responseText).message);
+            },
+            complete : function(data) {
+                console.log("COMPLETE :: data :: ", data);
+            }
+        });
+    };
+
+
+    function getAuthGroups(callback){
+        AuthorityCallAjax(GET_AUTHORITY_GROUPS_URL,"GET", {}, callback)
+    }
+
+    function getGroupMembersInfo(groupGuid, callback){
+        procCallAjax(AUTHORITY_GROUPS_URL, {"groupGuid":groupGuid}, callback)
+    }
+
+    function createAuthorityGroup(groupToCreate, callback) {
+        AuthorityCallAjax(AUTHORITY_GROUPS_URL,"POST", groupToCreate, callback);
+    }
+
+    function deleteAuthorityGroup() {
+        var groupGuid = getCheckedGroup().val().groupGuid;
+        AuthorityCallAjax(AUTHORITY_GROUPS_URL + "/"+groupGuid,"DELETE", {"groupGuid":groupGuid}, refreshGroupArea);
+        procClosePopup()
+    }
+
+    function addAuthorityGroupMembers(groupGuid, memberUserNameList, callback){
+        AuthorityCallAjax(AUTHORITY_MEMBER_URL,"POST", {"groupGuid":groupGuid, "memberUserNameList":memberUserNameList}, callback);
+    }
+
+    function deleteAuthorityGroupMembers(){
+        var groupGuid = getCheckedGroup().val().groupGuid;
+        var memberUserNameList = getCheckedMemberList();
+        AuthorityCallAjax(AUTHORITY_MEMBER_URL+"/"+groupGuid, "DELETE",{"groupGuid":groupGuid, "memberUserNameList":memberUserNameList}, refreshUserArea);
+        procClosePopup()
+    }
+
+    function getUserInfo(callback){
+        AuthorityCallAjax(GET_USER_INFO,"GET", {}, callback);
+    }
+
+    function refreshGroupArea(){
+        $("#group-searchKeyword").val("");
+        $("#group-create-name-input").val("");
+        $("#createAuthorityGroupBox").hide();
+        getAuthGroups(setAuthGroupTable)
+    }
+
+    function refreshUserArea(){
+        $("#user-add-name-input").val("");
+        $("#addAuthorityGroupMemeberBox").hide();
+        refreshUserTable()
+    }
+
+    function refreshUserTable(){
+        getAuthGroups(refreshGroupData)
+    }
+
+    function getGroupWithGuid(data, groupGuid){
+        if(data.groups.length && data.groups.length > 0){
+            $.each(data.groups, function (eventId, group) {
+                if(group.id === groupGuid){
+                    setGroupData($(":checkbox[name='groupTable-checkbox']:checked").val(), group);
+                }
+            });
+        }
+        setUserTable();
+    }
+
+    function refreshGroupData(data){
+        var groupGuid = getCheckedGroup().val().groupGuid;
+        getGroupWithGuid(data, groupGuid);
+    }
+
+
+    function setAuthGroupTable(data) {
+        $("#groupTable-contents *").remove()
+        $("#groupTable-contents").append(
+            "<thead>" +
+            "<tr>"+
+            "<th>"+
+            authorityname +
+            "</th>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody>");
+        if(data.groups.length && data.groups.length > 0) {
+            $.each(data.groups, function (eventId, group) {
+                $("#groupTable-contents").append(
+                    "<tr class='mainViewArea-table-content' id='groupTable-group-no-" + eventId + "' name='" + group.displayName + "'>" +
+                    "<td style='cursor: pointer'  onclick=selectGroup('" + eventId + "')>" +
+                    "<span style='margin-left: 10px'>" + group.displayName +
+                    "<label><input name='groupTable-checkbox' id='groupTable-checkbox-no-"+eventId+"' value='"+eventId+"' class='checkbox-inline' type='checkbox' style='display: none'></label>"+
+                    "</span>"+
+                    "</td>"+
+                    "</tr>"
+                )
+                setGroupData(eventId,group)
+            });
+            showViewAreaContent("group","groupTable-contents")
+        } else {
+            showViewAreaContent("group","noGroupMessage")
+        }
+        $("#groupTable-contents").append("</tbody>");
+        disableBtn("groupArea-delete-group-btn",true);
+    }
+
+    function setGroupData(eventId, group){
+        var groupData = {"groupGuid":group.id, "groupName":group.displayName, "groupMembers": group.members}
+        $("#groupTable-group-no-"+eventId).val(groupData)
+    }
+
+
+    function selectGroup(groupNo) {
+        clickAddAuthorityGroupMembersBtn('HIDE');
+        contentSelectControl("group", groupNo);
+        if($("#groupTable-checkbox-no-"+groupNo).is(":checked") === true){
+            disableBtn("groupArea-delete-group-btn", false);
+            setUserTable(groupNo);
+        } else {
+            disableBtn("groupArea-delete-group-btn", true);
+            showViewAreaContent("user","noContent");
+        }
+    }
+
+
+    function selectUser(userNo) {
+
+        contentSelectControl("user", userNo);
+        if($(":checkbox[name='userTable-checkbox']:checked").length > 0){
+            disableBtn("userArea-delete-user-btn", false)
+        } else{
+            disableBtn("userArea-delete-user-btn", true)
+        }
+
+
+    }
+
+    function searchAuthorituyGroup() {
+        var input = $("#group-searchKeyword").val().toLowerCase();
+        if(input === ""){
+            $("#groupTable-contents tr[id*='groupTable-group-no-']").show()
+            showViewAreaContent("group","groupTable-contents")
+        } else if($("#groupTable-contents tr[name*='"+input+"']").length > 0) {
+            $("#groupTable-contents tr[id*='groupTable-group-no-']:not([name*='"+input+"'])").hide()
+            $("#groupTable-contents tr[id*='groupTable-group-no-'][name*='"+input+"']").show()
+            showViewAreaContent("group","groupTable-contents")
+        } else if($("#groupTable-contents tr[name*='"+input+"']").length === 0) {
+            showViewAreaContent("group","noSearchResult")
+        }
+    }
+
+
+    function setUserTable() {
+        $("#userTable-contents *").remove();
+        $("#userTable-contents").append(
+            "<thead>" +
+            "<tr>"+
+            "<th>"+
+            authorityuser +
+            "</th>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody>");
+        $("#user-add-name-input").val("");
+        userNameAutoComplete()
+
+        var currentCheckedGroup = getCheckedGroup();
+        var memberNameList = filteredGroupMembers(currentCheckedGroup)
+
+        if(memberNameList.length > 0) {
+            $.each(memberNameList, function (eventId, member) {
+                $("#userTable-contents").append(
+                    "<tr >" +
+                    "<td id='userTable-user-no-" + eventId + "' name='" + member.userName + "' onclick=selectUser('" + eventId + "')>"+
+                    "<label><input name='userTable-checkbox' id='userTable-checkbox-no-"+eventId+"' value='"+eventId+"' class='checkbox-inline' type='checkbox' style='width:15px; height:15px;'></label>"+
+                    "<span style='margin-left: 15px'>" + member.userName + "</span>"+
+                    "</td>"+
+                    "</tr>"
+                )
+                var userData = {"userName":member.userName}
+                $("#userTable-user-no-"+eventId).val(userData)
+            });
+            $("#userTable-contents").append(
+                "</tbody>")
+            setCheckboxClickEvent()
+            showViewAreaContent("user","userTable-contents")
+        } else {
+            showViewAreaContent("user","noUser")
+            disableBtn("userArea-delete-user-btn", true);
+        }
+    }
+
+    function setCheckboxClickEvent(){
+        $("input[id*='userTable-checkbox-no-']").click(function(e) {
+            var elementNo = this.id.split("-")[3];
+            selectUser(elementNo)
+        });
+    }
+
+    function filteredGroupMembers(currentCheckedGroup){
+        var groupMembers =  currentCheckedGroup.val().groupMembers
+        var filteredGroupMembers = new Array();
+
+        if(groupMembers){
+            $.each(userInfo, function (eventId, member) {
+                $.each(groupMembers, function(memberNo, groupMember) {
+                    if(member.userGuid === groupMember.value){
+                        filteredGroupMembers.push({"userName" : member.userName, "userGuid": groupMember.value})
+                    }
+                });
+            });
+        }
+
+        return filteredGroupMembers;
+    }
+
+
+    function clickCreateAuthorityGroupBtn() {
+        var objName = $("#group-create-name-input");
+        var reqName = objName.val();
+        if (!procCheckValidStringSpace(reqName)) {
+            inputBoxControl("group-create-name-input", "warning", "warning");
+            procAlert("danger", /*[[#{common.info.empty.req.data}]]*/ "");
+            objName.focus();
+            return false;
+        }
+
+        createAuthorityGroup({"displayName":reqName}, refreshGroupArea)
+    }
+
+
+    function clickAddAuthorityGroupMembersBtn(reqStatus){
+        if (undefined != reqStatus || null != reqStatus) {
+            $('#addAuthorityGroupMemeberBox').hide();
+
+        } else {
+            showAddBox('addAuthorityGroupMemeberBox')
+        }
+
+        $("#userName-auto-complete-area *").remove();
+        var str = "";
+        $.each(userInfo, function (eventId, member) {
+//                $("#userName-auto-complete-area").append(
+//                    "<div id='userName-auto-complete-element-'"+member.userName+" class='form-control select2 select2-hidden-accessible' value='"+member.userName+"' >"+member.userName+"</div>"
+//                )
+            str += "<option>" + member.userName +"</option>";
+        });
+        $("#userName-auto-complete-area").append(
+            "<select id='userName-Select' class='form-control select2' onchange='changeSelect()' style='width: 100%;'>"+
+            str +
+            "</select>"
+        )
+        selectinputinit();
+        changeSelect();
+    }
+
+    function createGroupValidation() {
+        createGroupDuplicationCheck()
+    }
+
+    function changeSelect() {
+        $("#user-add-name-input").val($("#userName-Select").val());
+        inputBoxControl("user-add-name-input", "ok", "ok");
+    }
+
+    function createGroupDuplicationCheck() {
+        var input = $("#group-create-name-input").val();
+        if(!procCheckValidStringSpace(input)){
+            //값이 빈값인 경우
+            inputBoxControl("group-create-name-input", "warning", "warning");
+        } else if($("#groupTable-contents tr[id*='groupTable-group-no-'][name='"+input+"']").length > 0) {
+            //중복되는 이름이 있는 경우
+            inputBoxControl("group-create-name-input", "error", "duplicated");
+        } else {
+            //중복되는 이름이 없는 경우
+            inputBoxControl("group-create-name-input", "ok", "ok");
+        }
+    }
+
+
+
+
+    function clickDeleteAuthorityGroupBtn(){
+        if($(":checkbox[name='groupTable-checkbox']:checked").length === 1){
+            authoritymodal("그룹 삭제","UAA 권한 그룹을 삭제하면 문제가 생길 수 있습니다."+getCheckedGroup().val().groupName+"그룹을 삭제 하시겠습니까?",
+                "deleteAuthorityGroup()","삭제")
+        }
+    }
+
+    var authoritymodal = function(reqTitle, reqMessage, procFunction, reqButtonText) {
+        var objButtonText = $('#modalButtonText');
+        if (reqTitle == null || reqTitle.length < 1) return false;
+        if (reqMessage == null || reqMessage.length < 1) return false;
+        if (procFunction == null) return false;
+
+        var buttonText = null == reqButtonText || '' == reqButtonText ? reqMessage.split(' ')[0] : reqButtonText;
+        $('#modaltitle').html(reqTitle);
+        $('#modalbody').html(reqMessage);
+        objButtonText.html(buttonText);
+        objButtonText.attr('onclick', procFunction);
+
+        $('#modal-default').modal();
+    };
+
+
+    function contentSelectControl(table, elementNo){
+        if($("#"+table+"Table-checkbox-no-"+elementNo).is(":checked") === true) {
+            $("#"+table+"Table-checkbox-no-"+elementNo).prop ("checked", false)
+            if(table === "user"){
+                var contentId = table+"Table-"+table+"-no-"+elementNo
+                contentClassNameCategorize(elementNo ,contentId)
+            } else {
+                changeTableContentColor(table);
+            }
+
+        } else if($("#"+table+"Table-checkbox-no-"+elementNo).is(":checked") === false) {
+            if(table === "group") {
+                $(":checkbox[name='"+table+"Table-checkbox']").prop("checked", false);
+                changeTableContentColor(table);
+            }
+            $("#"+table+"Table-checkbox-no-"+elementNo).prop ("checked",true)
+            document.getElementById(table+"Table-"+table+"-no-"+elementNo).className = "bg-aqua disabled color-palette"
+        }
+
+    }
+
+
+    function inputBoxControl(element, status, errorDetail){
+        document.getElementById(element).className = "form-control form-control-"+status;
+        document.getElementById(element+"-icon").className = "form-control-feedback glyphicon status-icon-"+status;
+        disableBtnWithInputBox(element, status);
+        errorMessageControl(element,status, errorDetail)
+    }
+
+
+    function errorMessageControl(element,status, errorDetail) {
+        if(status == "error") {
+            if(errorDetail === "duplicated"){
+                var errorMessage="이미 존재하는 그룹 이름입니다."
+            }
+
+            if($("#"+element+"-statusMessage").is(":hidden")) {
+                document.getElementById(element+"-statusMessage").textContent = errorMessage;
+                $("#"+element+"-statusMessage").slideDown();
+            }
+
+        } else {
+            if(!$("#"+element+"-statusMessage").is(":hidden")) {
+                $("#"+element+"-statusMessage").slideUp();
+            }
+        }
+    }
+
+
+    function setUserInfo(data){
+        userInfo = data.userInfo
+    }
+
+
+    function showViewAreaContent(area, toExpose) {
+        showViewAreaContent_userContent("noContent");
+        switch (area, toExpose){
+            case "group","groupTable-contents":
+                $("#noGroupMessage").hide();
+                $("#noSearchGroupMessage").hide();
+                $("#groupTable-contents").show();
+                break;
+            case "group","noGroupMessage":
+                $("#groupTable-contents").hide();
+                $("#noSearchGroupMessage").hide();
+                $("#noGroupMessage").show();
+                break;
+            case "group","noSearchResult":
+                $("#groupTable-contents").hide();
+                $("#noSearchGroupMessage").show();
+                break;
+            case "user", toExpose:
+                showViewAreaContent_userContent(toExpose);
+                break;
+        }
+    }
+
+
+    function showViewAreaContent_userContent(toExpose) {
+        switch (toExpose) {
+            case "loadingImage":
+                $("#userTable-contents").hide();
+                $("#noUserMessage").hide();
+                $("#loadingImage").show();
+                $("#userArea").show();
+                break;
+            case "userTable-contents":
+                $("#loadingImage").hide();
+                $("#noUserMessage").hide();
+                changeTableContentColor("user");
+                $("#userTable-contents").show();
+                $("#userArea").show();
+                break;
+            case "noUser":
+                $("#loadingImage").hide();
+                $("#userTable-contents").hide();
+                $("#noUserMessage").show();
+                $("#userArea").show();
+                break;
+            case "noContent":
+                $("#loadingImage").hide();
+                $("#userTable-contents").hide();
+                $("#noUserMessage").hide();
+                $("#userArea").hide();
+                break;
+        }
+    }
+
+
+    function showAddBox(id) {
+        $("#"+id).slideToggle();
+    }
+
+
+    function changeTableContentColor(groupOrUser) {
+        var listToShow = $('#'+groupOrUser+'Table-contents tr[id*="'+groupOrUser+'Table-'+groupOrUser+'-no-"]:not([style*="display: none"])')
+        $.each(listToShow, function (eventId, eventData) {
+            document.getElementById(eventData.id).className = "";
+        });
+    }
+
+
+    function contentClassNameCategorize(contentNo, contnetId) {
+        document.getElementById(contnetId).className = "";
+    }
+
+    function clickAddUsersBtn(){
+        //한명의 유저만 등록
+        var memberList = [$("#user-add-name-input").val()];
+        console.log(getCheckedGroup().val().groupGuid + ":"+memberList);
+        addAuthorityGroupMembers(getCheckedGroup().val().groupGuid, memberList, refreshUserTable);
+    }
+
+
+    function getCheckedGroup(){
+        var checkedGroupNo = $(":checkbox[name='groupTable-checkbox']:checked").val();
+        var checkedGroup = $("#groupTable-group-no-"+checkedGroupNo);
+        return checkedGroup
+    }
+
+    function getCheckedMemberList(){
+        var checkedElements = $(":checkbox[name='userTable-checkbox']:checked");
+
+        var checkedMemberList = [];
+        //var checkedMemberList = $(":checkbox[name='userTable-checkbox']:checked")
+        $.each(checkedElements, function (eventId, checkedUser) {
+            checkedMemberList.push($("#userTable-user-no-"+checkedUser.value).val().userName)
+        });
+
+        return checkedMemberList;
+    }
+
+    function clickDeleteAuthorityGroupMembersBtn(){
+        if($(":checkbox[name='userTable-checkbox']:checked").length >= 1){
+
+            authoritymodal("유저 삭제","UAA 권한 그룹을 삭제하면 문제가 생길 수 있습니다. 유저를 삭제 하시겠습니까?",
+                "deleteAuthorityGroupMembers()","삭제")
+        }
+    }
+
+    function disableBtnWithInputBox(element, status){
+        var buttonId = element+"-save-btn"
+        if(status === "ok"){
+            $("#"+buttonId).attr("disabled",false)
+        } else if(status === "warning"){
+            $("#"+buttonId).attr("disabled",true)
+        } else if(status === "error"){
+            $("#"+buttonId).attr("disabled",true)
+        }
+    }
+
+    function disableBtn(buttonId, status){
+        $("#"+buttonId).attr("disabled",status)
+    }
+
+    /**
+     *
+     * 유저 테이블의 자동완성 관련
+     *
+     **/
+
+    function moveAutoCompleteKey(direction){
+        $("#userName-auto-complete-area div.auto-complete-key-on").removeClass("auto-complete-key-on");
+        var exposedDivs = $("#userName-auto-complete-area div:not([style*='display: none'])")
+        if(exposedDivs.length > 0){
+            //현재 화면에 노출되는 자동완성 요소가 있는 경우
+            if(direction == "up"){
+                autoCompleteIndex = autoCompleteIndex-1;
+            } else if(direction === "down"){
+                autoCompleteIndex = autoCompleteIndex+1;
+            }
+            moveInto(exposedDivs)
+        }
+    }
+
+    function moveInto(exposedDivs) {
+        if(autoCompleteIndex > exposedDivs.length-1){
+            autoCompleteIndex = 0
+        } else if(autoCompleteIndex < 0){
+            autoCompleteIndex = exposedDivs.length-1;
+        }
+
+        $("#userName-auto-complete-area div[value='"+exposedDivs.eq(autoCompleteIndex).html()+"']").addClass("auto-complete-key-on")
+    }
+
+    function pushEnter() {
+        if($(".auto-complete-key-on").length === 0){
+            //자동완성 요소중 선택된 값이 없는 경우 ==> 저장
+            if($("#user-add-name-input-save-btn").is(':enabled')){
+                clickAddUsersBtn();
+            }
+            autoCompleteIndex = -1;
+        } else {
+            //자동완성 요소중 선택된 값이 있는 경우 ==> 선택된 값을 검색창에 삽입
+            chooseUserName()
+        }
+    }
+
+    function chooseUserName() {
+        var selectedUserName = $("#userName-auto-complete-area div.auto-complete-key-on").html();
+        $("#user-add-name-input").val(selectedUserName)
+        inputBoxControl("user-add-name-input", "ok", "ok");
+        autoCompleteAreaInit()
+    }
+
+    function autoCompleteAreaInit() {
+        $("#userName-auto-complete-area div.auto-complete-key-on").removeClass("auto-complete-key-on");
+        $("#userName-auto-complete-area div").hide();
+        autoCompleteIndex = -1;
+    }
+
+    function userNameAutoComplete(isDeletingInput) {
+        autoCompleteAreaInit()
+        var input = $("#user-add-name-input").val();
+
+        if(input === "") {
+            //검색어가 없는 경우
+            inputBoxControl("user-add-name-input", "warning", "warning");
+            $("#userName-auto-complete-area div").hide();
+
+        } else {
+            var elements = $("#userName-auto-complete-area div[value*='"+input+"']");
+            if(elements.length === 1) {
+                var completedUserName = elements.html();
+                oneUserNameFound(input,completedUserName,isDeletingInput);
+            } else if (elements.length > 1) {
+                manyUserNameFound(input, elements)
+            } else {
+                noUserNameFound();
+            }
+        }
+    }
+
+    function oneUserNameFound(input, completedUserName, isDeletingInput){
+        //검색결과가 한개인 경우
+        $("#userName-auto-complete-area div[value*='"+input+"']").show();
+
+        if(isDeletingInput){
+            //검색결과가 한개만 있더라도 텍스트를 삭제하는 중에는 자동완성을 하지 않는다.
+            if($("#userName-auto-complete-area div[value='"+input+"']").length === 1){
+                //검색어와 완전히 일치하는 값이 있는 경우
+                inputBoxControl("user-add-name-input", "ok", "ok");
+            } else {
+                inputBoxControl("user-add-name-input", "error", "error");
+            }
+        } else {
+            var inputField = document.getElementById("user-add-name-input")
+            inputField.value = completedUserName
+            //input 값이 전체 유저네임의 앞부분이 아닐때는 자동완성을 하되 남은 유저네임에 블럭처리 하지 않음
+            if(completedUserName.substr(0,input.length) === input){
+                inputField.setSelectionRange(input.length, completedUserName.length);
+            }
+            inputBoxControl("user-add-name-input", "ok", "ok");
+        }
+    }
+
+    function manyUserNameFound(input, elements){
+        //검색결과가 2개 이상인 경우
+        if($("#userName-auto-complete-area div[value='"+input+"']").length === 1){
+            //검색결과 중 현재 입력된 값과 완전히 일치하는 값이 있는 경우
+            inputBoxControl("user-add-name-input", "ok", "ok");
+        } else {
+            //현재 입력된 값을 가지고 있는 결과값이 2개 이상인 경우
+            inputBoxControl("user-add-name-input", "warning", "warning");
+        }
+        elements.show();
+    }
+
+    function noUserNameFound(){
+        //검색결과가 없는 경우
+        inputBoxControl("user-add-name-input", "error", "error");
+        $("#userName-auto-complete-area div").hide();
+    }
+
+    function delayAutoComplete(isDeletingInput){
+        var currentInput = $("#user-add-name-input").val();
+        setTimeout(function () {
+            var futureInput = $("#user-add-name-input").val();
+            if(currentInput == futureInput){
+                userNameAutoComplete(isDeletingInput)
+            }
+        }, 150)
+    }
+
+    function selectinputinit()
+    {
+        $('.select2').select2();
+    }
+    /*]]>*/
+</script>
+</body>
+</html>
