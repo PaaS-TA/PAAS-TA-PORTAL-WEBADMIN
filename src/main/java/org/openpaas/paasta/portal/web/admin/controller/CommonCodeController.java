@@ -161,6 +161,7 @@ public class CommonCodeController extends Common {
     @DeleteMapping(V2_URL +"/codegroup/{id}")
     @ResponseBody
     public Map<String, Object> deleteCommonGroup(@PathVariable String id) {
+        LOGGER.info("########## " + id);
         return commonCodeService.deleteCommonGroup(id);
     }
 
