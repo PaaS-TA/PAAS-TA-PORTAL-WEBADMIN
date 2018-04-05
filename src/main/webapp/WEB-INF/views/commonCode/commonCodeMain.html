@@ -301,7 +301,7 @@
             var codeGroupList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveDetailInsertForm(\'' + codeGroupList[i].id + '\')">'
+                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')">'
                     + '<td>' + codeGroupList[i].id + '</td>'
                     + '<td>' + codeGroupList[i].name + '</td>'
                     + '</tr>');
@@ -342,20 +342,24 @@
         }
     };
 
-    // MOVE PAGE DetailInsertForm
-    var procMoveDetailInsertForm = function (reqParam) {
-        var hiddenForm = $('#codeListGroupHiddenForm');
-        $('#codeListGroupHiddenFormId').val(reqParam);
-        hiddenForm.attr({action: INSERT_GROUP_PROC_URL, method: "POST"}).submit();
-    };
+    function getCodeGroup(id) {
 
+        $.ajax({
+            url: "/v2/codegroup/"+id,
+            method: "GET",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
 
-    // MOVE PAGE GroupInsertForm
-    var procMoveGroupInsertForm = function (reqParam) {
-        var hiddenForm = $('#codeDetailListGroupHiddenForm');
-        $('#codeDetailListGroupHiddenFormkey').val(reqParam);
-        hiddenForm.attr({action: INSERT_DETAIL_PROC_URL, method: "POST"}).submit();
-    };
+                if (data) {
+                    $("#id").val(data.list[0].id);
+                    $("#name").val(data.list[0].name);
+                }
+
+                $('#codeGrouprModal').modal('toggle');
+            }
+        });
+    }
 
 
     function createGroup() {
