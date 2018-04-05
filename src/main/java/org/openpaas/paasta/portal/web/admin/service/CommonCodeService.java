@@ -28,6 +28,11 @@ public class CommonCodeService {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
+        if (param.getGroupId() != null) {
+            search = "?";
+            search += "groupId=" + param.getGroupId();
+        }
+
         return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + search, HttpMethod.GET, param, null);
     }
 

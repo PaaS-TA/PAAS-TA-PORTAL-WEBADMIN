@@ -13,9 +13,8 @@ import java.util.Map;
 /**
  * 코드 목록 조회, 등록, 삭제 등 코드 관리의 API 를 호출 하는 컨트롤러이다.
  *
- * @author 김도준
- * @version 1.0
- * @since 2016.06.17 최초작성
+ * @author SEJI
+ * @since 2018.04.01
  */
 @Controller
 public class CommonCodeController extends Common {
