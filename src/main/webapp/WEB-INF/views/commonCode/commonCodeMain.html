@@ -81,7 +81,7 @@
                                 <div class="col-md-6">
                                     <!-- /.form-group -->
                                     <div class="b-group pull-right">
-                                        <button type="button" id="register2" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#codeDetailModal">등록</button>
+                                        <button type="button" id="DetailRegister" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#codeDetailModal">등록</button>
                                     </div><br/>
                                     <label>Detail Table</label>
                                     <!--Table -->
@@ -232,6 +232,8 @@
 
         $('#GroupRegister').click(function(){
 
+            console.log("GroupRegister");
+
             $('#titleDetail').hide();
             $('#deleteBtn').hide();
             $('#saveBtn').hide();
@@ -240,11 +242,19 @@
             $('#regBtn').show();
             $('#closeBtn').show();
 
+            $("#id").val("");
             $("#name").val("");
-            $("#username").val("");
-            $("#password").val("");
-            $("#url").val("");
-            $("#guid").val("");
+        });
+
+        $('#codeGroupTableArea').click(function(){
+
+            $('#titleDetail').show();
+            $('#deleteBtn').show();
+            $('#saveBtn').show();
+
+            $('#titleReg').hide();
+            $('#regBtn').hide();
+            //$('#closeBtn').hide();
         });
 
 
@@ -255,11 +265,10 @@
         getCodeDetailList();
 
         $('#codeGrouprModal').modal('hide');
-//        $('#serviceBrokerModal').modal({backdrop:'static', keyboard:false});
     }
 
 
-    // GET GroupList
+    // GET GroupList searchKeyword
     var getCodeGroupList = function (reqParam) {
         var doc = document;
         var searchKeyword = document.getElementById('searchKeyword').value;
@@ -271,7 +280,7 @@
     };
 
 
-    // GET CodeDetailList
+    // GET CodeDetailList searchKeyword
     var getCodeDetailList = function (reqParam) {
         var doc = document;
         var searchKeyword = document.getElementById('searchKeyword').value;
@@ -311,6 +320,25 @@
         }
     };
 
+    function getCodeGroup(id) {
+
+        $.ajax({
+            url: "/v2/codegroup/"+id,
+            method: "GET",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+
+                if (data) {
+                    $("#id").val(data.list[0].id);
+                    $("#name").val(data.list[0].name);
+                }
+
+                $('#codeGrouprModal').modal('toggle');
+            }
+        });
+    }
+
 
     // GET LIST CALLBACK CodeDetailList
     var procCallbackGetCodeDetailList = function (data) {
@@ -342,26 +370,7 @@
         }
     };
 
-    function getCodeGroup(id) {
-
-        $.ajax({
-            url: "/v2/codegroup/"+id,
-            method: "GET",
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-
-                if (data) {
-                    $("#id").val(data.list[0].id);
-                    $("#name").val(data.list[0].name);
-                }
-
-                $('#codeGrouprModal').modal('toggle');
-            }
-        });
-    }
-
-
+    //createGroup
     function createGroup() {
 
         if (!procCheckValidStringSpace()){return false;}
@@ -379,7 +388,7 @@
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    procAlert("success", /*[[#{service.insert.result.success}]]*/ "");
+                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
                     init();
                 }
             },
@@ -388,6 +397,38 @@
             }
 
         });
+    }
+
+    //updateGroup
+    function updateGroup() {
+
+        var id = $('#id').val();
+
+        if (!procCheckValidStringSpace()){return false;}
+
+        var param = {
+            id: id,
+            name: $("#name").val(),
+        }
+
+        $.ajax({
+            url: "/v2/codegroup/"+id,
+            method: "PUT",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    init();
+                }
+            },
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            }
+
+        });
+
     }
 
 
