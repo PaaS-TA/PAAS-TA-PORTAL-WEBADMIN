@@ -26,7 +26,7 @@
           <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-aqua">
-              <div class="inner">
+              <div class="inner" data-trigger-type="">
                 <h3 id="organizationCount">&nbsp;</h3>
 
                 <p>조직 수</p>
@@ -43,7 +43,7 @@
           <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-green">
-              <div class="inner">
+              <div class="inner" data-trigger-type="">
                 <h3 id="spaceCount">&nbsp;</h3>
 
                 <p>공간 수</p>
@@ -61,7 +61,7 @@
           <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-yellow">
-              <div class="inner">
+              <div class="inner" data-trigger-type="">
                 <h3 id="applicationCount">&nbsp;</h3>
 
                 <p>APP 수</p>
@@ -78,7 +78,7 @@
           <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-red">
-              <div class="inner">
+              <div class="inner" data-trigger-type="">
                 <h3 id="userCount">&nbsp;</h3>
 
                 <p>사용자 수</p>
@@ -116,7 +116,11 @@
               </div>
               <div class="box-body">
                 <div class="chart">
-                  <canvas id="barChart" style="position: relative; height:50vh; width:80vw"></canvas>
+                  <!--<canvas id="barChart" style="position: relative; height:80vh; width:80vw"></canvas>-->
+                  <div id="chartContainer" style="position: relative; width: 100%; min-height: 400px; margin: 0 auto; display: none;"></div>
+                  <div id="emptySpaceMessageArea" style="display: none;">
+                    <h4 style="text-align:center; min-height: 200px; line-height: 200px;"> 생성된 공간이 없습니다. </h4>
+                  </div>
                 </div>
               </div>
               <!-- /.box-body -->
@@ -137,35 +141,115 @@
 
 </div>
 <!-- ./wrapper -->
+
+<div layout:fragment="custom-area">
+  <script type="text/javascript" src="/resources/js/highcharts.js"
+          th:src="@{../../resources/js/highcharts.js}"></script>
+  <script type="text/javascript" src="/resources/js/exporting.js"
+          th:src="@{../../resources/js/exporting.js}"></script>
+</div>
+
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
   /*<![CDATA[*/
 
 
   var MAIN_DASH_BOARD_URL = "/dashboard";
-  var MAIN_DASH_BOARD_ORGANIZATION_URL = "/v2/statistics/organizations";
   var TOTAL_COUNT_LIST_PROC_URL = "/v2/statistics";
   var TOTAL_ORGANIZATION_LIST_PROC_URL = "/v2/statistics/organizations";
-  var TOTAL_SPACE_LIST_PROC_URL = "/v2/statistics/organizations/{organizationId}/spaces";
 
+  var SPACE_LABEL = "공간";
+  var APP_LABEL   = "APP";
+  var USER_LABEL  = "사용자";
   // ON LOAD
   $(document.body).ready(function() {
     procInitPage();
-//    drawChart();
-    //procAlert("normal", '<spring:message code="common.system.welcome.message" />');
-  });
+
+
+    /*
+      To-Be : 아래 트리거 4개 triggerType 로 하나의 함수로 리팩토링 할것
+    */
+    // 공간 BLock Trigger
+    $('#spaceCount').parent().on("click", function() {
+      $('.highcharts-legend-item').children('text').each(function(index){
+
+        //console.log($('.highcharts-legend-item').children('text'));
+        if($(this).text() != SPACE_LABEL){
+          //console.log($(this).parent().hasClass('highcharts-legend-item-hidden'));
+          if(!$(this).parent().hasClass('highcharts-legend-item-hidden')){
+            $(this).trigger('click');
+          }
+        }else{
+          if($(this).parent().hasClass('highcharts-legend-item-hidden')){
+            $(this).trigger('click');
+          }
+        }
+      })
+    });
+
+
+    // APP BLock Trigger
+    $('#applicationCount').parent().on("click", function() {
+      $('.highcharts-legend-item').children('text').each(function(index){
+
+        //console.log($('.highcharts-legend-item').children('text'));
+        if($(this).text() != APP_LABEL){
+          //console.log($(this).parent().hasClass('highcharts-legend-item-hidden'));
+          if(!$(this).parent().hasClass('highcharts-legend-item-hidden')){
+            $(this).trigger('click');
+          }
+        }else{
+          if($(this).parent().hasClass('highcharts-legend-item-hidden')){
+            $(this).trigger('click');
+          }
+        }
+      })
+    });
+
+    // USER BLock Trigger
+    $('#userCount').parent().on("click", function() {
+      $('.highcharts-legend-item').children('text').each(function(index){
+
+        //console.log($('.highcharts-legend-item').children('text'));
+        if($(this).text() != USER_LABEL){
+          //console.log($(this).parent().hasClass('highcharts-legend-item-hidden'));
+          if(!$(this).parent().hasClass('highcharts-legend-item-hidden')){
+            $(this).trigger('click');
+          }
+        }else{
+          if($(this).parent().hasClass('highcharts-legend-item-hidden')){
+            $(this).trigger('click');
+          }
+        }
+      })
+    });
+
+    // USER BLock Trigger
+    $('#organizationCount').parent().on("click", function() {
+      $('.highcharts-legend-item').children('text').each(function(index){
+        if($(this).parent().hasClass('highcharts-legend-item-hidden')){
+          $(this).trigger('click');
+        }
+      })
+    });
+
+
+  }); // End ready()
 
   // Init
   var procInitPage = function() {
     getTotalCountList();  // 조직 / 공간 / 앱 /사용자 수 조회
     getChartList();       // 조직 / 공간 차트 조회
+
+    //setViewEmptySpaceMessageArea();// empty 테스트
   };
 
-  // GET LIST
+
+  // 조직.공간.앱.사용자 수 조회
   var getTotalCountList = function() {
     procCallAjax2(TOTAL_COUNT_LIST_PROC_URL,"GET", {}, procCallbackGetTotalCountList);
   };
 
-  // GET LIST CALLBACK
+  // 조직.공간.앱.사용자 수 조회 CALLBACK
   var procCallbackGetTotalCountList = function(data) {
     var resultList = data.list[0];
     var organizationCount = $('#organizationCount');
@@ -179,195 +263,276 @@
     userCount.text(resultList.userCount);
   };
 
+
   var getChartList = function(){
-    var organizationId = $('#organizationId').val();
-    if ('' == organizationId) {
       // 조직 공간 앱 사용자 통계정보
       procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList);
-    } else {
-      // 해당 조직의 공간정보 통계정보
-      procCallAjax2(MAIN_DASH_BOARD_ORGANIZATION_URL+"/"+organizationId+"/spaces" ,"GET", {}, procCallbackGetTotalSpaceList);
-    }
+
+//    var organizationId = $('#organizationId').val();
+//    if ('' == organizationId) {
+//      // 조직 공간 앱 사용자 통계정보
+//      procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList);
+//    } else {
+//      // 해당 조직의 공간정보 통계정보
+//      procCallAjax2(MAIN_DASH_BOARD_ORGANIZATION_URL+"/"+organizationId+"/spaces" ,"GET", {}, procCallbackGetTotalSpaceList);
+//    }
   };
 
   // '조직'차트 CALLBACK
     var procCallbackGetTotalOrganizationList = function(data) {
-      var resultList = data.list;
-      var listLength = resultList.length;
-      var arrayOrganizationName = [];
-      var arraySpaceCount = [];
-      var arrayApplicationCount = [];
-      var arrayUserCount = [];
-      var organizationName = '';
+      setOrganizationChart(data);
+  }; // END procCallbackGetTotalOrganizationList
 
-      for (var i = 0; i < listLength; i++) {
-        organizationName = resultList[i].organizationName;
-        arrayOrganizationName.push(organizationName);
 
-        for (var j = 0; j < listLength; j++) {
-          if (organizationName == resultList[j].organizationName) {
-            arraySpaceCount.push(resultList[j].spaceCount);
-            arrayApplicationCount.push(resultList[j].applicationCount);
-            arrayUserCount.push(resultList[j].userCount);
-          }
+  // '조직'차트 Draw
+  var setOrganizationChart = function(data) {
+    var resultList = data.list;
+    var chartContainer = $('#chartContainer');
+    var listLength = resultList.length;
+
+    // SET OPTIONS
+    var chartOptions = setOrganizationChartOptions(resultList);
+
+    // EXECUTE CHART
+    chartContainer.css('height', listLength * 80 + 'px');
+    chartContainer.fadeIn();
+    chartContainer.highcharts(chartOptions);
+
+
+    // Label Rename(seperate '||' Name && Id )
+    var arrayOrganizationName = $('.highcharts-xaxis-labels text');
+
+    for (var i = 0; i < listLength; i++) {
+
+      console.log(arrayOrganizationName.eq(i).text());
+
+      var labelTxt = arrayOrganizationName.eq(i).text().split('||');
+      console.log(labelTxt);
+      arrayOrganizationName.eq(i).text(labelTxt[0]);
+
+      var organizationId = labelTxt[1];
+      console.log("organizationId::"+organizationId);
+
+      //좌측 LABEL(조직명)에 CLICK 이벤트(조직의 공간조회) 등록
+      arrayOrganizationName[i].onclick = function() {
+        //procMovePage(MAIN_DASH_BOARD_ORGANIZATION_URL + "/" + getOrganizationId($(this).children().text(), resultList));
+        getTotalSpaceList(organizationId);
+      };
+
+    }
+
+    $('.highcharts-xaxis-labels tspan').on("mouseover", function() {
+      $(this).attr('style', 'cursor: pointer;');
+    });
+  };
+
+
+  // SET CHART OPTIONS
+  var setOrganizationChartOptions = function(resultList) {
+    var listLength = resultList.length;
+    var arrayOrganizationName = [];
+    var arraySpaceCount = [];
+    var arrayApplicationCount = [];
+    var arrayUserCount = [];
+    var organizationName = '';
+    var organizationId = '';
+
+    for (var i = 0; i < listLength; i++) {
+      organizationName = resultList[i].organizationName;
+      organizationId = resultList[i].organizationId;
+
+      arrayOrganizationName.push(organizationName+'||'+organizationId);
+
+      for (var j = 0; j < listLength; j++) {
+        if (organizationName == resultList[j].organizationName) {
+          arraySpaceCount.push(resultList[j].spaceCount);
+          arrayApplicationCount.push(resultList[j].applicationCount);
+          arrayUserCount.push(resultList[j].userCount);
         }
       }
+    }
 
-      arrayOrganizationName.join(',');
-      arraySpaceCount.join(',');
-      arrayApplicationCount.join(',');
-      arrayUserCount.join(',');
+    arrayOrganizationName.join(',');
+    arraySpaceCount.join(',');
+    arrayApplicationCount.join(',');
+    arrayUserCount.join(',');
 
-      var chartColors = {
-        red: 'rgb(255, 99, 132)',
-        orange: 'rgb(255, 159, 64)',
-        yellow: 'rgb(255, 205, 86)',
-        green: 'rgb(75, 192, 192)',
-        blue: 'rgb(54, 162, 235)',
-        purple: 'rgb(153, 102, 255)',
-        grey: 'rgb(201, 203, 207)'
-      };
-
-      var horizontalBarChartData = {
-        labels: arrayOrganizationName,
-        datasets: [
-          {
-            label: "APP",
-            backgroundColor: Chart.helpers.color(chartColors.red).alpha(0.5).rgbString(), //"#00b0f0",
-            borderColor: chartColors.red,
-            borderWidth: 1,
-            data: arrayApplicationCount //조직의 APP 수치
-          },
-          {
-            label: "공간",
-            backgroundColor: Chart.helpers.color(chartColors.blue).alpha(0.5).rgbString(), //"#00b0f0",
-            borderColor: chartColors.blue,
-            borderWidth: 1,
-            data: arraySpaceCount  // 조작의 공간 수치
-          },
-          {
-            label: "사용자",
-            backgroundColor: Chart.helpers.color(chartColors.purple).alpha(0.5).rgbString(), //"#00b0f0",
-            borderColor: chartColors.purple,
-            borderWidth: 1,
-            data: arrayUserCount  // 조직의 사용자 수
-          }
-        ]
-      };
-
-    //차트 그리기
-    var ctx = document.getElementById("barChart").getContext("2d");
-    var myHorizontalBar = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: horizontalBarChartData,
-      options: {
-
-        elements: {
-          rectangle: {
-            borderWidth: 2,
-          }
-        },
-        responsive: true,
-        legend: {
-          position: 'right', // display: false,
-        },
+    return {
+      legend: {
+        verticalAlign: 'top',
+        align: 'left',
+        itemStyle: {
+          'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'
+        }
+      },
+      colors: ['#F39C12', '#00A65A', '#DD4B39'],
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        text: ''
+      },
+      subtitle: {
+        text: ''
+      },
+      xAxis: {
+        categories: arrayOrganizationName,
+        labels: {
+          style: {'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'}
+        }
+      },
+      yAxis: {
+        min: 0,
         title: {
-          display: false,
-          text: 'Chart.js Horizontal Bar Chart'
-        },
-        scales: {
-          yAxes:[{
-            //barThickness: 20,
-            ticks: {
-              beginAtZero:true,
-              mirror: false,
-            },
-          }],
-        },
+          text: ''
+        }
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: APP_LABEL,
+        data: arrayApplicationCount
+      }, {
+        name: SPACE_LABEL,
+        data: arraySpaceCount
+      }, {
+        name: USER_LABEL,
+        data: arrayUserCount
+      }]
+    };
+  };
 
+
+
+
+  // 조직 차트 셋팅
+  var setSpaceChart = function(data) {
+    var resultList = data.list;
+    var chartContainer = $('#chartContainer');
+    var listLength = resultList.length;
+
+    // CHECK EMPTY SPACE
+    if (0 == listLength) {
+      setViewEmptySpaceMessageArea();
+      return false;
+    }
+
+    // SET OPTIONS
+    var chartOptions = setSpaceChartOptions(resultList);
+
+    // EXECUTE CHART
+    chartContainer.css('height', listLength * 80 + 'px');
+    chartContainer.fadeIn();
+    chartContainer.highcharts(chartOptions);
+
+    // VIEW BUTTON
+    $('#btnMoveMainArea').fadeIn();
+
+    // BIND :: BUTTON EVENT
+//    $("#btnMoveMain").on("click", function() {
+//      procMovePage(MAIN_DASH_BOARD_URL);
+//    })
+  };
+
+  // SET CHART OPTIONS
+  var setSpaceChartOptions = function(resultList) {
+    var listLength = resultList.length;
+    var arraySpaceName = [];
+    var arrayApplicationCount = [];
+    var spaceName = '';
+
+    for (var i = 0; i < listLength; i++) {
+      spaceName = resultList[i].spaceName;
+      arraySpaceName.push(spaceName);
+
+      for (var j = 0; j < listLength; j++) {
+        if (spaceName == resultList[j].spaceName) {
+          arrayApplicationCount.push(resultList[j].applicationCount);
+        }
       }
-    });
+    }
 
+    arraySpaceName.join(',');
+    arrayApplicationCount.join(',');
+
+    return {
+      colors: ['#77807e', '#c0c0c0', '#738de0'],
+
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        text: ''
+      },
+      subtitle: {
+        text: ''
+      },
+      xAxis: {
+        categories: arraySpaceName,
+        labels: {
+          style: {'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'}
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: ''
+        }
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        verticalAlign: 'top',
+        align: 'left',
+        itemStyle: {
+          'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'APP',
+        data: arrayApplicationCount
+      }]
+    };
+  };
+
+
+  // 조직 Label Click Event
+  var getTotalSpaceList = function(reqOrganizationId) {
+    procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL+"/"+reqOrganizationId+"/spaces","GET", {}, procCallbackGetTotalSpaceList);
   };
 
   // '공간'차트 CALLBACK
   var procCallbackGetTotalSpaceList = function(data) {
-    //setSpaceChart(data);
+    setSpaceChart(data);
+
   };
 
 
-//
-//  $(function () {
-//    /* ChartJS
-//     * -------
-//     * Here we will create a few charts using ChartJS
-//     */
-//
-//    //-------------
-//    //- BAR CHART -
-//    //-------------
-//    var barChartCanvas = $('#barChart').get(0).getContext('2d');
-//    var barChart = new Chart(barChartCanvas);
-//
-//
-//    var barChartData = {
-//      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-//      datasets: [
-//        {
-//          label: 'Electronics',
-//          fillColor: 'rgba(210, 214, 222, 1)',
-//          strokeColor: 'rgba(210, 214, 222, 1)',
-//          pointColor: 'rgba(210, 214, 222, 1)',
-//          pointStrokeColor: '#c1c7d1',
-//          pointHighlightFill: '#fff',
-//          pointHighlightStroke: 'rgba(220,220,220,1)',
-//          data: [65, 59, 80, 81, 56, 55, 40]
-//        },
-//        {
-//          label: 'Digital Goods',
-//          fillColor: 'rgba(60,141,188,0.9)',
-//          strokeColor: 'rgba(60,141,188,0.8)',
-//          pointColor: '#3b8bba',
-//          pointStrokeColor: 'rgba(60,141,188,1)',
-//          pointHighlightFill: '#fff',
-//          pointHighlightStroke: 'rgba(60,141,188,1)',
-//          data: [28, 48, 40, 19, 86, 27, 90]
-//        }
-//      ]
-//    }
-//
-//    barChartData.datasets[1].fillColor = '#00a65a'
-//    barChartData.datasets[1].strokeColor = '#00a65a'
-//    barChartData.datasets[1].pointColor = '#00a65a'
-//    var barChartOptions = {
-//      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-//      scaleBeginAtZero: true,
-//      //Boolean - Whether grid lines are shown across the chart
-//      scaleShowGridLines: true,
-//      //String - Colour of the grid lines
-//      scaleGridLineColor: 'rgba(0,0,0,.05)',
-//      //Number - Width of the grid lines
-//      scaleGridLineWidth: 1,
-//      //Boolean - Whether to show horizontal lines (except X axis)
-//      scaleShowHorizontalLines: true,
-//      //Boolean - Whether to show vertical lines (except Y axis)
-//      scaleShowVerticalLines: true,
-//      //Boolean - If there is a stroke on each bar
-//      barShowStroke: true,
-//      //Number - Pixel width of the bar stroke
-//      barStrokeWidth: 2,
-//      //Number - Spacing between each of the X value sets
-//      barValueSpacing: 5,
-//      //Number - Spacing between data sets within X values
-//      barDatasetSpacing: 1,
-//      //Boolean - whether to make the chart responsive
-//      responsive: true,
-//      maintainAspectRatio: true
-//    }
-//
-//    barChartOptions.datasetFill = false
-//    barChart.Bar(barChartData, barChartOptions)
-//  })
+  // VIEW EMPTY SPACE MESSAGE AREA
+  var setViewEmptySpaceMessageArea = function () {
+    $('#emptySpaceMessageArea').fadeIn();
+    $('#btnMoveMainArea').fadeIn();
+
+//    $("#btnMoveMain").on("click", function() {
+//      procMovePage(MAIN_DASH_BOARD_URL);
+//    });
+  };
 
   /*]]>*/
 </script>

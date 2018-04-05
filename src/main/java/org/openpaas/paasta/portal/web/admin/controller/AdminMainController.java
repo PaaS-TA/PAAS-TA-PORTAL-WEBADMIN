@@ -21,19 +21,19 @@ public class AdminMainController extends Common {
 
     private final String V2_URL = "/v2";
 
-    /**
-     * 관리자포탈 조직 선택 메인페이지로 이동한다.
-     *
-     * @param organizationId 조직 아이디(String)
-     * @return ModelAndView(Spring 클래스)
-     */
-    @GetMapping(value = {V2_URL + "/statistics/organizations/{organizationId}"})
-    public ModelAndView getAdminMain(@PathVariable("organizationId") String organizationId) {
-        return new ModelAndView() {{
-            setViewName("/main/main");
-            addObject("ORGANIZATION_ID", organizationId);
-        }};
-    }
+//    /**
+//     * 관리자포탈 조직 선택 메인페이지로 이동한다.
+//     *
+//     * @param organizationId 조직 아이디(String)
+//     * @return ModelAndView(Spring 클래스)
+//     */
+//    @GetMapping(value = {V2_URL + "/statistics/organizations/{organizationId}"})
+//    public ModelAndView getAdminMain(@PathVariable("organizationId") String organizationId) {
+//        return new ModelAndView() {{
+//            setViewName("/main/main");
+//            addObject("ORGANIZATION_ID", organizationId);
+//        }};
+//    }
 
 
     /**
