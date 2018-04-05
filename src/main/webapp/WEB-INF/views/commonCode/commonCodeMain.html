@@ -633,6 +633,17 @@
         });
     }
 
+    //deleteGroup
+    function deleteGroupModal() {
+        var groupId = $("#groupId").val();
+        procCallAjax2("/v2/codegroup/" + groupId, "DELETE", '',deleteGroup);
+        getCodeGroupList();
+    }
+
+    var deleteGroup = function (data) {
+        init();
+    }
+
 
     //createDetail
     function createDetail() {
@@ -641,7 +652,7 @@
         if (!procCheckValidStringSpaceDetail()) {
             return false;
         }
-        alert(groupId);
+
         var param = {
             key: $("#key").val(),
             groupId: groupId,
@@ -745,61 +756,6 @@
             }
         });
     }
-
-
-    var emptyCallback = function (data) {
-
-    }
-    function deleteGroupModal() {
-        var groupId = $("#groupId").val();
-        procCallAjax2("/v2/codegroup/" + groupId, "DELETE", '',emptyCallback);
-        getCodeGroupList();
-    }
-
-
-//    var deleteServiceBroker = function (data) {
-//
-//        var groupId = $("#groupId").val();
-//
-//        $.ajax({
-//            url: "/v2/servicebrokers/"+guid,
-//            method: "DELETE",
-//            dataType: 'json',
-//            contentType: "application/json",
-//            success: function (data) {
-//                if (data) {
-//                    procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
-//                    //location.href = "/service/serviceBrokerMain";
-//                    init();
-//                }
-//            },
-//
-//            error: function (xhr, status, error) {
-//                procAlert('warning', JSON.parse(xhr.responseText).message);
-//            },
-//
-//            complete: function (data) {
-//                //$('div.modal').modal('hide');
-//                $('#serviceBrokerModal').modal('hide');
-//            }
-//        });
-//    }
-//
-//    }
-//
-//    function deleteGroupModal() {
-//        $("#popupTitle").html("서비스 브로커 삭제");
-//        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{service.delete.confirm}]]*/ "");
-//        $("#popupButtonText").text("삭제");
-//        $("#popupButtonText").show();
-//        $('#popupButtonText').attr('onclick', "deleteServiceBroker();");
-//
-//        //$('div.modal').modal('toggle');
-//        $('#serviceBrokerConfirmModal').modal('toggle');
-//    }
-
-
-
 
     /*]]>*/
 </script>
