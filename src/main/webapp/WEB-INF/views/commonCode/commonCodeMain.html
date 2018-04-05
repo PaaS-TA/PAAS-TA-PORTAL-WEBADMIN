@@ -550,43 +550,19 @@
                     + '<td>' + codeDetailList[i].useYn + '</td>'
                     + '</tr>');
             }
-
             objTableArea.append(htmlString).trigger("create");
         }
     };
 
     function getCodeDetail(key) {
-
-        console.log(key);
-
-        $.ajax({
-            url: "/v2/codedetail/" + key,
-            method: "GET",
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                procCallbackGetCodeDetailList(data);
-                console.log(data);
-
-//                if (data) {
-//                    $("#key").val(data.list[0].key);
-//                    $("#value").val(data.list[0].value);
-//                    $("#summary").val(data.list[0].summary);
-//                    $("#useYn").val(data.list[0].useYn);
-//                }
-
-//                $('#codeDetailModal').modal('toggle')
-            }
-        });
+//        console.log(key);
+        procCallAjax2("/v2/codedetail?groupId="+key, 'GET', '', procCallbackGetCodeDetailList);
     }
-
 
     //createGroup
     function createGroup() {
 
-        if (!procCheckValidStringSpaceGroup()) {
-            return false;
-        }
+        if (!procCheckValidStringSpaceGroup()) {return false;}
 
         var param = {
             id: $("#id").val(),
@@ -618,9 +594,7 @@
 
         var id = $('#id').val();
 
-        if (!procCheckValidStringSpaceGroup()) {
-            return false;
-        }
+        if (!procCheckValidStringSpaceGroup()) {return false;}
 
         var param = {
             id: id,
@@ -642,9 +616,7 @@
             error: function (xhr, status, error) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
-
         });
-
     }
 
     //createDetail
@@ -652,9 +624,7 @@
 
         var groupId = $('#id').val();
 
-        if (!procCheckValidStringSpaceDetail()) {
-            return false;
-        }
+        if (!procCheckValidStringSpaceDetail()) {return false;}
 
         var param = {
             id: groupId,
