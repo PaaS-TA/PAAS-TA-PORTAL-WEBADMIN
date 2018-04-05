@@ -291,9 +291,7 @@
 
     // RESET PASSWORD
     var resetPassword = function (reqUserId) {
-        var reqId =  reqUserId.replace("@", "");
-        reqId =  reqId.replace(".", "");
-        userManagementCallAjax(REST_URL+"/" + reqId + "/resetpassword", {userId : reqUserId}, procCallbackResetPassword,"PUT");
+        userManagementCallAjax(REST_URL+"/" + reqUserId + "/resetpassword", {userId : reqUserId}, procCallbackResetPassword,"PUT");
     };
 
 
@@ -308,9 +306,7 @@
 
     // UPDATE OPERATING AUTHORITY
     var updateOperatingAuthority = function (reqUserId) {
-       var reqId =  reqUserId.replace("@", "");
-       reqId =  reqId.replace(".", "");
-        userManagementCallAjax(REST_URL+"/" + reqId + "/authority", {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"PUT");
+        userManagementCallAjax(REST_URL+"/" + reqUserId + "/authority", {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"PUT");
     };
 
 
@@ -325,9 +321,7 @@
 
     // DELETE USER ACCOUNT
     var deleteUserAccount = function (reqUserId) {
-        var reqId =  reqUserId.replace("@", "");
-        reqId =  reqId.replace(".", "");
-        userManagementCallAjax(REST_URL+"/" + reqId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
+        userManagementCallAjax(REST_URL+"/" + reqUserId+ "/authority", {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
     };
 
 
