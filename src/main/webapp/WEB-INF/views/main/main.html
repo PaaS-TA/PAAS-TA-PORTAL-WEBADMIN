@@ -304,10 +304,10 @@
 
     for (var i = 0; i < listLength; i++) {
 
-      console.log(arrayOrganizationName.eq(i).text());
+      //console.log(arrayOrganizationName.eq(i).text());
 
       var labelTxt = arrayOrganizationName.eq(i).text().split('||');
-      console.log(labelTxt);
+      //console.log(labelTxt);
       arrayOrganizationName.eq(i).text(labelTxt[0]);
 
       var organizationId = labelTxt[1];
