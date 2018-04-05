@@ -14,6 +14,7 @@ import java.util.List;
 public class CommonCode {
 
     private String id;
+    private int no;
     private String orgId;
     private String name;
     private String key;
@@ -50,6 +51,14 @@ public class CommonCode {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getNo() {
+        return no;
+    }
+
+    public void setNo(int no) {
+        this.no = no;
     }
 
     /**
@@ -398,6 +407,7 @@ public class CommonCode {
     public String toString() {
         return "CommonCode{" +
                 "id='" + id + '\'' +
+                ", no='" + no + '\'' +
                 ", orgId='" + orgId + '\'' +
                 ", name='" + name + '\'' +
                 ", key='" + key + '\'' +

@@ -58,16 +58,15 @@
                                     <div class="form-group">
 
                                         <div class="b-group pull-right">
-                                            <button type="button" class="btn btn-sm btn-warning" onclick="procMovePage();">추가</button>
-                                            <button type="button" class="b btn btn-sm btn-primary" onclick="procMovePage();">저장</button>
+                                            <button type="button" id="GroupRegister" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#codeGrouprModal">등록</button>
                                         </div><br/>
                                         <label>Group Table</label>
                                         <!--Table -->
                                         <div id="codeGroupMessageArea" class="table-responsive">
                                             <table class="table table-striped">
                                                 <tr>
-                                                    <th style="width:200px">코드</th>
-                                                    <th>코드이름</th>
+                                                    <th style="width:200px">코드 ID</th>
+                                                    <th>코드 이름</th>
                                                 </tr>
                                                 <tbody id="codeGroupTableArea">
                                                 </tbody>
@@ -82,9 +81,7 @@
                                 <div class="col-md-6">
                                     <!-- /.form-group -->
                                     <div class="b-group pull-right">
-                                        <button type="button" class="btn btn-sm btn-warning" onclick="procMovePage();">추가</button>
-                                        <button type="button" class="btn btn-sm btn-danger" onclick="procMovePage();">삭제</button>
-                                        <button type="button" class="b btn btn-sm btn-primary" onclick="procMovePage();">저장</button>
+                                        <button type="button" id="register2" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#codeDetailModal">등록</button>
                                     </div><br/>
                                     <label>Detail Table</label>
                                     <!--Table -->
@@ -115,6 +112,80 @@
                 </div>
             </div>
 
+            <!-- Modal Layer-->
+            <div class="modal fade" id="codeGrouprModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+
+                            <h4 class="modal-title">
+                                <div id="titleReg">코드 등록</div>
+                                <div id="titleDetail">코드 상세</div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <!--<div class="box-header"></div>-->
+                                <!-- /.box-header -->
+                                <!-- form start -->
+                                <form id="codeGrouprForm" class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group">
+                                            <label for="id" class="col-sm-4 control-label">코드 ID</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control toCheckString" id="id" name="id" placeholder="ex) STARTER_CATALOG"/>
+                                                <!--<input type="hidden" id="id"/>-->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-4 control-label">코드 이름</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) 앱 템플릿 카탈로그"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteGroupModal();">삭제</button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateGroup();">저장</button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createGroup();">등록</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="codeGroupConfirmModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
+                                    onclick="procClosePopup('codeGroupConfirmModal');"> 취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Layer-->
+
         </section>
         <!-- /.content -->
     </div>
@@ -127,13 +198,13 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
 
-    var LIST_PROC_URL= "/v2/commoncode"
+//    var LIST_PROC_URL= "/v2/commoncode"
 
-    var LIST_GROUP_PROC_URL ="/v2/groupdetail"
+    var LIST_GROUP_PROC_URL ="/v2/codegroup"
     var LIST_DETAIL_PROC_URL ="/v2/codedetail"
 
-    var INSERT_GROUP_PROC_URL = "/groupdetailForm"
-    var INSERT_DETAIL_PROC_URL = "/codedetailForm"
+//    var INSERT_GROUP_PROC_URL = "/codegroup"
+//    var INSERT_DETAIL_PROC_URL = "/codedetailForm"
 
 
 //    var UPDATE_PROC_URL =
@@ -156,18 +227,40 @@
 
     //  procGetSearchList
     $(document.body).ready(function () {
-        getCodeGroupDetail();
-        getCodeDetailList();
+
+        init();
+
+        $('#GroupRegister').click(function(){
+
+            $('#titleDetail').hide();
+            $('#deleteBtn').hide();
+            $('#saveBtn').hide();
+
+            $('#titleReg').show();
+            $('#regBtn').show();
+            $('#closeBtn').show();
+
+            $("#name").val("");
+            $("#username").val("");
+            $("#password").val("");
+            $("#url").val("");
+            $("#guid").val("");
+        });
+
+
     });
 
-    getSearchList = function () {
-
-        getCodeGroupDetail();
+    function init(){
+        getCodeGroupList();
         getCodeDetailList();
+
+        $('#codeGrouprModal').modal('hide');
+//        $('#serviceBrokerModal').modal({backdrop:'static', keyboard:false});
     }
 
+
     // GET GroupList
-    var getCodeGroupDetail = function (reqParam) {
+    var getCodeGroupList = function (reqParam) {
         var doc = document;
         var searchKeyword = document.getElementById('searchKeyword').value;
         var param = "";
@@ -208,7 +301,7 @@
             var codeGroupList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveDetailInsertForm(\'' + codeGroupList[i].id + '\')">'
+                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')">'
                     + '<td>' + codeGroupList[i].id + '</td>'
                     + '<td>' + codeGroupList[i].name + '</td>'
                     + '</tr>');
@@ -249,20 +342,54 @@
         }
     };
 
+    function getCodeGroup(id) {
 
-    // MOVE PAGE DetailInsertForm
-    var procMoveDetailInsertForm = function (reqParam) {
-        var hiddenForm = $('#codeListGroupHiddenForm');
-        $('#codeListGroupHiddenFormId').val(reqParam);
-        hiddenForm.attr({action: INSERT_GROUP_PROC_URL, method: "POST"}).submit();
-    };
+        $.ajax({
+            url: "/v2/codegroup/"+id,
+            method: "GET",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
 
-    // MOVE PAGE GroupInsertForm
-    var procMoveGroupInsertForm = function (reqParam) {
-        var hiddenForm = $('#codeDetailListGroupHiddenForm');
-        $('#codeDetailListGroupHiddenFormkey').val(reqParam);
-        hiddenForm.attr({action: INSERT_DETAIL_PROC_URL, method: "POST"}).submit();
-    };
+                if (data) {
+                    $("#id").val(data.list[0].id);
+                    $("#name").val(data.list[0].name);
+                }
+
+                $('#codeGrouprModal').modal('toggle');
+            }
+        });
+    }
+
+
+    function createGroup() {
+
+        if (!procCheckValidStringSpace()){return false;}
+
+        var param = {
+            id: $("#id").val(),
+            name: $("#name").val(),
+        }
+
+        $.ajax({
+            url: "/v2/codegroup",
+            method: "POST",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    procAlert("success", /*[[#{service.insert.result.success}]]*/ "");
+                    init();
+                }
+            },
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            }
+
+        });
+    }
+
 
     /*]]>*/
 </script>
