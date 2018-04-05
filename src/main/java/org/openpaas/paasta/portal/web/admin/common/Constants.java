@@ -53,7 +53,7 @@ public class Constants {
     /**
      * 탭 이름 빌드팩
      */
-    public static final String TAB_NAME_BUILD_PACK = "BUILD_PACK";
+    public static final String TAB_NAME_DEVELOP_PACK = "DEVELOP_PACK";
     /**
      * 탭 이름 서비스팩
      */

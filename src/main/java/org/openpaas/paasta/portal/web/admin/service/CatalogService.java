@@ -57,11 +57,11 @@ public class CatalogService {
      */
     public Map<String, Object> getStarterPackCount(Catalog param) {
         String search = "";
-        if (param.getSearchKeyword() != null) {
+        if (param.getName() != null) {
             search = "?";
-            search += "searchKeyword=" + param.getSearchKeyword();
+            search += "name=" + param.getName();
         }
-        return commonService.procCommonApiRestTemplate(V2_URL + "/starterpacks" + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(V2_URL + "/starterpacks/count" + search, HttpMethod.GET, param, null);
     }
 
     /**
@@ -71,6 +71,7 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
     public Map<String, Object> insertStarterPack(Catalog param) {
+        param.setUserId(commonService.getUserId());
         return commonService.procCommonApiRestTemplate(V2_URL + "/starterpacks", HttpMethod.POST, param, null);
     }
 
@@ -81,6 +82,7 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
     public Map<String, Object> updateStarterPack(int no, Catalog param) {
+        param.setUserId(commonService.getUserId());
         return commonService.procCommonApiRestTemplate(V2_URL + "/starterpacks/" + no, HttpMethod.PUT, param, null);
     }
 
@@ -101,7 +103,7 @@ public class CatalogService {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getBuildPackCatalogList(Catalog param) {
+    public Map<String, Object> getDevelopPackCatalogList(Catalog param) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
@@ -117,7 +119,7 @@ public class CatalogService {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getBuildPackCatalog(int no, Catalog param) {
+    public Map<String, Object> getDevelopPackCatalog(int no, Catalog param) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
@@ -134,7 +136,8 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
 
-    public Map<String, Object> getBuildPackCatalogCount(Catalog param) {
+    public Map<String, Object> getDevelopPackCatalogCount(Catalog param) {
+        param.setUserId(commonService.getUserId());
         return commonService.procCommonApiRestTemplate(V2_URL + "/developpacks/count", HttpMethod.GET, param, null);
     }
 
@@ -144,7 +147,8 @@ public class CatalogService {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> insertBuildPackCatalog(Catalog param) {
+    public Map<String, Object> insertDevelopPackCatalog(Catalog param) {
+        param.setUserId(commonService.getUserId());
         return commonService.procCommonApiRestTemplate(V2_URL + "/developpacks", HttpMethod.POST, param, null);
     }
 
@@ -154,7 +158,8 @@ public class CatalogService {
      * @param no int param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> updateBuildPackCatalog(int no, Catalog param) {
+    public Map<String, Object> updateDevelopPackCatalog(int no, Catalog param) {
+        param.setUserId(commonService.getUserId());
         return commonService.procCommonApiRestTemplate(V2_URL + "/developpacks/" + no, HttpMethod.PUT, param, null);
     }
 
@@ -222,6 +227,7 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
     public Map<String, Object> insertServicePackCatalog(Catalog param) {
+        param.setUserId(commonService.getUserId());
         return commonService.procCommonApiRestTemplate(V2_URL + "/servicepacks", HttpMethod.POST, param, null);
     }
 
@@ -232,6 +238,7 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
     public Map<String, Object> updateServicePackCatalog(int no, Catalog param) {
+        param.setUserId(commonService.getUserId());
         return commonService.procCommonApiRestTemplate(V2_URL + "/servicepacks/" + no, HttpMethod.PUT, param, null);
     }
 

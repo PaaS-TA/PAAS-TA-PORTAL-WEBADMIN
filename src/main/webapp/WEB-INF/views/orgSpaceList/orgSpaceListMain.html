@@ -6,7 +6,6 @@
     <script layout:fragment="custom-script">
         var V2_URL = "/v2";
         var GET_ORGS_FOR_ADMIN_URL = V2_URL + "/orgs";
-        var GET_SPACES_FOR_ADMIN_URL = "/orgSpaceList/Space/";
         var OrgSpaceList = V2_URL + "/spaces/";
         var OrgAndSpace = "/OrgAndSpace";
         var Space = "/Space";
@@ -16,6 +15,8 @@
         var quotaName;
         var totalRoutes;
         var paidServices;
+        var totalServices;
+        var MemoryLimit;
 
         var quotaNameSpace;
         var totalRoutesSpace;
@@ -62,7 +63,7 @@
         function getDomains() {
 
             $.ajax({
-                url: "/domain/getDomains/shared",
+                url: V2_URL+ "/domains/shared",
                 method: "GET",
                 dataType: 'json',
                 contentType: "application/json",
@@ -127,7 +128,7 @@
             $("#spaceTable").hide();
             $("#noSpaceMessage").hide();
             currentOrg = orgName;
-            getOrgsForAdmin(OrgSpaceList+orgName, {"orgName":orgName},procCallbackGetSpaces)
+            getOrgsForAdmin(GET_ORGS_FOR_ADMIN_URL+"/"+orgName+"/space", {"orgName":orgName},procCallbackGetSpaces)
         }
 
         var procCallbackGetSpaces = function(data) {
@@ -167,7 +168,7 @@
 
         // GET ORG SUMMARY
         var procGetOrgSummary = function (orgid, quotaid) {
-            $("#modaltitle").html("로딩중");
+            $("#modaltitle").html("조직 상세 정보");
             $("#modalbody").html("데이터를 불러오고 있습니다.");
             getOrgsForAdmin(V2_URL + "/orgs/"+quotaid+"/quota", {}, procCallbackGetOrgQuota);
 
@@ -197,9 +198,6 @@
                 if (i != 0) spaces += " , ";
                 spaces += data.spaces[i].name;
             }
-
-
-            $("#modaltitle").html("조직 상세 정보");
             $("#modalbody").html("<b>Domains</b> : " + domainNames +
                 "<br><b>Quota</b> : " + quotaName + " (" + MemoryLimit + "M memory limit, " + totalRoutes + " routes, " + totalServices + " services, " + paidServices + ")" +
                 "<br><b>Spaces</b> : " + spaces);
@@ -208,7 +206,7 @@
 
         // GET SPACE SUMMARY
         var procGetSpaceSummary = function (spaceId, spaceQuotaId) {
-            $("#modaltitle").html("로딩중");
+            $("#modaltitle").html("영역 상세 정보");
             $("#modalbody").html("데이터를 불러오고 있습니다.");
 
             if(spaceQuotaId != "null") {
@@ -259,7 +257,6 @@
                 services += data.services[i].name;
             }
 
-            $("#modaltitle").html("영역 상세 정보");
             $("#modalbody").html("<b>Org</b> : " + data.name + "<br><b>Apps</b> : " + apps +
                 "<br><b>Domains</b> : " + domainNames +
                 "<br><b>Services</b> : " + services +

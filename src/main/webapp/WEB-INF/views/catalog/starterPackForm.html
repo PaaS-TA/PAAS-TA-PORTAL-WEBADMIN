@@ -9,16 +9,14 @@
     <aside>/</aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div layout:fragment="content" class="content-wrapper"
-         th:with="UPDATE_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}, INSERT_CD = ${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_C} ">
-
+    <div layout:fragment="content" class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
+                <div th:if=" ${REQUEST_NO != ''} ">
                     앱 템플릿 상세
                 </div>
-                <div th:if=" ${INSERT_FLAG} == ${INSERT_CD} ">
+                <div th:if=" ${REQUEST_NO == ''} ">
                     앱 개발환경 등록
                 </div>
             </h1>
@@ -99,9 +97,9 @@
 
                                     <div class="form-group">
                                         <i class="fa fa-fw fa-check-square-o"></i>
-                                        <label for="thumbnail"> 썸네일(50X50)</label>
+                                        <label for="hiddenThumbnail"> 썸네일(50X50)</label>
                                         <p/>
-                                        <input type="file" id="thumbnail"/>
+                                        <input type="file" id="hiddenThumbnail" name="hiddenThumbnail"/>
                                     </div>
                                     <p/><br/>
 
@@ -132,9 +130,9 @@
                                         <div class="form-horizontal" align="right" id="statusActivity">
                                             <div class="divButtons">
                                                 <div>
-                                                    <div th:if=" ${INSERT_FLAG} == ${UPDATE_CD} ">
+                                                    <div th:if=" ${REQUEST_NO != ''} ">
                                                         <button type="button"
-                                                                class="btn btn-cancel btn-default btn-sm pull-left"
+                                                                class="btn btn-cancel btn-default btn-sm pull-left label-danger"
                                                                 id="btnDelete">삭제
                                                         </button>
                                                         <button type="button"
@@ -145,7 +143,7 @@
                                                                 id="btnRegist">저장
                                                         </button>
                                                     </div>
-                                                    <div th:if=" ${INSERT_FLAG} == ${INSERT_CD} ">
+                                                    <div th:if=" ${REQUEST_NO == ''} ">
                                                         <button type="button"
                                                                 class="btn btn-cancel btn-default btn-sm"
                                                                 id="btnCancel">취소
@@ -162,12 +160,10 @@
                                     </div>
                                 </div>
                                 <!--starterForm-->
-                                <input type="hidden" id="resInsertFlag" name="resInsertFlag" value="${INSERT_FLAG}"/>
-                                <input type="hidden" id="resCudU" name="resCudU" value="'${CONSTANT_CUD}"/>
                                 <input type="hidden" id="oldThumbImgPath" name="oldThumbImgPath" value=""/>
                                 <input type="hidden" id="thumbImgPath" name="thumbImgPath" value=""/>
                                 <input type="hidden" id="thumbImgName" name="thumbImgName" value=""/>
-                                <input type="hidden" id="no" name="no" value="${REQUEST_NO}"/>
+
                             </form>
                             <!--<div class="box-body">-->
                         </div>
@@ -187,22 +183,20 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var CATEGORY_HOME_URL = "/catalog/catalogMain";
-    var CATEGORY_LIST_PROC_URL = "/commonCode/getCommonCode";
+    var CATEGORY_HOME_URL = "/catalogs/STATER";
+    var CATEGORY_LIST_PROC_URL = "/v2/codedetail";
 
-    var INSERT_FLAG = "";
-    var DELETE_FLAG = false;
 
-    var STARTER_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CATALOG_ID}]]*/ "";
+    var STARTER_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CATALOG_ID}]]*/ '';
 
-    var BUILD_PACK_NAMES_LIST_PROC_URL = "/catalog/getBuildPackNamesList";
-    var SERVICE_PACK_NAMES_LIST_PROC_URL = "/catalog/getServicePackNamesList";
-
-    var GET_PROC_URL = "/catalog/getOneStarterCatalog";
-    var INSERT_PROC_URL = "/catalog/insertStarterCatalog";
-    var DUPLICATED_PROC_URL = "/catalog/getStarterCatalogCount";
-    var UPDATE_PROC_URL = "/catalog/updateStarterCatalog";
-    //    var DELETE_PROC_URL = "/catalog/deleteStarterCatalog";
+    var BUILD_PACK_NAMES_LIST_PROC_URL = "/v2/developpacks";
+    var SERVICE_PACK_NAMES_LIST_PROC_URL = "/v2/servicepacks";
+    var DUPLICATED_PROC_URL = "/v2/starterpacks/count";
+    var GET_PROC_URL = "/v2/starterpacks";
+    var PROC_URL = "/v2/starterpacks";
+    var INSERT_METHOD = "POST";
+    var UPDATE_METHOD = "PUT";
+    var DELETE_METHOD = "DELETE";
 
     var DELETE_PROC_URL = "/catalog/buildpackCatalogs";
 
@@ -219,6 +213,13 @@
 
     var buildPackCategoryNoFromDB;
     var servicePackCategoryNoListFromDB;
+    var CategoryNoFromDB;
+
+    var REQ_NO = /*[[${REQUEST_NO}]]*/ 0;
+    var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
+    var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
+    var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
+    var EMPTY_MSG = /*[[#{common.info.empty.req.data}]]*/ '';
 
 
     /*CRUD->*/
@@ -242,7 +243,7 @@
             selectedServicePackList[i] = getList.options[i].value;
         }
 
-        param = {
+        var param = {
             name: starterName,
             classification: categoryList,
             thumbImgName: thumbname,
@@ -255,19 +256,11 @@
         };
 
 
-        if ("" != INSERT_FLAG && "<%= Constants.CUD_C %>" == INSERT_FLAG) { // INSERT
-            procCallAjax(INSERT_PROC_URL, param, procCallbackCRUDStarterCatalog);
+        if ("" == REQ_NO && 0 == REQ_NO) { // INSERT
+            procCallAjax2(PROC_URL, INSERT_METHOD, JSON.stringify(param), procCallbackCRUDStarterCatalog);
 
         } else { // UPDATE
-
-            var no = /*${REQUEST_NO}*/"";
-
-            param2 = {
-                no: no,
-                starterCategoryNo: no
-            }
-            $.extend(param, param2);
-            procCallAjax(UPDATE_PROC_URL, param, procCallbackCRUDStarterCatalog);
+            procCallAjax2(PROC_URL + "/" + REQ_NO, UPDATE_METHOD, JSON.stringify(param), procCallbackCRUDStarterCatalog);
         }
 
     }
@@ -280,7 +273,7 @@
 
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
 
-            procAlert("success", '<spring:message code="common.info.result.success" />'); // message api에서 입력안함
+            procAlert("success", SUCCESS_MSG); // message api에서 입력안함
             procMovePage(CATEGORY_HOME_URL);
 
         } else if (RESULT_STATUS_FAIL == data.RESULT) {
@@ -297,7 +290,7 @@
         // starter name
         var starterName = $('#starterName').val();
         if (starterName == '') {
-            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            procAlert("warning", EMPTY_MSG);
             $('#starterName').focus();
             return false;
         }
@@ -310,7 +303,7 @@
         }
 
         if (reqServicePack == '') {
-            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            procAlert("warning", ERROR_MSG);
             $('#selectedServicePackList').focus();
             return false;
         }
@@ -318,7 +311,7 @@
         // summart
         var summary = $('#summary').val();
         if (summary == '') {
-            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            procAlert("warning", EMPTY_MSG);
             $('#summary').focus();
             return false;
         }
@@ -336,11 +329,8 @@
         var currentName = $("#starterName").val();
 
         if (SAVED_NAME != currentName) {    // 이름 변경 -> DB에 동일 이름 있는지 체크 후 -> 파일업로드체크
-
             var param = {name: $('#starterName').val()};
-
-            procCallAjax(DUPLICATED_PROC_URL, param, procCallBackDuplicated);
-
+            procCallAjax2(DUPLICATED_PROC_URL, 'GET', param, procCallBackDuplicated);
         } else {                            // 파일업로드체크
             checkFileUpload2();
         }
@@ -349,7 +339,7 @@
 
     var procCallBackDuplicated = function (data) {
 
-        if (data != -1 && RESULT_STATUS_SUCCESS != data.RESULT) { // db 중복 체크
+        if (data != -1 && 0 < data.startpackcount) { // db 중복 체크
             $('#starterName').focus();
             return false;
         } else { // 중복없음
@@ -366,6 +356,20 @@
 
         else registerStarter();
     }
+
+    // FILE FORM DATA
+    var getFileFormData = function () {
+        var reqThumbnail = $("#hiddenThumbnail");
+
+        if (reqThumbnail[0].files[0] === undefined) return undefined;
+
+        var formData = new FormData();
+
+        formData.append("file", reqThumbnail[0].files[0]);
+
+        return formData;
+    };
+
 
     // UPLOAD FILE
     var uploadFile = function (formData) {
@@ -487,7 +491,7 @@
             };
 
             procCallAjax(IMAGE_DELETE_PROC_URL, param, procCallbackDeleteFile);
-            alert(DELETE_PROC_URL);
+
         }
     };
 
@@ -495,26 +499,7 @@
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
             $("#oldThumbImgPath").val('');
         }
-
-        // DELETE
-        if (DELETE_FLAG) {
-            var no = /*${REQUEST_NO}*/"";
-
-            param = {
-                no: no,
-                starterCategoryNo: no
-            }
-            procCallAjax(DELETE_PROC_URL, param, procCallbackCRUDStarterCatalog);
-
-        }
-        // UPDATE
-        else {// 삭제 후 새파일 업로드! // true check?
-            var formData = getFileFormData();
-
-            if (formData != undefined) uploadFile(formData);
-            else registerStarter();
-
-        }
+        procCallAjax2(PROC_URL + "/" + REQ_NO, DELETE_METHOD, '', procCallbackCRUDStarterCatalog);
     };
     /*<- file upload 관련 */
 
@@ -524,27 +509,19 @@
     $(document.body).ready(function () {
         param = {};
 
-        if (INSERT_FLAG == "<%= Constants.CUD_C %>") { // 등록
+        if (REQ_NO == 0 || REQ_NO == '') { // 등록
 
             buildPackCategoryNoFromDB = -1;
             servicePackCategoryNoListFromDB = null;
-
-            procCallAjax(BUILD_PACK_NAMES_LIST_PROC_URL, param, procCallbackGetBuildPackNamesList);
-            procCallAjax(SERVICE_PACK_NAMES_LIST_PROC_URL, param, procCallbackGetServicePackNamesList);
-            procCallAjax(CATEGORY_LIST_PROC_URL + "/" + STARTER_CATALOG_ID, null, procCallbackCategoryList);
+            CategoryNoFromDB = -1;
+            var param = {"groupId": STARTER_CATALOG_ID};
+            procCallAjax2(BUILD_PACK_NAMES_LIST_PROC_URL, 'GET', '', procCallbackGetBuildPackNamesList);
+            procCallAjax2(SERVICE_PACK_NAMES_LIST_PROC_URL, 'GET', '', procCallbackGetServicePackNamesList);
+            procCallAjax2(CATEGORY_LIST_PROC_URL, 'GET', param, procCallbackCategoryList);
 
 
         } else { // 상세
-
-            var reqNo = /*${REQUEST_NO}*/"";
-
-            if (reqNo != -1) {
-                param = {
-                    no: reqNo
-                }
-                procCallAjax(GET_PROC_URL, param, procCallbackGetOneStarter);
-
-            }
+            procCallAjax2(GET_PROC_URL + "/" + REQ_NO, '', param, procCallbackGetOneStarter);
         }
         // init Thumbnail
         resetThumbnail();
@@ -567,7 +544,7 @@
         DELETE_FLAG = false;
 
         $("#starterName").val(data.info.name);
-        $("#categoryList").val(data.info.classification);
+
         $("#thumbImgName").val(data.info.thumbImgName);
         $("#thumbImgPath").val(data.info.thumbImgPath);
 
@@ -588,11 +565,12 @@
 
         buildPackCategoryNoFromDB = data.info.buildPackCategoryNo;
         servicePackCategoryNoListFromDB = data.info.servicePackCategoryNoList;
+        CategoryNoFromDB = data.info.classification;
+        procCallAjax2(CATEGORY_LIST_PROC_URL, 'GET', param, procCallbackCategoryList);
+        var param = {"groupId": STARTER_CATALOG_ID};
+        procCallAjax2(BUILD_PACK_NAMES_LIST_PROC_URL, 'GET', '', procCallbackGetBuildPackNamesList);
+        procCallAjax2(SERVICE_PACK_NAMES_LIST_PROC_URL, 'GET', '', procCallbackGetServicePackNamesList);
 
-        procCallAjax(BUILD_PACK_NAMES_LIST_PROC_URL, param, procCallbackGetBuildPackNamesList);
-        procCallAjax(SERVICE_PACK_NAMES_LIST_PROC_URL, param, procCallbackGetServicePackNamesList);
-
-        procCallAjax(CATEGORY_LIST_PROC_URL + "/" + STARTER_CATALOG_ID, null, procCallbackCategoryList);
     }
 
     var procCallbackGetBuildPackNamesList = function (data) {
@@ -642,9 +620,23 @@
         var listLength = data.list.length;
         var htmlString = [];
 
-        for (i = 0; i < listLength; i++) {
-            htmlString.push("<option value='" + data.list[i].key + "'>" + data.list[i].value + "</option>");
+        for (var i = 0; i < listLength; i++) {
+            if (CategoryNoFromDB == -1) {  // 등록
+                for (var i = 0; i < data.list.length; i++) {
+                    objSelectBox.append("<option value='" + data.list[i].key + "'> " + data.list[i].value + " </option>");
+                }
+            }
+            else {                                   // 상세
+                for (var i = 0; i < data.list.length; i++) {
+                    if (data.list[i].key == CategoryNoFromDB)
+                        objSelectBox.append("<option value='" + data.list[i].key + "' selected='selected'> " + data.list[i].value + " </option>");
+                    else
+                        objSelectBox.append("<option value='" + data.list[i].key + "'> " + data.list[i].value + " </option>");
+                }
+            }
+
         }
+
 
         objSelectBox.append(htmlString);
 
@@ -669,6 +661,7 @@
         }
         SelectSort(SS2);
     }
+
     function SelectSort(SelList) {
 
         var ID = '';
@@ -701,17 +694,18 @@
 
     // BIND :: BUTTON EVENT
     $("#btnCancel").on("click", function () {
-        history.go(-1);
-//        procMovePage(CATEGORY_HOME_URL + "/" + /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}]]*/);
-//        procMovePage(CATEGORY_HOME_URL + "/<%= Constants.TAB_NAME_STARTER %>");
+        procMovePage(CATEGORY_HOME_URL);
+
     });
 
     // BIND :: BUTTON EVENT
     $("#btnDelete").on("click", function () {
         DELETE_FLAG = true;
-        procPopup('카탈로그', DELETE_MESSAGE, 'procDeleteFile();');
-        $('#btnDelete').html("삭제");
+        // procPopup('카탈로그', DELETE_MESSAGE, 'procDeleteFile();');
+        procDeleteFile();
+
     });
+
 
     $("#btnResetImg").on("click", function () {
 

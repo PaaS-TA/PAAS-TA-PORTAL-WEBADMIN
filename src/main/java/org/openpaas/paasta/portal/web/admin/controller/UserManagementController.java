@@ -3,6 +3,7 @@ package org.openpaas.paasta.portal.web.admin.controller;
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.model.UserManagement;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,7 +29,7 @@ public class UserManagementController extends Common {
      *
      * @return ModelAndView(Spring 클래스)
      */
-    @RequestMapping(value = {"/usermanagements"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/usermgnts"}, method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getUserInfoMain() {
         return userManagementService.getUserInfoMain();
@@ -40,10 +41,16 @@ public class UserManagementController extends Common {
      *
      * @return Map(자바클래스)
      */
-    @GetMapping(V2_URL + "/usermanagements")
+    @GetMapping(V2_URL + "/usermgnts")
     @ResponseBody
     public Map<String, Object> getUserInfoList() {
-        return userManagementService.getUserInfoList("/usermanagements", HttpMethod.GET, null, null);
+        return userManagementService.getUserInfoList("/usermgnts", HttpMethod.GET, null, null);
+    }
+
+    @GetMapping(V2_URL + "/usermgnts/{userid}")
+    @ResponseBody
+    public Map<String, Object> getUserInfoList(@PathVariable String userid) {
+        return userManagementService.getUserInfoList("/usermgnts/" + userid, HttpMethod.GET, null, null);
     }
 
 
@@ -54,10 +61,10 @@ public class UserManagementController extends Common {
      * @param param model UserManagement
      * @return Map(자바클래스)
      */
-    @PutMapping(V2_URL + "/usermanagements/{userid}/resetpassword")
+    @PutMapping(V2_URL + "/usermgnts/{userid}/resetpassword")
     @ResponseBody
     public Map<String, Object> setResetPassword(@PathVariable String userid, @RequestBody UserManagement param) {
-        return userManagementService.setResetPassword("/usermanagements/"+userid+"/resetpassword", HttpMethod.PUT, param, null);
+        return userManagementService.setResetPassword("/usermgnts/"+userid+"/resetpassword", HttpMethod.PUT, param, null);
     }
 
     /**
@@ -66,10 +73,10 @@ public class UserManagementController extends Common {
      * @param param model UserManagement
      * @return Map(자바클래스)
      */
-    @PutMapping(V2_URL + "/usermanagements/{userid}/authority")
+    @PutMapping(V2_URL + "/usermgnts/{userid}/authority")
     @ResponseBody
     public Map<String, Object> updateOperatingAuthority(@PathVariable String userid, @RequestBody UserManagement param ) throws UnsupportedEncodingException {
-        return userManagementService.updateOperatingAuthority("/usermanagements/"+userid+"/authority", HttpMethod.PUT, param, null);
+        return userManagementService.updateOperatingAuthority("/usermgnts/"+userid+"/authority", HttpMethod.PUT, param, null);
     }
 
 
@@ -79,9 +86,9 @@ public class UserManagementController extends Common {
      * @param param model UserManagement
      * @return Map(자바클래스)
      */
-    @DeleteMapping(V2_URL + "/usermanagements/{userid}")
+    @DeleteMapping(V2_URL + "/usermgnts/{userid}/authority")
     @ResponseBody
     public Map<String, Object> deleteUserAccount(@PathVariable String userid, @RequestBody UserManagement param) {
-        return userManagementService.deleteUserAccount("/usermanagements/" + userid, HttpMethod.DELETE, param, null);
+        return userManagementService.deleteUserAccount("/usermgnts/" + userid+"/authority", HttpMethod.DELETE, param, null);
     }
 }

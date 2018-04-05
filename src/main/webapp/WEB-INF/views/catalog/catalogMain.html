@@ -10,7 +10,7 @@
     <!-- Content Wrapper. Contains page content -->
     <div layout:fragment="content" class="content-wrapper">
         <!-- tabNumber hidden value :: tabs -->
-        <input type="hidden" id="tabNumber" value="1"/>
+        <input type="hidden" id="tabName" value="STARTER"/>
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
@@ -49,23 +49,25 @@
                             <!-- Tabs box -->
                             <ul class="nav nav-tabs pull-right ui-sortable-handle">
                                 <!-- chart - 03 -->
-                                <li class=""><a href="#app-service" data-toggle="tab" aria-expanded="false"
-                                                onclick="appbutton('3')">
+                                <li id="SERVICE_PACK"><a href="#SERVICE_PACK_TAB" data-toggle="tab"
+                                                         aria-expanded="false"
+                                                         onclick="appbutton('SERVICE_PACK')">
                                     <i class="fa fa-fw fa-gear"></i>앱 서비스</a></li>
                                 <!-- chart - 02 -->
-                                <li class=""><a href="#app-development-environment" data-toggle="tab"
-                                                onclick="appbutton('2')"
-                                                aria-expanded="false">
+                                <li id="DEVELOP_PACK"><a href="#DEVELOP_PACK_TAB" data-toggle="tab"
+                                                         onclick="appbutton('DEVELOP_PACK')"
+                                                         aria-expanded="false">
                                     <i class="fa fa-fw fa-code-fork"></i>앱 개발환경</a></li>
                                 <!-- chart - 01-->
-                                <li class="active"><a href="#app-template" data-toggle="tab" aria-expanded="true"
-                                                      onclick="appbutton('1')">
+                                <li id="STARTER"><a href="#STARTER_TAB" data-toggle="tab"
+                                                    aria-expanded="true"
+                                                    onclick="appbutton('STARTER')">
                                     <i class="fa fa-fw fa-bookmark-o"></i>앱 템플릿</a></li>
                             </ul>
 
                             <div class="tab-content no-padding">
                                 <!-- chart - 01 -->
-                                <div class="chart tab-pane active" id="app-template"
+                                <div class="chart tab-pane active" id="STARTER_TAB"
                                      style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                     <div id="starterListMessageArea" class="table-responsive">
                                         <table class="table table-striped">
@@ -86,7 +88,7 @@
                                     </form>
                                 </div>
                                 <!-- chart - 02 -->
-                                <div class="chart tab-pane" id="app-development-environment"
+                                <div class="chart tab-pane" id="DEVELOP_PACK_TAB"
                                      style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                     <div id="buildPackMessageArea" class="table-responsive">
                                         <table class="table table-striped">
@@ -107,7 +109,7 @@
                                     </div>
                                 </div>
                                 <!-- chart - 03 -->
-                                <div class="chart tab-pane" id="app-service"
+                                <div class="chart tab-pane" id="SERVICE_PACK_TAB"
                                      style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
                                     <div id="servicePackMessageArea" class="table-responsive">
                                         <table class="table table-striped">
@@ -145,19 +147,36 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var STARTER_LIST_PROC_URL = "/catalogs/starterpacks";
-    var STARTER_INSERT_FORM_URL = "/catalogs/starterForm";
-    var BUILD_PACK_LIST_PROC_URL = "/catalogs/buildpacks";
-    var BUILD_PACK_INSERT_FORM_URL = "/catalogs/buildPackForm";
-    var SERVICE_PACK_LIST_PROC_URL = "/catalogs/servicepacks";
-    var SERVICE_PACK_INSERT_FORM_URL = "/catalogs/servicePackForm";
+    var STARTER_LIST_PROC_URL = "/v2/starterpacks";
+    var STARTER_INSERT_FORM_URL = "/starterpackForm";
+    var DEVELOP_PACK_LIST_PROC_URL = "/v2/developpacks";
+    var DEVELOP_PACK_INSERT_FORM_URL = "/developpackForm";
+    var SERVICE_PACK_LIST_PROC_URL = "/v2/servicepacks";
+    var SERVICE_PACK_INSERT_FORM_URL = "/servicepackForm";
     var CLIENT_LIST = new Array();
+    var TAB_NAME = /*[[${TAB_NAME}]]*/ null;
+    var STARTER_PACK = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}]]*/ null;
+    var DEVELOP_PACK = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_DEVELOP_PACK}]]*/ null;
+    var SERVICE_PACK = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_SERVICE_PACK}]]*/ null;
+
 
     //  procGetSearchList
     $(document.body).ready(function () {
         getStarterList();
         getBuildPackList();
         getServicePackList();
+
+        if (TAB_NAME != null) {
+            $("#" + STARTER_PACK + "_TAB").removeClass('active');
+            $("#" + DEVELOP_PACK + "_TAB").removeClass('active');
+            $("#" + SERVICE_PACK + "_TAB").removeClass('active');
+            $("#" + TAB_NAME).addClass('active');
+            $("#" + TAB_NAME + "_TAB").addClass('active');
+            appbutton(TAB_NAME);
+        } else {
+            $("#STARTER").addClass('active');
+        }
+
     });
 
     getSearchList = function () {
@@ -219,7 +238,7 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax2(BUILD_PACK_LIST_PROC_URL, "GET", param, procCallbackGetBuildPackList);
+        procCallAjax2(DEVELOP_PACK_LIST_PROC_URL, "GET", param, procCallbackGetBuildPackList);
     };
 
     // GET ServicePackList
@@ -337,7 +356,7 @@
     var procMoveBuildPackInsertForm = function (reqParam) {
         var hiddenForm = $('#BuildPackHiddenForm');
         $('#BuildPackHiddenFormNo').val(reqParam);
-        hiddenForm.attr({action: BUILD_PACK_INSERT_FORM_URL, method: "POST"}).submit();
+        hiddenForm.attr({action: DEVELOP_PACK_INSERT_FORM_URL, method: "POST"}).submit();
     };
 
     // MOVE PAGE ServicePackInsertForm
@@ -348,27 +367,29 @@
     };
 
     // MOVE PAGE Button Form
-    var appbutton = function (tabnumber) {
+    var appbutton = function (tabName) {
         $("#btn_insert").text("");
-        if (tabnumber == 3) {
+        if (tabName == SERVICE_PACK) {
             $("#btn_insert").text("서비스 등록");
-        } else if (tabnumber == 2) {
+        } else if (tabName == DEVELOP_PACK) {
             $("#btn_insert").text("앱 개발환경 등록");
 
-        } else if (tabnumber == 1) {
+        } else if (tabName == STARTER_PACK) {
             $("#btn_insert").text("앱 템플릿 등록");
         }
-        $("#tabNumber").val(tabnumber);
+        $("#tabName").val(tabName);
     }
 
     // MOVE TabForm
     var procMoveForm = function () {
-        var tabnumber = $("#tabNumber").val();
-        if (tabnumber == 1) {
+
+        var tabName = $("#tabName").val();
+
+        if (tabName == STARTER_PACK) {
             procMovePage(STARTER_INSERT_FORM_URL);
-        } else if (tabnumber == 2) {
-            procMovePage(BUILD_PACK_INSERT_FORM_URL);
-        } else if (tabnumber == 3) {
+        } else if (tabName == DEVELOP_PACK) {
+            procMovePage(DEVELOP_PACK_INSERT_FORM_URL);
+        } else if (tabName == SERVICE_PACK) {
             procMovePage(SERVICE_PACK_INSERT_FORM_URL);
         }
     }
