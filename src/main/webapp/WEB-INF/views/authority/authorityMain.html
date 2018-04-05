@@ -221,7 +221,8 @@
     }
 
     function createAuthorityGroup(groupToCreate, callback) {
-        AuthorityCallAjax(AUTHORITY_GROUPS_URL,"POST", groupToCreate, callback);
+        var table = {displayName: groupToCreate}
+        AuthorityCallAjax(AUTHORITY_GROUPS_URL,"POST", table, callback);
     }
 
     function deleteAuthorityGroup() {
@@ -431,8 +432,9 @@
             objName.focus();
             return false;
         }
+        authoritymodal("그룹 생성","UAA 권한 그룹을 생성합니다."+reqName+"그룹을 생성 하시겠습니까?",
+            "createAuthorityGroup('"+reqName+"', refreshGroupArea)","저장")
 
-        createAuthorityGroup({"displayName":reqName}, refreshGroupArea)
     }
 
 
@@ -496,11 +498,20 @@
 
     var authoritymodal = function(reqTitle, reqMessage, procFunction, reqButtonText) {
         var objButtonText = $('#modalButtonText');
+        objButtonText.removeClass();
         if (reqTitle == null || reqTitle.length < 1) return false;
         if (reqMessage == null || reqMessage.length < 1) return false;
         if (procFunction == null) return false;
 
         var buttonText = null == reqButtonText || '' == reqButtonText ? reqMessage.split(' ')[0] : reqButtonText;
+        if(reqButtonText == "삭제")
+        {
+            objButtonText.addClass("btn btn-sm btn-danger");
+        }
+        else
+        {
+            objButtonText.addClass("btn btn-sm btn-primary pull-right");
+        }
         $('#modaltitle').html(reqTitle);
         $('#modalbody').html(reqMessage);
         objButtonText.html(buttonText);
