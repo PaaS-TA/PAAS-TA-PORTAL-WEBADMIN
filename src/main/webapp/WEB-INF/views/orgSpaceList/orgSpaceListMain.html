@@ -6,7 +6,6 @@
     <script layout:fragment="custom-script">
         var V2_URL = "/v2";
         var GET_ORGS_FOR_ADMIN_URL = V2_URL + "/orgs";
-        var GET_SPACES_FOR_ADMIN_URL = "/orgSpaceList/Space/";
         var OrgSpaceList = V2_URL + "/spaces/";
         var OrgAndSpace = "/OrgAndSpace";
         var Space = "/Space";
@@ -16,6 +15,8 @@
         var quotaName;
         var totalRoutes;
         var paidServices;
+        var totalServices;
+        var MemoryLimit;
 
         var quotaNameSpace;
         var totalRoutesSpace;
@@ -127,7 +128,7 @@
             $("#spaceTable").hide();
             $("#noSpaceMessage").hide();
             currentOrg = orgName;
-            getOrgsForAdmin(OrgSpaceList+orgName, {"orgName":orgName},procCallbackGetSpaces)
+            getOrgsForAdmin(GET_ORGS_FOR_ADMIN_URL+"/"+orgName+"/space", {"orgName":orgName},procCallbackGetSpaces)
         }
 
         var procCallbackGetSpaces = function(data) {

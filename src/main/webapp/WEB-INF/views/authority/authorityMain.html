@@ -199,6 +199,11 @@
 
                 console.log("ERROR :: error :: ", error);
                 procAlert("danger", JSON.parse(xhr.responseText).message);
+                if(reqMethod == "POST" && reqUrl == AUTHORITY_MEMBER_URL)
+                {
+                    procAlert("danger", "유저등록/삭제 할 수 있는 권한이 없습니다.");
+                }
+
             },
             complete : function(data) {
                 console.log("COMPLETE :: data :: ", data);
