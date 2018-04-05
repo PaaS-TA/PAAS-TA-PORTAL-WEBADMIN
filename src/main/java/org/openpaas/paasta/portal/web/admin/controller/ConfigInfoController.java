@@ -31,8 +31,6 @@ public class ConfigInfoController extends Common {
      * @return value model and view
      * @throws Exception the exception
      */
-    @Autowired
-    ConfigInfoService configInfoService;
 
 
     @GetMapping("/configInfos")

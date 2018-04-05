@@ -21,8 +21,6 @@ import java.util.Map;
 @RestController
 public class AuthorityManagementController extends Common{
 
-    @Autowired
-    private AuthorityManagementService authorityManagementService;
     private final String V2_URL = "/v2";
     /**
      * Gets org space list main.
