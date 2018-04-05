@@ -46,6 +46,9 @@ public class Common {
 
     @Autowired
     public AuthorityManagementService authorityManagementService;
+
+    @Autowired
+    public DomainService domainService;
     /**
      * Get Token
      *

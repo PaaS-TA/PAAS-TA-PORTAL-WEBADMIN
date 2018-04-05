@@ -18,12 +18,11 @@ import java.util.Map;
  * @version 1.0
  * @since 2016.09.19 최초작성
  */
-@Controller
-@RequestMapping(value = {"/domain"})
+@RestController
 public class DomainController extends Common {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DomainController.class);
-
+    private final String V2_URL = "/v2";
     /**
      * 도메인 가져오기
      *
@@ -34,22 +33,13 @@ public class DomainController extends Common {
      * @version 1.0
      * @since 2016.7.26 최초작성
      */
-    @RequestMapping(value = {"/getDomains/{status}"}, method = RequestMethod.GET)
+    @GetMapping(V2_URL+"/domains/{status}")
     @ResponseBody
     public Map<String, Object> getDomains(@PathVariable String status) {
         LOGGER.info("Start getDomains" + status);
-        return commonService.procCfApiRestTemplate("/domain/getDomains/" + status, HttpMethod.GET, null, getToken());
+        return domainService.getDomains("/domains/" + status, HttpMethod.GET, null, getToken());
     }
-    //    public List getDomains(@PathVariable String status) {
-//        LOGGER.info("Start getDomains");
-//
-//        ResponseEntity rssResponse = commonService.procRestTemplate("/domain/getDomains/" + status, HttpMethod.POST, "", getToken(), List.class);
-//        List domains = (List) rssResponse.getBody();
-//
-//        LOGGER.info(rssResponse.getBody().toString());
-//
-//        return domains;
-//    }
+
     /**
      * 도메인 추가
      *
@@ -60,17 +50,11 @@ public class DomainController extends Common {
      * @version 1.0
      * @since 2016.7.27 최초작성
      */
-    @RequestMapping(value = {"/addDomain"}, method = RequestMethod.POST)
+    @PostMapping(V2_URL+"/domains")
     @ResponseBody
-    public boolean addDomain(@RequestBody Map body) {
+    public Map<String, Object> addDomain(@RequestBody Map body) {
         LOGGER.info("Start addDomain");
-
-        ResponseEntity rssResponse = commonService.procRestTemplate("/domain/addDomain/", HttpMethod.POST, body, getToken(), Boolean.class);
-
-        LOGGER.info(rssResponse.getBody().toString());
-        LOGGER.info("End addDomain");
-
-        return true;
+        return domainService.addDomain("/domains", HttpMethod.POST, body, getToken());
     }
 
     /**
@@ -83,16 +67,11 @@ public class DomainController extends Common {
      * @version 1.0
      * @since 2016.7.27 최초작성
      */
-    @RequestMapping(value = {"/deleteDomain"}, method = RequestMethod.POST)
+    @DeleteMapping(V2_URL+"/domains")
     @ResponseBody
-    public boolean deleteDomain(@RequestBody Map body) {
+    public Map<String, Object> deleteDomain(@RequestBody Map body) {
         LOGGER.info("Start deleteDomain");
-
-        ResponseEntity rssResponse = commonService.procRestTemplate("/domain/deleteDomain/", HttpMethod.POST, body, getToken(), Boolean.class);
-        LOGGER.info(rssResponse.getBody().toString());
-        LOGGER.info("End deleteDomain");
-
-        return true;
+        return domainService.deleteDomain("/domains", HttpMethod.DELETE, body, getToken());
     }
 }
 
