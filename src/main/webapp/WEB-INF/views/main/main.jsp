@@ -15,8 +15,8 @@
 <%@ include file="../common/common.jsp"%>
 
 <%--FOR CHARTS--%>
-<script type="text/javascript" src="<c:url value='/resources/js/highcharts.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/js/exporting.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/_highcharts.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/_exporting.js' />"></script>
 
 <%--TITLE--%>
 <div class="col-sm-6 pt30">

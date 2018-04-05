@@ -22,9 +22,11 @@
         <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
         <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;color: white;" id="notice">
-          <i class="fa fa-fw fa-volume-up"></i>
-          <span><b>알림사항</b></span>
-          <span id="alertMsg" th:text="#{common.system.welcome.message}"></span>
+          <div style="display: block;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;">
+            <i class="fa fa-fw fa-volume-up"></i>
+            <span><b>알림사항</b></span>
+            <span id="alertMsg" th:text="#{common.system.welcome.message}"></span>
+          </div>
         </h4>
       </nav>
     </header>
