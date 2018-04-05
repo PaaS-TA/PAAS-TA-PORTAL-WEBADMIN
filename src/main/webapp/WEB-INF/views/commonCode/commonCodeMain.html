@@ -98,7 +98,7 @@
                                         </table>
                                     </div> <!--Table -->
                                     <form id="codeDetailListGroupHiddenForm">
-                                        <input type="hidden" id="codeDetailListGroupHiddenFormkey" name="no" value=""/>
+                                        <input type="hidden" id="codeDetailListGroupHiddenFormkey" name="key" value=""/>
                                     </form>
                                     <!-- /.form-group -->
                                 </div>
@@ -137,7 +137,7 @@
                                         <div class="form-group">
                                             <label for="id" class="col-sm-4 control-label">코드 ID</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="id" name="id" placeholder="ex) STARTER_CATALOG"/>
+                                                <input type="text" class="form-control toCheckString" id="id" name="codeGroup" placeholder="ex) STARTER_CATALOG"/>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
                                         </div>
@@ -145,7 +145,7 @@
                                         <div class="form-group">
                                             <label for="name" class="col-sm-4 control-label">코드 이름</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) 앱 템플릿 카탈로그"/>
+                                                <input type="text" class="form-control toCheckString" id="name" name="codeGroup" placeholder="ex) 앱 템플릿 카탈로그"/>
                                             </div>
                                         </div>
                                     </div>
@@ -188,42 +188,41 @@
                                     <div class="box-body">
 
                                         <div class="form-group">
-                                            <label for="id" class="col-sm-4 control-label">Key</label>
+                                            <label for="key" class="col-sm-4 control-label">Key</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="key" name="key" placeholder="Please enter your key"/>
+                                                <input type="text" class="form-control toCheckString" id="key" name="codeDetail" placeholder="Please enter your key"/>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
                                         </div>
 
 
                                         <div class="form-group">
-                                            <label for="id" class="col-sm-4 control-label">Value</label>
+                                            <label for="value" class="col-sm-4 control-label">Value</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="value" name="value" placeholder="Please enter your value"/>
+                                                <input type="text" class="form-control toCheckString" id="value" name="codeDetail" placeholder="Please enter your value"/>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
                                         </div>
 
 
                                         <div class="form-group">
-                                            <label for="id" class="col-sm-4 control-label">요약</label>
+                                            <label for="summary" class="col-sm-4 control-label">요약</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="summary" name="summary" placeholder="Please enter your summary"/>
+                                                <input type="text" class="form-control toCheckString" id="summary" name="codeDetail" placeholder="Please enter your summary"/>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="name" class="col-sm-4 control-label">사용</label>
+                                            <label for="useYn" class="col-sm-4 control-label">사용</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="useYn" name="useYn" placeholder="Please enter your useYn"/>
+                                                <input type="text" class="form-control toCheckString" id="useYn" name="codeDetail" placeholder="Please enter your useYn"/>
                                             </div>
                                         </div>
 
                                     </div>
                                 </form>
                             </div>
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" id="deleteBtn2" class="btn btn-sm btn-danger pull-left" onClick="deleteDetailModal();">삭제</button>
@@ -301,7 +300,7 @@
 
         $('#GroupRegister').click(function(){
 
-            console.log("GroupRegister");
+            console.log("Init GroupRegister");
 
             $('#titleDetail').hide();
             $('#deleteBtn').hide();
@@ -328,7 +327,7 @@
 
         $('#DetailRegister').click(function(){
 
-            console.log("DetailRegister");
+            console.log("Init DetailRegister");
 
             $('#titleDetail2').hide();
             $('#deleteBtn2').hide();
@@ -369,10 +368,31 @@
         getCodeDetailList();
     }
 
+
     // CHECK SEARCH FORM KEY EVENT
     var procCheckSearchFormKeyEvent = function (e) {
         if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
             getSearchList();
+        }
+    };
+
+
+    // CHECK VALID STRING SPACE : 'name' Unify = codeGroup
+    var procCheckValidStringSpaceGroup = function(reqString) {
+
+        var target = $("input[name='codeGroup'].toCheckString");
+        if($("input[name='reg'].toCheckString").length > 0){
+            console.log("INININ");
+            for(var i = 0; i < target.length; i++ ){
+                console.log("i::"+i);
+                if(0 == target[i].value.replace(/ /g,"").length){
+                    console.log(target[i].value);
+                    return false;
+                }
+            }
+            return true;
+        }else{
+            return false;
         }
     };
 
@@ -437,7 +457,7 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-
+                console.log(data);
                 if (data) {
                     $("#id").val(data.list[0].id);
                     $("#name").val(data.list[0].name);
@@ -467,7 +487,7 @@
             var codeDetailList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveGroupInsertForm(\'' + codeDetailList[i].no + '\')">'
+                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetail(\'' + codeDetailList[i].key + '\')">'
                     + '<td>' + codeDetailList[i].key + '</td>'
                     + '<td>' + codeDetailList[i].value + '</td>'
                     + '<td>' + codeDetailList[i].summary + '</td>'
@@ -479,16 +499,43 @@
         }
     };
 
+    function getCodeDetail(key) {
+
+        $.ajax({
+            url: "/v2/codedetail/"+key,
+            method: "GET",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+
+                console.log(data);
+
+                if (data) {
+                    $("#key").val(data.list[0].key);
+                    $("#value").val(data.list[0].value);
+                    $("#summary").val(data.list[0].summary);
+                    $("#useYn").val(data.list[0].useYn);
+                }
+
+                $('#codeDetailModal').modal('toggle');
+            }
+        });
+    }
+
+
     //createGroup
     function createGroup() {
 
-        if (!procCheckValidStringSpace()){return false;}
+        if (!procCheckValidStringSpaceGroup()){
+            return false;
+        }
 
         var param = {
             id: $("#id").val(),
             name: $("#name").val(),
         }
 
+        console.log(param);
         $.ajax({
             url: "/v2/codegroup",
             method: "POST",
@@ -513,7 +560,7 @@
 
         var id = $('#id').val();
 
-        if (!procCheckValidStringSpace()){return false;}
+        if (!procCheckValidStringSpaceGroup()){return false;}
 
         var param = {
             id: id,
@@ -540,6 +587,37 @@
 
     }
 
+    //createDetail
+    function createDetail() {
+
+        if (!procCheckValidStringSpace()){return false;}
+
+        var param = {
+            key: $("#key").val(),
+            value: $("#value").val(),
+            summary: $("#summary").val(),
+            useYn: $("#useYn").val(),
+        }
+
+        console.log(param);
+        $.ajax({
+            url: "/v2/codedetail",
+            method: "POST",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    init();
+                }
+            },
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            }
+
+        });
+    }
 
     /*]]>*/
 </script>
