@@ -58,15 +58,19 @@
                                     <div class="form-group">
 
                                         <div class="b-group pull-right">
-                                            <button type="button" id="GroupRegister" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#codeGrouprModal">등록</button>
-                                        </div><br/>
+                                            <button type="button" id="GroupRegister" class="btn btn-sm btn-primary"
+                                                    data-toggle="modal" data-target="#codeGrouprModal">등록
+                                            </button>
+                                        </div>
+                                        <br/>
                                         <label>Group Table</label>
                                         <!--Table -->
                                         <div id="codeGroupMessageArea" class="table-responsive">
                                             <table class="table table-striped">
                                                 <tr>
                                                     <th style="width:200px">코드 ID</th>
-                                                    <th>코드 이름</th>
+                                                    <th style="width:200px">코드 이름</th>
+                                                    <th style="width:100px">코드 수정</th>
                                                 </tr>
                                                 <tbody id="codeGroupTableArea">
                                                 </tbody>
@@ -81,8 +85,11 @@
                                 <div class="col-md-6">
                                     <!-- /.form-group -->
                                     <div class="b-group pull-right">
-                                        <button type="button" id="DetailRegister" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#codeDetailModal">등록</button>
-                                    </div><br/>
+                                        <button type="button" id="DetailRegister" class="btn btn-sm btn-primary"
+                                                data-toggle="modal" data-target="#codeDetailModal">등록
+                                        </button>
+                                    </div>
+                                    <br/>
                                     <label>Detail Table</label>
                                     <!--Table -->
                                     <div id="codeDetailMessageArea" class="table-responsive">
@@ -98,7 +105,7 @@
                                         </table>
                                     </div> <!--Table -->
                                     <form id="codeDetailListGroupHiddenForm">
-                                        <input type="hidden" id="codeDetailListGroupHiddenFormkey" name="no" value=""/>
+                                        <input type="hidden" id="codeDetailListGroupHiddenFormkey" name="key" value=""/>
                                     </form>
                                     <!-- /.form-group -->
                                 </div>
@@ -112,7 +119,7 @@
                 </div>
             </div>
 
-            <!-- Modal Layer-->
+            <!-- Modal Layer1 : Group-->
             <div class="modal fade" id="codeGrouprModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -137,7 +144,8 @@
                                         <div class="form-group">
                                             <label for="id" class="col-sm-4 control-label">코드 ID</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="id" name="id" placeholder="ex) STARTER_CATALOG"/>
+                                                <input type="text" class="form-control toCheckString" id="id"
+                                                       name="codeGroup" placeholder="ex) STARTER_CATALOG"/>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
                                         </div>
@@ -145,7 +153,8 @@
                                         <div class="form-group">
                                             <label for="name" class="col-sm-4 control-label">코드 이름</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) 앱 템플릿 카탈로그"/>
+                                                <input type="text" class="form-control toCheckString" id="name"
+                                                       name="codeGroup" placeholder="ex) 앱 템플릿 카탈로그"/>
                                             </div>
                                         </div>
                                     </div>
@@ -154,10 +163,18 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteGroupModal();">삭제</button>
-                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateGroup();">저장</button>
-                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createGroup();">등록</button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left"
+                                    onClick="deleteGroupModal();">삭제
+                            </button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right"
+                                    onClick="updateGroup();">저장
+                            </button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right"
+                                    onClick="createGroup();">등록
+                            </button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left"
+                                    data-dismiss="modal">닫기
+                            </button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -165,20 +182,132 @@
                 <!-- /.modal-dialog -->
             </div>
 
+            <!-- Modal Layer1 : Group-->
+            <div class="modal fade" id="codeDetailModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+
+                            <h4 class="modal-title">
+                                <div id="titleReg2">Detail 등록</div>
+                                <div id="titleDetail2">Detail 상세</div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <!--<div class="box-header"></div>-->
+                                <!-- /.box-header -->
+                                <!-- form start -->
+                                <form id="codeDetailForm" class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group">
+                                            <label for="key" class="col-sm-4 control-label">Key</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control toCheckString" id="key"
+                                                       name="codeDetail" placeholder="Please enter your key"/>
+                                                <!--<input type="hidden" id="id"/>-->
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="value" class="col-sm-4 control-label">Value</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control toCheckString" id="value"
+                                                       name="codeDetail" placeholder="Please enter your value"/>
+                                                <!--<input type="hidden" id="id"/>-->
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="summary" class="col-sm-4 control-label">요약</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control toCheckString" id="summary"
+                                                       name="codeDetail" placeholder="Please enter your summary"/>
+                                                <!--<input type="hidden" id="id"/>-->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="useYn" class="col-sm-4 control-label">사용</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control toCheckString" id="useYn"
+                                                       name="codeDetail" placeholder="Please enter your useYn"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="deleteBtn2" class="btn btn-sm btn-danger pull-left"
+                                    onClick="deleteDetailModal();">삭제
+                            </button>
+                            <button type="button" id="saveBtn2" class="btn btn-sm btn-primary pull-right"
+                                    onClick="updateDetail();">저장
+                            </button>
+                            <button type="button" id="regBtn2" class="btn btn-sm btn-primary pull-right"
+                                    onClick="createDetail();">등록
+                            </button>
+                            <button type="button" id="closeBtn2" class="btn btn-sm btn-default pull-left"
+                                    data-dismiss="modal">닫기
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- Modal Layer2-->
+
             <div class="modal fade" tabindex="-1" role="dialog" id="codeGroupConfirmModal">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true"> &times; </span></button>
                             <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
                         </div>
                         <div class="modal-body">
                             <p id="popupMessage"> MESSAGE </p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"
+                                    id="popupButtonText"> SAVE CHANGES
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"
+                                    id="popupCancelButtonText"
                                     onclick="procClosePopup('codeGroupConfirmModal');"> 취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="codeDetailConfirmModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle2" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage2"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"
+                                    id="popupButtonText2"> SAVE CHANGES
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"
+                                    id="popupCancelButtonText2"
+                                    onclick="procClosePopup('codeDetailConfirmModal');"> 취소
                             </button>
                         </div>
                     </div>
@@ -198,41 +327,17 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
 
-//    var LIST_PROC_URL= "/v2/commoncode"
-
-    var LIST_GROUP_PROC_URL ="/v2/codegroup"
-    var LIST_DETAIL_PROC_URL ="/v2/codedetail"
-
-//    var INSERT_GROUP_PROC_URL = "/codegroup"
-//    var INSERT_DETAIL_PROC_URL = "/codedetailForm"
-
-
-//    var UPDATE_PROC_URL =
-//    var UPDATE_GROUP_PROC_URL =
-//
-//    var DELETE_DETAIL_PROC_URL = "
-//    var DELETE_GROUP_PROC_URL = "
-
-    var CLIENT_LIST = new Array();
-
-    var PROC_TYPE_COMMON_CODE_GROUP = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_GROUP}]]*/ "";
-    var PROC_TYPE_COMMON_CODE_DETAIL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PROC_NAME_COMMON_CODE_DETAIL}]]*/ "";
-    var RESULT_STATUS_FAIL_DUPLICATED = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).RESULT_STATUS_FAIL_DUPLICATED}]]*/ "";
-
-    var GROUP_ID = "";
-    var LAST_USE_YN = "";
-    var LAST_CHECKED_LIST = [];
-    var EDIT_CELL_INDEX_GRID_01 = 0;
-    var EDIT_CELL_INDEX_GRID_02 = 0;
+    var LIST_GROUP_PROC_URL = "/v2/codegroup"
+    var LIST_DETAIL_PROC_URL = "/v2/codedetail"
 
     //  procGetSearchList
     $(document.body).ready(function () {
 
         init();
 
-        $('#GroupRegister').click(function(){
+        $('#GroupRegister').click(function () {
 
-            console.log("GroupRegister");
+            console.log("Init GroupRegister");
 
             $('#titleDetail').hide();
             $('#deleteBtn').hide();
@@ -246,7 +351,7 @@
             $("#name").val("");
         });
 
-        $('#codeGroupTableArea').click(function(){
+        $('#codeGroupTableArea').click(function () {
 
             $('#titleDetail').show();
             $('#deleteBtn').show();
@@ -257,15 +362,92 @@
             //$('#closeBtn').hide();
         });
 
+        $('#DetailRegister').click(function () {
+
+            console.log("Init DetailRegister");
+
+            $('#titleDetail2').hide();
+            $('#deleteBtn2').hide();
+            $('#saveBtn2').hide();
+
+            $('#titleReg2').show();
+            $('#regBtn2').show();
+            $('#closeBtn2').show();
+
+            $("#key").val("");
+            $("#value").val("");
+            $("#summary").val("");
+            $("#useYn").val("");
+        });
+
+        $('#codeDetailGroupTableArea').click(function () {
+
+            $('#titleDetail2').show();
+            $('#deleteBtn2').show();
+            $('#saveBtn2').show();
+
+            $('#titleReg2').hide();
+            $('#regBtn2').hide();
+        });
 
     });
 
-    function init(){
+    function init() {
         getCodeGroupList();
         getCodeDetailList();
 
         $('#codeGrouprModal').modal('hide');
+        $('#codeDetailModal').modal('hide');
     }
+
+    getSearchList = function () {
+        getCodeGroupList();
+        getCodeDetailList();
+    }
+
+
+    // CHECK SEARCH FORM KEY EVENT
+    var procCheckSearchFormKeyEvent = function (e) {
+        if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
+            getSearchList();
+        }
+    };
+
+
+    // CHECK VALID STRING SPACE : 'name' Unify = codeGroup
+    var procCheckValidStringSpaceGroup = function (reqString) {
+
+        var target = $("input[name='codeGroup'].toCheckString");
+        if ($("input[name='codeGroup'].toCheckString").length > 0) {
+            for (var i = 0; i < target.length; i++) {
+                if (0 == target[i].value.replace(/ /g, "").length) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    // CHECK VALID STRING SPACE : 'name' Unify = codeDetail
+    var procCheckValidStringSpaceDetail = function (reqString) {
+
+        var target = $("input[name='codeDetail'].toCheckString");
+        if ($("input[name='codeDetail'].toCheckString").length > 0) {
+            console.log("INININ");
+            for (var i = 0; i < target.length; i++) {
+                console.log("i::" + i);
+                if (0 == target[i].value.replace(/ /g, "").length) {
+                    console.log(target[i].value);
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    };
 
 
     // GET GroupList searchKeyword
@@ -310,25 +492,28 @@
             var codeGroupList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')">'
+                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">'
                     + '<td>' + codeGroupList[i].id + '</td>'
                     + '<td>' + codeGroupList[i].name + '</td>'
+                    + '<td>'
+                    + ' <button type="button" name="codeDetailBtn" class=" btn btn-sm btn-warning" onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')">수정</button> '
+                    + '</td>'
                     + '</tr>');
             }
-
             objTableArea.append(htmlString).trigger("create");
         }
     };
 
+
     function getCodeGroup(id) {
 
         $.ajax({
-            url: "/v2/codegroup/"+id,
+            url: "/v2/codegroup/" + id,
             method: "GET",
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-
+                console.log(data);
                 if (data) {
                     $("#id").val(data.list[0].id);
                     $("#name").val(data.list[0].name);
@@ -358,28 +543,33 @@
             var codeDetailList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveGroupInsertForm(\'' + codeDetailList[i].no + '\')">'
+                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetail(\'' + codeDetailList[i].key + '\')">'
                     + '<td>' + codeDetailList[i].key + '</td>'
                     + '<td>' + codeDetailList[i].value + '</td>'
                     + '<td>' + codeDetailList[i].summary + '</td>'
                     + '<td>' + codeDetailList[i].useYn + '</td>'
                     + '</tr>');
             }
-
             objTableArea.append(htmlString).trigger("create");
         }
     };
 
+    function getCodeDetail(key) {
+//        console.log(key);
+        procCallAjax2("/v2/codedetail?groupId="+key, 'GET', '', procCallbackGetCodeDetailList);
+    }
+
     //createGroup
     function createGroup() {
 
-        if (!procCheckValidStringSpace()){return false;}
+        if (!procCheckValidStringSpaceGroup()) {return false;}
 
         var param = {
             id: $("#id").val(),
             name: $("#name").val(),
         }
 
+        console.log(param);
         $.ajax({
             url: "/v2/codegroup",
             method: "POST",
@@ -404,7 +594,7 @@
 
         var id = $('#id').val();
 
-        if (!procCheckValidStringSpace()){return false;}
+        if (!procCheckValidStringSpaceGroup()) {return false;}
 
         var param = {
             id: id,
@@ -412,8 +602,42 @@
         }
 
         $.ajax({
-            url: "/v2/codegroup/"+id,
+            url: "/v2/codegroup/" + id,
             method: "PUT",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    init();
+                }
+            },
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            }
+        });
+    }
+
+    //createDetail
+    function createDetail(id) {
+
+        var groupId = $('#id').val();
+
+        if (!procCheckValidStringSpaceDetail()) {return false;}
+
+        var param = {
+            id: groupId,
+            key: $("#key").val(),
+            value: $("#value").val(),
+            summary: $("#summary").val(),
+            useYn: $("#useYn").val(),
+        }
+
+        console.log(param);
+        $.ajax({
+            url: "/v2/codedetail" + id,
+            method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",
@@ -428,11 +652,10 @@
             }
 
         });
-
     }
-
 
     /*]]>*/
 </script>
+
 </body>
 </html>
