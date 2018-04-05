@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * Created by MIN on 2018-04-05.
  */
+@Service
 public class DomainService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DomainController.class);
     private final String V2_URL = "/v2";
