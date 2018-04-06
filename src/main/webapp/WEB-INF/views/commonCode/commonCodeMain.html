@@ -407,7 +407,6 @@
 
     function init() {
         getCodeGroupList();
-//        getCodeDetailList();
 
 //        $('#useYn').attr('checked', true);
         $("#DetailRegister").hide();
@@ -555,8 +554,8 @@
             var codeDetailList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-//                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetail(\'' + codeDetailList[i].key + '\')">'
-                htmlString.push('<tr style="cursor:pointer;">'
+                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetailTable(\'' + codeDetailList[i].key + '\')">'
+//                htmlString.push('<tr style="cursor:pointer;">'
                     + '<td>' + codeDetailList[i].key + '</td>'
                     + '<td>' + codeDetailList[i].value + '</td>'
                     + '<td>' + codeDetailList[i].summary + '</td>'
@@ -573,6 +572,32 @@
         $("#groupId").val(key);
         procCallAjax2("/v2/codedetail?groupId=" + key, 'GET', '', procCallbackGetCodeDetailList);
     }
+
+
+    function getCodeDetailTable(key) {
+
+        $("#groupId").val(key);
+
+        $.ajax({
+            url: "/v2/codedetail?key="+key,
+            method: "GET",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+
+                if (data) {
+                    $("#key").val(data.list[0].key);
+                    $("#value").val(data.list[0].value);
+                    $("#summary").val(data.list[0].summary);
+                    $("#useYn").val(data.list[0].useYn);
+                }
+
+                $('#codeDetailModal').modal('toggle');
+            }
+        });
+    }
+
+
 
     //createGroup
     function createGroup() {
