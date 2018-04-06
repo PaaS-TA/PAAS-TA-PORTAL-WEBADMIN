@@ -225,11 +225,18 @@
 
     // USER BLock Trigger
     $('#organizationCount').parent().on("click", function() {
-      $('.highcharts-legend-item').children('text').each(function(index){
-        if($(this).parent().hasClass('highcharts-legend-item-hidden')){
-          $(this).trigger('click');
-        }
-      })
+
+      if($('.highcharts-legend-item').children('text').length == 1){
+        getChartList();
+      }else{
+
+        $('.highcharts-legend-item').children('text').each(function(index){
+          if($(this).parent().hasClass('highcharts-legend-item-hidden')){
+            $(this).trigger('click');
+          }
+        })
+
+      }
     });
 
 
@@ -267,15 +274,6 @@
   var getChartList = function(){
       // 조직 공간 앱 사용자 통계정보
       procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList);
-
-//    var organizationId = $('#organizationId').val();
-//    if ('' == organizationId) {
-//      // 조직 공간 앱 사용자 통계정보
-//      procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList);
-//    } else {
-//      // 해당 조직의 공간정보 통계정보
-//      procCallAjax2(MAIN_DASH_BOARD_ORGANIZATION_URL+"/"+organizationId+"/spaces" ,"GET", {}, procCallbackGetTotalSpaceList);
-//    }
   };
 
   // '조직'차트 CALLBACK
@@ -305,23 +303,22 @@
     for (var i = 0; i < listLength; i++) {
 
       //console.log(arrayOrganizationName.eq(i).text());
-//랜더링 되기전에 처리
+      //랜더링 되기전에 처리
       var labelTxt = arrayOrganizationName.eq(i).text().split('||');
       arrayOrganizationName.eq(i).text(labelTxt[0]); // 조직 Label Name
 
       var organizationId = labelTxt[1];
-      //console.log("organizationId::"+organizationId);
 
       //좌측 LABEL(조직명)에 CLICK 이벤트 등록 : 조직의 공간 내역조회
       $('.highcharts-xaxis-labels text').eq(i).on('click',{value:organizationId} ,function(event){
         getTotalSpaceList(event.data.value);
       });
 
+      $('.highcharts-xaxis-labels tspan').eq(i).on("mouseover", function() {
+        $(this).attr('style', 'cursor: pointer;');
+      });
     }
 
-    $('.highcharts-xaxis-labels tspan').on("mouseover", function() {
-      $(this).attr('style', 'cursor: pointer;');
-    });
   };
 
 
@@ -398,19 +395,7 @@
       series: [
         {
           name: APP_LABEL,
-          data: arrayApplicationCount,
-
-          animation: {
-            complete: function () { // Label replace 작업은 animate complete 이후 처리하면 너무 느립니다.
-              console.log('a1 - fired after animation of each element');
-            },
-            events: {
-              afterAnimate: function (ev) {
-                console.log('fired only once for each series');
-              }
-            }
-          }
-
+          data: arrayApplicationCount
         }, {
           name: SPACE_LABEL,
           data: arraySpaceCount
