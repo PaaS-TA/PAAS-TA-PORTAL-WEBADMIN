@@ -236,10 +236,16 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="useYn" class="col-sm-4 control-label">사용</label>
+                                            <label class="col-sm-4 control-label">사용</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="useYn"
-                                                       name="codeDetail" placeholder="Please enter your Y or N"/>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" id="useYn" name="codeDetail" th:checked="${true}"
+                                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>Y
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                         <input type="radio" id="useYn" name="codeDetail"
+                                                           th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/>N
+                                                    </label>
                                             </div>
                                         </div>
 
@@ -335,7 +341,7 @@
     var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
     var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
-    var EMPTY_MSG = /*[[#{common.info.empty.req.data}]]*/ '';
+    var EMPTY_MSG = /*[[#{common.info.empty.data}]]*/ '';
 
     //  procGetSearchList
     $(document.body).ready(function () {
@@ -384,7 +390,7 @@
             $("#key").val("");
             $("#value").val("");
             $("#summary").val("");
-            $("#useYn").val("");
+            //$("#useYn").val("");
         });
 
         $('#codeDetailGroupTableArea').click(function () {
@@ -400,10 +406,11 @@
     });
 
     function init() {
-        $("#DetailRegister").hide();
-
         getCodeGroupList();
 //        getCodeDetailList();
+
+//        $('#useYn').attr('checked', true);
+        $("#DetailRegister").hide();
 
         $('#codeGrouprModal').modal('hide');
         $('#codeDetailModal').modal('hide');
@@ -411,7 +418,7 @@
 
     getSearchList = function () {
         getCodeGroupList();
-//        getCodeDetailList();
+        getCodeDetailList();
     }
 
 
@@ -444,12 +451,9 @@
 
         var target = $("input[name='codeDetail'].toCheckString");
         if ($("input[name='codeDetail'].toCheckString").length > 0) {
-            console.log("INININ");
             for (var i = 0; i < target.length; i++) {
-                console.log("i::" + i);
                 if (0 == target[i].value.replace(/ /g, "").length) {
                     console.log(target[i].value);
-                    return false;
                 }
             }
             return true;
@@ -492,9 +496,8 @@
         var htmlString = [];
 
         objTableArea.html('');
-        console.log('지워');
         if (listLength < 1) {
-            objMessageArea.append(EMPTY_MSG);
+//            objMessageArea.append(EMPTY_MSG);
             objMessageArea.show();
 
         } else {
@@ -505,9 +508,7 @@
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].id + '</td>'
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].name + '</td>'
                     + '<td>'
-
-                    + ' <span class="glyphicon glyphicon-list-alt"  name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')" ></span>'
-
+                    + ' <span class="glyphicon glyphicon-list-alt" name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')" ></span>'
                     + '</td>'
                     + '</tr>');
             }
@@ -653,16 +654,19 @@
     function createDetail() {
 
         var groupId = $('#groupId').val();
+        var reqUseYn = $("input:radio[id='useYn']:checked").val();
+        var param = $("#codeDetailForm").serializeObject();
+
         if (!procCheckValidStringSpaceDetail()) {
             return false;
         }
 
         var param = {
-            key: $("#key").val(),
             groupId: groupId,
+            key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: $("#useYn").val(),
+            useYn: reqUseYn,
         }
 
         console.log(param);
