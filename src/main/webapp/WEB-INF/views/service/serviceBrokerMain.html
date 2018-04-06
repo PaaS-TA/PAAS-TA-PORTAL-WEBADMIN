@@ -344,7 +344,7 @@
         }
 
         $.ajax({
-            url: "/v2/servicebrokers"+guid,
+            url: "/v2/servicebrokers",
             method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -357,6 +357,7 @@
                 }
             },
             error: function (xhr, status, error) {
+
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
 

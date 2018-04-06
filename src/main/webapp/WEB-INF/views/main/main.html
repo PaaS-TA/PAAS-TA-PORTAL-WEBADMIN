@@ -225,11 +225,18 @@
 
     // USER BLock Trigger
     $('#organizationCount').parent().on("click", function() {
-      $('.highcharts-legend-item').children('text').each(function(index){
-        if($(this).parent().hasClass('highcharts-legend-item-hidden')){
-          $(this).trigger('click');
-        }
-      })
+
+      if($('.highcharts-legend-item').children('text').length == 1){
+        getChartList();
+      }else{
+
+        $('.highcharts-legend-item').children('text').each(function(index){
+          if($(this).parent().hasClass('highcharts-legend-item-hidden')){
+            $(this).trigger('click');
+          }
+        })
+
+      }
     });
 
 
@@ -267,15 +274,6 @@
   var getChartList = function(){
       // 조직 공간 앱 사용자 통계정보
       procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList);
-
-//    var organizationId = $('#organizationId').val();
-//    if ('' == organizationId) {
-//      // 조직 공간 앱 사용자 통계정보
-//      procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList);
-//    } else {
-//      // 해당 조직의 공간정보 통계정보
-//      procCallAjax2(MAIN_DASH_BOARD_ORGANIZATION_URL+"/"+organizationId+"/spaces" ,"GET", {}, procCallbackGetTotalSpaceList);
-//    }
   };
 
   // '조직'차트 CALLBACK
@@ -305,25 +303,22 @@
     for (var i = 0; i < listLength; i++) {
 
       //console.log(arrayOrganizationName.eq(i).text());
-
+      //랜더링 되기전에 처리
       var labelTxt = arrayOrganizationName.eq(i).text().split('||');
-      //console.log(labelTxt);
-      arrayOrganizationName.eq(i).text(labelTxt[0]);
+      arrayOrganizationName.eq(i).text(labelTxt[0]); // 조직 Label Name
 
       var organizationId = labelTxt[1];
-      console.log("organizationId::"+organizationId);
 
-      //좌측 LABEL(조직명)에 CLICK 이벤트(조직의 공간조회) 등록
-      arrayOrganizationName[i].onclick = function() {
-        //procMovePage(MAIN_DASH_BOARD_ORGANIZATION_URL + "/" + getOrganizationId($(this).children().text(), resultList));
-        getTotalSpaceList(organizationId);
-      };
+      //좌측 LABEL(조직명)에 CLICK 이벤트 등록 : 조직의 공간 내역조회
+      $('.highcharts-xaxis-labels text').eq(i).on('click',{value:organizationId} ,function(event){
+        getTotalSpaceList(event.data.value);
+      });
 
+      $('.highcharts-xaxis-labels tspan').eq(i).on("mouseover", function() {
+        $(this).attr('style', 'cursor: pointer;');
+      });
     }
 
-    $('.highcharts-xaxis-labels tspan').on("mouseover", function() {
-      $(this).attr('style', 'cursor: pointer;');
-    });
   };
 
 
@@ -397,16 +392,18 @@
       credits: {
         enabled: false
       },
-      series: [{
-        name: APP_LABEL,
-        data: arrayApplicationCount
-      }, {
-        name: SPACE_LABEL,
-        data: arraySpaceCount
-      }, {
-        name: USER_LABEL,
-        data: arrayUserCount
-      }]
+      series: [
+        {
+          name: APP_LABEL,
+          data: arrayApplicationCount
+        }, {
+          name: SPACE_LABEL,
+          data: arraySpaceCount
+        }, {
+          name: USER_LABEL,
+          data: arrayUserCount
+        }
+      ]
     };
   };
 
@@ -442,7 +439,7 @@
 //    })
   };
 
-  // SET CHART OPTIONS
+  // 조직 차트 옵션 셋팅
   var setSpaceChartOptions = function(resultList) {
     var listLength = resultList.length;
     var arraySpaceName = [];

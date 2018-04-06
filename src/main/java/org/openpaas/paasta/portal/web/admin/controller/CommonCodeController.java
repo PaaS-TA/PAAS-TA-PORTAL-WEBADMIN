@@ -70,6 +70,7 @@ public class CommonCodeController extends Common {
     @GetMapping(V2_URL +"/codegroup")
     @ResponseBody
     public Map<String, Object> getGroupDetailList(@ModelAttribute CommonCode param) {
+         LOGGER.info(param.toString());
         return commonCodeService.getGroupDetailList(param);
     }
 
