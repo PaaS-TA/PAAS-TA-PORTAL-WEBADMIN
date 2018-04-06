@@ -21,6 +21,7 @@ public class CommonCode {
     private String orgKey;
     private String value;
     private String groupId;
+    private String group_id;
     private String useYn;
     private int order;
     private String summary;
@@ -402,6 +403,8 @@ public class CommonCode {
     public void setCommonCodeList(List<CommonCode> commonCodeList) {
         this.commonCodeList = commonCodeList;
     }
+
+
 
     @Override
     public String toString() {

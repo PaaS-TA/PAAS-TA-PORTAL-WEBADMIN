@@ -28,6 +28,11 @@ public class CommonCodeService {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
+        if (param.getGroupId() != null) {
+            search = "?";
+            search += "groupId=" + param.getGroupId();
+        }
+
         return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + search, HttpMethod.GET, param, null);
     }
 
@@ -56,11 +61,13 @@ public class CommonCodeService {
      */
     public Map<String,Object> getGroupDetailList(CommonCode param) {
         String search = "";
+
         if (param.getSearchKeyword() != null) {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + search, HttpMethod.GET, param, null);
+
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup" + search, HttpMethod.GET, param, null);
     }
 
 

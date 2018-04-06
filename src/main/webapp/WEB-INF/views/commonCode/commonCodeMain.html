@@ -30,7 +30,6 @@
                                 <div class="col-sm-12">
                                     <div class="row">
                                         <div class="col-xs-5 col-sm-7">
-                                            <i class="fa fa-fw fa-th-list"></i>
                                             <!--<button type="button" id="register" class="btn btn-primary btn-sm pull-left" onclick="procMovePage(GET_CLIENT_FORM);">-->
                                             <!--클라이언트 등록-->
                                             <!--</button>-->
@@ -63,6 +62,7 @@
                                             </button>
                                         </div>
                                         <br/>
+                                        <i class="fa fa-fw fa-th-list"></i>
                                         <label>Group Table</label>
                                         <!--Table -->
                                         <div id="codeGroupMessageArea" class="table-responsive">
@@ -70,7 +70,7 @@
                                                 <tr>
                                                     <th style="width:200px">코드 ID</th>
                                                     <th style="width:200px">코드 이름</th>
-                                                    <th style="width:100px">코드 수정</th>
+                                                    <th style="width:50px"><i class="fa fa-fw fa-ellipsis-v"></i></th>
                                                 </tr>
                                                 <tbody id="codeGroupTableArea">
                                                 </tbody>
@@ -90,6 +90,7 @@
                                         </button>
                                     </div>
                                     <br/>
+                                    <i class="fa fa-fw fa-th-list"></i>
                                     <label>Detail Table</label>
                                     <!--Table -->
                                     <div id="codeDetailMessageArea" class="table-responsive">
@@ -101,6 +102,7 @@
                                                 <th style="width:200px">사용</th>
                                             </tr>
                                             <tbody id="codeDetailGroupTableArea">
+                                            <td colspan="4" style="text-align: center;">선택된 GROUP이 없습니다.</td>
                                             </tbody>
                                         </table>
                                     </div> <!--Table -->
@@ -191,8 +193,8 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="titleReg2">Detail 등록</div>
-                                <div id="titleDetail2">Detail 상세</div>
+                                <div id="titleReg2">코드 상세 등록</div>
+                                <div id="titleDetail2">코드 상세</div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -237,7 +239,7 @@
                                             <label for="useYn" class="col-sm-4 control-label">사용</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="useYn"
-                                                       name="codeDetail" placeholder="Please enter your useYn"/>
+                                                       name="codeDetail" placeholder="Please enter your Y or N"/>
                                             </div>
                                         </div>
 
@@ -314,7 +316,7 @@
                 </div>
             </div>
             <!-- Modal Layer-->
-
+            <input type="hidden" id="groupId"/>
         </section>
         <!-- /.content -->
     </div>
@@ -329,6 +331,11 @@
 
     var LIST_GROUP_PROC_URL = "/v2/codegroup"
     var LIST_DETAIL_PROC_URL = "/v2/codedetail"
+    var groupId;
+    var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
+    var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
+    var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
+    var EMPTY_MSG = /*[[#{common.info.empty.req.data}]]*/ '';
 
     //  procGetSearchList
     $(document.body).ready(function () {
@@ -393,8 +400,10 @@
     });
 
     function init() {
+        $("#DetailRegister").hide();
+
         getCodeGroupList();
-        getCodeDetailList();
+//        getCodeDetailList();
 
         $('#codeGrouprModal').modal('hide');
         $('#codeDetailModal').modal('hide');
@@ -402,7 +411,7 @@
 
     getSearchList = function () {
         getCodeGroupList();
-        getCodeDetailList();
+//        getCodeDetailList();
     }
 
 
@@ -483,20 +492,22 @@
         var htmlString = [];
 
         objTableArea.html('');
-
+        console.log('지워');
         if (listLength < 1) {
-            objMessageArea.append('<spring:message code="common.info.empty.data" />');
+            objMessageArea.append(EMPTY_MSG);
             objMessageArea.show();
 
         } else {
             var codeGroupList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">'
-                    + '<td>' + codeGroupList[i].id + '</td>'
-                    + '<td>' + codeGroupList[i].name + '</td>'
+                htmlString.push('<tr style="cursor:pointer;" >'
+                    + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].id + '</td>'
+                    + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].name + '</td>'
                     + '<td>'
-                    + ' <button type="button" name="codeDetailBtn" class=" btn btn-sm btn-warning" onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')">수정</button> '
+
+                    + ' <span class="glyphicon glyphicon-list-alt"  name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')" ></span>'
+
                     + '</td>'
                     + '</tr>');
             }
@@ -506,7 +517,7 @@
 
 
     function getCodeGroup(id) {
-
+        $("#groupId").val(id);
         $.ajax({
             url: "/v2/codegroup/" + id,
             method: "GET",
@@ -543,7 +554,8 @@
             var codeDetailList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetail(\'' + codeDetailList[i].key + '\')">'
+//                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetail(\'' + codeDetailList[i].key + '\')">'
+                htmlString.push('<tr style="cursor:pointer;">'
                     + '<td>' + codeDetailList[i].key + '</td>'
                     + '<td>' + codeDetailList[i].value + '</td>'
                     + '<td>' + codeDetailList[i].summary + '</td>'
@@ -554,15 +566,19 @@
         }
     };
 
+
     function getCodeDetail(key) {
-//        console.log(key);
-        procCallAjax2("/v2/codedetail?groupId="+key, 'GET', '', procCallbackGetCodeDetailList);
+        $("#DetailRegister").show();
+        $("#groupId").val(key);
+        procCallAjax2("/v2/codedetail?groupId=" + key, 'GET', '', procCallbackGetCodeDetailList);
     }
 
     //createGroup
     function createGroup() {
 
-        if (!procCheckValidStringSpaceGroup()) {return false;}
+        if (!procCheckValidStringSpaceGroup()) {
+            return false;
+        }
 
         var param = {
             id: $("#id").val(),
@@ -594,7 +610,9 @@
 
         var id = $('#id').val();
 
-        if (!procCheckValidStringSpaceGroup()) {return false;}
+        if (!procCheckValidStringSpaceGroup()) {
+            return false;
+        }
 
         var param = {
             id: id,
@@ -619,16 +637,29 @@
         });
     }
 
+    //deleteGroup
+    function deleteGroupModal() {
+        var groupId = $("#groupId").val();
+        procCallAjax2("/v2/codegroup/" + groupId, "DELETE", '',deleteGroup);
+        getCodeGroupList();
+    }
+
+    var deleteGroup = function (data) {
+        init();
+    }
+
+
     //createDetail
-    function createDetail(id) {
+    function createDetail() {
 
-        var groupId = $('#id').val();
-
-        if (!procCheckValidStringSpaceDetail()) {return false;}
+        var groupId = $('#groupId').val();
+        if (!procCheckValidStringSpaceDetail()) {
+            return false;
+        }
 
         var param = {
-            id: groupId,
             key: $("#key").val(),
+            groupId: groupId,
             value: $("#value").val(),
             summary: $("#summary").val(),
             useYn: $("#useYn").val(),
@@ -636,7 +667,7 @@
 
         console.log(param);
         $.ajax({
-            url: "/v2/codedetail" + id,
+            url: "/v2/codedetail",
             method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -651,6 +682,82 @@
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
 
+        });
+    }
+
+    //updateDetail
+    function updateDetail() {
+
+        var groupId = $('#groupId').val();
+
+        if (!procCheckValidStringSpace()) {
+            return false;
+        }
+
+        var param = {
+            key: $("#key").val(),
+            value: $("#value").val(),
+            summary: $("#summary").val(),
+            useYn: $("#useYn").val(),
+        }
+
+        $.ajax({
+            url: "/v2/codedetail/" + no,
+            method: "PUT",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    procAlert("success", /*[[#{service.update.result.success}]]*/ "");
+                    $('codeDetailModal').modal('hide');
+                    init();
+                }
+            },
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            }
+
+        });
+    }
+
+    //deleteDetailModal
+    function deleteDetailModal() {
+
+        $("#popupTitle").html("코드 삭제");
+        $("#popupMessage").html("" + $("#name").val() + " " + /*[[#{service.delete.confirm}]]*/ "");
+        $("#popupButtonText").text("삭제");
+        $("#popupButtonText").show();
+        $('#popupButtonText').attr('onclick', "deleteDetail();");
+
+        $('#codeDetailModal').modal('toggle');
+    }
+
+    function deleteDetail() {
+
+        var groupId = $('#groupId').val();
+
+        $.ajax({
+            url: "/v2/codedetail/" + no,
+            method: "DELETE",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                if (data) {
+                    procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
+                    //location.href = "/service/serviceBrokerMain";
+                    init();
+                }
+            },
+
+            error: function (xhr, status, error) {
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            },
+
+            complete: function (data) {
+                //$('div.modal').modal('hide');
+                $('#serviceBrokerModal').modal('hide');
+            }
         });
     }
 
