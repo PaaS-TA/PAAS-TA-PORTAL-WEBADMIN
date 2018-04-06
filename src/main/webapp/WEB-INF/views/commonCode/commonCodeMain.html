@@ -30,7 +30,6 @@
                                 <div class="col-sm-12">
                                     <div class="row">
                                         <div class="col-xs-5 col-sm-7">
-                                            <i class="fa fa-fw fa-th-list"></i>
                                             <!--<button type="button" id="register" class="btn btn-primary btn-sm pull-left" onclick="procMovePage(GET_CLIENT_FORM);">-->
                                             <!--클라이언트 등록-->
                                             <!--</button>-->
@@ -63,6 +62,7 @@
                                             </button>
                                         </div>
                                         <br/>
+                                        <i class="fa fa-fw fa-th-list"></i>
                                         <label>Group Table</label>
                                         <!--Table -->
                                         <div id="codeGroupMessageArea" class="table-responsive">
@@ -70,7 +70,7 @@
                                                 <tr>
                                                     <th style="width:200px">코드 ID</th>
                                                     <th style="width:200px">코드 이름</th>
-                                                    <th style="width:100px">코드 수정</th>
+                                                    <th style="width:50px"><i class="fa fa-fw fa-ellipsis-v"></i></th>
                                                 </tr>
                                                 <tbody id="codeGroupTableArea">
                                                 </tbody>
@@ -90,6 +90,7 @@
                                         </button>
                                     </div>
                                     <br/>
+                                    <i class="fa fa-fw fa-th-list"></i>
                                     <label>Detail Table</label>
                                     <!--Table -->
                                     <div id="codeDetailMessageArea" class="table-responsive">
@@ -504,7 +505,9 @@
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].id + '</td>'
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].name + '</td>'
                     + '<td>'
-                    + ' <button type="button" name="codeDetailBtn" class=" btn btn-sm btn-warning" onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')">수정</button> '
+
+                    + ' <span class="glyphicon glyphicon-list-alt"  name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')" ></span>'
+
                     + '</td>'
                     + '</tr>');
             }
