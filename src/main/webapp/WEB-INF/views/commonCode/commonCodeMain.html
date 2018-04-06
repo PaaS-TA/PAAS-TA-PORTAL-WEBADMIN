@@ -193,8 +193,8 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="titleReg2">Detail 등록</div>
-                                <div id="titleDetail2">Detail 상세</div>
+                                <div id="titleReg2">코드 상세 등록</div>
+                                <div id="titleDetail2">코드 상세</div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -411,7 +411,7 @@
 
     getSearchList = function () {
         getCodeGroupList();
-        getCodeDetailList();
+//        getCodeDetailList();
     }
 
 
@@ -492,7 +492,7 @@
         var htmlString = [];
 
         objTableArea.html('');
-
+        console.log('지워');
         if (listLength < 1) {
             objMessageArea.append(EMPTY_MSG);
             objMessageArea.show();
@@ -565,6 +565,7 @@
             objTableArea.append(htmlString).trigger("create");
         }
     };
+
 
     function getCodeDetail(key) {
         $("#DetailRegister").show();
