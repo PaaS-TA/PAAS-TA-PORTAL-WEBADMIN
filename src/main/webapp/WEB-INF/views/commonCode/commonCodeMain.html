@@ -555,15 +555,21 @@
             var codeDetailList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetailTable(\'' + codeDetailList[i].key + '\')">'
+                console.log(codeDetailList[i]);
+
+                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetailTable(\'' + codeDetailList[i].no + '\')">');
 //                htmlString.push('<tr style="cursor:pointer;">'
-                    + '<td>' + codeDetailList[i].key + '</td>'
-                    + '<td>' + codeDetailList[i].value + '</td>'
-                    + '<td>' + codeDetailList[i].summary + '</td>'
-                    + '<td>' + codeDetailList[i].useYn + '</td>'
-                    + '</tr>');
+                htmlString.push('<td>' + codeDetailList[i].key + '</td>');
+                htmlString.push('<td>' + codeDetailList[i].value + '</td>');
+                if(codeDetailList[i].summary != null){
+                    htmlString.push('<td>' + codeDetailList[i].summary + '</td>');
+                }else{
+                    htmlString.push('<td><i class="fa fa-fw fa-times"></i></td>');
+                }
+                htmlString.push('<td>' + codeDetailList[i].useYn + '</td>');
+                htmlString.push('</tr>');
             }
-            objTableArea.append(htmlString).trigger("create");
+            objTableArea.append(htmlString.toString()).trigger("create");
         }
     };
 
@@ -575,12 +581,10 @@
     }
 
 
-    function getCodeDetailTable(key) {
-
-        $("#groupId").val(key);
-
-        $.ajax({
-            url: "/v2/codedetail?key="+key,
+    function getCodeDetailTable(no) {
+        alert(no);
+       $.ajax({
+            url: "/v2/codedetail/"+no,
             method: "GET",
             dataType: 'json',
             contentType: "application/json",
@@ -729,13 +733,14 @@
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: reqUseYn,
+            useYn: $("#useYn").val(),
+//            useYn: reqUseYn,
         }
 
         console.log(param);
         $.ajax({
             url: "/v2/codedetail/"+no,
-            method: "POST",
+            method: "PUT",
             data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",

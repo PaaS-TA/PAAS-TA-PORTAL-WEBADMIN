@@ -54,10 +54,11 @@ public class CommonCodeController extends Common {
      * @param param CodeDetail
      * @return Map(자바클래스)
      */
-    @GetMapping(V2_URL + "/codedetail/{key}")
+    @GetMapping(V2_URL + "/codedetail/{no}")
     @ResponseBody
-    public Map<String, Object> getCodeDetail(@PathVariable("key") String key, @ModelAttribute CommonCode param) {
-        return commonCodeService.getCodeDetail(key,param);
+    public Map<String, Object> getCodeDetail(@PathVariable("no") int no) {
+        LOGGER.info("NO :: " + no);
+        return commonCodeService.getCodeDetail(no);
     }
 
 
