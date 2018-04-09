@@ -323,6 +323,7 @@
             </div>
             <!-- Modal Layer-->
             <input type="hidden" id="groupId"/>
+            <input type="hidden" id="no"/>
         </section>
         <!-- /.content -->
     </div>
@@ -597,8 +598,6 @@
         });
     }
 
-
-
     //createGroup
     function createGroup() {
 
@@ -718,28 +717,32 @@
     function updateDetail() {
 
         var groupId = $('#groupId').val();
+        var no = $('#no').val();
+        var reqUseYn = $("input:radio[id='useYn']:checked").val();
+//        var param = $("#codeDetailForm").serializeObject(); //form 데이터를 Object로 바꿔주는 것을 도와주는 Jquery serializeObject
 
-        if (!procCheckValidStringSpace()) {
-            return false;
-        }
+        if (!procCheckValidStringSpaceDetail()) {return false;}
 
         var param = {
+            groupId: groupId,
+            no:no,
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: $("#useYn").val(),
+            useYn: reqUseYn,
         }
 
+        console.log(param);
         $.ajax({
-            url: "/v2/codedetail/" + no,
-            method: "PUT",
+            url: "/v2/codedetail/"+no,
+            method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    procAlert("success", /*[[#{service.update.result.success}]]*/ "");
-                    $('codeDetailModal').modal('hide');
+                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    $('div.modal').modal('hide');
                     init();
                 }
             },
@@ -750,45 +753,17 @@
         });
     }
 
-    //deleteDetailModal
+    //deleteGroup
     function deleteDetailModal() {
-
-        $("#popupTitle").html("코드 삭제");
-        $("#popupMessage").html("" + $("#name").val() + " " + /*[[#{service.delete.confirm}]]*/ "");
-        $("#popupButtonText").text("삭제");
-        $("#popupButtonText").show();
-        $('#popupButtonText').attr('onclick', "deleteDetail();");
-
-        $('#codeDetailModal').modal('toggle');
+        var no = $("#no").val();
+        procCallAjax2("/v2/codedetail/" + no, "DELETE", '',deleteDetail);
+        getCodeDetail(); //getcodeList 삭제한 부분만 나오게 수정 할 것
     }
 
-    function deleteDetail() {
-
-        var groupId = $('#groupId').val();
-
-        $.ajax({
-            url: "/v2/codedetail/" + no,
-            method: "DELETE",
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                if (data) {
-                    procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
-                    //location.href = "/service/serviceBrokerMain";
-                    init();
-                }
-            },
-
-            error: function (xhr, status, error) {
-                procAlert('warning', JSON.parse(xhr.responseText).message);
-            },
-
-            complete: function (data) {
-                //$('div.modal').modal('hide');
-                $('#serviceBrokerModal').modal('hide');
-            }
-        });
+    var deleteDetail = function (data) {
+        init();
     }
+
 
     /*]]>*/
 </script>
