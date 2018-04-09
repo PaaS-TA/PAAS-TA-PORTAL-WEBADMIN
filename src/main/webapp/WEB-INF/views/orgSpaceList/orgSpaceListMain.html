@@ -6,59 +6,27 @@
     <script layout:fragment="custom-script">
         var V2_URL = "/v2";
         var GET_ORGS_FOR_ADMIN_URL = V2_URL + "/orgs";
-        var OrgSpaceList = V2_URL + "/spaces/";
         var OrgAndSpace = "/OrgAndSpace";
         var Space = "/Space";
         var domainNames;
         var currentOrg;
-
+        var spaces;
         var quotaName;
         var totalRoutes;
         var paidServices;
         var totalServices;
         var MemoryLimit;
-
+        var OrgId;
         var quotaNameSpace;
         var totalRoutesSpace;
         var paidServicesSpace;
         var spaceQuotaText;
 
         $(document).ready(function(){
-            getOrgsForAdmin(GET_ORGS_FOR_ADMIN_URL,{} ,procCallbackGetOrgs);
+            procCallAjax2(GET_ORGS_FOR_ADMIN_URL,"GET",null ,procCallbackGetOrgs);
             getDomains();
 
         });
-
-        function getOrgsForAdmin(reqUrl, param, callback) {
-
-              $.ajax({
-                url: reqUrl,
-                method: "GET",
-                dataType: 'json',
-                success: function(data) {
-                    if (data) {
-                        callback(data, param);
-                    } else {
-                        var resData = {RESULT : RESULT_STATUS_SUCCESS,
-                            RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
-
-                        callback(resData, param);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    var resData = {RESULT : RESULT_STATUS_FAIL,
-                        RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
-
-                    callback(resData, param);
-
-                    console.log("ERROR :: error :: ", error);
-                    procAlert("danger", JSON.parse(xhr.responseText).message);
-                },
-                complete : function(data) {
-                }
-            });
-        };
-
         /*<![CDATA[*/
         function getDomains() {
 
@@ -81,8 +49,7 @@
 
 
 
-        var procCallbackGetOrgs = function(data) {
-            console.log(data);
+        var procCallbackGetOrgs = function (data, param) {
             $("#orgTable").hide();
             $("#noSpaceMessage").hide();
 
@@ -93,7 +60,7 @@
                     "<tbody>"+
                     "<tr>"+
                     "<th style='text-align: center'>번호</th>"+
-                    "<th style='text-align: center'>조직이름</th>"+
+                    "<th style='text-align: center'>조직 이름</th>"+
                     "</tr>"
 
                 )
@@ -111,7 +78,8 @@
                     $("#orgTable").append (
                         "<tr id='orgSpaceViewArea-table-content-org-no" + (i + 1) + "' name='" + orgName[i].toString().toLowerCase() + "' >" +
                         "<td>" + (i + 1) + "</td>" +
-                        "<td><a style='color: black' href='#none' onClick=\"selectOrg('" + idMap.get(orgName[i]) + "')\">" + orgName[i] + "</a> &nbsp;<a href='#none' onClick=\"procGetOrgSummary('" + idMap.get(orgName[i]) + "','" +  QuotaMap.get(orgName[i]) + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
+                        "<td><a style='color: black' href='#none' onClick=\"getSpacesForAdmin('" + idMap.get(orgName[i]) + "','" + orgName[i] + "','" + (i+1) + "')\">" + orgName[i] + "</a> &nbsp;<a href='#none' onClick=\"procGetOrgSummary('" + idMap.get(orgName[i]) + "','" +  QuotaMap.get(orgName[i]) + "')\" style='font-size:10px;' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
+                        "<label><input name='groupTable-checkbox' id='groupTable-checkbox-no-"+(i+1)+"' value='"+(i+1)+"' class='checkbox-inline' type='checkbox' style='display: none'></label>"+
                         "</tr>"
                     )
                 }
@@ -120,19 +88,19 @@
                 )
                 changeTableContentColor("org")
                 $("#orgTable").show();
-                selectOrg(idMap.get(orgName[0]));
+                getSpacesForAdmin(idMap.get(orgName[0]),orgName[0], 1);
             }
         }
 
-        function getSpacesForAdmin(orgName){
+        function getSpacesForAdmin(orgid, orgName, orgNum){
             $("#spaceTable").hide();
             $("#noSpaceMessage").hide();
             currentOrg = orgName;
-            getOrgsForAdmin(GET_ORGS_FOR_ADMIN_URL+"/"+orgName+"/space", {"orgName":orgName},procCallbackGetSpaces)
+            procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"/"+orgid+"/space","GET" ,null ,procCallbackGetSpace)
+            contentSelectControl("group", orgNum);
         }
 
-        var procCallbackGetSpaces = function(data) {
-
+        var procCallbackGetSpace = function(data, param) {
             $("#spaceTable *").remove();
             $("#spaceTable").hide();
             $("#noSpaceMessage").hide();
@@ -144,7 +112,7 @@
                     "<tbody>"+
                     "<tr>"+
                     "<th style='text-align: center'>번호</th>"+
-                    "<th style='text-align: center'>공간 이름</th>"+
+                    "<th style='text-align: center'>"+currentOrg+" 공간 이름</th>"+
                     "</tr>"
                 )
                 $.each(data.spaceList.resources, function (eventId, space) {
@@ -162,23 +130,17 @@
             }
         }
 
-        function selectOrg(orgName){
-            getSpacesForAdmin(orgName)
-        }
-
         // GET ORG SUMMARY
         var procGetOrgSummary = function (orgid, quotaid) {
             $("#modaltitle").html("조직 상세 정보");
             $("#modalbody").html("데이터를 불러오고 있습니다.");
-            getOrgsForAdmin(V2_URL + "/orgs/"+quotaid+"/quota", {}, procCallbackGetOrgQuota);
-
-            getOrgsForAdmin(V2_URL + "/orgs/"+orgid+"/summary", {}, procCallbackGetOrgSummary);
+            OrgId = orgid;
+            procCallAjax2(V2_URL + "/orgs/"+quotaid+"/quota","GET", null, procCallbackGetOrgQuota);
 
         };
 
         // GET ORG SUMMARY CALLBACK
-        var procCallbackGetOrgQuota = function (data) {
-
+        var procCallbackGetOrgQuota = function(data, param) {
             quotaName = data.entity.name;
             totalRoutes = data.entity.totalRoutes;
             totalServices = data.entity.totalServices;
@@ -188,15 +150,15 @@
             } else {
                 paidServices = "paid services disallowed";
             }
+            procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary", "GET",null, procCallbackGetOrgSummary);
         }
 
         // GET ORG SUMMARY CALLBACK
-        var procCallbackGetOrgSummary = function (data) {
-
-            spaces = "";
+        var procCallbackGetOrgSummary = function(data, param) {
+            spaces = "없음";
             for (var i = 0; i < data.spaces.length; i++) {
-                if (i != 0) spaces += " , ";
-                spaces += data.spaces[i].name;
+                if (i != 0) spaces += " , " + data.spaces[i].name;
+                else spaces = data.spaces[i].name;
             }
             $("#modalbody").html("<b>Domains</b> : " + domainNames +
                 "<br><b>Quota</b> : " + quotaName + " (" + MemoryLimit + "M memory limit, " + totalRoutes + " routes, " + totalServices + " services, " + paidServices + ")" +
@@ -209,22 +171,19 @@
             $("#modaltitle").html("영역 상세 정보");
             $("#modalbody").html("데이터를 불러오고 있습니다.");
 
+            console.log(spaceQuotaId);
             if(spaceQuotaId != "null") {
-                getOrgsForAdmin("/orgSpaceList/"+spaceQuotaId+"/SpaceQuota", {
-                    spaceName: spaceId
-                }, procCallbackGetSpaceQuota);
+                procCallAjax2("/orgSpaceList/"+spaceQuotaId+"/SpaceQuota","GET", null, procCallbackGetSpaceQuota);
             }
             else{
-                spaceQuotaText = "";
+                spaceQuotaText = "없음";
             }
-            getOrgsForAdmin(V2_URL + "/spaces/"+spaceId+"/summary", {
-               spaceName: spaceId
-            }, procCallbackGetSpaceSummary);
+            procCallAjax2(V2_URL + "/spaces/"+spaceId+"/summary","GET", null, procCallbackGetSpaceSummary);
         };
 
 
         // GET ORG SUMMARY CALLBACK
-        var procCallbackGetSpaceQuota = function (data) {
+        var procCallbackGetSpaceQuota = function(data, param) {
 
             if (data.spaceQuota != null) {
                 var spaceQuota = JSON.parse(data.spaceQuota);
@@ -243,18 +202,18 @@
         }
 
         // GET ORG SUMMARY CALLBACK
-        var procCallbackGetSpaceSummary = function (data) {
+        var procCallbackGetSpaceSummary = function(data, param) {
 
-            apps = "";
+            apps = "없음";
             for (var i = 0; i < data.applications.length; i++) {
-                if (i != 0) apps += " , ";
-                apps += data.applications[i].name;
+                if (i != 0) apps += " , " + data.applications[i].name;
+                else apps = data.applications[i].name;
             }
 
-            services = "";
+            services = "없음";
             for (var i = 0; i < data.services.length; i++) {
-                if (i != 0) services += " , ";
-                services += data.services[i].name;
+                if (i != 0) services += " , " + data.services[i].name;
+                else services = data.services[i].name;
             }
 
             $("#modalbody").html("<b>Org</b> : " + data.name + "<br><b>Apps</b> : " + apps +
@@ -293,15 +252,36 @@
         }
 
         function changeTableContentColor(orgOrSpace) {
-            var listToShow = $('#'+orgOrSpace+'Table div[id*="orgSpaceViewArea-table-content-'+orgOrSpace+'-no"]:not([style*="display: none"])')
-            $.each(listToShow, function (eventId, eventData){
-                if(eventId%2 === 1){
-                    document.getElementById(eventData.id).className = "mainViewArea-table-content content-v2"
-                } else {
-                    document.getElementById(eventData.id).className = "mainViewArea-table-content"
-                }
+            var listToShow = $('#orgTable tr[id*="orgSpaceViewArea-table-content-org-no"]:not([style*="display: none"])')
+            $.each(listToShow, function (eventId, eventData) {
+                document.getElementById(eventData.id).className = "";
             });
         }
+
+        function contentSelectControl(table, elementNo){
+            if($("#"+table+"Table-checkbox-no-"+elementNo).is(":checked") === true) {
+                $("#"+table+"Table-checkbox-no-"+elementNo).prop ("checked", false)
+                if(table === "user"){
+                    var contentId = table+"Table-"+table+"-no-"+elementNo
+                    contentClassNameCategorize(elementNo ,contentId)
+                } else {
+                    changeTableContentColor(table);
+                }
+
+            } else if($("#"+table+"Table-checkbox-no-"+elementNo).is(":checked") === false) {
+                if(table === "group") {
+                    $(":checkbox[name='"+table+"Table-checkbox']").prop("checked", false);
+                    changeTableContentColor(table);
+                }
+                $("#"+table+"Table-checkbox-no-"+elementNo).prop ("checked",true)
+                document.getElementById("orgSpaceViewArea-table-content-org-no"+elementNo).className = "bg-aqua disabled color-palette";
+            }
+
+        }
+        function contentClassNameCategorize(contentNo, contnetId) {
+            document.getElementById(contnetId).className = "";
+        }
+
 
         /*]]>*/
     </script>
@@ -324,7 +304,7 @@
                             <h3 class="box-title"></h3>
 
                             <div class="box-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
+                                <div class="input-group input-group-sm" style="width: 450px;">
                                     <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="org-searchKeyword" onkeyup="searchOrg()"/>
                                     <div class="input-group-btn" >
                                         <button type="submit"  class="btn btn-default" onclick="searchOrg()"><i class="fa fa-search"></i></button>
