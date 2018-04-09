@@ -45,38 +45,24 @@
                                             <input type="text" class="form-control" id="name"/>
                                         </div>
                                         <br/>
+
+
                                         <!--<div class="2">-->
                                         <div class="form-group">
                                             <i class="fa fa-fw fa-check-square-o"></i>
                                             <label for="classification">분류</label>
-                                            <select id="classification"
-                                                    class="form-control select2 select2-hidden-accessible"
-                                                    style="width: 100%;"
-                                                    tabindex="-1"
-                                                    aria-hidden="true">
+                                            <select class="form-control" id="classification"
+                                                    style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
                                             </select>
-                                            <span class="select2 select2-container select2-container--default select2-container--below"
-                                                  dir="ltr" style="width: 100%;">
-                                        <span class="selection"></span>
-                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                        </span>
                                         </div>
                                         <br/>
                                         <!--<div class="3">-->
                                         <div class="form-group">
                                             <i class="fa fa-fw fa-check-square-o"></i>
-                                            <label>서비스</label>
-                                            <select id="ServicePackName"
-                                                    class="form-control select2 select2-hidden-accessible"
-                                                    style="width: 100%;"
-                                                    tabindex="-1"
-                                                    aria-hidden="true">
+                                            <label for="servicePackName">서비스</label>
+                                            <select class="form-control" id="servicePackName" name="servicePackName"
+                                                    style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
                                             </select>
-                                            <span class="select2 select2-container select2-container--default select2-container--below"
-                                                  dir="ltr" style="width: 100%;">
-                                        <span class="selection"></span>
-                                        <span class="dropdown-wrapper" aria-hidden="true"></span>
-                                        </span>
                                         </div>
                                         <br/>
                                         <!--<div class="4">-->
@@ -266,9 +252,9 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
 
-    var CATEGORY_HOME_URL = "/catalogs";
+    var CATEGORY_HOME_URL = "/catalogs/SERVICE_PACK";
     var CATALOG_LIST_PROC_URL = "/v2/servicepacks";
-    var CATEGORY_LIST_PROC_URL = "/code/codeDetail";
+    var CATEGORY_LIST_PROC_URL = "/v2/codedetail";
     var SERVICE_PACK_LIST_PROC_URL = "/v2/servicebrokers";
     var DUPLICATED_PROC_URL = "/v2/servicepacks/count";
     var PROC_URL = "/v2/servicepacks";
@@ -281,11 +267,11 @@
     var UPLOAD_APP_SAMPLE_PROC_URL = "/v2/uploadAppSampleFile";
     var DELETE_APP_SAMPLE_PROC_URL = "/v2/deleteAppSampleFile";
     var SERVICE_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CATALOG_ID}]]*/ "";
-    var INSERT_FLAG = /*[[${INSERT_FLAG}]]*/ null;
-    var CUD_U = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CUD_U}]]*/ "";
     var REQ_NO = /*[[${REQUEST_NO}]]*/ 0;
     var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
+    var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
+    var EMPTY_MSG = /*[[#{common.info.empty.req.data}]]*/ '';
 
 
     var INIT_MESSAGE = "첨부된 파일이 없습니다.";
@@ -298,6 +284,7 @@
 
     // GET CATEGORY LIST
     var getCategoryList = function () {
+
         var param = {"groupId": SERVICE_PACK_CATALOG_ID};
         procCallAjax2(CATEGORY_LIST_PROC_URL, 'GET', param, procCallbackCategoryList);
     };
@@ -332,7 +319,7 @@
     var procCallbackServicePackList = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
-        var objSelectBox = $('#ServicePackName');
+        var objSelectBox = $('#servicePackName');
         var listLength = data.list.length;
         var htmlString = [];
 
@@ -348,16 +335,16 @@
             $('#appSampleFileNameLabel').text(INIT_MESSAGE);
         }
 
-        if (REQ_NO != null) procUpdateForm();
+        if (REQ_NO != '') procUpdateForm();
     };
 
 
     // UPDATE FORM
-    var procUpdateForm = function () {
+    var  procUpdateForm = function () {
 
         var reqNo = REQ_NO;
         if (null == reqNo || "" == reqNo) {
-            procAlert("danger", '<spring:message code="common.system.error.message" />');
+            procAlert("danger", ERROR_MSG);
             return false;
         }
 
@@ -377,7 +364,7 @@
         var reqName = $('#name');
         var reqOrgName = $('#orgName');
         var reqClassification = $('#classification');
-        var reqServicePackName = $('#ServicePackName');
+        var reqServicePackName = $('#servicePackName');
         var reqThumbImgPath = $("#thumbImgPath");
         var reqOrgThumbImgPath = $("#orgThumbImgPath");
         var reqThumbImgName = $("#thumbImgName");
@@ -389,7 +376,7 @@
         reqName.val(resultData.name);
         reqOrgName.val(resultData.name);
         reqClassification.val(resultData.classification);
-        reqServicePackName.val(resultData.serviceName);
+        reqServicePackName.val(resultData.servicePackName);
         reqThumbImgPath.val(resultData.thumbImgPath);
         reqOrgThumbImgPath.val(resultData.thumbImgPath);
         reqThumbImgName.val(resultData.thumbImgName);
@@ -399,8 +386,6 @@
         reqDescription.val(resultData.description);
         reqAppBindYn.attr('checked', true);
 
-//======================================================================================================================
-//         서비스 생성 파라미터 값 쪼개서 각 input box에 값 넣는 부분
         if (resultData.parameter != null || resultData.parameter != '' || resultData.parameter != undefined)
             $("#serviceParameterArea").empty();
         str = resultData.parameter.replace("}", "");
@@ -414,7 +399,7 @@
                 var html2 = "<div class=" + "service_parameter_line" + j + ">"
                     + "<div class='.col-xs-5'><input type='text' class='form-control' id=" + "parameterName" + j + "></div>"
                     + "<div class='.col-xs-5'>"
-                    + "<select class='form-control select2 select2-hidden-accessible' id=" + "serviceParameterSelectType" + j + " " + " style='width:40%;'>"
+                    + "<select class='form-control' id=" + "serviceParameterSelectType" + j + " " + " style='width:40%;'>"
                     + "<option value='text'>텍스트형</option>"
                     + "<option value='password'>패스워드형</option>"
                     + "<option value='default'>자동입력</option>"
@@ -432,7 +417,7 @@
             var html2 = "<div class='service_parameter_line1'>"
                 + "<div class='.col-xs-5'><input type='text' class='form-control' id=" + "parameterName1" + "></div>"
                 + "<div class='.col-xs-5'>"
-                + "<select class='form-control select2 select2-hidden-accessible' id=" + "serviceParameterSelectType1" + " " + " style='width:40%;'>"
+                + "<select class='form-control' id=" + "serviceParameterSelectType1" + " " + " style='width:40%;'>"
                 + "<option value='text'>텍스트형</option>"
                 + "<option value='password'>패스워드형</option>"
                 + "<option value='default'>자동입력</option>"
@@ -499,7 +484,7 @@
             for (var a = 1; a < appbindCount + 1; a++) {
                 var html2 = "<div class=" + "app_bind_parameter_line" + a + ">"
                     + "<input type='text' class='form-control' id=" + "appBindParameterName" + a + " style='width:60%;'>"
-                    + "<select class='form-control select2 select2-hidden-accessible' style='width:40%;'id=" + "appBindParameterSelectType" + a + " " + " style='width:40%;'>"
+                    + "<select class='form-control select2' style='width:40%;'id=" + "appBindParameterSelectType" + a + " " + " style='width:40%;'>"
                     + "<option value='text'>텍스트형</option>"
                     + "<option value='password'>패스워드형</option>"
                     + "<option value='default'>자동입력</option>"
@@ -515,7 +500,7 @@
         } else {
             var html2 = "<div class='app_bind_parameter_line1'>"
                 + "<input type='text' class='form-form-control' id=" + "appBindParameterName1" + " style='width:60%;'>"
-                + "<select class='form-control select2 select2-hidden-accessible' id=" + "appBindParameterSelectType1" + " " + " style='width:40%;'>"
+                + "<select class='form-control' id=" + "appBindParameterSelectType1" + " " + " style='width:40%;'>"
                 + "<option value='text'>텍스트형</option>"
                 + "<option value='password'>패스워드형</option>"
                 + "<option value='default'>자동입력</option>"
@@ -552,7 +537,7 @@
                 }
             }
         }
-//======================================================================================================================
+
         var tempThumbImgPath = reqThumbImgPath.val();
         if (null != tempThumbImgPath && "" != tempThumbImgPath) {
             $('#divPreview').attr('style', 'display: block; height: 94px;');
@@ -639,7 +624,7 @@
         // name
         var name = $('#name').val();
         if (name == '') {
-            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            procAlert("warning", EMPTY_MSG);
             $('#name').focus();
             return false;
         }
@@ -647,7 +632,7 @@
         // summart
         var summary = $('#summary').val();
         if (summary == '') {
-            procAlert("warning", '<spring:message code="common.info.empty.req.data" />');
+            procAlert("warning", EMPTY_MSG);
             $('#summary').focus();
             return false;
         }
@@ -713,7 +698,7 @@
         var reqDashboardUseYn = $("input:radio[name='dashboardUseYn']:checked").val();
         var reqAppBindYn = $("input:radio[name='appBindYn']:checked").val();
         var param = $("#catalogForm").serializeObject();
-        var servicePackName = doc.getElementById('ServicePackName').value;
+        var servicePackName = doc.getElementById('servicePackName').value;
 
         if (reqAppBindYn == 'N') {
             completeParameter2 = '';
@@ -731,9 +716,6 @@
             app_bind_parameter: completeParameter2,
             appBindYn: reqAppBindYn
         };
-
-        console.log("PARAM : " + JSON.stringify(param));
-        console.log("PARAM2 : " + JSON.stringify(param2));
         $.extend(param, param2);
 
 
@@ -769,9 +751,9 @@
     var procCallbackUpdate = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
 
-            procDeleteThumbnailImageFile();
+            // procDeleteThumbnailImageFile();
             procAlert("success", SUCCESS_MSG);
-            procMovePage(CATEGORY_HOME_URL + "/SERVICE_PACK");
+            procMovePage(CATEGORY_HOME_URL);
         } else {
 
             procAlert("danger", FAIL_MSG);
@@ -795,7 +777,7 @@
     // DELETE
     var procDelete = function (data) {
         // if (RESULT_STATUS_SUCCESS != data.RESULT) {
-        //     procAlert("danger", FAIL_MSG);
+        //     procAlert("danger", ERROR_MSG);
         //     return false;
         // }
 
@@ -807,9 +789,9 @@
     // DELETE CALLBACK
     var procCallbackDelete = function (data) {
         if (RESULT_STATUS_SUCCESS == data.RESULT) {
-            procDeleteThumbnailImageFile();
+            //procDeleteThumbnailImageFile();
             procAlert("success", SUCCESS_MSG);
-            procMovePage(CATEGORY_HOME_URL + "/SERVICE_PACK");
+            procMovePage(CATEGORY_HOME_URL);
 
         } else {
             procAlert("danger", FAIL_MSG);
@@ -1045,13 +1027,13 @@
             completeParameter2 = '';
         }
 
-        procCheckDuplicatedName(CATEGORY_HOME_URL + "/SERVICE_PACK");
+        procCheckDuplicatedName(CATEGORY_HOME_URL);
     });
 
 
     // BIND :: BUTTON EVENT
     $("#btnCancel").on("click", function () {
-        procMovePage(CATEGORY_HOME_URL + "/SERVICE_PACK");
+        procMovePage(CATEGORY_HOME_URL);
     });
 
 

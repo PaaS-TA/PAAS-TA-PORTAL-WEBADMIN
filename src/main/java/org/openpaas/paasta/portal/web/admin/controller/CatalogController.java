@@ -73,7 +73,7 @@ class CatalogController extends Common {
     public ModelAndView getBuildPackForm() {
         return new ModelAndView() {{
             setViewName("/catalog/developPackForm");
-            addObject("INSERT_FLAG", Constants.CUD_C);
+            addObject("REQUEST_NO", "");
         }};
     }
 
@@ -130,14 +130,11 @@ class CatalogController extends Common {
      */
     @RequestMapping(value = {"/starterpackForm"}, method = RequestMethod.GET)
     public ModelAndView getStarterForm() {
-        ModelAndView mv = new ModelAndView();
 
-        mv.addObject("INSERT_FLAG", Constants.CUD_C);
-        mv.addObject("REQUEST_NO", -1);
-
-        mv.setViewName("/catalog/starterPackForm");
-
-        return mv;
+        return new ModelAndView() {{
+            setViewName("/catalog/starterPackForm");
+            addObject("REQUEST_NO", "");
+        }};
     }
 
 
@@ -151,13 +148,10 @@ class CatalogController extends Common {
     public ModelAndView getStarterForm(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
 
-        mv.addObject("INSERT_FLAG", Constants.CUD_U);
-        mv.addObject("CONSTANT_CUD", Constants.CUD_U);
-        mv.addObject("REQUEST_NO", req.getParameter("no"));
-
-        mv.setViewName("/catalog/starterForm");
-
-        return mv;
+        return new ModelAndView() {{
+            setViewName("/catalog/starterPackForm");
+            addObject("REQUEST_NO", req.getParameter("no"));
+        }};
     }
 
 
@@ -278,7 +272,7 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/starterpacks/count")
     @ResponseBody
-    public Map<String, Object> getStarterNamesCount(@PathVariable("no") int no, @ModelAttribute Catalog param) {
+    public Map<String, Object> getStarterNamesCount(@ModelAttribute Catalog param) {
         return catalogService.getStarterPackCount(param);
     }
 
@@ -376,6 +370,7 @@ class CatalogController extends Common {
     @PostMapping(value = {V2_URL + "/starterpacks"})
     @ResponseBody
     public Map<String, Object> insertStarterPackCatalog(@RequestBody Catalog param) throws Exception {
+        LOGGER.info(param.toString());
         return catalogService.insertStarterPack(param);
     }
 
@@ -389,6 +384,7 @@ class CatalogController extends Common {
     @PostMapping(value = {V2_URL + "/developpacks"})
     @ResponseBody
     public Map<String, Object> insertBuildPackCatalog(@RequestBody Catalog param) throws Exception {
+        LOGGER.info(param.toString());
         return catalogService.insertDevelopPackCatalog(param);
     }
 
@@ -402,7 +398,6 @@ class CatalogController extends Common {
     @PostMapping(value = {V2_URL + "/servicepacks"})
     @ResponseBody
     public Map<String, Object> insertServicePack(@RequestBody Catalog param) throws Exception {
-        LOGGER.info("############# " + param.toString());
         return catalogService.insertServicePackCatalog(param);
     }
 
@@ -427,6 +422,7 @@ class CatalogController extends Common {
     @PutMapping(value = {V2_URL + "/starterpacks/{no}"})
     @ResponseBody
     public Map<String, Object> updateStarterPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
+        LOGGER.info(param.toString());
         return catalogService.updateStarterPack(no, param);
     }
 
@@ -453,8 +449,6 @@ class CatalogController extends Common {
     @PutMapping(value = {V2_URL + "/servicepacks/{no}"})
     @ResponseBody
     public Map<String, Object> updateServicePack(@PathVariable int no, @RequestBody Catalog param) throws Exception {
-        LOGGER.info(param.toString());
-
         return catalogService.updateServicePackCatalog(no, param);
     }
 

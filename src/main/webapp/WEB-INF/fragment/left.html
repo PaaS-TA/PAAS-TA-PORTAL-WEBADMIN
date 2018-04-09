@@ -12,16 +12,14 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
-      <div class="user-panel" style="min-height: 80px;">>
+      <div class="user-panel" style="min-height: 80px;">
         <div class="pull-left image">
-          <img src="./resources/dist/img/credit/profile.png"
-               th:src="@{/resources/dist/img/credit/profile.png}" class="img-circle" alt="User Image"/>
+          <img src="./resources/images/userpic.png"
+               th:src="@{/resources/images/userpic.png}" class="img-circle" alt="User Image"/>
         </div>
         <div class="pull-left info">
-          <p>    Admin             님</p>
-          <div sec:authorize="hasRole('ROLE_ADMIN')"></div>
-          <div sec:authorize="!hasRole('ROLE_ADMIN')"></div>
-          <span sec:authentication="principal.username"/>
+          <p><span th:text="${#httpServletRequest.getUserPrincipal().getName()}"></span> 님</p>
+
           <a href="#" onclick="javascript:document.getElementById('logout').submit();">
             <i class="fa fa-sign-out"></i> LogOut
           </a>

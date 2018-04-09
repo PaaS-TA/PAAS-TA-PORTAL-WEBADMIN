@@ -8,9 +8,6 @@ import java.util.UUID;
  * 카탈로그 정보를 가지고 있는 데이터 모델 bean 클래스
  * Json 어노테이션을 사용해서 JSON 형태로 제공
  *
- * @author 김도준
- * @version 1.0
- * @since 2016.07.04 최초작성
  */
 public class Catalog {
 
@@ -295,38 +292,18 @@ public class Catalog {
         this.lastModified = lastModified;
     }
 
-    /**
-     * GETTER 빌드팩명
-     *
-     * @return 빌드팩명
-     */
     public String getBuildPackName() {
-        return this.buildPackName;
+        return buildPackName;
     }
 
-    /**
-     * SETTER 빌드팩명
-     *
-     * @param buildPackName 빌드팩명
-     */
     public void setBuildPackName(String buildPackName) {
         this.buildPackName = buildPackName;
     }
 
-    /**
-     * GETTER 서비스팩명
-     *
-     * @return 서비스팩명
-     */
     public String getServicePackName() {
-        return this.servicePackName;
+        return servicePackName;
     }
 
-    /**
-     * SETTER 서비스팩명
-     *
-     * @param servicePackName 서비스팩명
-     */
     public void setServicePackName(String servicePackName) {
         this.servicePackName = servicePackName;
     }
@@ -889,7 +866,6 @@ public class Catalog {
     public void setDashboardUseYn(String dashboardUseYn) {
         this.dashboardUseYn = dashboardUseYn;
     }
-
 
 
     @Override

@@ -57,11 +57,11 @@ public class CatalogService {
      */
     public Map<String, Object> getStarterPackCount(Catalog param) {
         String search = "";
-        if (param.getSearchKeyword() != null) {
+        if (param.getName() != null) {
             search = "?";
-            search += "searchKeyword=" + param.getSearchKeyword();
+            search += "name=" + param.getName();
         }
-        return commonService.procCommonApiRestTemplate(V2_URL + "/starterpacks" + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(V2_URL + "/starterpacks/count" + search, HttpMethod.GET, param, null);
     }
 
     /**
