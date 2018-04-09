@@ -147,11 +147,13 @@
           th:src="@{../../resources/js/highcharts.js}"></script>
   <script type="text/javascript" src="/resources/js/exporting.js"
           th:src="@{../../resources/js/exporting.js}"></script>
+  <script type="text/javascript" src="/resources/js/offline-exporting.js"
+          th:src="@{../../resources/js/offline-exporting.js}"></script>
+
 </div>
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
   /*<![CDATA[*/
-
 
   var MAIN_DASH_BOARD_URL = "/dashboard";
   var TOTAL_COUNT_LIST_PROC_URL = "/v2/statistics";
@@ -160,94 +162,17 @@
   var SPACE_LABEL = "공간";
   var APP_LABEL   = "APP";
   var USER_LABEL  = "사용자";
+
   // ON LOAD
   $(document.body).ready(function() {
     procInitPage();
-
-
-    /*
-      To-Be : 아래 트리거 4개 triggerType 로 하나의 함수로 리팩토링 할것
-    */
-    // 공간 BLock Trigger
-    $('#spaceCount').parent().on("click", function() {
-      $('.highcharts-legend-item').children('text').each(function(index){
-
-        //console.log($('.highcharts-legend-item').children('text'));
-        if($(this).text() != SPACE_LABEL){
-          //console.log($(this).parent().hasClass('highcharts-legend-item-hidden'));
-          if(!$(this).parent().hasClass('highcharts-legend-item-hidden')){
-            $(this).trigger('click');
-          }
-        }else{
-          if($(this).parent().hasClass('highcharts-legend-item-hidden')){
-            $(this).trigger('click');
-          }
-        }
-      })
-    });
-
-
-    // APP BLock Trigger
-    $('#applicationCount').parent().on("click", function() {
-      $('.highcharts-legend-item').children('text').each(function(index){
-
-        //console.log($('.highcharts-legend-item').children('text'));
-        if($(this).text() != APP_LABEL){
-          //console.log($(this).parent().hasClass('highcharts-legend-item-hidden'));
-          if(!$(this).parent().hasClass('highcharts-legend-item-hidden')){
-            $(this).trigger('click');
-          }
-        }else{
-          if($(this).parent().hasClass('highcharts-legend-item-hidden')){
-            $(this).trigger('click');
-          }
-        }
-      })
-    });
-
-    // USER BLock Trigger
-    $('#userCount').parent().on("click", function() {
-      $('.highcharts-legend-item').children('text').each(function(index){
-
-        //console.log($('.highcharts-legend-item').children('text'));
-        if($(this).text() != USER_LABEL){
-          //console.log($(this).parent().hasClass('highcharts-legend-item-hidden'));
-          if(!$(this).parent().hasClass('highcharts-legend-item-hidden')){
-            $(this).trigger('click');
-          }
-        }else{
-          if($(this).parent().hasClass('highcharts-legend-item-hidden')){
-            $(this).trigger('click');
-          }
-        }
-      })
-    });
-
-    // USER BLock Trigger
-    $('#organizationCount').parent().on("click", function() {
-
-      if($('.highcharts-legend-item').children('text').length == 1){
-        getChartList();
-      }else{
-
-        $('.highcharts-legend-item').children('text').each(function(index){
-          if($(this).parent().hasClass('highcharts-legend-item-hidden')){
-            $(this).trigger('click');
-          }
-        })
-
-      }
-    });
-
-
   }); // End ready()
 
   // Init
   var procInitPage = function() {
     getTotalCountList();  // 조직 / 공간 / 앱 /사용자 수 조회
     getChartList();       // 조직 / 공간 차트 조회
-
-    //setViewEmptySpaceMessageArea();// empty 테스트
+    setBoardEvent();      // Board Event Listener Setting
   };
 
 
@@ -296,29 +221,6 @@
     chartContainer.fadeIn();
     chartContainer.highcharts(chartOptions);
 
-
-    // Label Rename(seperate '||' Name && Id )
-    var arrayOrganizationName = $('.highcharts-xaxis-labels text');
-
-    for (var i = 0; i < listLength; i++) {
-
-      //console.log(arrayOrganizationName.eq(i).text());
-      //랜더링 되기전에 처리
-      var labelTxt = arrayOrganizationName.eq(i).text().split('||');
-      arrayOrganizationName.eq(i).text(labelTxt[0]); // 조직 Label Name
-
-      var organizationId = labelTxt[1];
-
-      //좌측 LABEL(조직명)에 CLICK 이벤트 등록 : 조직의 공간 내역조회
-      $('.highcharts-xaxis-labels text').eq(i).on('click',{value:organizationId} ,function(event){
-        getTotalSpaceList(event.data.value);
-      });
-
-      $('.highcharts-xaxis-labels tspan').eq(i).on("mouseover", function() {
-        $(this).attr('style', 'cursor: pointer;');
-      });
-    }
-
   };
 
 
@@ -331,12 +233,14 @@
     var arrayUserCount = [];
     var organizationName = '';
     var organizationId = '';
+    var arrayOrganizationId = [];
 
     for (var i = 0; i < listLength; i++) {
       organizationName = resultList[i].organizationName;
       organizationId = resultList[i].organizationId;
 
-      arrayOrganizationName.push(organizationName+'||'+organizationId);
+      arrayOrganizationName.push(organizationName);
+      arrayOrganizationId.push(organizationId);
 
       for (var j = 0; j < listLength; j++) {
         if (organizationName == resultList[j].organizationName) {
@@ -373,7 +277,7 @@
       xAxis: {
         categories: arrayOrganizationName,
         labels: {
-          style: {'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'}
+          style: {'font-size': '16px', 'font-family':'"Spoqa Han Sans","Helvetica Neue",Helvetica,Arial,sans-serif', 'color':'#494747'},
         }
       },
       yAxis: {
@@ -386,6 +290,37 @@
         bar: {
           dataLabels: {
             enabled: true
+          }
+        },
+        series: {
+          animation: {
+            //duration: 2000,
+            complete: function () {
+
+              // 브라우저 개발도구나 소스보기에서 해당 data속성 확인 불가(랜더링 시점)
+              // 몇번 클릭 이후에는 해당 셋팅 부분이 적용안되는 현상 있음
+              var $labelsTxt = $('.highcharts-xaxis-labels text');
+
+              if( $labelsTxt.eq(0).data('organizationId') === undefined ){
+
+                $labelsTxt.off('click');
+
+                for(var i=0; i < $labelsTxt.length; i++ ){
+                  $labelsTxt.eq(i).on('click',{value:arrayOrganizationId[i]},function(event){
+                    //console.log('OrganizationId:'+event.data.value);
+                    getTotalSpaceList(event.data.value);
+                  });
+
+                  // cursor
+                  $('.highcharts-xaxis-labels text').on("mouseover", function() {
+                    $(this).css('cursor', 'pointer');
+                  });
+
+                  $labelsTxt.eq(i).data('organizationId',arrayOrganizationId[i]); // For one excute
+
+                }
+              }
+            }
           }
         }
       },
@@ -406,9 +341,6 @@
       ]
     };
   };
-
-
-
 
   // 조직 차트 셋팅
   var setSpaceChart = function(data) {
@@ -432,11 +364,6 @@
 
     // VIEW BUTTON
     $('#btnMoveMainArea').fadeIn();
-
-    // BIND :: BUTTON EVENT
-//    $("#btnMoveMain").on("click", function() {
-//      procMovePage(MAIN_DASH_BOARD_URL);
-//    })
   };
 
   // 조직 차트 옵션 셋팅
@@ -520,15 +447,56 @@
 
   };
 
-
   // VIEW EMPTY SPACE MESSAGE AREA
   var setViewEmptySpaceMessageArea = function () {
     $('#emptySpaceMessageArea').fadeIn();
     $('#btnMoveMainArea').fadeIn();
+  };
 
-//    $("#btnMoveMain").on("click", function() {
-//      procMovePage(MAIN_DASH_BOARD_URL);
-//    });
+  /*
+    대시보드 이벤트 리스너 정의
+     - 조직/공간/APP/사용자수 박스 클릭 이벤트
+     - 조직 : 하위 항목 전체 차트 노출
+     - 그외 : 각 항목에 해당 하는 차트 노출
+     - Chart Legend 이벤트와 트리거 연결
+  */
+  var setBoardEvent = function(){
+    var ORGANIZATION_LABEL = "조직";
+    var $innnerElem = $('section .inner');
+
+    // 차트의 Legend 항목 관련, 버튼 순서 변경시 아래 확인 필요
+    $innnerElem.eq(0).data('triggerType',ORGANIZATION_LABEL);
+    $innnerElem.eq(1).data('triggerType',SPACE_LABEL);
+    $innnerElem.eq(2).data('triggerType',APP_LABEL);
+    $innnerElem.eq(3).data('triggerType',USER_LABEL);
+
+    $innnerElem.on("click", function() {
+      var triggerType = $(this).data('triggerType');
+      var $legendElem = $('.highcharts-legend-item');
+      var hiddenClassStr = 'highcharts-legend-item-hidden';
+
+      $legendElem.children('text').each(function(){
+        // 조직상세(공간별 APP) 상태에서 클릭 or 조직 클릭시 전체 표시
+        // 차트 여러번 조작시 animation complete시 셋팅한 데이터들이 사라지는 현상이 있어,
+        // 조직 클릭시 차트를 새로 만드는 걸로 변경
+        if($legendElem.children('text').length == 1 || triggerType == ORGANIZATION_LABEL) {
+          getChartList();
+          return;
+        }
+
+        // 각 항목 제외 hidden
+        if($(this).text() != triggerType){
+          if(!$(this).parent().hasClass(hiddenClassStr)){
+            $(this).trigger('click');
+          }
+        }else{
+          // 각 항목 view
+          if($(this).parent().hasClass(hiddenClassStr)){
+            $(this).trigger('click');
+          }
+        }
+      })
+    });
   };
 
   /*]]>*/
