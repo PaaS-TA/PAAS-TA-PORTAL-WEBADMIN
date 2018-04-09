@@ -236,10 +236,16 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="useYn" class="col-sm-4 control-label">사용</label>
+                                            <label class="col-sm-4 control-label">사용</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control toCheckString" id="useYn"
-                                                       name="codeDetail" placeholder="Please enter your Y or N"/>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" id="useYn" name="codeDetail" th:checked="${true}"
+                                                               th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}"/>Y
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                         <input type="radio" id="useYn" name="codeDetail"
+                                                           th:value="${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_N}"/>N
+                                                    </label>
                                             </div>
                                         </div>
 
@@ -317,6 +323,7 @@
             </div>
             <!-- Modal Layer-->
             <input type="hidden" id="groupId"/>
+            <input type="hidden" id="no"/>
         </section>
         <!-- /.content -->
     </div>
@@ -335,7 +342,7 @@
     var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
     var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
-    var EMPTY_MSG = /*[[#{common.info.empty.req.data}]]*/ '';
+    var EMPTY_MSG = /*[[#{common.info.empty.data}]]*/ '';
 
     //  procGetSearchList
     $(document.body).ready(function () {
@@ -384,7 +391,7 @@
             $("#key").val("");
             $("#value").val("");
             $("#summary").val("");
-            $("#useYn").val("");
+            //$("#useYn").val("");
         });
 
         $('#codeDetailGroupTableArea').click(function () {
@@ -400,10 +407,10 @@
     });
 
     function init() {
-        $("#DetailRegister").hide();
-
         getCodeGroupList();
-//        getCodeDetailList();
+
+//        $('#useYn').attr('checked', true);
+        $("#DetailRegister").hide();
 
         $('#codeGrouprModal').modal('hide');
         $('#codeDetailModal').modal('hide');
@@ -411,7 +418,7 @@
 
     getSearchList = function () {
         getCodeGroupList();
-//        getCodeDetailList();
+        getCodeDetailList();
     }
 
 
@@ -444,12 +451,9 @@
 
         var target = $("input[name='codeDetail'].toCheckString");
         if ($("input[name='codeDetail'].toCheckString").length > 0) {
-            console.log("INININ");
             for (var i = 0; i < target.length; i++) {
-                console.log("i::" + i);
                 if (0 == target[i].value.replace(/ /g, "").length) {
                     console.log(target[i].value);
-                    return false;
                 }
             }
             return true;
@@ -492,9 +496,8 @@
         var htmlString = [];
 
         objTableArea.html('');
-        console.log('지워');
         if (listLength < 1) {
-            objMessageArea.append(EMPTY_MSG);
+//            objMessageArea.append(EMPTY_MSG);
             objMessageArea.show();
 
         } else {
@@ -505,9 +508,7 @@
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].id + '</td>'
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].name + '</td>'
                     + '<td>'
-
-                    + ' <span class="glyphicon glyphicon-list-alt"  name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')" ></span>'
-
+                    + ' <span class="glyphicon glyphicon-list-alt" name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')" ></span>'
                     + '</td>'
                     + '</tr>');
             }
@@ -554,8 +555,8 @@
             var codeDetailList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-//                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetail(\'' + codeDetailList[i].key + '\')">'
-                htmlString.push('<tr style="cursor:pointer;">'
+                htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetailTable(\'' + codeDetailList[i].key + '\')">'
+//                htmlString.push('<tr style="cursor:pointer;">'
                     + '<td>' + codeDetailList[i].key + '</td>'
                     + '<td>' + codeDetailList[i].value + '</td>'
                     + '<td>' + codeDetailList[i].summary + '</td>'
@@ -571,6 +572,30 @@
         $("#DetailRegister").show();
         $("#groupId").val(key);
         procCallAjax2("/v2/codedetail?groupId=" + key, 'GET', '', procCallbackGetCodeDetailList);
+    }
+
+
+    function getCodeDetailTable(key) {
+
+        $("#groupId").val(key);
+
+        $.ajax({
+            url: "/v2/codedetail?key="+key,
+            method: "GET",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+
+                if (data) {
+                    $("#key").val(data.list[0].key);
+                    $("#value").val(data.list[0].value);
+                    $("#summary").val(data.list[0].summary);
+                    $("#useYn").val(data.list[0].useYn);
+                }
+
+                $('#codeDetailModal').modal('toggle');
+            }
+        });
     }
 
     //createGroup
@@ -653,16 +678,19 @@
     function createDetail() {
 
         var groupId = $('#groupId').val();
+        var reqUseYn = $("input:radio[id='useYn']:checked").val();
+        var param = $("#codeDetailForm").serializeObject();
+
         if (!procCheckValidStringSpaceDetail()) {
             return false;
         }
 
         var param = {
-            key: $("#key").val(),
             groupId: groupId,
+            key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: $("#useYn").val(),
+            useYn: reqUseYn,
         }
 
         console.log(param);
@@ -689,28 +717,32 @@
     function updateDetail() {
 
         var groupId = $('#groupId').val();
+        var no = $('#no').val();
+        var reqUseYn = $("input:radio[id='useYn']:checked").val();
+//        var param = $("#codeDetailForm").serializeObject(); //form 데이터를 Object로 바꿔주는 것을 도와주는 Jquery serializeObject
 
-        if (!procCheckValidStringSpace()) {
-            return false;
-        }
+        if (!procCheckValidStringSpaceDetail()) {return false;}
 
         var param = {
+            groupId: groupId,
+            no:no,
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: $("#useYn").val(),
+            useYn: reqUseYn,
         }
 
+        console.log(param);
         $.ajax({
-            url: "/v2/codedetail/" + no,
-            method: "PUT",
+            url: "/v2/codedetail/"+no,
+            method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    procAlert("success", /*[[#{service.update.result.success}]]*/ "");
-                    $('codeDetailModal').modal('hide');
+                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    $('div.modal').modal('hide');
                     init();
                 }
             },
@@ -721,45 +753,17 @@
         });
     }
 
-    //deleteDetailModal
+    //deleteGroup
     function deleteDetailModal() {
-
-        $("#popupTitle").html("코드 삭제");
-        $("#popupMessage").html("" + $("#name").val() + " " + /*[[#{service.delete.confirm}]]*/ "");
-        $("#popupButtonText").text("삭제");
-        $("#popupButtonText").show();
-        $('#popupButtonText').attr('onclick', "deleteDetail();");
-
-        $('#codeDetailModal').modal('toggle');
+        var no = $("#no").val();
+        procCallAjax2("/v2/codedetail/" + no, "DELETE", '',deleteDetail);
+        getCodeDetail(); //getcodeList 삭제한 부분만 나오게 수정 할 것
     }
 
-    function deleteDetail() {
-
-        var groupId = $('#groupId').val();
-
-        $.ajax({
-            url: "/v2/codedetail/" + no,
-            method: "DELETE",
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                if (data) {
-                    procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
-                    //location.href = "/service/serviceBrokerMain";
-                    init();
-                }
-            },
-
-            error: function (xhr, status, error) {
-                procAlert('warning', JSON.parse(xhr.responseText).message);
-            },
-
-            complete: function (data) {
-                //$('div.modal').modal('hide');
-                $('#serviceBrokerModal').modal('hide');
-            }
-        });
+    var deleteDetail = function (data) {
+        init();
     }
+
 
     /*]]>*/
 </script>
