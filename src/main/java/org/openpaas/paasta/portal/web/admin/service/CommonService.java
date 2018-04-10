@@ -3,7 +3,6 @@ package org.openpaas.paasta.portal.web.admin.service;
 import org.openpaas.paasta.portal.web.admin.common.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
@@ -53,6 +52,8 @@ public class CommonService {
     @Value("${paasta.portal.api.zuulUrl.storageapi}")
     private String storageApiUrl;
 
+    @Value("${paasta.portal.storageapi.type}")
+    private String storageApiType;
 
     /**
      * REST TEMPLATE 처리
@@ -74,6 +75,7 @@ public class CommonService {
         Map<String, Object> resultMap = resEntity.getBody();
 
         LOGGER.info("procRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+
         return resultMap;
     }
 
@@ -274,22 +276,36 @@ public class CommonService {
      *
      * @param reqUrl     the req url
      * @param httpMethod the http method
-     * @param obj        the obj
+     * @param bodyObject        the obj
      * @param reqToken   the req token
      * @return map map
      */
-    public Map<String, Object> procStorageApiRestTemplate(String reqUrl, HttpMethod httpMethod, Object obj, String reqToken) {
+    public <T> ResponseEntity<T> procStorageApiRestTemplate(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken, Class<T> resClazz) {
         restTemplate = new RestTemplate();
+        
+        // create url
+        String storageRequestURL = storageApiUrl + "/v2/" + storageApiType + '/';
+        if (null != reqUrl && false == "".equals( reqUrl ))
+            storageRequestURL += reqUrl;
+        
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
-
-        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        ResponseEntity<Map> resEntity = restTemplate.exchange(storageApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
-        Map<String, Object> resultMap = resEntity.getBody();
-
-        LOGGER.info("procRestStorageApiTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
-        return resultMap;
+        if (null == bodyObject)
+            bodyObject = new LinkedMultiValueMap<>();
+        HttpEntity<Object> reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
+        
+        ResponseEntity<T> resEntity = restTemplate.exchange(storageRequestURL, httpMethod, reqEntity, resClazz);
+        LOGGER.info("procRestStorageApiTemplate reqUrl :: {} || resultEntity type :: {}", storageRequestURL, resEntity.getHeaders().getContentType());
+        LOGGER.info("procRestStorageApiTemplate response Http status code :: {}", resEntity.getStatusCode());
+        return resEntity;
     }
 
+    public ResponseEntity<String> procStorageApiRestTemplateText(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
+        return procStorageApiRestTemplate( reqUrl, httpMethod, bodyObject, reqToken, String.class );
+    }
+    
+    public ResponseEntity<byte[]> procStorageApiRestTemplateBinary(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
+        return procStorageApiRestTemplate( reqUrl, httpMethod, bodyObject, reqToken, byte[].class );
+    }
 }

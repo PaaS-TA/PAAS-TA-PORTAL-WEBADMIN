@@ -2,6 +2,7 @@ package org.openpaas.paasta.portal.web.admin.service;
 
 import org.openpaas.paasta.portal.web.admin.model.Catalog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class CatalogService {
     public CommonService commonService;
 
     private final String V2_URL = "/v2";
+    
+    @Value("${paasta.portal.storageapi.type}")
+    private String storageType;
 
     /**
      * 스타터 팩 목록을 조회한다.
@@ -251,5 +255,4 @@ public class CatalogService {
     public Map<String, Object> deleteServicePackCatalog(int no) {
         return commonService.procCommonApiRestTemplate(V2_URL + "/servicepacks/" + no, HttpMethod.DELETE, null, null);
     }
-
 }

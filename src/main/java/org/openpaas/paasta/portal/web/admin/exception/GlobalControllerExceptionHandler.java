@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -32,15 +33,17 @@ import java.sql.SQLIntegrityConstraintViolationException;
  * @since 2016.07.07
  */
 @ControllerAdvice
-class GlobalControllerExceptionHandler {
+class GlobalControllerExceptionHandler implements UncaughtExceptionHandler {
 
     @Autowired
     public MessageSource messageSource;
 
     private final Logger logger;
+    private final Logger loggerDebugOnly;
 
     public GlobalControllerExceptionHandler() {
         logger = LoggerFactory.getLogger(getClass());
+        loggerDebugOnly = LoggerFactory.getLogger( "Debugonly" );
     }
 
     @ResponseBody
@@ -88,6 +91,8 @@ class GlobalControllerExceptionHandler {
         if (null != throwable) {
             logger.error("### EXCEPTION status :: {}", status);
             logger.error("### EXCEPTION getMessage() :: {}", throwable.getMessage());
+            // DEBUG ONLY
+            loggerDebugOnly.error("### EXCEPTION detail :: ", throwable);
 
             return response(new ExceptionMessage(throwable, status, messageSource), status);
         } else {
@@ -97,5 +102,10 @@ class GlobalControllerExceptionHandler {
 
     protected <T> ResponseEntity<T> response(T body, HttpStatus status) {
         return new ResponseEntity<T>(body, new HttpHeaders(), status);
+    }
+
+    @Override
+    public void uncaughtException( Thread t, Throwable e ) {
+        handleAnyException(new RuntimeException("Unexpected exception occurs in [" + t.getName() + '-' + t.getId() + ']', e));
     }
 }
