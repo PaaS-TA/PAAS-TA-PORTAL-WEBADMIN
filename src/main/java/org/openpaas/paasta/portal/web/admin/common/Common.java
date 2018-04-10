@@ -62,7 +62,15 @@ public class Common {
 
     public String getToken() {
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if ( "".equals( auth.getCredentials() ) )
+            return ( (String) auth.getPrincipal().toString() );
+        
+        final Object authPrincipal = auth.getPrincipal();
+        if ( authPrincipal instanceof String )
+            return ( (String) authPrincipal );
+        
+        User user = (User) authPrincipal;
 
         //token 만료 시간 비교
         if (user.getExpireDate() <= System.currentTimeMillis()) {

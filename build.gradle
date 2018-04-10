@@ -5,10 +5,11 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url 'https://repo.spring.io/libs-snapshot' }
-
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework:springloaded:1.2.8.RELEASE")
     }
 }
 
@@ -66,6 +67,9 @@ dependencies {
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.2.RELEASE'
 
     //compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.9.RELEASE'
+
+    // development only
+    
 
     //Default Spring-boot setting
     compile("org.springframework.boot:spring-boot-starter-web")

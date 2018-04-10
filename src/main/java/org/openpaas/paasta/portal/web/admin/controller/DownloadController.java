@@ -1,12 +1,20 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +37,6 @@ import java.util.Map;
  */
 @Controller
 public class DownloadController extends Common {
-
     /**
      * Download.
      *
@@ -53,16 +60,14 @@ public class DownloadController extends Common {
 
         OutputStream os = response.getOutputStream();
         InputStream is = new URL(url).openStream();
+        
+        // the new way
+        final int returnCode = IOUtils.copy( is, os );
+        if (returnCode == -1) 
+            IOUtils.copyLarge( is, os );
 
-        int n = 0;
-        byte[] b = new byte[512];
-
-        while ((n = is.read(b)) != -1) {
-            os.write(b, 0, n);
-        }
-
-        is.close();
-        os.close();
+        IOUtils.closeQuietly( is );
+        IOUtils.closeQuietly( os );
     }
 
     /**
@@ -71,38 +76,56 @@ public class DownloadController extends Common {
      * @param imgPath  the img path
      * @param response the response
      * @throws IOException the io exception
-     * @author 김도준
-     * @since 2017 -01-04
+     * @author Hyungu Cho (hgcho)
+     * @since 2017-01-04
      */
-    @RequestMapping(value = {"/download/getImage"}, method = RequestMethod.GET)
-    public void getImage(@RequestParam String imgPath, HttpServletResponse response) throws IOException {
+    @GetMapping( "/download/{img-path:.+}" )
+    @ResponseBody
+    public Object getImage(@PathVariable( "img-path" ) final String imgPath) throws IOException {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-store");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
 
-        String urlPath = "/file/getImage";
-
-        Map<String, String> body = new HashMap<>();
-        body.put("imgPath", imgPath);
-
-        ResponseEntity rssResponse = commonService.procRestTemplate(urlPath, HttpMethod.POST, body, getToken(), byte[].class);
-
-        byte [] imgByte =(byte [])rssResponse.getBody();
-
-        response.setHeader("Cache-Control", "no-store");
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-
-        //파일 확장자에 따라 컨텐트 타입 변경
-        int index = imgPath.lastIndexOf(".");
-        String ext ="";
-        if (index != -1) {
-            ext  = imgPath.substring(index + 1);
+        byte[] imgByte;
+        if ( "".equals( imgPath.replaceAll( " ", "" ) ) ) {
+            // prevents NullPointerException 
+            imgByte = new byte[0];
+            headers.setContentType( MediaType.APPLICATION_OCTET_STREAM );
+            
+            //파일 확장자에 따라 컨텐트 타입 변경
+            /*
+            int index = imgPath.lastIndexOf(".");
+            String ext = "";
+            if (index != -1) {
+                ext  = imgPath.substring(index + 1);
+            }
+            
+            if (imgByte.length > 0 ) {
+                if ( ext.equals( "png" ) )
+                    response.setContentType( "image/png" );
+                if ( ext.equals( "jpg" ) || ext.equals( "jpeg" ) ) 
+                    response.setContentType( "image/jpeg" );
+            } else {
+                response.setContentType( "application/octet-stream" );
+            }
+            */
+        } else {
+            ResponseEntity<byte[]> resultEntity = commonService.procStorageApiRestTemplateBinary( imgPath, HttpMethod.GET, null, getToken());
+            imgByte = resultEntity.getBody();
+            
+            if (imgByte.length > 0)
+                headers.setContentType( resultEntity.getHeaders().getContentType() );
         }
-        if(ext.equals("png")){response.setContentType("image/png");}
-        if(ext.equals("jpg") || ext.equals("jpeg")){response.setContentType("image/jpeg");}
-
-        ServletOutputStream responseOutputStream = response.getOutputStream();
-        responseOutputStream.write(imgByte);
-        responseOutputStream.flush();
-        responseOutputStream.close();
+        
+        
+        final ResponseEntity<byte[]> responseEntity;
+        if (imgByte.length <= 0)
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            responseEntity = new ResponseEntity<>(imgByte, headers, HttpStatus.CREATED);
+        
+        return responseEntity;
     }
 
     private String getBrowser(HttpServletRequest request) {

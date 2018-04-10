@@ -1,18 +1,26 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.model.Catalog;
+import org.openpaas.paasta.portal.web.admin.util.MultipartFileResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
+
 import java.util.Map;
 
 /**
@@ -153,23 +161,52 @@ class CatalogController extends Common {
             addObject("REQUEST_NO", req.getParameter("no"));
         }};
     }
+    
+    private ResponseEntity<byte[]> generateMethodNotAllowResponse() {
+        final ResponseEntity<byte[]> resEntity = new ResponseEntity<>( HttpStatus.METHOD_NOT_ALLOWED );
+        return resEntity;
+    }
 
+    /**
+     * 이미지 파일을 가져온다.
+     * 
+     * @param thumbnailFilename
+     * @return ResponseEntity<byte[]> (relays response from storage api)
+     */
+    @GetMapping( V2_URL + "/thumbnail/{filename}" )
+    @ResponseBody
+    public ResponseEntity<byte[]> getThumbnail(@PathVariable("filename") String thumbnailFilename) {
+        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary( thumbnailFilename, HttpMethod.GET, null, getToken() );
+        if (result.getHeaders().getContentType().toString().toLowerCase().startsWith( "image" )) {
+            return result;
+        } else {
+            return generateMethodNotAllowResponse();
+        }
+    }
 
     /**
      * 이미지 파일을 업로드한다.
      *
      * @param multipartFile MultipartFile(Spring 클래스)
-     * @return Map(자바클래스)
+     * @return ResponseEntity<Map<String, Object>> (relays response from storage api)
      * @throws Exception Exception(자바클래스)
      */
-    @RequestMapping(value = {"/v2/uploadThumbnailImage"}, method = RequestMethod.POST)
+    @SuppressWarnings( "unchecked" )
+    @PostMapping( V2_URL + "/thumbnail" )
     @ResponseBody
-    public Map<String, Object> uploadThumbnailImage(@RequestParam("file") MultipartFile multipartFile) throws Exception {
-        //TODO 업로드 구현하면 수정해야함
-//        return commonService.procRestTemplate("/catalog/uploadThumbnailImage", multipartFile, null);
-        Map map = new HashMap();
-        map.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
-        return map;
+    public ResponseEntity<Map<String, Object>> uploadThumbnail(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        try {
+            MultiValueMap<String, Object> requestBodyObject = new LinkedMultiValueMap<>();
+            requestBodyObject.add( "file", new MultipartFileResource( multipartFile ) );
+            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText( null, HttpMethod.POST, requestBodyObject, getToken());
+            Map<String, Object> resultMap = new ObjectMapper().readValue( result.getBody().toString(), Map.class );
+            resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
+            
+            final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String,Object>>(resultMap, result.getHeaders(), result.getStatusCode());
+            return generateResponseEntity;
+        } finally {
+            IOUtils.closeQuietly( multipartFile.getInputStream() );
+        }
     }
 
 
@@ -177,62 +214,79 @@ class CatalogController extends Common {
      * 이미지 파일을 삭제한다.
      *
      * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
+     * @return Response<String> (relays response from storage api)
      */
-    @RequestMapping(value = {V2_URL + "/deleteThumbnailImage"}, method = RequestMethod.POST)
+    @DeleteMapping( V2_URL + "/thumbnail/{filename:.+}" )
     @ResponseBody
-    public Map<String, Object> deleteThumbnailImage(@RequestBody Catalog param) {
-//        return commonService.procRestTemplate("/catalog/deleteThumbnailImage", HttpMethod.POST, param, null);
-        //TODO 삭제 구현되면 수정해야함
-        Map map = new HashMap();
-        map.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
-        return map;
+    public ResponseEntity<String> deleteThumbnailImage(@PathVariable("filename") String thumbnailFilename) {
+        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText( thumbnailFilename, HttpMethod.DELETE, null, getToken() );
+        return result;
     }
 
+    /**
+     * 앱 샘플 파이릉ㄹ 가져온다.
+     * 
+     * @param appSampleFilename
+     * @return ResponseEntity<byte[]> (relays response from storage api)
+     */
+    @GetMapping( V2_URL + "/appsample/{filename}" )
+    @ResponseBody
+    public ResponseEntity<byte[]> getAppSampleFile(@PathVariable("filename") String appSampleFilename) {
+        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary( appSampleFilename, HttpMethod.GET, null, getToken() );
+        switch ( result.getHeaders().getContentType().toString().toLowerCase() ) {
+        // zip, tar, rar, bz, bz2, 7z
+        case "application/zip": 
+        case "application/x-tar": 
+        case "application/x-rar-compressed": 
+        case "application/x-bzip": 
+        case "application/x-bzip2": 
+        case "application/x-7z-compressed": 
+            return result;
+        default:
+            return generateMethodNotAllowResponse();
+        }
+    }
 
     /**
      * 앱 샘플 파일을 업로드한다.
      *
      * @param multipartFile MultipartFile(Spring 클래스)
-     * @return Map(자바클래스)
+     * @return ResponseEntity<Map<String, Object>> (relays response from storage api)
      * @throws Exception Exception(자바클래스)
      */
-    @RequestMapping(value = {V2_URL + "/uploadAppSampleFile"}, method = RequestMethod.POST)
+    @SuppressWarnings( "unchecked" )
+    @PostMapping( V2_URL + "/appsample" )
     @ResponseBody
-    public Map<String, Object> uploadAppSampleFile(@RequestParam("file") MultipartFile multipartFile) throws Exception {
-//        return commonService.procRestTemplate("/catalog/uploadAppSampleFile", multipartFile, null);
-//TODO 구현되면 수정해야함
-        Map map = new HashMap();
-        map.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
-        return map;
+    public ResponseEntity<Map<String, Object>> uploadAppSampleFile(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        try {
+            MultiValueMap<String, Object> requestBodyObject = new LinkedMultiValueMap<>();
+            requestBodyObject.add( "file", new MultipartFileResource( multipartFile ) );
+            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText( null, HttpMethod.POST, requestBodyObject, getToken());
+            Map<String, Object> resultMap = new ObjectMapper().readValue( result.getBody().toString(), Map.class );
+            resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
+            
+            final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String,Object>>(resultMap, result.getHeaders(), result.getStatusCode());
+            return generateResponseEntity;
+        } finally {
+            IOUtils.closeQuietly( multipartFile.getInputStream() );
+        }
     }
 
 
     /**
      * 앱 샘플 파일을 삭제한다.
      *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
+     * @param appSampleFilename
+     * @return ResponseEntity&lt;String&gt; (relays response from storage api)
      */
-    @RequestMapping(value = {V2_URL + "/deleteAppSampleFile"}, method = RequestMethod.POST)
+    @DeleteMapping( V2_URL + "/appsample/{filename}" )
     @ResponseBody
-    public Map<String, Object> deleteAppSampleFile(@RequestBody Catalog param) {
-//        return commonService.procRestTemplate("/catalog/deleteAppSampleFile", HttpMethod.POST, param, null);
-        //TODO 구현되면 수정해야함
-        Map map = new HashMap();
-        map.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
-        return map;
+    public ResponseEntity<String> deleteAppSampleFile(@PathVariable("filename") String appSampleFilename ) {
+        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText( appSampleFilename, HttpMethod.DELETE, null, getToken() );
+        return result;
     }
 
-
-
-
-
-
-
-
-
-
+    
     /*
      * ------------------------------------------------------------------------------------조회
      */
