@@ -40,16 +40,11 @@ public class CommonCodeService {
     /**
      * 공통코드 목록을 조회한다.
      *
-     * @param param CommonCode
+     * @param no CommonCode
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getCodeDetail(String key, CommonCode param) {
-        String search = "";
-        if (param.getSearchKeyword() != null) {
-            search = "?";
-            search += "searchKeyword=" + param.getSearchKeyword();
-        }
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + key + search, HttpMethod.GET, param, null);
+    public Map<String,Object> getCodeDetail(int no) {
+        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + no , HttpMethod.GET, null, null);
     }
 
 
