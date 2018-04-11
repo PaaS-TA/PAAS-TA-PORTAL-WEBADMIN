@@ -37,7 +37,7 @@ public class CommonService {
 
     RestTemplate restTemplate;
 
-    @Value("${paasta.portal.api.url}")
+
     private String apiUrl;
 
     @Value("${paasta.portal.api.authorization.base64}")

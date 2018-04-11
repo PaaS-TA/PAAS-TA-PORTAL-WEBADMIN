@@ -1,8 +1,10 @@
 package org.openpaas.paasta.portal.web.admin.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,54 +18,77 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	/**
-	 * Configure global.
-	 *
-	 * @param authenticationMgr the authentication mgr
-	 * @throws Exception the exception
-	 */
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder authenticationMgr) throws Exception {
+    /**
+     * Configure global.
+     *
+     * @param authenticationMgr the authentication mgr
+     * @throws Exception the exception
+     */
 
-		authenticationMgr.authenticationProvider(customAuthenticationProvider());
-	}
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder authenticationMgr) throws Exception {
 
-	@Bean
-	AuthenticationProvider customAuthenticationProvider() {
 
-		CustomAuthenticationProvider impl = new CustomAuthenticationProvider();
-		return impl;
-	}
+        authenticationMgr.authenticationProvider(customAuthenticationProvider());
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
 
-//		http
-//				.csrf().disable()
-//				.authorizeRequests()
-//				.antMatchers("/*/*").access("hasRole('ROLE_ADMIN')")
-//				.and()
-//				.formLogin().loginPage("/index")
-//				.defaultSuccessUrl("/main")
-//				.failureUrl("/index?error")
-//				.usernameParameter("id").passwordParameter("password")
-//				.and()
-//				.logout().logoutSuccessUrl("/index?logout");
+    }
+
+    @Bean
+    AuthenticationProvider customAuthenticationProvider() {
+
+        CustomAuthenticationProvider impl = new CustomAuthenticationProvider();
+        return impl;
+    }
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
         http
-				.csrf().disable()
+                .csrf().disable().cors().disable()
                 .authorizeRequests()
-				.antMatchers("/**").permitAll()
-				.antMatchers("/dashboard").access("hasRole('ROLE_ADMIN')")
-				.and()
-				.formLogin().loginPage("/index")
-				.defaultSuccessUrl("/dashboard")
-				.failureUrl("/index?error")
-				.usernameParameter("id").passwordParameter("password");
+                .antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.HEAD, "/**").permitAll().antMatchers(HttpMethod.DELETE, "/**").permitAll().antMatchers(HttpMethod.POST, "/**").permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+//                .antMatchers("/index").permitAll()
+//                //Spring boot Admin 정보 접근 URL -  시작
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/index").permitAll()
+//                .antMatchers("/info").permitAll()
+//                .antMatchers("/env").permitAll()
+//                .antMatchers("/metrics").permitAll()
+//                .antMatchers("/trace").permitAll()
+//                .antMatchers("/dump").permitAll()
+//                .antMatchers("/jolokia").permitAll()
+//                .antMatchers("/configprops").permitAll()
+//                .antMatchers("/logfile").permitAll()
+//                .antMatchers("/refresh").permitAll()
+//                .antMatchers("/flyway").permitAll()
+//                .antMatchers("/liquibase").permitAll()
+//                .antMatchers("/httptrace").permitAll()
+//                .antMatchers("/threaddump").permitAll()
+//                .antMatchers("/heapdump").permitAll()
+//                .antMatchers("/loggers").permitAll()
+//                .antMatchers("/auditevents").permitAll()
+//                .antMatchers("/hystrix.stream").permitAll()
+//                .antMatchers("/docs").permitAll()
+//                .antMatchers("/jmx").permitAll()
+//                .antMatchers("/management/**").permitAll()
+//                .antMatchers("/api/applications/**").permitAll()
+//                .antMatchers("/applications/**/**").permitAll()
+//                .antMatchers("/health").permitAll()
+//                .antMatchers("/health/**").permitAll()
+//                //Spring boot Admin 정보 접근 URL - 끝
+//                .antMatchers("/**").access("hasRole('ROLE_ADMIN')")
+//                .and()
+//                .formLogin().loginPage("/index")
+//                .defaultSuccessUrl("/dashboard")
+//                .failureUrl("/index?error")
+//                .usernameParameter("id").passwordParameter("password")
+//                .and()
+//                .logout().logoutSuccessUrl("/index?logout");
 
-
-
-	}
+    }
 
 }
