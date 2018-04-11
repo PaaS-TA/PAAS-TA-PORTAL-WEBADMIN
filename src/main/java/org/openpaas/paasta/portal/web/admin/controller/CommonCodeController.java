@@ -51,7 +51,7 @@ public class CommonCodeController extends Common {
     /**
      * 공통코드 목록을 조회한다.
      *
-     * @param param CodeDetail
+     * @param no CodeDetail
      * @return Map(자바클래스)
      */
     @GetMapping(V2_URL + "/codedetail/{no}")

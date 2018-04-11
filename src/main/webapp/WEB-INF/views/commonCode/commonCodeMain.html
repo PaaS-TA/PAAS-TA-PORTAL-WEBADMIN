@@ -323,7 +323,7 @@
             </div>
             <!-- Modal Layer-->
             <input type="hidden" id="groupId"/>
-            <input type="hidden" id="no"/>
+            <input type="hidden" id="detailNo"/>
         </section>
         <!-- /.content -->
     </div>
@@ -339,6 +339,7 @@
     var LIST_GROUP_PROC_URL = "/v2/codegroup"
     var LIST_DETAIL_PROC_URL = "/v2/codedetail"
     var groupId;
+    var no;
     var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
     var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
@@ -408,7 +409,7 @@
 
     function init() {
         getCodeGroupList();
-
+        console.log("      "+ 3)
 //        $('#useYn').attr('checked', true);
         $("#DetailRegister").hide();
 
@@ -582,7 +583,7 @@
 
 
     function getCodeDetailTable(no) {
-        alert(no);
+
        $.ajax({
             url: "/v2/codedetail/"+no,
             method: "GET",
@@ -591,6 +592,7 @@
             success: function (data) {
 
                 if (data) {
+                    $("#detailNo").val(data.list[0].no);
                     $("#key").val(data.list[0].key);
                     $("#value").val(data.list[0].value);
                     $("#summary").val(data.list[0].summary);
@@ -718,28 +720,27 @@
     }
 
     //updateDetail
-    function updateDetail() {
-
-        var groupId = $('#groupId').val();
-        var no = $('#no').val();
-        var reqUseYn = $("input:radio[id='useYn']:checked").val();
-//        var param = $("#codeDetailForm").serializeObject(); //form 데이터를 Object로 바꿔주는 것을 도와주는 Jquery serializeObject
-
-        if (!procCheckValidStringSpaceDetail()) {return false;}
+    var updateDetail = function () {
+//        var groupId = $('#groupId').val();
+        var no = $('#detailNo').val();
+//        var reqUseYn = $("input:radio[id='useYn']:checked").val();
+        var param = $("#codeDetailForm").serializeObject();
+        console.log("      "+ 1)
+        if (!procCheckValidStringSpaceDetail()) {
+            return false;
+        }
 
         var param = {
-            groupId: groupId,
             no:no,
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
             useYn: $("#useYn").val(),
-//            useYn: reqUseYn,
         }
 
         console.log(param);
         $.ajax({
-            url: "/v2/codedetail/"+no,
+            url: "/v2/codedetail/"+ no,
             method: "PUT",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -747,7 +748,6 @@
             success: function (data) {
                 if (data) {
                     procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
-                    $('div.modal').modal('hide');
                     init();
                 }
             },
@@ -756,16 +756,20 @@
             }
 
         });
-    }
+    };
+
+
 
     //deleteGroup
     function deleteDetailModal() {
-        var no = $("#no").val();
+        var no = $("#detailNo").val();
         procCallAjax2("/v2/codedetail/" + no, "DELETE", '',deleteDetail);
+        console.log("      "+ 1)
         getCodeDetail(); //getcodeList 삭제한 부분만 나오게 수정 할 것
     }
 
     var deleteDetail = function (data) {
+        console.log("      "+ 2)
         init();
     }
 
