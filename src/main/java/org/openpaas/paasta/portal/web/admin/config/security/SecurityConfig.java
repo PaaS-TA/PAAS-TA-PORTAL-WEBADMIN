@@ -42,52 +42,52 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return impl;
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .csrf().disable().cors().disable()
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .antMatchers(HttpMethod.HEAD, "/**").permitAll().antMatchers(HttpMethod.DELETE, "/**").permitAll().antMatchers(HttpMethod.POST, "/**").permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-//                .antMatchers("/index").permitAll()
-//                //Spring boot Admin 정보 접근 URL -  시작
-//                .antMatchers("/").permitAll()
-//                .antMatchers("/index").permitAll()
-//                .antMatchers("/info").permitAll()
-//                .antMatchers("/env").permitAll()
-//                .antMatchers("/metrics").permitAll()
-//                .antMatchers("/trace").permitAll()
-//                .antMatchers("/dump").permitAll()
-//                .antMatchers("/jolokia").permitAll()
-//                .antMatchers("/configprops").permitAll()
-//                .antMatchers("/logfile").permitAll()
-//                .antMatchers("/refresh").permitAll()
-//                .antMatchers("/flyway").permitAll()
-//                .antMatchers("/liquibase").permitAll()
-//                .antMatchers("/httptrace").permitAll()
-//                .antMatchers("/threaddump").permitAll()
-//                .antMatchers("/heapdump").permitAll()
-//                .antMatchers("/loggers").permitAll()
-//                .antMatchers("/auditevents").permitAll()
-//                .antMatchers("/hystrix.stream").permitAll()
-//                .antMatchers("/docs").permitAll()
-//                .antMatchers("/jmx").permitAll()
-//                .antMatchers("/management/**").permitAll()
-//                .antMatchers("/api/applications/**").permitAll()
-//                .antMatchers("/applications/**/**").permitAll()
-//                .antMatchers("/health").permitAll()
-//                .antMatchers("/health/**").permitAll()
-//                //Spring boot Admin 정보 접근 URL - 끝
-//                .antMatchers("/**").access("hasRole('ROLE_ADMIN')")
-//                .and()
-//                .formLogin().loginPage("/index")
-//                .defaultSuccessUrl("/dashboard")
-//                .failureUrl("/index?error")
-//                .usernameParameter("id").passwordParameter("password")
-//                .and()
-//                .logout().logoutSuccessUrl("/index?logout");
+                .antMatchers("/external/**").permitAll()
+                //Spring boot Admin 정보 접근 URL -  시작
+                .antMatchers("/").permitAll()
+                .antMatchers("/index").permitAll()
+                .antMatchers("/info**").permitAll()
+                .antMatchers("/env**").permitAll()
+                .antMatchers("/metrics**").permitAll()
+                .antMatchers("/trace**").permitAll()
+                .antMatchers("/dump**").permitAll()
+                .antMatchers("/jolokia**").permitAll()
+                .antMatchers("/configprops**").permitAll()
+                .antMatchers("/logfile**").permitAll()
+                .antMatchers("/logging**").permitAll()
+                .antMatchers("/refresh**").permitAll()
+                .antMatchers("/flyway**").permitAll()
+                .antMatchers("/liquibase**").permitAll()
+                .antMatchers("/httptrace**").permitAll()
+                .antMatchers("/threaddump**").permitAll()
+                .antMatchers("/heapdump**").permitAll()
+                .antMatchers("/loggers**").permitAll()
+                .antMatchers("/auditevents**").permitAll()
+                .antMatchers("/hystrix.stream**").permitAll()
+                .antMatchers("/docs**").permitAll()
+                .antMatchers("/jmx**").permitAll()
+                .antMatchers("/management/**").permitAll()
+                .antMatchers("/applications/**").permitAll()
+                .antMatchers("/applications/**/**").permitAll()
+                .antMatchers("/applications/**/**/**").permitAll()
+                .antMatchers("/health**").permitAll()
+                .antMatchers("/health/**").permitAll()
+                //Spring boot Admin 정보 접근 URL - 끝
+                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/**").access("hasRole('ROLE_ADMIN')")
+                .and()
+                .formLogin().loginPage("/index")
+                .defaultSuccessUrl("/dashboard")
+                .failureUrl("/index?error")
+                .usernameParameter("id").passwordParameter("password")
+                .and()
+                .logout().logoutSuccessUrl("/index?logout");
 
     }
 

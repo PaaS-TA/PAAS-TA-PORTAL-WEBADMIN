@@ -19,7 +19,7 @@ public class CustomIntercepter extends HandlerInterceptorAdapter {
 
 
         String url = request.getRequestURI();
-        LOGGER.info(url);
+        /*LOGGER.info(url);*/
 
         return super.preHandle(request, response, handler);
     }
