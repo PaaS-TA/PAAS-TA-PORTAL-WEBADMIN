@@ -26,8 +26,4 @@ public class WebAdminApplication extends WebMvcConfigurerAdapter {
 		SpringApplication.run(WebAdminApplication.class, args);
 	}
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-	}
 }
