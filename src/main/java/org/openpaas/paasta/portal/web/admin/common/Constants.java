@@ -205,4 +205,11 @@ public class Constants {
      * 앱 바인드 사용유무 미사용
      */
     public static final String APP_BIND_YN_N = "N";
+
+    /**
+     * API REST URL prefix
+     */
+    public static final String V2_URL = "/v2";
+
+
 }

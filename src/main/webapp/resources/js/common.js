@@ -35,47 +35,50 @@ var procGridCallAjax = function(reqUrl, objGrid, procType, param, callback) {
     });
 };
 
-
-// CALL AJAX
-var procCallAjax = function(reqUrl, param, callback) {
+// Http Method , loadingBar Element Argument 추가
+var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {
     var reqData = "";
-    var reqMethod = "POST";
+    //var reqMethod = "POST";
 
     if (param != null) {
-        reqData = JSON.stringify(param);
-
-    } else {
-        reqData = JSON.stringify({});
-        reqMethod = "GET";
+        reqData = param;
     }
-
     $.ajax({
         url: reqUrl,
         method: reqMethod,
         data: reqData,
         dataType: 'json',
         contentType: "application/json",
+        beforeSend: function(){
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.removeClass("hide");
+            }
+        },
         success: function(data) {
 
             if (data) {
                 callback(data, param);
             } else {
                 var resData = {RESULT : RESULT_STATUS_SUCCESS,
-                               RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
+                    RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
 
                 callback(resData, param);
             }
         },
         error: function(xhr, status, error) {
             var resData = {RESULT : RESULT_STATUS_FAIL,
-                            RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
+                RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
 
-            callback(resData, param);
+            //callback(resData, param);
 
             console.log("ERROR :: error :: ", error);
             procAlert("danger", JSON.parse(xhr.responseText).message);
         },
         complete : function(data) {
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                //$targetLoadingBarElement.fadeOut();
+                $targetLoadingBarElement.addClass('hide');
+            }
             console.log("COMPLETE :: data :: ", data);
         }
     });

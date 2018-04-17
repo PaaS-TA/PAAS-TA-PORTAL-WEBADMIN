@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head></head>
+<body>
+<div>
+    <header></header>
+    <aside>/</aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div layout:fragment="content" class="content-wrapper" >
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                할당량 관리
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+
+
+                    <div class="box"><!-- box-primary -->
+                        <div class="box-header with-border">
+
+                            <div class="nav-tabs-custom" style="margin-bottom:0px;">
+                                <ul class="nav nav-tabs">
+
+                                    <li class="active"><a href="#orgTab" data-toggle="tab" aria-expanded="true">조직 할당량</a></li>
+                                    <li class=""><a href="#spaceTab" data-toggle="tab" aria-expanded="false">공간 할당량</a></li>
+
+                                    <!--<li class="pull-right">-->
+                                        <!--<div class="box-tools pull-right">-->
+                                            <!--<div class="has-feedback">-->
+                                                <!--<input type="text" class="form-control input-sm" id="searchKeyword" onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>-->
+                                                <!--<span class="glyphicon glyphicon-search form-control-feedback"></span>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                </ul>
+                            </div>
+
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="orgTab">
+
+                                    <div class="box box-solid">
+                                        <div id="orgTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                        <div class="box-header">
+
+                                            <h3 class="box-title"></h3>
+
+                                            <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
+                                            <div class="has-feedback">
+                                                <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event,'org');" placeholder="이름으로 검색"/>
+                                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                            </div>
+                                        </div>
+
+                                            <div class="col-xs-6 col-sm-2 pull-right" style="padding-right: 0px;">
+                                                <button type="button" class="btn btn-block btn-primary btn-sm " id="registOrgDef" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal">
+                                                    등록
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                        <!-- /.box-header -->
+
+                                        <div class="box-body no-padding">
+                                            <table class="table table-striped text-center" style="table-layout:fixed; word-break:break-all;"> <!-- table-responsive -->
+                                                <thead>
+                                                <tr class="text-center">
+                                                    <th>이름</th>
+                                                    <th>메모리</th>
+                                                    <th>인스턴스 메모리</th>
+                                                    <th>라우트</th>
+                                                    <th>서비스 인스턴스</th>
+                                                    <th>가격</th>
+                                                    <th>예약 라우트 포트</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="orgQuotaDefinitionList">
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+
+                                </div>
+                                <!-- /.tab-pane tab_1 -->
+
+                                <div class="tab-pane fade" id="spaceTab">
+
+                                    <div class="box box-solid">
+                                        <div class="box-header">
+
+                                            <h3 class="box-title"></h3>
+
+                                            <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
+                                                <div class="has-feedback">
+                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event,'space');" placeholder="이름으로 검색"/>
+                                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-6 col-sm-2 pull-right" style="padding-right: 0px;">
+                                                <button type="button" class="btn btn-block btn-primary btn-sm " id="registSpaceDef" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal">
+                                                    등록
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                        <!-- /.box-header -->
+
+                                        <div class="box-body no-padding">
+                                            <table class="table table-striped text-center" style="table-layout:fixed; word-break:break-all;"> <!-- table-responsive -->
+                                                <thead>
+                                                <tr class="text-center">
+                                                    <th>이름</th>
+                                                    <th>메모리</th>
+                                                    <th>인스턴스 메모리</th>
+                                                    <th>라우트</th>
+                                                    <th>서비스 인스턴스</th>
+                                                    <th>가격</th>
+                                                    <th>예약 라우트 포트</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Default</td>
+                                                    <td>10G</td>
+                                                    <td>10G</td>
+                                                    <td>1000</td>
+                                                    <td>100</td>
+                                                    <td>무료</td>
+                                                    <td>100</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Space_quota</td>
+                                                    <td>20G</td>
+                                                    <td>무제한</td>
+                                                    <td>2000</td>
+                                                    <td>200</td>
+                                                    <td>유료</td>
+                                                    <td>무제한</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+
+                                </div>
+                                <!-- /.tab-pane tab_2 -->
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal Layer-->
+            <div class="modal fade" id="quotaDefinitionFormModal" style="display: none;" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+
+                            <h4 class="modal-title">
+                                <div id="titleReg">조직 할당량 등록</div>
+                                <div id="titleDetail">조직 할당량 상세</div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <!--<div class="box-header"></div>-->
+                                <!-- /.box-header -->
+                                <!-- form start -->
+                                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                <form class="form-horizontal" id="form">
+                                    <div class="box-body" style="padding: 0px">
+
+                                        <div class="form-group required has-feedback"><!-- has-success has-feedback --><!--has-error has-feedback -->
+                                            <label for="name" class="col-sm-3 control-label">이름</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="name" name="useCheck" placeholder="예시) 20G_quota"/>
+                                                <input type="hidden" id="guid" class="toCheckString"/>
+                                                <span class="glyphicon form-control-feedback" ></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="memorySize" class="col-sm-3 control-label">메모리(MB)</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control toCheckString" type="number" id="memorySize" placeholder="예시) 1024, 10240"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="instanceMemorySize" class="col-sm-3 control-label">인스턴스 메모리(MB)</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="number" name="unlimitableOnMem" id="instanceMemorySize" placeholder="예시) 1024, 10240" data-toggle="popover" />
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3">
+                                                <!-- <input type="text" class="form-control" id="password" placeholder="단위 : MB"/> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="routeCnt" class="col-sm-3 control-label">라우트</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="routeCnt" placeholder="예시) 100" data-toggle="popover" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="serviceCnt" class="col-sm-3 control-label">서비스 인스턴스</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="serviceCnt" placeholder="예시) 100" data-toggle="popover" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="appsCnt" class="col-xs-9 col-sm-3 control-label">APP 인스턴스</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="appsCnt" placeholder="예시) 100" data-toggle="popover" />
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3">
+                                                <!-- <input type="text" class="form-control" id="password" placeholder="ex) admin"/> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="isFreeArea" class="col-sm-3 control-label">무료 여부</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isFreeArea" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="optionsRadios" id="isFreeY" value="true" checked=""/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="optionsRadios" id="isFreeN" value="false" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="reservedRouteCnt" class="col-sm-3 control-label">예약된 라우트 포트</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="number" name="unlimitableOnRoute" id="reservedRouteCnt" placeholder="예시) 100" data-toggle="popover"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer" style="border-top: 0px">
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteQuotaDefinitionModal();">삭제</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary" onClick="createQuotaDefinition()">등록</button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateQuotaDefinition();">저장</button>
+
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- Modal Layer-->
+
+        </section>
+
+        <!-- /.Content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer></footer>
+
+</div>
+<!-- ./wrapper -->
+
+<script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+    /*<![CDATA[*/
+
+    var ORG_SOURCE_LIST;
+    var SPACE_SOURCE_LIST;
+    var IS_NAME_DUP = false;
+    var ACTIVE_TAB = 'org';
+
+    $(document).ready(function () {
+
+        setPopover();
+        init();
+
+        $('#orgTab').click(function(e){
+            getOrgQuotaDefinitionList();
+        });
+
+        $('#spaceTab').click(function(e){
+            getOrgQuotaDefinitionList();
+        });
+
+        // 등록버튼 클릭시, 등록 팝업 설정
+        $("#registOrgDef").click(function(e){
+
+            $('#titleDetail').hide();
+            $('#deleteBtn').hide();
+            $('#saveBtn').hide();
+
+            $('#titleReg').show();
+            $('#regBtn').show();
+            //$('#closeBtn').show();
+
+            $('#form')[0].reset();
+
+            $('#name').attr("readonly",false);
+        });
+
+        // 리스트 클릭시, 상세 팝업 설정
+        $('#orgQuotaDefinitionList').click(function(){
+
+            $('#titleDetail').show();
+            $('#deleteBtn').show();
+            $('#saveBtn').show();
+
+            $('#titleReg').hide();
+            $('#regBtn').hide();
+
+            $('#name').attr("readonly",true);
+            $('#name').closest('.form-group').removeClass('has-success has-error');
+            $('#name').closest('.form-control-feedback').hide();
+        });
+
+        // 팝업 레이어 '이름' 사용 가능 체크 이벤트
+        $(document).on("keyup","input[name='useCheck']", function (e) {
+            procNameUseCheck(e)
+        });
+
+    });
+
+    //팝오버 설정
+    function setPopover(){
+        // 인스턴스 메모리
+        $('input[name=unlimitableOnMem]').data('content','값 입력하지 않을시 : 메모리 허용량 내 무제한으로 설정');
+        // 라우트, 서비스, APP
+        $('input[name=unlimitableOnOrg]').data('content','값 입력하지 않을시 : 조직 허용량 내 무제한으로 설정');
+        // 예약 라우트
+        $('input[name=unlimitableOnRoute]').data('content','값 입력하지 않을시 : 라우트 허용량 내 무제한으로 설정');
+
+        $('[data-toggle="popover"]').popover({container: "body",placement:"bottom",trigger:"hover"});
+    };
+
+
+    function init(){
+        getOrgQuotaDefinitionList();
+        //$('#quotaDefinitionFormModal').modal('hide');
+    };
+
+    function procSearchByKeyword(e) {
+
+        var searchKeyword = $(e.target).val();
+        var searchResult = [];
+        var newIdx = 0;
+
+        var SOURCE_LIST;
+
+        if(ACTIVE_TAB == 'org'){
+            SOURCE_LIST = ORG_SOURCE_LIST;
+        }else{
+            SOURCE_LIST = SPACE_SOURCE_LIST;
+        }
+
+        for (var i=0; i < SOURCE_LIST.length; i++ ){
+
+            if (SOURCE_LIST[i].entity.name.includes(searchKeyword)) {
+                searchResult[newIdx++] = SOURCE_LIST[i];
+            }
+        }
+        printData(searchResult);
+    }
+
+    // 이름 중복 체크
+    function procNameUseCheck(e){
+
+        var $target     = $(e.target);
+        var $formTarget = $target.closest('.form-group');
+        var $spanTarget = $formTarget.find('.form-control-feedback');
+        var name        = $target.closest("input").val().trim();
+
+        var SOURCE_LIST;
+
+        if(ACTIVE_TAB == 'org'){
+            SOURCE_LIST = ORG_SOURCE_LIST;
+        }else{
+            SOURCE_LIST = SPACE_SOURCE_LIST;
+        }
+
+        for (var i=0; i < SOURCE_LIST.length; i++ ){
+
+            if(name.length == 0){
+                IS_NAME_DUP = false;
+                $formTarget.removeClass('has-success has-error');
+                $spanTarget.removeClass('glyphicon-ok glyphicon-remove');
+                break;
+            }
+
+            if(SOURCE_LIST[i].entity.name == name){
+                IS_NAME_DUP = true;
+                $formTarget.removeClass('has-success');
+                $formTarget.addClass('has-error');
+                $spanTarget.removeClass('glyphicon-ok');
+                $spanTarget.addClass('glyphicon-remove');
+                break;
+            }else{
+                IS_NAME_DUP = false;
+                $formTarget.addClass('has-success');
+                $formTarget.removeClass('has-error');
+                $spanTarget.removeClass('glyphicon-remove');
+                $spanTarget.addClass('glyphicon-ok');
+            }
+        }
+    }
+
+    // MB -> MB/GB , -1 -> 무제한
+    function convertUnit(amount){
+        var unit;
+        var regex = /^[0-9]*$/g;
+
+        if(amount == -1){
+            return '무제한';
+        }
+
+        if(amount >= 1024){
+            amount = amount/1024;
+            unit = 'G';
+        }else{
+            unit = 'M';
+        }
+
+        if(!regex.test(amount)){
+            amount = amount.toFixed(1); // 단위가 GB일시 소수점 1자리까지(반올림)
+        }
+        return amount+unit;
+    }
+
+    function convertAllowedStr(str){
+        if(str == true){ // 무료/유료
+            return '무료';
+        }else if(str == false){
+            return '유료';
+        }
+    };
+
+    function convertUnlimitStr(str){
+        if(str == -1) {      // 화면 출력시 -1 '무제한' 출력
+            return '무제한';
+        }else if(str.length == 0){ // 등록 수정 미입력시 -1 (무제한)
+            return '-1';
+        }else{
+            return str;
+        }
+    };
+
+    function getOrgQuotaDefinitionList() {
+        procCallAjax("/v2/orgs/quota-definitions", "GET", null, procCallbackGetOrgQuotaDefinitionList, $('#orgTabLoadingBar') );
+    };
+
+    var procCallbackGetOrgQuotaDefinitionList = function(data){
+
+        ORG_SOURCE_LIST = data.resources;
+        $("#orgQuotaDefinitionList").html("");
+        printOrgData(ORG_SOURCE_LIST);
+    };
+
+    function getOrgQuotaDefinition(guid) {
+        $('#form')[0].reset();
+        $('#quotaDefinitionFormModal').modal('toggle');
+        procCallAjax("/v2/orgs/quota-definitions/"+guid, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
+    }
+
+    var procCallbackGetQuotaDefinition = function(data){
+        if (data.entity) {
+
+            var entity = data.entity;
+
+            var instance_memory_limit = entity.instance_memory_limit;
+            var app_instance_limit    = entity.app_instance_limit;
+            var route_ports           = entity.total_reserved_route_ports;
+            var serviceCnt            = entity.total_services;
+            var routeCnt              = entity.total_routes;
+
+            $('#name').val(entity.name);
+            $('#memorySize').val(entity.memory_limit);
+            $('#instanceMemorySize').val(instance_memory_limit);
+            $('#routeCnt').val(routeCnt);
+            $('#serviceCnt').val(serviceCnt);
+            $('#appsCnt').val(app_instance_limit);
+
+            if(entity.non_basic_services_allowed){
+                $('input:radio[name=optionsRadios]:radio[value=true]').prop('checked','true');
+            }else{
+                $('input:radio[name=optionsRadios]:radio[value=false]').prop('checked','true');
+            }
+
+            $('#reservedRouteCnt').val(route_ports);
+            $("#guid").val(data.metadata.guid);
+
+            //$('#quotaDefinitionFormModal').modal('toggle');
+        }
+    }
+
+    function createQuotaDefinition() {
+
+//        if (!procCheckValidStringSpace()){
+//            return false;
+//        };
+        //guid 체크
+
+        var param = {
+            name                    : $('#name').val(),
+            memoryLimit             : $('#memorySize').val(),
+            instanceMemoryLimit     : convertUnlimitStr($('#instanceMemorySize').val()),
+            totalRoutes             : convertUnlimitStr($('#routeCnt').val()),
+            totalServices           : convertUnlimitStr($('#serviceCnt').val()),
+            appInstanceLimit        : convertUnlimitStr($('#appsCnt').val()),
+            totalReservedRoutePorts : convertUnlimitStr($('#reservedRouteCnt').val()),
+            nonBasicServicesAllowed : $(':input:radio[name=optionsRadios]:checked').val()
+        };
+        procCallAjax("/v2/orgs/quota-definitions", "POST", JSON.stringify(param), procCallbackcreateQuotaDefinition, null);
+    }
+
+
+    var procCallbackcreateQuotaDefinition = function(){
+        init();
+        $('#quotaDefinitionFormModal').modal('toggle');
+    };
+
+    function updateQuotaDefinition() {
+
+        var guid = $('#guid').val();
+//
+        if (!procCheckValidStringSpace()){return false;}
+//
+//        var param = {
+//            guid: guid,
+//            name: $("#name").val(),
+//            username: $("#username").val(),
+//            password: $("#password").val(),
+//            url: $("#url").val()
+//        }
+//
+//        $.ajax({
+//            url: "/v2/servicebrokers/"+guid,
+//            method: "PUT",
+//            data: JSON.stringify(param),
+//            dataType: 'json',
+//            contentType: "application/json",
+//            success: function (data) {
+//                if (data) {
+//                    procAlert("success", /*[[#{service.update.result.success}]]*/ "");
+//                    $('div.modal').modal('hide');
+//                    init();
+//                }
+//            },
+//            error: function (xhr, status, error) {
+//                procAlert('warning', JSON.parse(xhr.responseText).message);
+//            }
+//
+//        });
+//
+    }
+
+    function deleteQuotaDefinitionModal() {
+//
+//        $("#popupTitle").html("서비스 브로커 삭제");
+//        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{service.delete.confirm}]]*/ "");
+//        $("#popupButtonText").text("삭제");
+//        $("#popupButtonText").addClass('pull-left');
+//        $('#popupButtonText').attr('onclick', "deleteServiceBroker();");
+//        $("#popupButtonText").show();
+//
+//        $('#serviceBrokerConfirmModal').modal('toggle');
+    }
+
+    function deleteQuotaDefinition() {
+
+        var guid = $('#guid').val();
+//
+//        $.ajax({
+//            url: "/v2/servicebrokers/"+guid,
+//            method: "DELETE",
+//            dataType: 'json',
+//            contentType: "application/json",
+//            success: function (data) {
+//                if (data) {
+//                    procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
+//                    init();
+//                }
+//            },
+//
+//            error: function (xhr, status, error) {
+//                procAlert('warning', JSON.parse(xhr.responseText).message);
+//            },
+//
+//            complete: function (data) {
+//                $('#serviceBrokerModal').modal('hide');
+//            }
+//        });
+    }
+
+    // 조직 할당량 리스트 출력
+    function printOrgData(dataList) {
+
+        var objTable = $('#orgQuotaDefinitionList');
+
+        objTable.html('');
+
+        $.each(dataList, function (id, data) {
+
+            objTable.append(" <tr style='cursor:pointer;'" +
+                    " onclick='javascript:getOrgQuotaDefinition(\""+data.metadata.guid+"\");'>" +
+                    "<td>" + data.entity.name + "</td>" +
+                    "<td>" + convertUnit(data.entity.memory_limit) + "</td>" +
+                    "<td>" + convertUnit(data.entity.instance_memory_limit) + "</td>" +
+                    "<td>" + convertUnlimitStr(data.entity.total_routes) + "</td>" +
+                    "<td>" + convertUnlimitStr(data.entity.total_services) + "</td>" +
+                    "<td>" + convertAllowedStr(data.entity.non_basic_services_allowed) + "</td>" +
+                    "<td>" + convertUnlimitStr(data.entity.total_reserved_route_ports)  + "</td>"
+            );
+        });
+
+    };
+
+    // 공간 할당량 리스트 출력
+    function printSpaceData(dataList) {
+
+        var objTable = $('#spaceQuotaDefinitionList');
+
+        objTable.html('');
+
+        $.each(dataList, function (id, data) {
+
+            objTable.append(" <tr style='cursor:pointer;'" +
+                    " onclick='javascript:getSpaceQuotaDefinition(\""+data.metadata.guid+"\");'>" +
+                    "<td>" + data.entity.name + "</td>" +
+                    "<td>" + convertUnit(data.entity.memory_limit) + "</td>" +
+                    "<td>" + convertUnit(data.entity.instance_memory_limit) + "</td>" +
+                    "<td>" + convertUnlimitStr(data.entity.total_routes) + "</td>" +
+                    "<td>" + convertUnlimitStr(data.entity.total_services) + "</td>" +
+                    "<td>" + convertAllowedStr(data.entity.non_basic_services_allowed) + "</td>" +
+                    "<td>" + convertUnlimitStr(data.entity.total_reserved_route_ports)  + "</td>"
+            );
+        });
+
+    };
+
+    /*]]>*/
+</script>
+</body>
+</html>

@@ -25,7 +25,7 @@
                     <div class="box">
                         <!--<div class="box-header"></div>-->
                         <div class="box-footer" style="padding-bottom:0px;">
-                                <button type="button" id="register" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#serviceBrokerModal">
+                                <button type="button" id="register" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#serviceBrokerFormModal">
                                     서비스 브로커 등록
                                 </button>
                         </div>
@@ -54,10 +54,11 @@
                     </div>
                     <!-- /.box -->
                 </div>
+
             </div>
 
             <!-- Modal Layer-->
-            <div class="modal fade" id="serviceBrokerModal" data-backdrop="static" data-keyboard="false">
+            <div class="modal fade" id="serviceBrokerFormModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -116,7 +117,7 @@
                             <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
                             <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">저장</button>
                             <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">등록</button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -144,9 +145,7 @@
                 </div>
             </div>
             <!-- Modal Layer-->
-
         </section>
-
         <!-- /.Content -->
     </div>
     <!-- /.content-wrapper -->
@@ -185,8 +184,7 @@
 
     function init(){
         getServiceBrokerList();
-        $('#serviceBrokerModal').modal('hide');
-//        $('#serviceBrokerModal').modal({backdrop:'static', keyboard:false});
+        $('#serviceBrokerFormModal').modal('hide');
     }
 
     function getServiceBrokerList() {
@@ -196,7 +194,12 @@
             method: "GET",
             dataType: 'json',
             contentType: "application/json",
+            beforeSend: function(){
+                $(".loader").fadeIn();
+            },
             success: function (data) {
+
+                $(".loader").hide();
 
                 if (data.list) {
                     $("#serviceBrokerList").html("");
@@ -228,14 +231,9 @@
 
     function getServiceBroker(guid) {
 
-//        var param = {
-//            guid: guid,
-//        }
-
         $.ajax({
             url: "/v2/servicebrokers/"+guid,
             method: "GET",
-            //data: param,
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
@@ -249,12 +247,10 @@
                     $("#guid").val(data.servicebroker.metadata.guid);
                 }
 
-                //$('div.modal').modal('toggle');
-                $('#serviceBrokerModal').modal('toggle');
+                $('#serviceBrokerFormModal').modal('toggle');
             }
         });
     }
-
 
     function updateServiceBroker() {
 
@@ -279,7 +275,6 @@
             success: function (data) {
                 if (data) {
                     procAlert("success", /*[[#{service.update.result.success}]]*/ "");
-                    //location.href = "/service/serviceBrokerMain";
                     $('div.modal').modal('hide');
                     init();
                 }
@@ -297,10 +292,10 @@
         $("#popupTitle").html("서비스 브로커 삭제");
         $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{service.delete.confirm}]]*/ "");
         $("#popupButtonText").text("삭제");
-        $("#popupButtonText").show();
+        $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "deleteServiceBroker();");
+        $("#popupButtonText").show();
 
-        //$('div.modal').modal('toggle');
         $('#serviceBrokerConfirmModal').modal('toggle');
     }
 
@@ -316,7 +311,6 @@
             success: function (data) {
                 if (data) {
                     procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
-                    //location.href = "/service/serviceBrokerMain";
                     init();
                 }
             },
@@ -326,8 +320,7 @@
             },
 
             complete: function (data) {
-                //$('div.modal').modal('hide');
-                $('#serviceBrokerModal').modal('hide');
+                $('#serviceBrokerFormModal').modal('hide');
             }
         });
     }
@@ -351,7 +344,6 @@
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    //location.href = "/service/serviceBrokerMain";
                     procAlert("success", /*[[#{service.insert.result.success}]]*/ "");
                     init();
                 }
@@ -360,14 +352,10 @@
 
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
-
         });
     }
 
-
     /*]]>*/
 </script>
-
-
 </body>
 </html>
