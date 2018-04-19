@@ -290,7 +290,7 @@
     function deleteServiceBrokerModal() {
 
         $("#popupTitle").html("서비스 브로커 삭제");
-        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{service.delete.confirm}]]*/ "");
+        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{delete.confirm.message('서비스 브로커')}]]*/ "");
         $("#popupButtonText").text("삭제");
         $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "deleteServiceBroker();");

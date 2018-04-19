@@ -222,7 +222,7 @@
                                             <label for="name" class="col-sm-3 control-label">이름</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="name" name="useCheck" placeholder="예시) 20G_quota"/>
-                                                <input type="hidden" id="guid" class="toCheckString"/>
+                                                <input type="hidden" id="quotaId" class="toCheckString"/>
                                                 <span class="glyphicon form-control-feedback" ></span>
                                             </div>
                                         </div>
@@ -315,6 +315,26 @@
             </div>
             <!-- Modal Layer-->
 
+            <div class="modal fade" tabindex="-1" role="dialog" id="quotaDefinitionsConfirmModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
+                                    onclick="procClosePopup('serviceBrokerConfirmModal');"> 취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <!-- /.Content -->
@@ -332,7 +352,7 @@
     var ORG_SOURCE_LIST;
     var SPACE_SOURCE_LIST;
     var IS_NAME_DUP = false;
-    var ACTIVE_TAB = 'org';
+    var ACTIVE_TAB;
 
     $(document).ready(function () {
 
@@ -340,11 +360,13 @@
         init();
 
         $('#orgTab').click(function(e){
-            getOrgQuotaDefinitionList();
+            ACTIVE_TAB = 'org';
+            console.log('ACTIVE_TAB::'+ACTIVE_TAB);
         });
 
         $('#spaceTab').click(function(e){
-            getOrgQuotaDefinitionList();
+            ACTIVE_TAB = 'space';
+            console.log('ACTIVE_TAB::'+ACTIVE_TAB);
         });
 
         // 등록버튼 클릭시, 등록 팝업 설정
@@ -409,13 +431,7 @@
         var searchResult = [];
         var newIdx = 0;
 
-        var SOURCE_LIST;
-
-        if(ACTIVE_TAB == 'org'){
-            SOURCE_LIST = ORG_SOURCE_LIST;
-        }else{
-            SOURCE_LIST = SPACE_SOURCE_LIST;
-        }
+        var SOURCE_LIST = (ACTIVE_TAB == 'org') ? ORG_SOURCE_LIST : SPACE_SOURCE_LIST;
 
         for (var i=0; i < SOURCE_LIST.length; i++ ){
 
@@ -423,7 +439,12 @@
                 searchResult[newIdx++] = SOURCE_LIST[i];
             }
         }
-        printData(searchResult);
+
+        if(ACTIVE_TAB == 'org'){
+            printOrgData(searchResult);
+        }else{
+            printSpaceData(searchResult);
+        }
     }
 
     // 이름 중복 체크
@@ -490,14 +511,37 @@
         return amount+unit;
     }
 
-    function convertAllowedStr(str){
-        if(str == true){ // 무료/유료
-            return '무료';
-        }else if(str == false){
-            return '유료';
+    function convertViewToData(str){
+        if(str.length == 0){ // 등록 수정 미입력시 -1 (무제한)
+            return '-1';
+        }else{
+            return str;
         }
     };
 
+    function convertDataToView(str){
+        if(typeof(str) === 'boolean' && str == true){ // 무료/유료
+            return '무료';
+        }else if(typeof(str) === 'boolean' && str == false){
+            return '유료';
+        }else if(str == -1){ // 화면 출력시 -1 '무제한' 출력
+            return '무제한'
+        }else if(str.length == 0){
+            return '';
+        }else{
+            return str;
+        }
+    };
+
+    function convertDataToView2(str){
+        if(str == -1){ // 화면 출력시 -1 '' 출력
+            return ''
+        }else{
+            return str;
+        }
+    };
+
+    // 수정 or 분리 필요
     function convertUnlimitStr(str){
         if(str == -1) {      // 화면 출력시 -1 '무제한' 출력
             return '무제한';
@@ -507,6 +551,7 @@
             return str;
         }
     };
+
 
     function getOrgQuotaDefinitionList() {
         procCallAjax("/v2/orgs/quota-definitions", "GET", null, procCallbackGetOrgQuotaDefinitionList, $('#orgTabLoadingBar') );
@@ -519,10 +564,10 @@
         printOrgData(ORG_SOURCE_LIST);
     };
 
-    function getOrgQuotaDefinition(guid) {
+    function getOrgQuotaDefinition(quotaId) {
         $('#form')[0].reset();
         $('#quotaDefinitionFormModal').modal('toggle');
-        procCallAjax("/v2/orgs/quota-definitions/"+guid, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
+        procCallAjax("/v2/orgs/quota-definitions/"+quotaId, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
     }
 
     var procCallbackGetQuotaDefinition = function(data){
@@ -538,10 +583,10 @@
 
             $('#name').val(entity.name);
             $('#memorySize').val(entity.memory_limit);
-            $('#instanceMemorySize').val(instance_memory_limit);
-            $('#routeCnt').val(routeCnt);
-            $('#serviceCnt').val(serviceCnt);
-            $('#appsCnt').val(app_instance_limit);
+            $('#instanceMemorySize').val(convertDataToView2(instance_memory_limit));
+            $('#routeCnt').val(convertDataToView2(routeCnt));
+            $('#serviceCnt').val(convertDataToView2(serviceCnt));
+            $('#appsCnt').val(convertDataToView2(app_instance_limit));
 
             if(entity.non_basic_services_allowed){
                 $('input:radio[name=optionsRadios]:radio[value=true]').prop('checked','true');
@@ -549,8 +594,8 @@
                 $('input:radio[name=optionsRadios]:radio[value=false]').prop('checked','true');
             }
 
-            $('#reservedRouteCnt').val(route_ports);
-            $("#guid").val(data.metadata.guid);
+            $('#reservedRouteCnt').val(convertDataToView2(route_ports));
+            $("#quotaId").val(data.metadata.guid);
 
             //$('#quotaDefinitionFormModal').modal('toggle');
         }
@@ -558,101 +603,76 @@
 
     function createQuotaDefinition() {
 
-//        if (!procCheckValidStringSpace()){
-//            return false;
-//        };
-        //guid 체크
+        $('#quotaId').removeClass('toCheckString'); //체크 제외
+
+        if (!procCheckValidStringSpace()){
+            return false;
+        };
 
         var param = {
             name                    : $('#name').val(),
             memoryLimit             : $('#memorySize').val(),
-            instanceMemoryLimit     : convertUnlimitStr($('#instanceMemorySize').val()),
-            totalRoutes             : convertUnlimitStr($('#routeCnt').val()),
-            totalServices           : convertUnlimitStr($('#serviceCnt').val()),
-            appInstanceLimit        : convertUnlimitStr($('#appsCnt').val()),
-            totalReservedRoutePorts : convertUnlimitStr($('#reservedRouteCnt').val()),
+            instanceMemoryLimit     : convertViewToData($('#instanceMemorySize').val()),
+            totalRoutes             : convertViewToData($('#routeCnt').val()),
+            totalServices           : convertViewToData($('#serviceCnt').val()),
+            appInstanceLimit        : convertViewToData($('#appsCnt').val()),
+            totalReservedRoutePorts : convertViewToData($('#reservedRouteCnt').val()),
             nonBasicServicesAllowed : $(':input:radio[name=optionsRadios]:checked').val()
         };
-        procCallAjax("/v2/orgs/quota-definitions", "POST", JSON.stringify(param), procCallbackcreateQuotaDefinition, null);
+        procCallAjax("/v2/orgs/quota-definitions", "POST", JSON.stringify(param), procCallbackQuotaDefinition, null);
     }
 
 
-    var procCallbackcreateQuotaDefinition = function(){
+    var procCallbackQuotaDefinition = function(){
         init();
         $('#quotaDefinitionFormModal').modal('toggle');
     };
 
+    // 조직 할당량 수정
     function updateQuotaDefinition() {
 
-        var guid = $('#guid').val();
+        var quotaId = $('#quotaId').val();
+
+        $('#quotaId').addClass('toCheckString'); //체크 포함
 //
-        if (!procCheckValidStringSpace()){return false;}
-//
-//        var param = {
-//            guid: guid,
-//            name: $("#name").val(),
-//            username: $("#username").val(),
-//            password: $("#password").val(),
-//            url: $("#url").val()
-//        }
-//
-//        $.ajax({
-//            url: "/v2/servicebrokers/"+guid,
-//            method: "PUT",
-//            data: JSON.stringify(param),
-//            dataType: 'json',
-//            contentType: "application/json",
-//            success: function (data) {
-//                if (data) {
-//                    procAlert("success", /*[[#{service.update.result.success}]]*/ "");
-//                    $('div.modal').modal('hide');
-//                    init();
-//                }
-//            },
-//            error: function (xhr, status, error) {
-//                procAlert('warning', JSON.parse(xhr.responseText).message);
-//            }
-//
-//        });
-//
+        if (!procCheckValidStringSpace()){
+            return false;
+        };
+
+        var param = {
+            name                    : $('#name').val(),
+            memoryLimit             : $('#memorySize').val(),
+            instanceMemoryLimit     : convertViewToData($('#instanceMemorySize').val()),
+            totalRoutes             : convertViewToData($('#routeCnt').val()),
+            totalServices           : convertViewToData($('#serviceCnt').val()),
+            appInstanceLimit        : convertViewToData($('#appsCnt').val()),
+            totalReservedRoutePorts : convertViewToData($('#reservedRouteCnt').val()),
+            nonBasicServicesAllowed : $(':input:radio[name=optionsRadios]:checked').val()
+        };
+
+        procCallAjax("/v2/orgs/quota-definitions/"+quotaId, "PUT", JSON.stringify(param), procCallbackQuotaDefinition, null);
     }
 
+
+    // 조직 할당량 삭제 Modal
     function deleteQuotaDefinitionModal() {
-//
-//        $("#popupTitle").html("서비스 브로커 삭제");
-//        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{service.delete.confirm}]]*/ "");
-//        $("#popupButtonText").text("삭제");
-//        $("#popupButtonText").addClass('pull-left');
-//        $('#popupButtonText').attr('onclick', "deleteServiceBroker();");
-//        $("#popupButtonText").show();
-//
-//        $('#serviceBrokerConfirmModal').modal('toggle');
+
+        $("#popupTitle").html("조직 할당량 정의 삭제");
+        $("#popupMessage").html($("#name").val()+" "+/*[[#{delete.confirm.message('조직 할당량 정의')}]]*/ "");
+        $("#popupButtonText").text("삭제");
+        $("#popupButtonText").addClass('pull-left');
+        $('#popupButtonText').attr('onclick', "deleteQuotaDefinition();");
+        $("#popupButtonText").show();
+
+        $('#quotaDefinitionsConfirmModal').modal('toggle');
     }
 
+    // 조직 할당량 삭제
     function deleteQuotaDefinition() {
 
-        var guid = $('#guid').val();
-//
-//        $.ajax({
-//            url: "/v2/servicebrokers/"+guid,
-//            method: "DELETE",
-//            dataType: 'json',
-//            contentType: "application/json",
-//            success: function (data) {
-//                if (data) {
-//                    procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
-//                    init();
-//                }
-//            },
-//
-//            error: function (xhr, status, error) {
-//                procAlert('warning', JSON.parse(xhr.responseText).message);
-//            },
-//
-//            complete: function (data) {
-//                $('#serviceBrokerModal').modal('hide');
-//            }
-//        });
+        var quotaId = $('#quotaId').val();
+
+        procCallAjax("/v2/orgs/quota-definitions/"+quotaId, "DELETE", null, procCallbackcreateQuotaDefinition, null);
     }
 
     // 조직 할당량 리스트 출력
@@ -669,10 +689,10 @@
                     "<td>" + data.entity.name + "</td>" +
                     "<td>" + convertUnit(data.entity.memory_limit) + "</td>" +
                     "<td>" + convertUnit(data.entity.instance_memory_limit) + "</td>" +
-                    "<td>" + convertUnlimitStr(data.entity.total_routes) + "</td>" +
-                    "<td>" + convertUnlimitStr(data.entity.total_services) + "</td>" +
-                    "<td>" + convertAllowedStr(data.entity.non_basic_services_allowed) + "</td>" +
-                    "<td>" + convertUnlimitStr(data.entity.total_reserved_route_ports)  + "</td>"
+                    "<td>" + convertDataToView(data.entity.total_routes) + "</td>" +
+                    "<td>" + convertDataToView(data.entity.total_services) + "</td>" +
+                    "<td>" + convertDataToView(data.entity.non_basic_services_allowed) + "</td>" +
+                    "<td>" + convertDataToView(data.entity.total_reserved_route_ports)  + "</td>"
             );
         });
 

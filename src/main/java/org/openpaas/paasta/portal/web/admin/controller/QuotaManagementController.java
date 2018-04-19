@@ -22,8 +22,6 @@ import java.util.Map;
 @RestController
 public class QuotaManagementController extends Common {
 
-    //private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBrokerController.class);
-
     @Autowired
     private CommonService commonService;
 
@@ -41,34 +39,6 @@ public class QuotaManagementController extends Common {
         return mv;
     }
 
-//    /**
-//     * 서비스 브로커 상세 화면이다.
-//     *
-//     * @return model and view
-//     */
-//    @RequestMapping(value = {"/service/serviceBrokerDetail"}, method = RequestMethod.GET)
-//    public ModelAndView serviceBrokerDetail() {
-//        ModelAndView mv = new ModelAndView();
-//
-//        mv.setViewName("service/serviceBrokerDetail");
-//
-//        return mv;
-//    }
-
-//    /**
-//     * 서비스 브로커 등록 화면이다.
-//     *
-//     * @return model and view
-//     */
-//    @RequestMapping(value = {"/service/serviceBrokerCreate"}, method = RequestMethod.GET)
-//    public ModelAndView serviceBrokerCreate() {
-//        ModelAndView mv = new ModelAndView();
-//
-//        mv.setViewName("service/serviceBrokerCreate");
-//
-//        return mv;
-//    }
-
     /**
      * 조직 할당량 리스트를 조회한다.
      *
@@ -85,13 +55,13 @@ public class QuotaManagementController extends Common {
     /**
      * 조직 할당량 정의를 조회한다.
      *
-     * @param quota Quota
+     * @param quotaId Quota GUID
      * @return ModelAndView model
      */
-    @GetMapping(value = {Constants.V2_URL + "/orgs/quota-definitions/{guid}"})
+    @GetMapping(value = {Constants.V2_URL + "/orgs/quota-definitions/{quotaId}"})
     @ResponseBody
-    public Map<String, Object> getOrgQuotaDefinition(@ModelAttribute Quota quota, @PathVariable String guid) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/orgs/quota-definitions/"+guid, HttpMethod.GET, quota, this.getToken());
+    public Map<String, Object> getOrgQuotaDefinition(@ModelAttribute Quota quota, @PathVariable String quotaId) {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/orgs/quota-definitions/"+quotaId, HttpMethod.GET, quota, this.getToken());
     }
 
     /**
@@ -103,38 +73,33 @@ public class QuotaManagementController extends Common {
     @PostMapping(value = {Constants.V2_URL + "/orgs/quota-definitions"})
     @ResponseBody
     public Map<String, Object> createOrgQuotaDefinition(@RequestBody Quota quota) {
-
         return commonService.procCfApiRestTemplate(Constants.V2_URL + "/orgs/quota-definitions", HttpMethod.POST, quota, this.getToken());
     }
-//
-//
-//    /**
-//     * 서비스 브로커를 수정한다.
-//     *
-//     * @param serviceBroker the serviceBroker
-//     * @return ModelAndView model
-//     */
-//    @PutMapping(value = {Constants.V2_URL + "/servicebrokers/{guid}"})
-//    @ResponseBody
-//    public Map<String, Object> updateServiceBroker(@RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
-//
-//        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers/"+guid, HttpMethod.PUT, serviceBroker, this.getToken());
-//    }
-//
-//
-//    /**
-//     * 서비스 브로커를 삭제한다.
-//     *
-//     * @param guid the serviceBroker guid
-//     * @return Map <String, Object>
-//     */
-//    @DeleteMapping(value = {Constants.V2_URL + "/servicebrokers/{guid}"})
-//    @ResponseBody
-//    public Map<String, Object> deleteServiceBroker(@PathVariable String guid ) {
-//
-//        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers/"+guid, HttpMethod.DELETE, null, this.getToken());
-//
-//    }
+
+    /**
+     * 조직 할당량 정의를 수정한다.
+     *
+     * @param quota Quota
+     *
+     * @return ModelAndView model
+     */
+    @PutMapping(value = {Constants.V2_URL + "/orgs/quota-definitions/{quotaId}"})
+    @ResponseBody
+    public Map<String, Object> updateServiceBroker(@RequestBody Quota quota, @PathVariable String quotaId) {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/orgs/quota-definitions/"+quotaId, HttpMethod.PUT, quota, this.getToken());
+    }
+
+    /**
+     * 조직 할당량 정의를 삭제한다.
+     *
+     * @param quotaId the quota GUID
+     * @return Map <String, Object>
+     */
+    @DeleteMapping(value = {Constants.V2_URL + "/orgs/quota-definitions/{quotaId}"})
+    @ResponseBody
+    public Map<String, Object> deleteOrgQuotaDefinition(@PathVariable String quotaId ) {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/orgs/quota-definitions/"+quotaId, HttpMethod.DELETE, null, this.getToken());
+    }
 
 }
 
