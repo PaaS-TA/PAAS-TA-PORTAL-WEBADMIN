@@ -85,8 +85,8 @@ public class OrgSpaceListController extends Common {
      * @return Org 조직 객체
      */
     @GetMapping(V2_URL + "/orgs/{orgid}/quota")
-    public Map<String, Object> getOrgByName(@PathVariable String orgid) {
-        return orgSpaceListService.getOrgByName("/orgs/"+orgid+"/quota", HttpMethod.GET, null, getToken());
+    public Map<String, Object> getOrgQuota(@PathVariable String orgid) {
+        return orgSpaceListService.getOrgQuota("/orgs/"+orgid+"/quota", HttpMethod.GET, null, getToken());
     }
 
 
