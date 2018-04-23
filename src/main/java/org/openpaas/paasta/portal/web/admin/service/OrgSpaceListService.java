@@ -88,7 +88,7 @@ public class OrgSpaceListService extends Common {
      * @param reqToken Token
      * @return Map (자바 Map 클래스)
      */
-    public Map<String, Object> getOrgByName(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
+    public Map<String, Object> getOrgQuota(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
         return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
