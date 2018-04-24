@@ -18,35 +18,50 @@ public class Quota extends Entity {
     private int totalRoutes;
     private int memoryLimit;
 
+    // add
     private String name;
     private int instanceMemoryLimit;
     private int appInstanceLimit;
     private int totalReservedRoutePorts;
-    private UUID guid;
-    private String organizationName;
+    private UUID guid;  // Definition GUID(Organization or Space)
+    private UUID orginazationGuid;
+    private UUID spaceGuid;
 
-    public Quota() {
-        //empty
+    private String organizationName; // 정의 지정시 필요
+
+    public Quota(){
     }
 
     public Quota(Meta meta, String name, boolean nonBasicServicesAllowed,
                  int totalServices, int totalRoutes, int memoryLimit) {
         super(meta, name);
-        this.totalServices = totalServices;
-        this.totalRoutes = totalRoutes;
-        this.memoryLimit = memoryLimit;
+        this.totalServices=totalServices;
+        this.totalRoutes=totalRoutes;
+        this.memoryLimit=memoryLimit;
         this.nonBasicServicesAllowed = nonBasicServicesAllowed;
 
     }
-
     /**
      * Default value :"app_instance_limit:-1" "instance_memory_limit:-1" "total_reserved_route_ports:0"
      *
      * @param meta
      * @param name
      */
-    public Quota(Meta meta, String name) {
+    public Quota(Meta meta, String name){
         super(meta, name);
+    }
+
+    public Quota(String name, UUID guid, boolean nonBasicServicesAllowed, int totalServices, int totalRoutes, int memoryLimit,
+                 int instanceMemoryLimit, int appInstanceLimit, int totalReservedRoutePorts) {
+        this.name = name;
+        this.guid = guid;
+        this.nonBasicServicesAllowed = nonBasicServicesAllowed;
+        this.totalServices = totalServices;
+        this.totalRoutes = totalRoutes;
+        this.memoryLimit = memoryLimit;
+        this.instanceMemoryLimit = instanceMemoryLimit;
+        this.appInstanceLimit = appInstanceLimit;
+        this.totalReservedRoutePorts = totalReservedRoutePorts;
     }
 
     public int getTotalServices() {
@@ -123,6 +138,22 @@ public class Quota extends Entity {
         this.guid = guid;
     }
 
+    public UUID getOrginazationGuid() {
+        return orginazationGuid;
+    }
+
+    public void setOrginazationGuid(UUID orginazationGuid) {
+        this.orginazationGuid = orginazationGuid;
+    }
+
+    public UUID getSpaceGuid() {
+        return spaceGuid;
+    }
+
+    public void setSpaceGuid(UUID spaceGuid) {
+        this.spaceGuid = spaceGuid;
+    }
+
     public String getOrganizationName() {
         return organizationName;
     }
@@ -130,6 +161,4 @@ public class Quota extends Entity {
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
     }
-
-
 }

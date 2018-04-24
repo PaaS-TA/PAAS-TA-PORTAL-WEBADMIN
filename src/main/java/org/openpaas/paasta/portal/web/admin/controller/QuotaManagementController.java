@@ -116,13 +116,13 @@ public class QuotaManagementController extends Common {
     /**
      * 공간 할당량 정의를 조회한다.
      *
-     * @param quotaId Quota GUID
+     * @param spaceQuotaId Quota GUID
      * @return ModelAndView model
      */
-    @GetMapping(value = {Constants.V2_URL + "/spaces/quota-definitions/{quotaId}"})
+    @GetMapping(value = {Constants.V2_URL + "/spaces/quota-definitions/{spaceQuotaId}"})
     @ResponseBody
-    public Map<String, Object> getSpaceQuotaDefinition(@ModelAttribute Quota quota, @PathVariable String quotaId) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/spaces/quota-definitions/"+quotaId, HttpMethod.GET, quota, this.getToken());
+    public Map<String, Object> getSpaceQuotaDefinition(@ModelAttribute Quota quota, @PathVariable String spaceQuotaId) {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/spaces/quota-definitions/"+spaceQuotaId, HttpMethod.GET, quota, this.getToken());
     }
 
     /**
@@ -144,14 +144,14 @@ public class QuotaManagementController extends Common {
      *
      * @return ModelAndView model
      */
-    @PutMapping(value = {Constants.V2_URL + "/spaces/quota-definitions/{quotaId}"})
+    @PutMapping(value = {Constants.V2_URL + "/spaces/quota-definitions/{spaceQuotaId}"})
     @ResponseBody
-    public Map<String, Object> updateSpaceQuotaDefinition(@RequestBody Quota quota, @PathVariable String quotaId) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/spaces/quota-definitions/"+quotaId, HttpMethod.PUT, quota, this.getToken());
+    public Map<String, Object> updateSpaceQuotaDefinition(@RequestBody Quota quota, @PathVariable String spaceQuotaId) {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/spaces/quota-definitions/"+spaceQuotaId, HttpMethod.PUT, quota, this.getToken());
     }
 
     /**
-     * 조직 할당량 정의를 삭제한다.
+     * 공간 할당량 정의를 삭제한다.
      *
      * @param quotaId the quota GUID
      * @return Map <String, Object>
