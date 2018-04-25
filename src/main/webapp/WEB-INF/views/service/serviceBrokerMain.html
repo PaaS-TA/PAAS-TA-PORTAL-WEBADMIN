@@ -23,13 +23,18 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        <!--<div class="box-header"></div>-->
-                        <div class="box-footer" style="padding-bottom:0px;">
-                                <button type="button" id="register" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#serviceBrokerFormModal">
-                                    서비스 브로커 등록
+                        <div id="loadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                        <div class="box-header">
+                            <h3 class="box-title"></h3>
+                            <div class="box-tools col-xs-6 col-sm-2 pull-left" style="position:static;padding-left: 0px;">
+                            </div>
+                            <div class="col-xs-6 col-sm-3 pull-right" style="padding-right: 0px;">
+                                <button type="button" id="register" class="btn btn-block btn-primary btn-sm" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceBrokerFormModal">
+                                    서비스브로커 등록
                                 </button>
+                            </div>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" style="padding-top: 0px;">
                             <table class="table table-striped text-center"> <!-- table-responsive -->
                                 <thead>
                                 <tr>
@@ -38,14 +43,14 @@
                                 </tr>
                                 </thead>
                                 <tbody id="serviceBrokerList" th:remove="body">
-                                    <tr>
-                                        <td>glusterfs-service</td>
-                                        <td>http://10.30.120.197:8080</td>
-                                    </tr>
-                                    <tr>
-                                        <td>mysql-service-broker</td>
-                                        <td>http://10.30.40.195:8080</td>
-                                    </tr>
+                                <tr>
+                                    <td>glusterfs-service</td>
+                                    <td>http://10.30.120.197:8080</td>
+                                </tr>
+                                <tr>
+                                    <td>mysql-service-broker</td>
+                                    <td>http://10.30.40.195:8080</td>
+                                </tr>
                                 </tbody>
 
                             </table>
@@ -73,37 +78,35 @@
                         <div class="modal-body">
 
                             <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
-                                <!--<div class="box-header"></div>-->
-                                <!-- /.box-header -->
-                                <!-- form start -->
+                                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
                                 <form id="serviceBrokerForm" class="form-horizontal">
                                     <div class="box-body">
 
-                                        <div class="form-group">
-                                            <label for="name" class="col-sm-4 control-label">서비스 브로커 이름</label>
-                                            <div class="col-sm-8">
+                                        <div class="form-group required">
+                                            <label for="name" class="col-sm-3 control-label">서비스 브로커 이름</label>
+                                            <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) rabbitmq-service-broker"/>
                                                 <input type="hidden" id="guid"/>
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="username" class="col-sm-4 control-label">사용자 이름</label>
-                                            <div class="col-sm-8">
+                                        <div class="form-group required">
+                                            <label for="username" class="col-sm-3 control-label">사용자 이름</label>
+                                            <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="username" name="username" placeholder="ex) admin"/>
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="password" class="col-sm-4 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-8">
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="url" class="col-sm-4 control-label">URL 정보</label>
-                                            <div class="col-sm-8">
+                                        <div class="form-group required">
+                                            <label for="url" class="col-sm-3 control-label">URL 정보</label>
+                                            <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="url" name="url" placeholder="ex) http://10.30.40.81:4567"/>
                                             </div>
                                         </div>
@@ -159,6 +162,10 @@
     /*<![CDATA[*/
     var serviceBrokerGuid = /*[[${guid}]]*/ 'empty';
 
+    var init = function(){
+        getServiceBrokerList();
+        $('#serviceBrokerFormModal').modal('hide');
+    }
 
     $(document).ready(function () {
 
@@ -180,83 +187,85 @@
             $("#url").val("");
             $("#guid").val("");
         });
+
+        $('#serviceBrokerList').click(function(){
+
+            $('#titleDetail').show();
+            $('#deleteBtn').show();
+            $('#saveBtn').show();
+
+            $('#titleReg').hide();
+            $('#regBtn').hide();
+            //$('#closeBtn').hide();
+        });
     });
 
-    function init(){
-        getServiceBrokerList();
-        $('#serviceBrokerFormModal').modal('hide');
-    }
-
     function getServiceBrokerList() {
+        procCallAjax("/v2/servicebrokers", "GET", null, procCallbackGetServiceBrokerList, $('#loadingBar') );
+    };
 
-        $.ajax({
-            url: "/v2/servicebrokers",
-            method: "GET",
-            dataType: 'json',
-            contentType: "application/json",
-            beforeSend: function(){
-                $(".loader").fadeIn();
-            },
-            success: function (data) {
-
-                $(".loader").hide();
-
-                if (data.list) {
-                    $("#serviceBrokerList").html("");
-
-                    $.each(data.list, function (id, data) {
-
-                        $("#serviceBrokerList").append(" <tr align='center' style='cursor:pointer;'" +
-                                " onclick='javascript:getServiceBroker(\""+data.metadata.guid+"\");'>" +
-                                "<td>" + data.entity.name + "</td>" +
-                                "<td>" + data.entity.broker_url + "</td>"
-                        );
-
-                    });
-
-                    $('#serviceBrokerList').click(function(){
-
-                        $('#titleDetail').show();
-                        $('#deleteBtn').show();
-                        $('#saveBtn').show();
-
-                        $('#titleReg').hide();
-                        $('#regBtn').hide();
-                        //$('#closeBtn').hide();
-                    });
-                }
-            }
-        });
+    var procCallbackGetServiceBrokerList = function(data){
+        printData(data.resources);
     }
 
+    // 서비스 브로커 리스트 출력
+    function printData(dataList) {
+
+        var objTable = $("#serviceBrokerList");
+
+        objTable.html('');
+
+        $.each(dataList, function (id, data) {
+            console.log(data);
+            objTable.append(" <tr align='center' style='cursor:pointer;'" +
+                    " onclick='javascript:getServiceBroker(\""+data.metadata.guid+"\");'>" +
+                    "<td>" + data.entity.name + "</td>" +
+                    "<td>" + data.entity.broker_url + "</td>"
+            );
+        });
+    };
+
+    // 서비스 브로커 상세
     function getServiceBroker(guid) {
-
-        $.ajax({
-            url: "/v2/servicebrokers/"+guid,
-            method: "GET",
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-
-                if (data.servicebroker) {
-
-                    $("#name").val(data.servicebroker.entity.name);
-                    $("#username").val(data.servicebroker.entity.auth_username);
-                    $("#password").val("");
-                    $("#url").val(data.servicebroker.entity.broker_url);
-                    $("#guid").val(data.servicebroker.metadata.guid);
-                }
-
-                $('#serviceBrokerFormModal').modal('toggle');
-            }
-        });
+        $('#serviceBrokerForm')[0].reset();
+        $('#serviceBrokerFormModal').modal('toggle');
+        procCallAjax("/v2/servicebrokers/"+guid, "GET", null, procCallbackGetServiceBroker, $('#modalLoadingBar'));
     }
 
+    var procCallbackGetServiceBroker = function(data){
+        if (data) {
+
+            $("#name").val(data.entity.name);
+            $("#username").val(data.entity.auth_username);
+            $("#password").val("");
+            $("#url").val(data.entity.broker_url);
+            $("#guid").val(data.metadata.guid);
+        }
+    }
+
+    // 서비스 브로커 등록
+    function createServiceBroker() {
+
+        if (!procCheckValidStringSpace()){return false;}
+
+        var param = {
+            name: $("#name").val(),
+            username: $("#username").val(),
+            password: $("#password").val(),
+            url: $("#url").val()
+        }
+
+        procCallAjax("/v2/servicebrokers", "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
+    }
+
+    // 서비스브로커 수정
     function updateServiceBroker() {
 
         var guid = $('#guid').val();
 
-        if (!procCheckValidStringSpace()){return false;}
+        if (!procCheckValidStringSpace()){
+            return false;
+        };
 
         var param = {
             guid: guid,
@@ -265,28 +274,10 @@
             password: $("#password").val(),
             url: $("#url").val()
         }
-
-        $.ajax({
-            url: "/v2/servicebrokers/"+guid,
-            method: "PUT",
-            data: JSON.stringify(param),
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                if (data) {
-                    procAlert("success", /*[[#{service.update.result.success}]]*/ "");
-                    $('div.modal').modal('hide');
-                    init();
-                }
-            },
-            error: function (xhr, status, error) {
-                procAlert('warning', JSON.parse(xhr.responseText).message);
-            }
-
-        });
-
+        procCallAjax("/v2/servicebrokers/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
 
+    // 서비스 브로커 삭제 (confirm layer)
     function deleteServiceBrokerModal() {
 
         $("#popupTitle").html("서비스 브로커 삭제");
@@ -299,61 +290,12 @@
         $('#serviceBrokerConfirmModal').modal('toggle');
     }
 
+    // 서비스 브로커 삭제 처리
     function deleteServiceBroker() {
-
         var guid = $('#guid').val();
-
-        $.ajax({
-            url: "/v2/servicebrokers/"+guid,
-            method: "DELETE",
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                if (data) {
-                    procAlert('success', /*[[#{service.delete.result.success}]]*/ "");
-                    init();
-                }
-            },
-
-            error: function (xhr, status, error) {
-                procAlert('warning', JSON.parse(xhr.responseText).message);
-            },
-
-            complete: function (data) {
-                $('#serviceBrokerFormModal').modal('hide');
-            }
-        });
+        procCallAjax("/v2/servicebrokers/"+guid, "DELETE", null, init, $('#modalLoadingBar'));
     }
 
-    function createServiceBroker() {
-
-        if (!procCheckValidStringSpace()){return false;}
-
-        var param = {
-            name: $("#name").val(),
-            username: $("#username").val(),
-            password: $("#password").val(),
-            url: $("#url").val()
-        }
-
-        $.ajax({
-            url: "/v2/servicebrokers",
-            method: "POST",
-            data: JSON.stringify(param),
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                if (data) {
-                    procAlert("success", /*[[#{service.insert.result.success}]]*/ "");
-                    init();
-                }
-            },
-            error: function (xhr, status, error) {
-
-                procAlert('warning', JSON.parse(xhr.responseText).message);
-            }
-        });
-    }
 
     /*]]>*/
 </script>

@@ -54,11 +54,11 @@
                                             <h3 class="box-title"></h3>
 
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
-                                            <div class="has-feedback">
-                                                <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event,'org');" placeholder="이름으로 검색"/>
-                                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                                <div class="has-feedback">
+                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event,'org');" placeholder="이름으로 검색"/>
+                                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                                </div>
                                             </div>
-                                        </div>
 
                                             <div class="col-xs-6 col-sm-2 pull-right" style="padding-right: 0px;">
                                                 <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-title-text="조직 할당량 등록" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal">
@@ -320,7 +320,7 @@
                             </div>
 
                         </div>
-                        <div class="modal-footer" style="border-top: 0px">
+                        <div class="modal-footer"><!--style="border-top: 0px"-->
                             <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteQuotaDefinitionModal();">삭제</button>
                             <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
                             <button type="button" id="regBtn" class="btn btn-sm btn-primary" onClick="createQuotaDefinition()">등록</button>
@@ -374,6 +374,13 @@
     var ACTIVE_TAB = 'org';
 
     var ORG_LIST_MAP = new Map(); // 조직 할당량정의에서 사용할 조직 정보 Map
+
+
+    var init = function(){
+        getOrgQuotaDefinitionList();
+        getSpaceQuotaDefinitionList();
+        $('#quotaDefinitionFormModal').modal('hide');
+    };
 
     $(document).ready(function () {
 
@@ -463,13 +470,6 @@
         $('input[name=unlimitableOnRoute]').data('content','값 입력하지 않을시 : 라우트 허용량 내 무제한으로 설정');
 
         $('[data-toggle="popover"]').popover({container: "body",placement:"bottom",trigger:"hover"});
-    };
-
-
-    function init(){
-        getOrgQuotaDefinitionList();
-        getSpaceQuotaDefinitionList();
-        //$('#quotaDefinitionFormModal').modal('hide');
     };
 
     function procSearchByKeyword(e) {
@@ -697,14 +697,8 @@
             apiUrl = "/v2/spaces/quota-definitions";
             param.orginazationGuid = $('#organization option:selected').val();
         }
-        procCallAjax(apiUrl, "POST", JSON.stringify(param), procCallbackQuotaDefinition, $('#modalLoadingBar'));
+        procCallAjax(apiUrl, "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
-
-
-    var procCallbackQuotaDefinition = function(){
-        init();
-        $('#quotaDefinitionFormModal').modal('toggle');
-    };
 
     // 조직/공간 할당량 정의 수정
     function updateQuotaDefinition() {
@@ -737,7 +731,7 @@
             param.orginazationGuid = $('#organization option:selected').val();
         }
 
-        procCallAjax(apiUrl, "PUT", JSON.stringify(param), procCallbackQuotaDefinition, null);
+        procCallAjax(apiUrl, "PUT", JSON.stringify(param), init, null);
     }
 
 
@@ -769,7 +763,7 @@
             apiUrl = "/v2/spaces/quota-definitions/"+quotaId;
         }
 
-        procCallAjax(apiUrl, "DELETE", null, procCallbackQuotaDefinition, null);
+        procCallAjax(apiUrl, "DELETE", null, init, null);
     }
 
     // 조직 할당량 정의 리스트 출력
@@ -823,22 +817,20 @@
         procCallAjax("/v2/orgs", "GET", null, procCallbackGetOrgList, null );
     };
 
-    var procCallbackGetOrgList = function(data){
+    var procCallbackGetOrgList = function(data) {
 
         var objTable = $('#organization');
         objTable.html('');
 
         $.each(data.resources, function (id, data) {
             // 조직 리스트 셀렉트 박스 출력
-            objTable.append("<option value='"+data.metadata.guid+"'>"+data.entity.name+"</option>");
+            objTable.append("<option value='" + data.metadata.guid + "'>" + data.entity.name + "</option>");
             // 조직 정보 Map
             ORG_LIST_MAP.set(data.metadata.guid, data.entity.name);
         });
 
         init();
-
     }
-
     /*]]>*/
 </script>
 </body>

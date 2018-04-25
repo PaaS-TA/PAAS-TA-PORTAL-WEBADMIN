@@ -58,6 +58,7 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
 
             if (data) {
                 callback(data, param);
+                procAlert('success', RESULT_STATUS_SUCCESS_MESSAGE);
             } else {
                 var resData = {RESULT : RESULT_STATUS_SUCCESS,
                     RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
@@ -102,6 +103,7 @@ var procCallAjax2 = function(reqUrl, reqMethod, param, callback) {
 
             if (data) {
                 callback(data, param);
+
             } else {
                 var resData = {RESULT : RESULT_STATUS_SUCCESS,
                     RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
