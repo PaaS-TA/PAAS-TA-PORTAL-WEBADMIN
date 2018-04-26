@@ -33,14 +33,6 @@
                                     <li class="active"><a href="#orgTab" data-toggle="tab" aria-expanded="true"  data-tab-type="org">조직 할당량</a></li>
                                     <li class=""><a href="#spaceTab" data-toggle="tab" aria-expanded="false" data-tab-type="space">공간 할당량</a></li>
 
-                                    <!--<li class="pull-right">-->
-                                        <!--<div class="box-tools pull-right">-->
-                                            <!--<div class="has-feedback">-->
-                                                <!--<input type="text" class="form-control input-sm" id="searchKeyword" onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>-->
-                                                <!--<span class="glyphicon glyphicon-search form-control-feedback"></span>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</li>-->
                                 </ul>
                             </div>
 
@@ -374,7 +366,6 @@
     var ACTIVE_TAB = 'org';
 
     var ORG_LIST_MAP = new Map(); // 조직 할당량정의에서 사용할 조직 정보 Map
-
 
     var init = function(){
         getOrgQuotaDefinitionList();
@@ -773,7 +764,7 @@
 
         objTable.html('');
 
-        $.each(dataList, function (id, data) {
+        $.each(dataList, function (index, data) {
 
             objTable.append(" <tr style='cursor:pointer;'" +
                     " onclick='javascript:getOrgQuotaDefinition(\""+data.metadata.guid+"\");'>" +
@@ -795,7 +786,7 @@
 
         objTable.html('');
 
-        $.each(dataList, function (id, data) {
+        $.each(dataList, function (index, data) {
 
             objTable.append(" <tr style='cursor:pointer;'" +
                     " onclick='javascript:getSpaceQuotaDefinition(\""+data.metadata.guid+"\");'>" +
@@ -822,7 +813,7 @@
         var objTable = $('#organization');
         objTable.html('');
 
-        $.each(data.resources, function (id, data) {
+        $.each(data.resources, function (index, data) {
             // 조직 리스트 셀렉트 박스 출력
             objTable.append("<option value='" + data.metadata.guid + "'>" + data.entity.name + "</option>");
             // 조직 정보 Map

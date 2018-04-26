@@ -178,7 +178,7 @@
 
   // 조직.공간.앱.사용자 수 조회
   var getTotalCountList = function() {
-    procCallAjax2(TOTAL_COUNT_LIST_PROC_URL,"GET", {}, procCallbackGetTotalCountList);
+    procCallAjax(TOTAL_COUNT_LIST_PROC_URL,"GET", {}, procCallbackGetTotalCountList,null);
   };
 
   // 조직.공간.앱.사용자 수 조회 CALLBACK
@@ -198,7 +198,7 @@
 
   var getChartList = function(){
       // 조직 공간 앱 사용자 통계정보
-      procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList);
+      procCallAjax(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList,null);
   };
 
   // '조직'차트 CALLBACK
@@ -298,7 +298,6 @@
             complete: function () {
 
               // 브라우저 개발도구나 소스보기에서 해당 data속성 확인 불가(랜더링 시점)
-              // 몇번 클릭 이후에는 해당 셋팅 부분이 적용안되는 현상 있음
               var $labelsTxt = $('.highcharts-xaxis-labels text');
 
               if( $labelsTxt.eq(0).data('organizationId') === undefined ){
@@ -438,7 +437,7 @@
 
   // 조직 Label Click Event
   var getTotalSpaceList = function(reqOrganizationId) {
-    procCallAjax2(TOTAL_ORGANIZATION_LIST_PROC_URL+"/"+reqOrganizationId+"/spaces","GET", {}, procCallbackGetTotalSpaceList);
+    procCallAjax(TOTAL_ORGANIZATION_LIST_PROC_URL+"/"+reqOrganizationId+"/spaces","GET", {}, procCallbackGetTotalSpaceList,null);
   };
 
   // '공간'차트 CALLBACK

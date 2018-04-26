@@ -32,14 +32,14 @@
     <!-- Bootstrap 3.3.7 -->
     <script src="../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <link href="../../resources/css/common.css" rel="stylesheet"/>
+    <link href="../../resources/dist/css/common.css" rel="stylesheet"/>
 
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"/>
 
 </head>
-<body class="hold-transition login-page" onload="window.document.getElementById('id').focus();">
+<body class="hold-transition login-page">
 
 <div class="login-box">
     <div class="login-logo">
@@ -72,7 +72,7 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
-                    <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat">로그인</button>
+                    <button type="submit" name="submit" id="loginBtn" class="btn btn-primary btn-block btn-flat">로그인</button>
                     <!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
                 </div>
                 <!-- /.col -->
@@ -88,6 +88,16 @@
 <script th:inline="javascript" type="text/javascript">
     // ON LOAD
     $(document.body).ready(function() {
+
+        $('#id').focus();
+
+        $('#loginBtn').data('loadingText', '<i class="fa fa-circle-o-notch fa-spin"></i> 로그인' );
+
+        $('.btn').on('click', function() {
+            var $this = $(this);
+            $this.button('loading');
+        });
+
         var error = /*[[${error}]]*/ null;
         if(error != null){
             $("#warning").hide();

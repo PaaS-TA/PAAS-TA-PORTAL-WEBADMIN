@@ -224,7 +224,7 @@ class CatalogController extends Common {
     }
 
     /**
-     * 앱 샘플 파이릉ㄹ 가져온다.
+     * 앱 샘플 파일을 가져온다.
      * 
      * @param appSampleFilename
      * @return ResponseEntity<byte[]> (relays response from storage api)

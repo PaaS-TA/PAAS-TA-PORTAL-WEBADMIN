@@ -8,3 +8,44 @@
     content:"*";
     color:red;
 }
+
+/* 20161116추가*/
+.login-icons {
+    width: 165px;
+    text-align:center;
+    position: relative;
+    font-size: 45px;
+    color: #fff;
+    background-color: #b1b4bd;
+    border: 13px solid #dfdede;
+    padding: 36px 38px;
+    border-radius: 100px;
+    -moz-border-radius: 70px;
+    -khtml-border-radius: 70px;
+    -webkit-border-radius: 70px;
+}
+
+/* 20161116추가*/
+.login-font {
+    font-weight: normal;
+    font-size: 24px;
+    color: #575757;
+}
+.login-font2 {
+    font-weight: normal;
+    font-size: 15px;
+    color: #9f9f9f;
+}
+
+/* 20161116추가*/
+.login-form {
+    width: 45%;
+    height: 45px;
+    padding: 6px 32px;
+    font-size: 15px;
+    background-color: #ffffff;
+    border: 0px solid #dedede;
+    border-radius: 8px;
+    margin-top: 10px;
+    color: #d8d8d9;
+}
