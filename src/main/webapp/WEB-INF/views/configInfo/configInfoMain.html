@@ -3,102 +3,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="../layout/default">
 <head>
-    <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
-        var V2_URL = "/v2";
-        var REST_URL = V2_URL + "/configInfos"
-
-        $(document).ready(function(){
-            getValues();
-        });
-
-        function getValues(){
-
-            $.ajax({
-                url: REST_URL,
-                dataType: 'json',
-                success: function(data){
-                    if(data.list){
-                        $.each(data.list, function (id, data) {
-                            $('#'+data.name).val(data.value);
-                        });
-                    }
-                }
-            });
-        }
-
-        function getValue(name)
-        {
-            $.ajax({
-                url: REST_URL + "/" + name,
-                method: "GET",
-                dataType: 'json',
-                success: function(data){
-                    if(data.list){
-                        $.each(data.list, function (id, data) {
-                            $("#beforename").html(data.value);
-                        });
-                    }
-                }
-            });
-        }
-
-        function initmodal(Titlename, urlname, value)
-        {
-            $("#titlename").html(Titlename);
-            $("#urlname").html(urlname);
-            getValue(urlname);
-            $("#aftername").html(value);
-        }
-
-
-        function updateValue(name, value){
-            if (0 != value.length) {
-                if (0 == value.replace(/ /g,"").length) {
-                    $('#' + name).focus();
-                    procAlert("warning", /*[[#{common.info.empty.req.data}]]*/ "");
-                    return false;
-                }
-
-                if (value.includes(' ')) {
-                    $('#' + name).focus();
-                    procAlert("warning",/*[[#{common.url.validation.error.message}]]*/ "");
-                    return false;
-                }
-                if(name!='smtp_url'){
-                    if (!procCheckValidUrl(value)) {
-                        $('#' + name).focus();
-                        procAlert("warning", /*[[#{common.url.validation.error.message}]]*/ "");
-                        return false;
-                    }
-                }
-            } else {
-                $('#' + name).focus();
-                return false;
-            }
-
-            param = {
-                value: value
-            }
-
-            $.ajax({
-                url: REST_URL+"/"+name,
-                method: "PUT",
-                data: JSON.stringify(param),
-                dataType: 'json',
-                contentType: "application/json",
-                success: function(data){
-                    if(data){
-                        procAlert("success", '설정이 저장되었습니다.');
-                    }
-                }
-            });
-
-        }
-
-
-    </script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body>
 <div class="wrapper">
     <header></header>
     <!-- Left side column. contains the logo and sidebar -->
@@ -264,6 +170,99 @@
 <!-- ./wrapper -->
     <footer></footer>
 </div>
+<script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+    var V2_URL = "/v2";
+    var REST_URL = V2_URL + "/configInfos"
 
+    $(document).ready(function(){
+        getValues();
+    });
+
+    function getValues(){
+
+        $.ajax({
+            url: REST_URL,
+            dataType: 'json',
+            success: function(data){
+                if(data.list){
+                    $.each(data.list, function (id, data) {
+                        $('#'+data.name).val(data.value);
+                    });
+                }
+            }
+        });
+    }
+
+    function getValue(name)
+    {
+        $.ajax({
+            url: REST_URL + "/" + name,
+            method: "GET",
+            dataType: 'json',
+            success: function(data){
+                if(data.list){
+                    $.each(data.list, function (id, data) {
+                        $("#beforename").html(data.value);
+                    });
+                }
+            }
+        });
+    }
+
+    function initmodal(Titlename, urlname, value)
+    {
+        $("#titlename").html(Titlename);
+        $("#urlname").html(urlname);
+        getValue(urlname);
+        $("#aftername").html(value);
+    }
+
+
+    function updateValue(name, value){
+        if (0 != value.length) {
+            if (0 == value.replace(/ /g,"").length) {
+                $('#' + name).focus();
+                procAlert("warning", /*[[#{common.info.empty.req.data}]]*/ "");
+                return false;
+            }
+
+            if (value.includes(' ')) {
+                $('#' + name).focus();
+                procAlert("warning",/*[[#{common.url.validation.error.message}]]*/ "");
+                return false;
+            }
+            if(name!='smtp_url'){
+                if (!procCheckValidUrl(value)) {
+                    $('#' + name).focus();
+                    procAlert("warning", /*[[#{common.url.validation.error.message}]]*/ "");
+                    return false;
+                }
+            }
+        } else {
+            $('#' + name).focus();
+            return false;
+        }
+
+        param = {
+            value: value
+        }
+
+        $.ajax({
+            url: REST_URL+"/"+name,
+            method: "PUT",
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(data){
+                if(data){
+                    procAlert("success", '설정이 저장되었습니다.');
+                }
+            }
+        });
+
+    }
+
+
+</script>
 </body>
 </html>

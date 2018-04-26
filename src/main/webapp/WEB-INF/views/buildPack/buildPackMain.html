@@ -23,6 +23,7 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="box">
+              <div id="loadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
               <!--<div class="box-header">-->
                 <!--<h3 class="box-title"></h3>-->
               <!--</div>-->
@@ -41,16 +42,16 @@
                   <tr class="text-center">
                     <td>staticfile_buildpack</td>
                     <td>staticfile-buildpack-v1.4.13.zip</td>
-                    <td><select id='position1' style='width:50px;'><option value="1">1</option><option value="2">2</option></select></td>
-                    <td><input type="checkbox" checked="true"/></td>
-                    <td><input type="checkbox" checked="true"/></td>
+                    <td><select name='positionNo' style='width:50px;'><option value="1">1</option><option value="2">2</option></select></td>
+                    <td><input name='isEnabled' type="checkbox" checked="true"/></td>
+                    <td><input name='isLocked' type="checkbox" checked="true"/></td>
                   </tr>
                   <tr class="text-center">
                     <td>staticfile_buildpack</td>
                     <td>staticfile-buildpack-v1.4.13.zip</td>
-                    <td><select id='position2' style='width:50px;'><option value="1">1</option><option value="2" selected="true">2</option></select></td>
-                    <td><input type="checkbox" /></td>
-                    <td><input type="checkbox" /></td>
+                    <td><select name='positionNo' style='width:50px;'><option value="1">1</option><option value="2" selected="true">2</option></select></td>
+                    <td><input name='isEnabled' type="checkbox" /></td>
+                    <td><input name='isLocked' type="checkbox" /></td>
                   </tr>
                   </tbody>
                 </table>
@@ -78,83 +79,96 @@
   /*<![CDATA[*/
 
   $(document).ready(function(){
-    getList();
+    getBuildPackList();
+
+    //순서 Event
+    $(document).on('change','select[name=positionNo]',function(){
+
+      updateBuildPack( $(this).closest('tr').data(), true );
+    });
+
+    //사용유무,Lock유무 Event
+    $(document).on('change','input[name=isEnabled],input[name=isLocked]',function(){
+      updateBuildPack( $(this).closest('tr').data(), false );
+    });
 
   });
 
-  function getList(){
-    $.ajax({
-      url: "/v2/buildpacks",
-      method: "GET",
-      dataType: 'json',
-      contentType: "application/json",
-      success: function(data){
+  function getBuildPackList() {
+    procCallAjax("/v2/buildpacks", "GET", null, procCallbackGetBuildPackList, $('#loadingBar'));
+  };
 
-        var n = 0;
-        if(data.resources){ //
-          totalCount = data.resources.length;
-          $.each(data.resources, function (id, data) {
-            n++;
-            var positionOption = "";
-            for(var i=1; i <= totalCount; i++){
-              if(i ==  data.entity.position) {
-                positionOption += "<option value='" + i + "' selected>" + i + "</option>";
-              }else{
-                positionOption += "<option value='" + i + "'>" + i + "</option>";
-              }
-            }
+  var procCallbackGetBuildPackList = function(datalist){
 
-            var enabled = "";
-            if(data.entity.enabled){
-              enabled = "checked";
-            }
+    if(datalist.resources){ //
 
-            var locked = "";
-            if(data.entity.locked){
-              locked = "checked";
-            }
+      var dataLength = datalist.resources.length;
 
-            $("#buildPackList").append(" <tr align='center'>" +
-                    "<td> " + data.entity.name + "</td>" +
-                    "<td> " + data.entity.filename + "</td>" +
-                    "<td class='col-md-1' align='center'><select id='position"+ n +"' style='width:50px;' onChange=updateBuildPack('"+ data.metadata.guid +"'," + n + ",true); >" + positionOption + "</select></td>" +
-                    "<td class='col-md-1' align='center'><input type='checkbox' id='enabled"+ n +"' "+ enabled + " onChange=updateBuildPack('"+ data.metadata.guid +"'," + n + ",false); ></td>" +
-                    "<td class='col-md-1' align='center'><input type='checkbox' id='locked"+ n +"' "+ locked + " onChange=updateBuildPack('"+ data.metadata.guid +"'," + n + ",false); ></td>"
-            );
+      $.each(datalist.resources, function (index, data) {
+        index += 1;
 
-          });
-        }
-      }
-    });
-  }
+        var positionOption = "";
 
-
-  function updateBuildPack(guid, n, refresh){
-    var param = {
-      guid:  guid,
-      position: $('#position'+ n).val(),
-      enable : $('#enabled'+ n).is(":checked"),
-      lock : $('#locked'+ n).is(":checked")
-    }
-
-    $.ajax({
-      url: "/v2/buildpacks/"+guid,
-      method: "PUT",
-      data: JSON.stringify(param),
-      dataType: 'json',
-      contentType: "application/json",
-      success: function(data){
-        if(data){//
-          procAlert("success", '빌드팩 정보가 저장되었습니다.');
-          if(refresh) {
-            $("#buildPackList").html("");
-            getList();
+        for(var i = 1; i < dataLength+1; i++ ){
+          if(i ==  data.entity.position) {
+            positionOption += "<option value='" + i + "' selected>" + i + "</option>";
+          }else{
+            positionOption += "<option value='" + i + "'>" + i + "</option>";
           }
         }
-      }
-    });
 
+        var enabled = "";
+        if(data.entity.enabled){
+          enabled = "checked";
+        }
+
+        var locked = "";
+        if(data.entity.locked){
+          locked = "checked";
+        }
+
+        $("#buildPackList").append(" <tr align='center' " +
+                "data-position='"+index+"' data-guid='"+data.metadata.guid+"' data-enabled='"+data.entity.enabled+"' data-locked='"+data.entity.locked+"'>" +
+                "<td> " + data.entity.name + "</td>" +
+                "<td> " + data.entity.filename + "</td>" +
+//                "<td class='col-md-1' align='center'><select id='position"+ index +"' style='width:50px;' onChange=updateBuildPack('"+ data.metadata.guid +"'," + index + ",true); >" + positionOption + "</select></td>" +
+//                "<td class='col-md-1' align='center'><input type='checkbox' id='enabled"+ index +"' "+ enabled + " onChange=updateBuildPack('"+ data.metadata.guid +"'," + index + ",false); ></td>" +
+//                "<td class='col-md-1' align='center'><input type='checkbox' id='locked"+ index +"' "+ locked + " onChange=updateBuildPack('"+ data.metadata.guid +"'," + index + ",false); ></td>"
+
+                "<td class='col-md-1' align='center'><select name='positionNo' style='width:50px;'>" + positionOption + "</select></td>" +
+                "<td class='col-md-1' align='center'><input  name='isEnabled' type='checkbox' "+enabled+"></td>" +
+                "<td class='col-md-1' align='center'><input  name='isLocked' type='checkbox' "+locked+"></td>"
+        );
+
+      });
+    }
   }
+
+  function updateBuildPack(data, refresh){
+
+    var guid = data.guid;
+
+    var param = {
+      guid:  guid,
+      position: data.position,
+      enable : data.enabled,
+      lock : data.locked
+    }
+
+    var procCallbackUpdateBuildPack = function(data){
+      if(data){//
+        procAlert("success", '빌드팩 정보가 저장되었습니다.');
+        if(refresh) {
+          $("#buildPackList").html("");
+          getBuildPackList();
+        }
+      }
+    }
+
+    procCallAjax("/v2/buildpacks/"+guid, "PUT", JSON.stringify(param), procCallbackUpdateBuildPack, $('#loadingBar'));
+  }
+
+
 
   /*]]>*/
 </script>
