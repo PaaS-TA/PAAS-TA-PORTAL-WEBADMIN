@@ -9,6 +9,7 @@
     <aside>/</aside>
     <!-- Content Wrapper. Contains page content -->
     <div layout:fragment="content" class="content-wrapper">
+
         <!-- tabNumber hidden value :: tabs -->
         <input type="hidden" id="tabName" value="STARTER"/>
         <!-- Content Header (Page header) -->
@@ -21,121 +22,296 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="box-header">
-                        <!-- create button box -->
-                        <div class="box-title">
-                            <button th:type="button" class="btn btn-block btn-primary btn-sm" onclick="procMoveForm()"
-                                    id="btn_insert">앱 템플릿 등록
-                            </button>
-                        </div>
-                        <!-- Search a box -->
-                        <div class="input-group input-group-sm pull-right header" style="width: 300px;">
-                            <input type="text" id="searchKeyword" class="form-control pull-right" placeholder="Search"
-                                   onkeyup="getSearchList(event);"/>
-                            <div class="input-group-btn">
-                                <button type="button" id="btnSearch" class="btn btn-default"><i
-                                        class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <br/><br/>
-
-                <div class="col-xs-12">
+<!-- -->
                     <div class="box">
-                        <!-- 탭 구현설정1 -->
-                        <div class="nav-tabs-custom" style="cursor: move;">
-                            <!-- Tabs box -->
-                            <ul class="nav nav-tabs pull-right ui-sortable-handle">
-                                <!-- chart - 03 -->
-                                <li id="SERVICE_PACK"><a href="#SERVICE_PACK_TAB" data-toggle="tab"
-                                                         aria-expanded="false"
-                                                         onclick="appbutton('SERVICE_PACK')">
-                                    <i class="fa fa-fw fa-gear"></i>앱 서비스</a></li>
-                                <!-- chart - 02 -->
-                                <li id="DEVELOP_PACK"><a href="#DEVELOP_PACK_TAB" data-toggle="tab"
-                                                         onclick="appbutton('DEVELOP_PACK')"
-                                                         aria-expanded="false">
-                                    <i class="fa fa-fw fa-code-fork"></i>앱 개발환경</a></li>
-                                <!-- chart - 01-->
-                                <li id="STARTER"><a href="#STARTER_TAB" data-toggle="tab"
-                                                    aria-expanded="true"
-                                                    onclick="appbutton('STARTER')">
-                                    <i class="fa fa-fw fa-bookmark-o"></i>앱 템플릿</a></li>
-                            </ul>
+                        <div class="box-header with-border">
 
-                            <div class="tab-content no-padding">
-                                <!-- chart - 01 -->
-                                <div class="chart tab-pane active" id="STARTER_TAB"
-                                     style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                    <div id="starterListMessageArea" class="table-responsive">
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <th style="width: 10px">#</th>
-                                                <th>이름</th>
-                                                <th>요약</th>
-                                                <th>분류</th>
-                                                <th>공개</th>
-                                            </tr>
-                                            <tbody id="starterListTableArea">
-                                            </tbody>
-                                        </table>
-                                        <!--<div class="box-footer clearfix"></div>-->
-                                    </div>
-                                    <form id="starterHiddenForm">
-                                        <input type="hidden" id="starterHiddenFormNo" name="no" value=""/>
-                                    </form>
-                                </div>
-                                <!-- chart - 02 -->
-                                <div class="chart tab-pane" id="DEVELOP_PACK_TAB"
-                                     style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                    <div id="buildPackMessageArea" class="table-responsive">
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <th style="width: 10px">#</th>
-                                                <th>이름</th>
-                                                <th>요약</th>
-                                                <th>분류</th>
-                                                <th>공개</th>
-                                            </tr>
-                                            <tbody id="buildPackTableArea">
-                                            </tbody>
-                                        </table>
-                                        <!--<div class="box-footer clearfix"></div>-->
-                                        <form id="BuildPackHiddenForm">
-                                            <input type="hidden" id="BuildPackHiddenFormNo" name="no" value=""/>
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- chart - 03 -->
-                                <div class="chart tab-pane" id="SERVICE_PACK_TAB"
-                                     style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                    <div id="servicePackMessageArea" class="table-responsive">
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <th style="width: 10px">#</th>
-                                                <th>이름</th>
-                                                <th>요약</th>
-                                                <th>분류</th>
-                                                <th>공개</th>
-                                            </tr>
-                                            <tbody id="servicePackTableArea">
-                                            </tbody>
-                                        </table>
-                                        <!--<div class="box-footer clearfix"></div>-->
-                                    </div>
-                                    <form id="ServicePackHiddenForm">
-                                        <input type="hidden" id="ServicePackHiddenFormNo" name="no" value=""/>
-                                    </form>
-                                </div>
-                                <!-- ▼ <div class="tab-content no-padding">-->
+                            <div class="nav-tabs-custom" style="margin-bottom:0px;">
+                                <ul class="nav nav-tabs">
+
+                                    <li class="header no-padding active"><a href="#starterTab" data-toggle="tab" aria-expanded="true"  data-tab-type="starter">앱 템플릿</a></li>
+                                    <li class="header no-padding"><a href="#devTab" data-toggle="tab" aria-expanded="false" data-tab-type="dev">앱 개발환경</a></li>
+                                    <li class="header no-padding"><a href="#serviceTab" data-toggle="tab" aria-expanded="false" data-tab-type="service">앱 서비스</a></li>
+
+                                </ul>
                             </div>
-                            <!-- ▼ tab class end -->
+
+                            <!-- tab-content -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="starterTab">
+
+                                    <div class="box box-solid">
+                                        <div id="starterTabLoadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                                        <div class="box-header">
+                                            <!--  -->
+                                            <h3 class="box-title"></h3>
+
+                                            <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
+                                                <!--<div class="has-feedback">-->
+                                                    <!--<input type="text" class="form-control input-sm" id="searchKeyword" onkeyup="procSearchByKeyword(event,'org');" placeholder="이름으로 검색"/>-->
+                                                    <!--<span class="glyphicon glyphicon-search form-control-feedback"></span>-->
+                                                <!--</div>-->
+                                            </div>
+
+                                            <div class="col-xs-6 col-sm-2 pull-right" style="padding-right: 0px;">
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-title-text="앱 템플릿 등록" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#catalogFormModal">
+                                                    앱 템플릿 등록
+                                                </button>
+                                            </div>
+                                            <!--  -->
+                                        </div>
+
+                                        <div class="box-body no-padding">
+                                            <table class="table table-striped text-center" style="word-break:break-all;"> <!-- table-responsive -->
+                                                <colgroup>
+                                                    <col class="col-xs-3"/>
+                                                    <col class="col-xs-5"/>
+                                                    <col class="col-xs-2"/>
+                                                    <col class="col-xs-2"/>
+                                                </colgroup>
+                                                <thead>
+                                                <tr class="text-center">
+                                                    <th>이름</th>
+                                                    <th>요약</th>
+                                                    <th>분류</th>
+                                                    <th>공개</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="serviceList">
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div><!-- /.box -->
+                                </div><!-- /.tab-pane tab_1 -->
+
+
+                                <div class="tab-pane fade" id="devTab">
+                                    <div class="box box-solid">
+                                        <div id="devTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                        <div class="box-header"></div>
+
+                                        <div class="box-body no-padding">
+                                            <table class="table table-striped text-center" style="word-break:break-all;"> <!-- table-responsive -->
+                                                <colgroup>
+                                                    <col class="col-xs-3"/>
+                                                    <col class="col-xs-5"/>
+                                                    <col class="col-xs-2"/>
+                                                    <col class="col-xs-2"/>
+                                                </colgroup>
+                                                <thead>
+                                                <tr class="text-center">
+                                                    <th>이름</th>
+                                                    <th>요약</th>
+                                                    <th>분류</th>
+                                                    <th>공개</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="devList">
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+
+                                    </div><!-- /.box -->
+                                </div><!-- /.tab-pane tab_2 -->
+
+                                <div class="tab-pane fade" id="serviceTab">
+                                    <div class="box box-solid">
+                                        <div id="serviceTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                        <div class="box-header"></div>
+
+                                        <div class="box-body no-padding">
+                                            <table class="table table-striped text-center" style="word-break:break-all;"> <!-- table-responsive -->
+                                                <colgroup>
+                                                    <col class="col-xs-3"/>
+                                                    <col class="col-xs-5"/>
+                                                    <col class="col-xs-2"/>
+                                                    <col class="col-xs-2"/>
+                                                </colgroup>
+                                                <thead>
+                                                <tr class="text-center">
+                                                    <th>이름</th>
+                                                    <th>요약</th>
+                                                    <th>분류</th>
+                                                    <th>공개</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="templeteList">
+                                                <tr>
+                                                    <td>9</td>
+                                                    <td>10</td>
+                                                    <td>11</td>
+                                                    <td>12</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+
+                                    </div><!-- /.box -->
+                                </div><!-- /.tab-pane tab_3 -->
+
+
+                             </div><!-- /.tab-content -->
+
+
                         </div>
-                        <!-- ▼row: 12   <div class="tab-content no-padding">-->
-                    </div>
+                    </div><!-- /.div -->
+
+
+
+
+
+<!-- -->
+
                 </div>
+
+                <!--<div class="col-xs-12">-->
+                    <!--<div class="box">-->
+                        <!--&lt;!&ndash; 탭 구현설정1 &ndash;&gt;-->
+                        <!--<div class="nav-tabs-custom" style="cursor: move;">-->
+                            <!-- Tabs box -->
+                            <!--<ul class="nav nav-tabs pull-right ui-sortable-handle">-->
+                                <!--&lt;!&ndash; chart - 03 &ndash;&gt;-->
+                                <!--<li id="SERVICE_PACK"><a href="#SERVICE_PACK_TAB" data-toggle="tab"-->
+                                                         <!--aria-expanded="false"-->
+                                                         <!--onclick="appbutton('SERVICE_PACK')">-->
+                                    <!--<i class="fa fa-fw fa-gear"></i>앱 서비스</a></li>-->
+                                <!--&lt;!&ndash; chart - 02 &ndash;&gt;-->
+                                <!--<li id="DEVELOP_PACK"><a href="#DEVELOP_PACK_TAB" data-toggle="tab"-->
+                                                         <!--onclick="appbutton('DEVELOP_PACK')"-->
+                                                         <!--aria-expanded="false">-->
+                                    <!--<i class="fa fa-fw fa-code-fork"></i>앱 개발환경</a></li>-->
+                                <!--&lt;!&ndash; chart - 01&ndash;&gt;-->
+                                <!--<li id="STARTER"><a href="#STARTER_TAB" data-toggle="tab"-->
+                                                    <!--aria-expanded="true"-->
+                                                    <!--onclick="appbutton('STARTER')">-->
+                                    <!--<i class="fa fa-fw fa-bookmark-o"></i>앱 템플릿</a></li>-->
+                            <!--</ul>-->
+
+                            <!--<div class="tab-content no-padding">-->
+                                <!--&lt;!&ndash; chart - 01 &ndash;&gt;-->
+                                <!--<div class="chart tab-pane active" id="STARTER_TAB"-->
+                                     <!--style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">-->
+                                    <!--<div id="starterListMessageArea" class="table-responsive">-->
+                                        <!--<table class="table table-striped">-->
+                                            <!--<tr>-->
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <!--<th>이름</th>-->
+                                                <!--<th>요약</th>-->
+                                                <!--<th>분류</th>-->
+                                                <!--<th>공개</th>-->
+                                            <!--</tr>-->
+                                            <!--<tbody id="starterListTableArea">-->
+                                            <!--</tbody>-->
+                                        <!--</table>-->
+                                        <!--&lt;!&ndash;<div class="box-footer clearfix"></div>&ndash;&gt;-->
+                                    <!--</div>-->
+                                    <!--<form id="starterHiddenForm">-->
+                                        <!--<input type="hidden" id="starterHiddenFormNo" name="no" value=""/>-->
+                                    <!--</form>-->
+                                <!--</div>-->
+                                <!--&lt;!&ndash; chart - 02 &ndash;&gt;-->
+                                <!--<div class="chart tab-pane" id="DEVELOP_PACK_TAB"-->
+                                     <!--style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">-->
+                                    <!--<div id="buildPackMessageArea" class="table-responsive">-->
+                                        <!--<table class="table table-striped">-->
+                                            <!--<tr>-->
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <!--<th>이름</th>-->
+                                                <!--<th>요약</th>-->
+                                                <!--<th>분류</th>-->
+                                                <!--<th>공개</th>-->
+                                            <!--</tr>-->
+                                            <!--<tbody id="buildPackTableArea">-->
+                                            <!--</tbody>-->
+                                        <!--</table>-->
+                                        <!--&lt;!&ndash;<div class="box-footer clearfix"></div>&ndash;&gt;-->
+                                        <!--<form id="BuildPackHiddenForm">-->
+                                            <!--<input type="hidden" id="BuildPackHiddenFormNo" name="no" value=""/>-->
+                                        <!--</form>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--&lt;!&ndash; chart - 03 &ndash;&gt;-->
+                                <!--<div class="chart tab-pane" id="SERVICE_PACK_TAB"-->
+                                     <!--style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">-->
+                                    <!--<div id="servicePackMessageArea" class="table-responsive">-->
+                                        <!--<table class="table table-striped">-->
+                                            <!--<tr>-->
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <!--<th>이름</th>-->
+                                                <!--<th>요약</th>-->
+                                                <!--<th>분류</th>-->
+                                                <!--<th>공개</th>-->
+                                            <!--</tr>-->
+                                            <!--<tbody id="servicePackTableArea">-->
+                                            <!--</tbody>-->
+                                        <!--</table>-->
+                                        <!--&lt;!&ndash;<div class="box-footer clearfix"></div>&ndash;&gt;-->
+                                    <!--</div>-->
+                                    <!--<form id="ServicePackHiddenForm">-->
+                                        <!--<input type="hidden" id="ServicePackHiddenFormNo" name="no" value=""/>-->
+                                    <!--</form>-->
+                                <!--</div>-->
+                                <!--&lt;!&ndash; ▼ <div class="tab-content no-padding">&ndash;&gt;-->
+                            <!--</div>-->
+                            <!-- ▼ tab class end -->
+
+
+                        <!--</div>-->
+                        <!--&lt;!&ndash; ▼row: 12   <div class="tab-content no-padding">&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+
             </div>
         </section>
         <!-- /.content -->
@@ -163,8 +339,8 @@
     //  procGetSearchList
     $(document.body).ready(function () {
         getStarterList();
-        getBuildPackList();
-        getServicePackList();
+//        getBuildPackList();
+//        getServicePackList();
 
         if (TAB_NAME != null) {
             $("#" + STARTER_PACK + "_TAB").removeClass('active');
@@ -181,8 +357,8 @@
 
     getSearchList = function () {
         getStarterList();
-        getBuildPackList();
-        getServicePackList();
+//        getBuildPackList();
+//        getServicePackList();
     }
 
 
@@ -193,12 +369,12 @@
         }
     };
 
-    function procSearchByKeyword(event) {
+    function procSearchByKeyword(e) {
 
         $('#starterListTableArea').hide(); //<tbody id> 값
         $('#starterList').empty();
 
-        var searchKeyword = document.getElementById('searchKeyword').value;
+        var searchKeyword = $(e.target).val();
         var searchResult = new Array();
         var newIdx = 0;
         for (var i = 0; i < CLIENT_LIST.length; i++) {
@@ -215,26 +391,24 @@
 
     // BIND :: BUTTON EVENT
     $("#btnSearch").on("click", function () {
-        procGetSearchList();
+        //procGetSearchList();
 
     });
 
     // GET StarterList
     var getStarterList = function () {
-        var doc = document;
-        var searchKeyword = document.getElementById('searchKeyword').value;
-        var param = "";
+        var searchKeyword = "";//document.getElementById('searchKeyword').value;
+        var param;
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax2(STARTER_LIST_PROC_URL, "GET", param, procCallbackGetStarterList);
+        procCallAjax(STARTER_LIST_PROC_URL, "GET", param, procCallbackGetStarterList, $('#starterTabLoadingBar') );
     };
 
     // GET BuildPackList
     var getBuildPackList = function (reqParam) {
-        var doc = document;
-        var searchKeyword = document.getElementById('searchKeyword').value;
-        var param = "";
+        var searchKeyword = "";//document.getElementById('searchKeyword').value;
+        var param;
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
@@ -242,9 +416,8 @@
     };
 
     // GET ServicePackList
-    var getServicePackList = function (reqParam) {
-        var doc = document;
-        var searchKeyword = document.getElementById('searchKeyword').value;
+    var getServicePackList = function () {
+        var searchKeyword = "";//document.getElementById('searchKeyword').value;
         var param = "";
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
@@ -255,33 +428,30 @@
 
     // GET LIST CALLBACK StarterList
     var procCallbackGetStarterList = function (data) {
-        var objTable = $("#starterList");
-        var objTableArea = $('#starterListTableArea');
-        var objMessageArea = $('#starterListMessageArea');
+        var objTable = $("#serviceList");
         var listLength = data.list.length;
         var htmlString = [];
 
-        objTableArea.html('');
+        objTable.html('');
 
         if (listLength < 1) {
-            objMessageArea.append('<spring:message code="common.info.empty.data" />');
-            objMessageArea.show();
+            objTable.append('<tr><td colspan="4">'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
+            objTable.show();
 
         } else {
             var catalogList = data.list;
 
-            for (var i = 0; i < listLength; i++) {
-//                reqParam = {name: catalogList[i].name};
-                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveStarterInsertForm(\'' + catalogList[i].no + '\')">'
-                    + '<td>' + (i + 1) + '</td>'
-                    + '<td>' + catalogList[i].name + '</td>'
-                    + '<td>' + catalogList[i].summary + '</td>'
-                    + '<td>' + catalogList[i].classificationValue + '</td>'
-                    + '<td><span class="label label-default">' + catalogList[i].useYn + '</span></td>'
-                    + '</tr>');
-            }
+            $.each(catalogList, function (id, data) {
+                var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
+                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveStarterInsertForm(\'' + data.no + '\')">'
+                        + '<td>' + data.name + '</td>'
+                        + '<td>' + data.summary + '</td>'
+                        + '<td>' + data.classificationValue + '</td>'
+                        + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
+                        + '</tr>');
+                });
 
-            objTableArea.append(htmlString).trigger("create");
+            objTable.append(htmlString);
         }
     };
 
