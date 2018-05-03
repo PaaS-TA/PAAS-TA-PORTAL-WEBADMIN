@@ -168,7 +168,7 @@
         $("#spaceTable").hide();
         $("#noSpaceMessage").hide();
         currentOrg = orgName;
-        procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"/"+orgid+"/space","GET" ,null ,procCallbackGetSpace)
+        procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"/"+orgid+"/spaces","GET" ,null ,procCallbackGetSpace)
         contentSelectControl("group", orgNum);
     }
 
