@@ -9,9 +9,7 @@
     <aside>/</aside>
     <!-- Content Wrapper. Contains page content -->
     <div layout:fragment="content" class="content-wrapper">
-
-        <!-- tabNumber hidden value :: tabs -->
-        <input type="hidden" id="tabName" value="STARTER"/>
+        <!--<input type="hidden" id="tabName" value="STARTER"/>-->
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
@@ -22,7 +20,7 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
-<!-- -->
+                    <!-- -->
                     <div class="box">
                         <div class="box-header with-border">
 
@@ -40,7 +38,7 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="starterTab">
 
-                                    <div class="box box-solid">
+                                    <div class="box">
                                         <div id="starterTabLoadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
                                         <div class="box-header">
                                             <!--  -->
@@ -48,13 +46,13 @@
 
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
                                                 <!--<div class="has-feedback">-->
-                                                    <!--<input type="text" class="form-control input-sm" id="searchKeyword" onkeyup="procSearchByKeyword(event,'org');" placeholder="이름으로 검색"/>-->
-                                                    <!--<span class="glyphicon glyphicon-search form-control-feedback"></span>-->
+                                                <!--<input type="text" class="form-control input-sm" id="searchKeyword" onkeyup="procSearchByKeyword(event,'org');" placeholder="이름으로 검색"/>-->
+                                                <!--<span class="glyphicon glyphicon-search form-control-feedback"></span>-->
                                                 <!--</div>-->
                                             </div>
 
-                                            <div class="col-xs-6 col-sm-2 pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-title-text="앱 템플릿 등록" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#catalogFormModal">
+                                            <div class="pull-right" style="padding-right: 0px;">
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#starterFormModal">
                                                     앱 템플릿 등록
                                                 </button>
                                             </div>
@@ -77,7 +75,7 @@
                                                     <th>공개</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="serviceList">
+                                                <tbody id="templeteList">
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
@@ -105,9 +103,15 @@
 
 
                                 <div class="tab-pane fade" id="devTab">
-                                    <div class="box box-solid">
+                                    <div class="box">
                                         <div id="devTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
-                                        <div class="box-header"></div>
+                                        <div class="box-header">
+                                            <div class="pull-right" style="padding-right: 0px;">
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#catalogFormModal">
+                                                    앱 개발환경 등록
+                                                </button>
+                                            </div>
+                                        </div>
 
                                         <div class="box-body no-padding table-responsive">
                                             <table class="table table-striped text-center" style="word-break:break-all;"> <!-- table-responsive -->
@@ -153,9 +157,15 @@
                                 </div><!-- /.tab-pane tab_2 -->
 
                                 <div class="tab-pane fade" id="serviceTab">
-                                    <div class="box box-solid">
+                                    <div class="box">
                                         <div id="serviceTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
-                                        <div class="box-header"></div>
+                                        <div class="box-header">
+                                            <div class="pull-right" style="padding-right: 0px;">
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#catalogFormModal">
+                                                    앱 서비스 등록
+                                                </button>
+                                            </div>
+                                        </div>
 
                                         <div class="box-body no-padding table-responsive"> <!-- table-responsive -->
                                             <table class="table table-striped text-center" style="word-break:break-all;">
@@ -173,7 +183,7 @@
                                                     <th>공개</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="templeteList">
+                                                <tbody id="serviceList">
                                                 <tr>
                                                     <td>9</td>
                                                     <td>10</td>
@@ -200,120 +210,395 @@
                                     </div><!-- /.box -->
                                 </div><!-- /.tab-pane tab_3 -->
 
-
                              </div><!-- /.tab-content -->
-
 
                         </div>
                     </div><!-- /.div -->
-
-
-
-
-
-<!-- -->
+                <!-- -->
 
                 </div>
-
-                <!--<div class="col-xs-12">-->
-                    <!--<div class="box">-->
-                        <!--&lt;!&ndash; 탭 구현설정1 &ndash;&gt;-->
-                        <!--<div class="nav-tabs-custom" style="cursor: move;">-->
-                            <!-- Tabs box -->
-                            <!--<ul class="nav nav-tabs pull-right ui-sortable-handle">-->
-                                <!--&lt;!&ndash; chart - 03 &ndash;&gt;-->
-                                <!--<li id="SERVICE_PACK"><a href="#SERVICE_PACK_TAB" data-toggle="tab"-->
-                                                         <!--aria-expanded="false"-->
-                                                         <!--onclick="appbutton('SERVICE_PACK')">-->
-                                    <!--<i class="fa fa-fw fa-gear"></i>앱 서비스</a></li>-->
-                                <!--&lt;!&ndash; chart - 02 &ndash;&gt;-->
-                                <!--<li id="DEVELOP_PACK"><a href="#DEVELOP_PACK_TAB" data-toggle="tab"-->
-                                                         <!--onclick="appbutton('DEVELOP_PACK')"-->
-                                                         <!--aria-expanded="false">-->
-                                    <!--<i class="fa fa-fw fa-code-fork"></i>앱 개발환경</a></li>-->
-                                <!--&lt;!&ndash; chart - 01&ndash;&gt;-->
-                                <!--<li id="STARTER"><a href="#STARTER_TAB" data-toggle="tab"-->
-                                                    <!--aria-expanded="true"-->
-                                                    <!--onclick="appbutton('STARTER')">-->
-                                    <!--<i class="fa fa-fw fa-bookmark-o"></i>앱 템플릿</a></li>-->
-                            <!--</ul>-->
-
-                            <!--<div class="tab-content no-padding">-->
-                                <!--&lt;!&ndash; chart - 01 &ndash;&gt;-->
-                                <!--<div class="chart tab-pane active" id="STARTER_TAB"-->
-                                     <!--style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">-->
-                                    <!--<div id="starterListMessageArea" class="table-responsive">-->
-                                        <!--<table class="table table-striped">-->
-                                            <!--<tr>-->
-                                                <!--<th style="width: 10px">#</th>-->
-                                                <!--<th>이름</th>-->
-                                                <!--<th>요약</th>-->
-                                                <!--<th>분류</th>-->
-                                                <!--<th>공개</th>-->
-                                            <!--</tr>-->
-                                            <!--<tbody id="starterListTableArea">-->
-                                            <!--</tbody>-->
-                                        <!--</table>-->
-                                        <!--&lt;!&ndash;<div class="box-footer clearfix"></div>&ndash;&gt;-->
-                                    <!--</div>-->
-                                    <!--<form id="starterHiddenForm">-->
-                                        <!--<input type="hidden" id="starterHiddenFormNo" name="no" value=""/>-->
-                                    <!--</form>-->
-                                <!--</div>-->
-                                <!--&lt;!&ndash; chart - 02 &ndash;&gt;-->
-                                <!--<div class="chart tab-pane" id="DEVELOP_PACK_TAB"-->
-                                     <!--style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">-->
-                                    <!--<div id="buildPackMessageArea" class="table-responsive">-->
-                                        <!--<table class="table table-striped">-->
-                                            <!--<tr>-->
-                                                <!--<th style="width: 10px">#</th>-->
-                                                <!--<th>이름</th>-->
-                                                <!--<th>요약</th>-->
-                                                <!--<th>분류</th>-->
-                                                <!--<th>공개</th>-->
-                                            <!--</tr>-->
-                                            <!--<tbody id="buildPackTableArea">-->
-                                            <!--</tbody>-->
-                                        <!--</table>-->
-                                        <!--&lt;!&ndash;<div class="box-footer clearfix"></div>&ndash;&gt;-->
-                                        <!--<form id="BuildPackHiddenForm">-->
-                                            <!--<input type="hidden" id="BuildPackHiddenFormNo" name="no" value=""/>-->
-                                        <!--</form>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--&lt;!&ndash; chart - 03 &ndash;&gt;-->
-                                <!--<div class="chart tab-pane" id="SERVICE_PACK_TAB"-->
-                                     <!--style="position: relative; height: 600px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">-->
-                                    <!--<div id="servicePackMessageArea" class="table-responsive">-->
-                                        <!--<table class="table table-striped">-->
-                                            <!--<tr>-->
-                                                <!--<th style="width: 10px">#</th>-->
-                                                <!--<th>이름</th>-->
-                                                <!--<th>요약</th>-->
-                                                <!--<th>분류</th>-->
-                                                <!--<th>공개</th>-->
-                                            <!--</tr>-->
-                                            <!--<tbody id="servicePackTableArea">-->
-                                            <!--</tbody>-->
-                                        <!--</table>-->
-                                        <!--&lt;!&ndash;<div class="box-footer clearfix"></div>&ndash;&gt;-->
-                                    <!--</div>-->
-                                    <!--<form id="ServicePackHiddenForm">-->
-                                        <!--<input type="hidden" id="ServicePackHiddenFormNo" name="no" value=""/>-->
-                                    <!--</form>-->
-                                <!--</div>-->
-                                <!--&lt;!&ndash; ▼ <div class="tab-content no-padding">&ndash;&gt;-->
-                            <!--</div>-->
-                            <!-- ▼ tab class end -->
-
-
-                        <!--</div>-->
-                        <!--&lt;!&ndash; ▼row: 12   <div class="tab-content no-padding">&ndash;&gt;-->
-                    <!--</div>-->
-                <!--</div>-->
-
             </div>
+
+
+            <!-- Modal Layer-->
+            <!-- Starter Modal END -->
+            <div class="modal fade" id="starterFormModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+
+                            <h4 class="modal-title">
+                                <div id="starterTitle">앱 템플릿 등록</div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <div id="starterModalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                <form id="starterForm" class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group required">
+                                            <label for="starterName" class="col-sm-3 control-label">이름</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control checkStarterForm" id="starterName" name="name" placeholder="" />
+                                                <input type="hidden" id="starterId"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="categoryList" class="col-sm-3 control-label">분류</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control toCheckString" id="categoryList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="buildPackList" class="col-sm-3 control-label">앱 개발환경</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control toCheckString" id="buildPackList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="servicePackList" class="col-sm-3 control-label">서비스</label>
+
+                                            <div class="col-sm-4"> <!--col-xs-4 -->
+                                                <select multiple="" class="form-control" id="servicePackList"
+                                                        name="servicePackList" style="height: 90px; line-height: 90px;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm-1" style="text-align:center; margin-top:20px"><!--margin:20px 1.0% 0px 0.0%;-->
+                                                <div>
+                                                    <span type="button" class="glyphicon glyphicon-chevron-right"
+                                                           style="font-size:22px;color:#ababab; cursor: pointer;"
+                                                           onClick="SelectMoveRows(document.getElementById('servicePackList'), document.getElementById('selectedServicePackList'))">
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span type="button" class="glyphicon glyphicon-chevron-left"
+                                                           style="font-size:22px;color:#818181; cursor: pointer;"
+                                                           onClick="SelectMoveRows(document.getElementById('selectedServicePackList'), document.getElementById('servicePackList'))">
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <select multiple="" class="form-control checkStarterForm" id="selectedServicePackList"
+                                                        name="selectedServicePackList"
+                                                        style="height: 90px; line-height: 90px;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password" class="col-sm-3 control-label">썸네일</label>
+
+                                            <div class="col-sm-9">
+                                                    <input type="file" id="hiddenThumbnail" class="filestyle" data-buttonText=""/>
+                                            </div>
+
+                                            <div class="col-sm-3"></div>
+
+                                            <div id="divPreview" class="col-sm-9">
+                                                <!-- -->
+                                                <div id="preview" class="file-preview-frame">
+                                                    <div class="file-content">
+                                                        <img src="" class="file-preview-image"/>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-left" style="margin: 47px 20px;">
+                                                    <div>
+                                                        <label id="labelThumbName"></label>
+                                                        <div id="thumRemove" class="pull-right file-remove-button">
+                                                            <i class="fa fa-times"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- -->
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="isFreeArea" class="col-sm-3 control-label">공개</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isFreeArea" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="starterUseYn" value="Y"/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="starterUseYn" value="N" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="summary" class="col-sm-3 control-label">요약</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control checkStarterForm" id="summary" name="summary" placeholder=""/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="description" class="col-sm-3 control-label">설명</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" rows="5" id="description"></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="starterDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteStarter();">삭제</button>
+                            <button type="button" id="starterSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateStarter();">저장</button>
+                            <button type="button" id="starterRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createStarter();">등록</button>
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- Starter Modal END -->
+
+
+            <!-- Develop Modal END -->
+            <div class="modal fade" id="devFormModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+
+                            <h4 class="modal-title">
+                                <div id="titleReg">서비스 브로커 등록</div>
+                                <div id="titleDetail">서비스 브로커 상세</div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                <form id="serviceBrokerForm" class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group required">
+                                            <label for="name" class="col-sm-3 control-label">서비스 브로커 이름</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) rabbitmq-service-broker"/>
+                                                <input type="hidden" id="guid"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="username" class="col-sm-3 control-label">사용자 이름</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="username" name="username" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="url" class="col-sm-3 control-label">URL 정보</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="url" name="url" placeholder="ex) http://10.30.40.81:4567"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">삭제</button>
+                            <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">저장</button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">등록</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- Develop Modal END -->
+
+
+            <!-- Service Modal END -->
+            <div class="modal fade" id="serviceFormModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+
+                            <h4 class="modal-title">
+                                <div id="titleReg">서비스 브로커 등록</div>
+                                <div id="titleDetail">서비스 브로커 상세</div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                <form id="serviceBrokerForm" class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group required">
+                                            <label for="name" class="col-sm-3 control-label">서비스 브로커 이름</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) rabbitmq-service-broker"/>
+                                                <input type="hidden" id="guid"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="username" class="col-sm-3 control-label">사용자 이름</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="username" name="username" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="url" class="col-sm-3 control-label">URL 정보</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="url" name="url" placeholder="ex) http://10.30.40.81:4567"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">삭제</button>
+                            <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">저장</button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">등록</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- Service Modal END -->
+
+
         </section>
+
+
+
+
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
@@ -323,49 +608,106 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var STARTER_LIST_PROC_URL = "/v2/starterpacks";
-    var STARTER_INSERT_FORM_URL = "/starterpackForm";
-    var DEVELOP_PACK_LIST_PROC_URL = "/v2/developpacks";
-    var DEVELOP_PACK_INSERT_FORM_URL = "/developpackForm";
-    var SERVICE_PACK_LIST_PROC_URL = "/v2/servicepacks";
-    var SERVICE_PACK_INSERT_FORM_URL = "/servicepackForm";
+    var STARTER_LIST_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_LIST_PROC_URL}]]*/ "";
+    var DEVELOP_PACK_LIST_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).DEVELOP_PACK_LIST_PROC_URL}]]*/ "";
+    var SERVICE_PACK_LIST_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_LIST_PROC_URL}]]*/ "";
+    var STARTER_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CATALOG_ID}]]*/ '';
+    var CATEGORY_LIST_PROC_URL = "/v2/codedetail";
+
     var CLIENT_LIST = new Array();
-    var TAB_NAME = /*[[${TAB_NAME}]]*/ null;
-    var STARTER_PACK = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_STARTER}]]*/ null;
-    var DEVELOP_PACK = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_DEVELOP_PACK}]]*/ null;
-    var SERVICE_PACK = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).TAB_NAME_SERVICE_PACK}]]*/ null;
 
+    var MAX_SIZE = 500; // KB
 
-    //  procGetSearchList
+    // LIST DATA
+    var STARTER_SOURCE_LIST;    // 앱 템플릿 리스트
+    var DEV_SOURCE_LIST;        // 앱 개발환경 리스트
+    var SERVICE_SOURCE_LIST;    // 앱 서비스 리스트
+
+    // SELECT BOX DATA(앱 템플릿)
+    var STARTER_CATEGORY_LIST;  // 앱 템플릿 상세 [분류]
+    var STARTER_DEV_ENV_LIST;   // 앱 템플릿 상세 [앱 개발환경]
+    var STARTER_SERVICE_LIST;   // 앱 템플릿 상세 [서비스]
+
+    var ACTIVE_TAB = 'starter'; // 활성화 TAB
+
+    var BEFORE_THUMB_PATH;
+
     $(document.body).ready(function () {
+
         getStarterList();
-//        getBuildPackList();
-//        getServicePackList();
+        getBuildPackList();
+        getServicePackList();
 
-        if (TAB_NAME != null) {
-            $("#" + STARTER_PACK + "_TAB").removeClass('active');
-            $("#" + DEVELOP_PACK + "_TAB").removeClass('active');
-            $("#" + SERVICE_PACK + "_TAB").removeClass('active');
-            $("#" + TAB_NAME).addClass('active');
-            $("#" + TAB_NAME + "_TAB").addClass('active');
-            appbutton(TAB_NAME);
-        } else {
-            $("#STARTER").addClass('active');
-        }
+        // 활성탭 체크
+        $('.nav-tabs li').each(function(){
+            $(this).click(function(e){
+                ACTIVE_TAB = $(e.target).data('tabType');
+            });
+        });
 
+        // 리스트 클릭시 상세 출력
+        $(document).on( "click", 'tbody tr' ,function(e){
+            var id = $(e.target).parent().data('id');
+            //console.log("ACTIVE_TAB::"+ACTIVE_TAB+" id::"+id);
+            if(ACTIVE_TAB == 'starter'){
+                getStarter(id);
+            }else if(ACTIVE_TAB == 'dev'){
+                getBuildPack(id);
+            }else if(ACTIVE_TAB == 'service'){
+                getServicePack(id);
+            }
+        });
+
+        // 파일 선택 변경시 썸네일 프리뷰 갱신
+        $("#hiddenThumbnail").on("change", function () {
+            setPreView($(this));
+        });
+
+        // 파일 삭제 버튼 처리
+        $('#thumRemove').on('click', function(e){
+            $(":file").filestyle('clear');
+            $('#divPreview').hide();
+            $('#preview img').attr("src","");
+        });
+
+        // 앱 템플릿 정의 등록 버튼 클릭시, 등록 팝업 설정
+        $(document).on( "click", '#starterRegistBtn' ,function(e){
+
+            $('#starterTitle').text("앱 템플릿 등록");
+
+            $('#starterDeleteBtn').hide();
+            $('#starterSaveBtn').hide();
+            $('#starterRegBtn').show();
+
+            intiStarterModal();
+        });
+
+        $('#starterFormModal').on('shown.bs.modal', function () {
+            $('#starterName').focus();
+        });
+
+        procCallAjax("/v2/codedetail", "GET", {"groupId": STARTER_CATALOG_ID}, procCallbackCategoryList, null);
+        procCallAjax("/v2/developpacks", "GET", null, procCallbackDevEnvList, null);
     });
 
-    getSearchList = function () {
-        getStarterList();
-//        getBuildPackList();
-//        getServicePackList();
+    // [분류] 셀렉트 리스트
+    var procCallbackCategoryList = function(data){
+        STARTER_CATEGORY_LIST = data.list;
+        defaultCategoryOptionList();
+    }
+
+    // [앱 개발환경\ 셀렉트 리스트
+    var procCallbackDevEnvList = function(data){
+        STARTER_DEV_ENV_LIST = data.list;
+        defaultDevEnvOptionList();
     }
 
 
+    // 미적용(조회 사용여부 확인중)
     // CHECK SEARCH FORM KEY EVENT
     var procCheckSearchFormKeyEvent = function (e) {
         if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
-            procGetSearchList();
+            //procGetSearchList();
         }
     };
 
@@ -392,8 +734,9 @@
     // BIND :: BUTTON EVENT
     $("#btnSearch").on("click", function () {
         //procGetSearchList();
-
     });
+
+
 
     // GET StarterList
     var getStarterList = function () {
@@ -406,13 +749,13 @@
     };
 
     // GET BuildPackList
-    var getBuildPackList = function (reqParam) {
+    var getBuildPackList = function () {
         var searchKeyword = "";//document.getElementById('searchKeyword').value;
         var param;
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax2(DEVELOP_PACK_LIST_PROC_URL, "GET", param, procCallbackGetBuildPackList);
+        procCallAjax(DEVELOP_PACK_LIST_PROC_URL, "GET", param, procCallbackGetBuildPackList, null);
     };
 
     // GET ServicePackList
@@ -422,13 +765,18 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax2(SERVICE_PACK_LIST_PROC_URL, "GET", param, procCallbackGetServicePackList);
-
+        procCallAjax(SERVICE_PACK_LIST_PROC_URL, "GET", param, procCallbackGetServicePackList, null);
     };
+
+
+
 
     // GET LIST CALLBACK StarterList
     var procCallbackGetStarterList = function (data) {
-        var objTable = $("#serviceList");
+
+        STARTER_SOURCE_LIST = data.list;
+
+        var objTable = $("#templeteList");
         var listLength = data.list.length;
         var htmlString = [];
 
@@ -443,13 +791,13 @@
 
             $.each(catalogList, function (id, data) {
                 var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
-                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveStarterInsertForm(\'' + data.no + '\')">'
+                htmlString.push('<tr style="cursor:pointer;" data-id='+data.no+'>'
                         + '<td>' + data.name + '</td>'
                         + '<td>' + data.summary + '</td>'
                         + '<td>' + data.classificationValue + '</td>'
                         + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
                         + '</tr>');
-                });
+            });
 
             objTable.append(htmlString);
         }
@@ -457,113 +805,463 @@
 
     // GET LIST CALLBACK BuildPackList
     var procCallbackGetBuildPackList = function (data) {
-        var objTable = $('#buildPackListTable');
-        var objTableArea = $('#buildPackTableArea');
-        var objMessageArea = $('#buildPackMessageArea');
+        var objTable = $("#devList");
         var listLength = data.list.length;
         var htmlString = [];
 
-        objTableArea.html('');
+        objTable.html('');
 
         if (listLength < 1) {
-            objMessageArea.append('<spring:message code="common.info.empty.data" />');
-            objMessageArea.show();
+            objTable.append('<tr><td colspan="4">'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
+            objTable.show();
 
         } else {
             var catalogList = data.list;
 
-            for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveBuildPackInsertForm(\'' + catalogList[i].no + '\')">'
-                    + '<td>' + (i + 1) + '</td>'
-                    + '<td>' + catalogList[i].name + '</td>'
-                    + '<td>' + catalogList[i].summary + '</td>'
-                    + '<td>' + catalogList[i].classificationValue + '</td>'
-                    + '<td><span class="label label-default">' + catalogList[i].useYn + '</span></td>'
-                    + '</tr>');
-            }
-            objTableArea.append(htmlString).trigger("create");
+            $.each(catalogList, function (id, data) {
+                var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
+                htmlString.push('<tr style="cursor:pointer;" data-id='+data.no+'>'
+                        + '<td>' + data.name + '</td>'
+                        + '<td>' + data.summary + '</td>'
+                        + '<td>' + data.classificationValue + '</td>'
+                        + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
+                        + '</tr>');
+            });
+            objTable.append(htmlString);
         }
     };
 
     // GET LIST CALLBACK ServicePackList
     var procCallbackGetServicePackList = function (data) {
-        var objTable = $('#servicePackListTable');
-        var objTableArea = $('#servicePackTableArea');
-        var objMessageArea = $('#servicePackMessageArea');
+        var objTable = $('#serviceList');
         var listLength = data.list.length;
-        var htmlString = [];
+        var serviceListHtml = [];
 
-        objTableArea.html('');
+        objTable.html('');
 
         if (listLength < 1) {
-            objMessageArea.append('<spring:message code="common.info.empty.data" />');
-            objMessageArea.show();
+            objTable.append('<tr><td colspan="4">'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
+            objTable.show();
 
         } else {
-            var catalogList = data.list;
+            STARTER_SERVICE_LIST = data.list;
 
-            for (var i = 0; i < listLength; i++) {
-                htmlString.push('<tr style="cursor:pointer;" onclick="procMoveServicePackInsertForm(\'' + catalogList[i].no + '\')">'
-                    + '<td>' + (i + 1) + '</td>'
-                    + '<td>' + catalogList[i].name + '</td>'
-                    + '<td>' + catalogList[i].summary + '</td>'
-                    + '<td>' + catalogList[i].classificationValue + '</td>'
-                    + '<td><span class="label label-default">' + catalogList[i].useYn + '</span></td>'
-                    + '</tr>');
+            $.each(STARTER_SERVICE_LIST, function (id, data) {
+
+                var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
+                serviceListHtml.push('<tr style="cursor:pointer;" data-id='+data.no+'>'
+                        + '<td>' + data.name + '</td>'
+                        + '<td>' + data.summary + '</td>'
+                        + '<td>' + data.classificationValue + '</td>'
+                        + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
+                        + '</tr>');
+            });
+            objTable.append(serviceListHtml);
+        }
+
+    };
+
+
+    /* ************ 상세 *********** */
+    // [앱 템플릿] 상세
+    var getStarter = function(id){
+
+        intiStarterModal();
+
+        $('#starterTitle').text("앱 템플릿 상세");
+        $('#starterDeleteBtn').show();
+        $('#starterSaveBtn').show();
+        $('#starterRegBtn').hide();
+        $('#starterFormModal').modal('toggle');
+
+        // Starter 상세조회
+        procCallAjax("/v2/starterpacks/"+id, "GET", null, procCallbackGetStarter, $('#starterModalLoadingBar '));
+    }
+
+    var procCallbackGetStarter = function(data){
+
+        var entity = data.info;
+
+        if(entity){
+            $("#starterId").val(entity.no);
+            //이름
+            $("#starterName").val(entity.name);
+            //분류
+            $("#categoryList").val(entity.classification);
+            //앱 개발환경
+            $("#buildPackList").val(entity.buildPackCategoryNo);
+            //서비스
+            var defaultServiceList = $('#servicePackList');
+            var selectServiceList = $('#selectedServicePackList');
+            defaultServiceList.html('');
+            selectServiceList.html('');
+
+            $.each(STARTER_SERVICE_LIST, function (index, data) {
+                var findFlag = true;
+                for( var i = 0; i < entity.servicePackCategoryNoList.length; i++){
+                    if(entity.servicePackCategoryNoList[i] == data.no && findFlag){
+                        selectServiceList.append('<option value='+data.no+'>'+data.name+'</option>');
+                        findFlag = false;
+                    }
+                }
+                if(findFlag){
+                    defaultServiceList.append('<option value='+data.no+'>'+data.name+'</option>');
+                }
+            });
+
+            if(entity.servicePackCategoryNoList.length == 0){
+                defaultServiceOptionList();
             }
-            objTableArea.append(htmlString).trigger("create");
-        }
 
-    };
+            //썸네일
+            if(entity.thumbImgPath){
 
-    // MOVE PAGE StarterInsertForm
-    var procMoveStarterInsertForm = function (reqParam) {
-        var hiddenForm = $('#starterHiddenForm');
-        $('#starterHiddenFormNo').val(reqParam);
-        hiddenForm.attr({action: STARTER_INSERT_FORM_URL, method: "POST"}).submit();
-    };
+                var pathHeader = entity.thumbImgPath.lastIndexOf("/");
+                var pathEnd = entity.thumbImgPath.length;
+                var fileName = entity.thumbImgPath.substring(pathHeader + 1, pathEnd);
 
-    // MOVE PAGE BuildPackInsertForm
-    var procMoveBuildPackInsertForm = function (reqParam) {
-        var hiddenForm = $('#BuildPackHiddenForm');
-        $('#BuildPackHiddenFormNo').val(reqParam);
-        hiddenForm.attr({action: DEVELOP_PACK_INSERT_FORM_URL, method: "POST"}).submit();
-    };
+                $('#labelThumbName').text(entity.thumbIimgName);
+                $('#preview img').attr('style', 'display: block; height: 60px; width: 60px;');
+                $('#preview img').attr("src","/v2/thumbnail/"+fileName);
 
-    // MOVE PAGE ServicePackInsertForm
-    var procMoveServicePackInsertForm = function (reqParam) {
-        var hiddenForm = $('#ServicePackHiddenForm');
-        $('#ServicePackHiddenFormNo').val(reqParam);
-        hiddenForm.attr({action: SERVICE_PACK_INSERT_FORM_URL, method: "POST"}).submit();
-    };
+                BEFORE_THUMB_PATH = entity.thumbImgPath;
 
-    // MOVE PAGE Button Form
-    var appbutton = function (tabName) {
-        $("#btn_insert").text("");
-        if (tabName == SERVICE_PACK) {
-            $("#btn_insert").text("서비스 등록");
-        } else if (tabName == DEVELOP_PACK) {
-            $("#btn_insert").text("앱 개발환경 등록");
+                $('#divPreview').show();
+            }
 
-        } else if (tabName == STARTER_PACK) {
-            $("#btn_insert").text("앱 템플릿 등록");
-        }
-        $("#tabName").val(tabName);
-    }
-
-    // MOVE TabForm
-    var procMoveForm = function () {
-
-        var tabName = $("#tabName").val();
-
-        if (tabName == STARTER_PACK) {
-            procMovePage(STARTER_INSERT_FORM_URL);
-        } else if (tabName == DEVELOP_PACK) {
-            procMovePage(DEVELOP_PACK_INSERT_FORM_URL);
-        } else if (tabName == SERVICE_PACK) {
-            procMovePage(SERVICE_PACK_INSERT_FORM_URL);
+            //공개
+            eval("$('input:radio[name=starterUseYn][value="+entity.useYn+"]').prop('checked', true);");
+            //요약
+            $("#summary").val(entity.summary);
+            //설명
+            $("#description").val(entity.description);
         }
     }
+
+    // [앱 개발환경] 상세
+    var getBuildPack = function(id){
+        $('#devFormModal').modal('toggle');
+        //procCallAjax(STARTER_LIST_PROC_URL, "GET", param, procCallbackGetStarterList, null );
+    }
+
+
+
+
+    // [앱 서비스] 상세
+    var getServicePack = function(id){
+        $('#serviceFormModal').modal('toggle');
+        //procCallAjax(STARTER_LIST_PROC_URL, "GET", param, procCallbackGetStarterList, null );
+    }
+
+
+
+
+
+
+    /* ************ C.U.D *********** */
+    //  [앱 템플릿] 생성
+    function createStarter() {
+
+        if (!procCheckValidStringSpaceClass('checkStarterForm')){
+            return false;
+        };
+
+        // 파일 첨부 확인 및 업로드
+        var file = $("#hiddenThumbnail")[0].files[0];
+        if (file === undefined){
+            registStarter();
+        }else{
+            var formData = new FormData();
+            formData.append("file", file);
+            uploadFile(formData,"POST","/v2/thumbnail",registStarter);
+        }
+    }
+
+    //  [앱 템플릿] 등록
+    function registStarter(fileInfo){
+        var getList = document.getElementById("selectedServicePackList");
+        var selectedServicePackList = [];
+
+        for (var i = 0; i < getList.length; i++) {
+            selectedServicePackList[i] = getList.options[i].value;
+        }
+
+        var param = {
+            name : $("#starterName").val(),
+            classification : $("#categoryList").val(),
+            useYn : $("input[name=starterUseYn]:checked").val(),
+            summary : $("#summary").val(),
+            description : $("#description").val(),
+            buildPackCategoryNo : $("#buildPackList").val(),
+            servicePackCategoryNoList : selectedServicePackList
+        };
+
+        if(fileInfo){
+            param.thumbImgName = fileInfo.filename;
+            param.thumbImgPath = fileInfo.fileURL;
+            //
+        }
+
+        procCallAjax("/v2/starterpacks", "POST", JSON.stringify(param),init, $('#modalLoadingBar'));
+    }
+
+    //  앱 템플릿 수정
+    function updateStarter() {
+
+        if (!procCheckValidStringSpaceClass('checkStarterForm')){
+            return false;
+        };
+
+        // 파일 첨부 확인 및 업로드
+        var afterThumbPath = $('#preview img').attr("src");
+        var file = $("#hiddenThumbnail")[0].files[0];
+
+        if(BEFORE_THUMB_PATH == ""){
+            if(afterThumbPath == ""){
+                // PASS
+                modifyStarter();
+            }else{
+                // INSERT THUMB
+                var formData = new FormData();
+                formData.append("file", file);
+                uploadFile(formData,"POST","/v2/thumbnail",modifyStarter);
+            }
+
+        }else{
+            if(BEFORE_THUMB_PATH == afterThumbPath){
+                modifyStarter();
+            }else{
+                var pathHeader = BEFORE_THUMB_PATH.lastIndexOf("/");
+                var pathEnd = BEFORE_THUMB_PATH.length;
+                var fileName = BEFORE_THUMB_PATH.substring(pathHeader + 1, pathEnd);
+                //기존 삭제
+                uploadFile(null,"DELETE","/v2/thumbnail/"+ fileName, modifyStarter);
+                console.log("DELETE fileName::"+fileName);
+
+                if(afterThumbPath != ""){
+                    // 신규 이미지 추가
+                    var formData = new FormData();
+                    formData.append("file", file);
+                    uploadFile(formData,"POST","/v2/thumbnail", modifyStarter);
+                }
+
+            }
+        }
+    }
+
+    function modifyStarter(fileInfo){
+        var no = $('#starterId').val();
+        procCallAjax("/v2/starterpacks/"+ no, "PUT", JSON.stringify(returnParam(fileInfo)), init, $('#modalLoadingBar'));
+    }
+
+    //  앱 템플릿 삭제
+    function deleteStarter() {
+        var no = $('#starterId').val();
+        procCallAjax("/v2/starterpacks/"+ no, "DELETE", JSON.stringify(returnParam(false)), init, $('#modalLoadingBar'));
+    }
+
+    var returnParam = function(fileInfo){
+
+        var getList = document.getElementById("selectedServicePackList");
+        var selectedServicePackList = [];
+
+        for (var i = 0; i < getList.length; i++) {
+            selectedServicePackList[i] = getList.options[i].value;
+        }
+
+        var param = {
+            name : $("#starterName").val(),
+            classification : $("#categoryList").val(),
+            thumbImgName : $("#thumbImgName").val(),
+            thumbImgPath : $("#thumbImgPath").val(),
+            useYn : $("input[name=starterUseYn]:checked").val(),
+            summary : $("#summary").val(),
+            description : $("#description").val(),
+            buildPackCategoryNo : $("#buildPackList").val(),
+            servicePackCategoryNoList : selectedServicePackList
+        };
+
+        if(fileInfo){
+            param.thumbImgName = fileInfo.filename;
+            param.thumbImgPath = fileInfo.fileURL;
+        }
+
+        return param;
+    }
+
+
+
+
+
+
+
+    /* ************ 컴포넌트 *********** */
+    // SET PREVIEW
+    var setPreView = function (objThumbnail, target) {
+        var this_form = objThumbnail[0];
+        var file = this_form.files[0];
+
+        console.log(file);
+        var img_size = 0;
+
+        if (file) {
+            // image file check
+            var pathHeader = this_form.value.lastIndexOf("\\");
+            var pathMiddle = this_form.value.lastIndexOf(".");
+            var pathEnd = this_form.value.length;
+            var filename = this_form.value.substring(pathHeader + 1, pathEnd);
+            var ext = this_form.value.substring(pathMiddle + 1, pathEnd).toLowerCase();
+
+            if (ext != "jpg" && ext != "png" && ext != "gif") {
+                procAlert('warning', '이미지 파일(jpg, png, gif)만 등록 가능합니다.');
+                //fileinput FileReader 참고
+                resetThumbnail();
+                return false;
+            }
+
+            // file 읽어 오기
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                //$('#previewMessage').attr('style', 'display: none;');
+                var image = new Image();
+                // 파일의 내용을 읽어서 넣어준다.
+                image.src = e.target.result;
+                img_size = Math.round(e.total / 1024);
+            };
+
+            reader.onloadend = function (e) {
+                if (img_size > MAX_SIZE) {
+                    resetThumbnail();
+
+                    var alertMessage = '이미지 크기는 ' + MAX_SIZE + 'Kb를 넘을 수 없습니다.';
+                    var previewMessage = $("#previewMessage");
+
+                    previewMessage.text(alertMessage);
+                    previewMessage.attr('style', 'display: block;');
+
+                    //procAlert('warning', alertMessage);
+                    notifyAlert('warning','',alertMessage);
+
+                    return false;
+                }
+
+                $('#preview img').attr('style', 'display: block; height: 60px; width: 60px;');
+                $('#preview img').attr("src", e.target.result);
+                $('#labelThumbName').text(filename);
+
+            };
+
+            reader.readAsDataURL(file);
+            $('#divPreview').show();
+        } else {
+            resetThumbnail();
+        }
+    };
+
+    // RESET THUMBNAIL
+    var resetThumbnail = function () {
+        $(":file").filestyle('clear');
+        $('#divPreview').hide();
+    };
+
+
+
+
+    var init = function (){
+        console.log("SSSSS");
+        getStarterList();
+        $('.modal').modal('hide');
+    }
+
+    // Starter 등록 및 modal 초기화
+    var intiStarterModal = function(){
+
+        if(ACTIVE_TAB == 'starter'){
+            $('#starterId,#starterName,#summary').val('');
+            $('textarea').val('');
+            BEFORE_THUMB_PATH = "";
+
+            //서비스
+            $('#selectedServicePackList').html('');
+
+            defaultServiceOptionList();
+            defaultCategoryOptionList();
+            defaultDevEnvOptionList();
+
+            $('input:radio[name=starterUseYn]:input[value="Y"]').prop('checked', true);
+            $( "#thumRemove" ).trigger( "click" );
+        }
+
+    }
+
+    // 앱 템플릿 상세 - 서비스 셀렉트 박스 초기값
+    function defaultServiceOptionList(){
+        var objSelectBox = $('#servicePackList');
+        objSelectBox.html('');
+        $.each(STARTER_SERVICE_LIST, function (index, data) {
+            objSelectBox.append('<option value='+data.no+'>'+data.name+'</option>');
+        });
+    }
+
+    // 앱 템플릿 상세 - 분류 셀렉트 박스 초기값
+    function defaultCategoryOptionList(){
+        var objSelectBox = $('#categoryList');
+        objSelectBox.html('');
+        $.each(STARTER_CATEGORY_LIST, function (index, data) {
+            objSelectBox.append("<option value='" + data.key + "'> " + data.value + " </option>");
+        });
+    }
+
+    // 앱 템플릿 상세 - 앱 개발 환경 셀렉트 박스 초기값
+    function defaultDevEnvOptionList(){
+        var objSelectBox = $('#buildPackList');
+        objSelectBox.html('');
+        $.each(STARTER_DEV_ENV_LIST, function (index, data) {
+            objSelectBox.append("<option value='" + data.no + "'> " + data.name + " </option>");
+        });
+    }
+
+    // reqType 따른 파일 업로드 / 삭제 처리
+    var uploadFile = function(formData, reqType, reqUploadUrl, reqProcFunction) {
+        $.ajax({
+            url : reqUploadUrl
+            , method : reqType
+            , processData : false
+            , contentType : false
+            , data : formData
+            , dataType : "json"
+            , success : function(data){
+
+                if(reqType == "DELETE"){ // 삭제시 파일정보 초기화
+                   data.filename = "";
+                   data.fileURL = "";
+                }
+                reqProcFunction(data);
+            },
+            error: function(xhr, status, error) {
+                notifyAlert("danger","",JSON.parse(xhr.responseText).customMessage);
+                //console.log("FILE "+reqType+" ERROR :: error :: ", error);
+            },
+            complete : function(data) {
+                //console.log("FILE "+reqType+" COMPLETE :: data :: ", data);
+            }
+        });
+    };
+
+    // FILE FORM DATA
+    var getFileFormData = function () {
+        var reqThumbnail = $("#hiddenThumbnail");
+
+        if (reqThumbnail[0].files[0] === undefined) return undefined;
+
+        var formData = new FormData();
+
+        formData.append("file", reqThumbnail[0].files[0]);
+
+        return formData;
+    };
+
     /*]]>*/
 </script>
 

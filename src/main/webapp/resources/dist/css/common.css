@@ -49,3 +49,112 @@
     margin-top: 10px;
     color: #d8d8d9;
 }
+
+.divPreview {
+    position: relative;
+    margin: 10px 2px 0 0;
+    padding: 20px;
+    color: #3d4553;
+    /*text-align: center;*/
+    background-color: #e2e1e1;
+    border: 0px solid #cccccc;
+    border-radius: 4px;
+    height: 90px;
+}
+
+.divPreview .divImageInfo {
+    height: 50px;
+    line-height: 50px;
+}
+
+/*.custom-thumbnail {*/
+    /*display: block;*/
+    /*-webkit-transition: border 0.2s ease-in-out;*/
+    /*-o-transition: border 0.2s ease-in-out;*/
+    /*transition: border 0.2s ease-in-out;*/
+/*}*/
+
+/*.custom-thumbnail > img,*/
+/*.custom-thumbnail a > img {*/
+    /*width: 60px;*/
+    /*height: 60px;*/
+    /*padding: 2px;*/
+    /*background-color: #ffffff;*/
+    /*border: 3px solid #fff;*/
+    /*border-radius: 0px;*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*margin-top: -5px;*/
+/*}*/
+
+.ml20 {
+    margin-left: 10px !important
+}
+
+/*float*/
+.fl{display:inline;float:left}
+.fr{display:inline;float:right}
+
+.cl_l{clear:left;}
+.cl_r{clear:right;}
+.cl_b{clear:both;}
+
+.dpb{display:block !important}
+.dpi{display:inline !important}
+
+.psr{position:relative !important}
+.overflow{overflow:auto !important}
+.clearfix{display:block;clear:both;content:'';}
+
+.btn-del {
+    display: inline-block;
+    padding: 6px 8px 3px 7px;
+    margin-left: -10px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid #c3c1c1;
+    font-weight:bold;
+    background-color:#fff;
+}
+
+
+.file-preview-frame {
+    margin-top: 20px;
+    margin-right: 5px;
+    margin-bottom: 0px;
+    margin-left: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 1px 1px 5px 0 #a2958a;
+    padding: 6px;
+    float: left;
+    text-align: center;
+}
+
+.file-content {
+    width: 60px;
+    height: 60px;
+}
+
+.file-footer-buttons {
+    float: right;
+}
+
+.file-remove-button{
+    cursor: pointer;
+    position: relative;
+    left: 4px;
+    /*top: 8px;*/
+    font-size: 15px;
+}

@@ -38,7 +38,6 @@ var procGridCallAjax = function(reqUrl, objGrid, procType, param, callback) {
 // Http Method , loadingBar Element Argument 추가
 var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {
     var reqData = "";
-    //var reqMethod = "POST";
 
     if (param != null) {
         reqData = param;
@@ -58,7 +57,10 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
 
             if (data) {
                 callback(data, param);
-                procAlert('success', RESULT_STATUS_SUCCESS_MESSAGE);
+                //procAlert('success', RESULT_STATUS_SUCCESS_MESSAGE);
+                if(reqMethod != "GET"){
+                    notifyAlert('success',reqMethod,'SUCCESS.');
+                }
             } else {
                 var resData = {RESULT : RESULT_STATUS_SUCCESS,
                     RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
@@ -73,11 +75,11 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
             //callback(resData, param);
 
             console.log("ERROR :: error :: ", error);
-            procAlert("danger", JSON.parse(xhr.responseText).message);
+            //procAlert("danger", JSON.parse(xhr.responseText).message);
+            notifyAlert('danger','',JSON.parse(xhr.responseText).message);
         },
         complete : function(data) {
             if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
-                //$targetLoadingBarElement.fadeOut();
                 $targetLoadingBarElement.addClass('hide');
             }
             console.log("COMPLETE :: data :: ", data);
@@ -126,6 +128,69 @@ var procCallAjax2 = function(reqUrl, reqMethod, param, callback) {
     });
 };
 
+// AJAX 전처리 Argument 추가 - beforeProc
+var procCallAjax3 = function(reqUrl, reqMethod, param, beforeProc, callback, $targetLoadingBarElement) {
+    var reqData = "";
+
+    if (param != null) {
+        reqData = param;
+    }
+    $.ajax({
+        url: reqUrl,
+        method: reqMethod,
+        data: reqData,
+        dataType: 'json',
+        contentType: "application/json",
+        beforeSend: function(){
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.removeClass("hide");
+            }
+            beforeProc();
+        },
+        success: function(data) {
+
+            if (data) {
+                callback(data, param);
+                //procAlert('success', RESULT_STATUS_SUCCESS_MESSAGE);
+                if(reqMethod != "GET"){
+                    notifyAlert('success','','SUCCESS!!');
+                }
+            } else {
+                var resData = {RESULT : RESULT_STATUS_SUCCESS,
+                    RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
+
+                callback(resData, param);
+            }
+        },
+        error: function(xhr, status, error) {
+            var resData = {RESULT : RESULT_STATUS_FAIL,
+                RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
+
+            //callback(resData, param);
+
+            console.log("ERROR :: error :: ", error);
+            //procAlert("danger", JSON.parse(xhr.responseText).message);
+            notifyAlert('danger','',JSON.parse(xhr.responseText).message);
+        },
+        complete : function(data) {
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.addClass('hide');
+            }
+            console.log("COMPLETE :: data :: ", data);
+        }
+    });
+};
+
+// Bootstrap notification used
+var notifyAlert = function(alertType, alertTitle ,alertMessage){
+    $.notify({
+        title: '<strong>'+alertTitle+'</strong>',
+        message: alertMessage
+    },{
+        type: alertType,
+        z_index: 9999
+    });
+}
 
 // ALARM
 var timeoutHandler = null;
@@ -342,7 +407,8 @@ var procCheckValidStringSpace = function(reqString) {
     for (var i = 0; i < objStringLength; i++) {
         if (0 == objString[i].value.replace(/ /g,"").length) {
             objString.eq(i).focus();
-            procAlert("warning", INFO_EMPTY_REQUEST_DATA);
+            //procAlert("warning", INFO_EMPTY_REQUEST_DATA);
+            notifyAlert('warning','',INFO_EMPTY_REQUEST_DATA);
             return false;
         }
     }
@@ -350,6 +416,30 @@ var procCheckValidStringSpace = function(reqString) {
     return true;
 };
 
+// CHECK VALID STRING SPACE
+var procCheckValidStringSpaceClass = function(classString) {
+
+    var objString = eval("$('."+classString+"')");  //$('.toCheckString');
+
+    console.log(objString);
+    if (undefined == objString || null == objString) {
+        //procAlert("warning", RESULT_STATUS_FAIL_MESSAGE);
+        notifyAlert('warning','',RESULT_STATUS_FAIL_MESSAGE);
+        return false;
+    }
+
+    var objStringLength = objString.length;
+    for (var i = 0; i < objStringLength; i++) {
+        if (0 == objString[i].value.replace(/ /g,"").length) {
+            objString.eq(i).focus();
+            //procAlert("warning", INFO_EMPTY_REQUEST_DATA);
+            notifyAlert('warning','',INFO_EMPTY_REQUEST_DATA);
+            return false;
+        }
+    }
+
+    return true;
+};
 
 // CHECK VALID URL
 var procCheckValidUrl = function(reqUrl) {
@@ -359,3 +449,45 @@ var procCheckValidUrl = function(reqUrl) {
     var urlExp2 = /https:\/\/([\w\-]+\.)+/g;
     return urlExp.test(reqUrl) || urlExp2.test(reqUrl);
 };
+
+
+function SelectMoveRows(SS1,SS2)
+{
+    var SelID='';
+    var SelText='';
+    // Move rows from SS1 to SS2 from bottom to top
+    for (i=SS1.options.length - 1; i>=0; i--)
+    {
+        if (SS1.options[i].selected == true)
+        {
+            SelID=SS1.options[i].value;
+            SelText=SS1.options[i].text;
+            var newRow = new Option(SelText,SelID);
+            SS2.options[SS2.length]=newRow;
+            SS1.options[i]=null;
+        }
+    }
+    SelectSort(SS2);
+}
+
+function SelectSort(SelList)
+{
+    var ID='';
+    var Text='';
+    for (var x=0; x < SelList.length - 1; x++)
+    {
+        for (var y=x + 1; y < SelList.length; y++)
+        {
+            if (SelList[x].value > SelList[y].value)
+            {
+                // Swap rows
+                ID=SelList[x].value;
+                Text=SelList[x].text;
+                SelList[x].value=SelList[y].value;
+                SelList[x].text=SelList[y].text;
+                SelList[y].value=ID;
+                SelList[y].text=Text;
+            }
+        }
+    }
+}
