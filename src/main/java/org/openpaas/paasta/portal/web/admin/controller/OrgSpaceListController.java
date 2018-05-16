@@ -61,9 +61,9 @@ public class OrgSpaceListController extends Common {
      * @throws Exception the exception
      * @author 김도준
      */
-    @GetMapping(V2_URL + "/orgs/{orgid}/space")
+    @GetMapping(V2_URL + "/orgs/{orgid}/spaces")
     public Map<String, Object> getSpacesForAdmin(@PathVariable String orgid) throws Exception {
-        return orgSpaceListService.getSpacesForAdmin("/orgs/"+orgid+"/space", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpacesForAdmin("/orgs/"+orgid+"/spaces", HttpMethod.GET, null, getToken());
     }
 
     /**

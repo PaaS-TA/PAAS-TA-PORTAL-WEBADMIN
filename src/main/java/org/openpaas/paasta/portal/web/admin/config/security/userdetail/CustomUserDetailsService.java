@@ -40,37 +40,40 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public UserDetails loginByUsernameAndPassword(String username, String password) throws UsernameNotFoundException {
 
-        Map<String,Object> resBody = new HashMap();
+        Map<String, Object> resBody = new HashMap();
 
         resBody.put("id", username);
         resBody.put("password", password);
         Map result;
 
 
-        try{
+        try {
             result = commonService.procCfApiRestTemplate("/login", HttpMethod.POST, resBody, "");
         } catch (Exception e) {
             e.printStackTrace();
             throw new BadCredentialsException(e.getMessage());
-
+        }
+        Map info = new HashMap();
+        try {
+            info = commonService.procCommonApiRestTemplate("/v2/user/" + username, HttpMethod.GET, null, "");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
+        Map userInfo = (Map) info.get("User");
 
         List role = new ArrayList();
-
-
-        for(String auth : (List<String>)result.get("auth"))
-        {
-            role.add(new SimpleGrantedAuthority(auth));
+        if (userInfo.get("adminYn").toString().equals("Y")) {
+            role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            role.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
+        User user = new User((String) result.get("id"), (String) result.get("password"), role);
 
-
-        User user = new User((String)result.get("id"), (String)result.get("password"), role);
-
-        user.setToken((String)result.get("token"));
-        user.setExpireDate((Long)result.get("expireDate"));
-        user.setName((String)result.get("name"));
-        user.setImgPath((String)result.get("imgPath"));
+        user.setToken((String) result.get("token"));
+        user.setExpireDate((Long) result.get("expireDate"));
+        user.setName((String) userInfo.get("name"));
+        user.setImgPath((String) userInfo.get("imgPath"));
 
         return user;
     }
