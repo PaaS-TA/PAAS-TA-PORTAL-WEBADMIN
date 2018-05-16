@@ -52,7 +52,7 @@
                                             </div>
 
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#starterFormModal">
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#starterFormModal">
                                                     앱 템플릿 등록
                                                 </button>
                                             </div>
@@ -75,7 +75,7 @@
                                                     <th>공개</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="templeteList">
+                                                <tbody id="starterList" name="dataList">
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
@@ -107,7 +107,7 @@
                                         <div id="devTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
                                         <div class="box-header">
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#catalogFormModal">
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="devEnvRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#devEnvFormModal">
                                                     앱 개발환경 등록
                                                 </button>
                                             </div>
@@ -129,7 +129,7 @@
                                                     <th>공개</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="devList">
+                                                <tbody id="devList" name="dataList">
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
@@ -161,7 +161,7 @@
                                         <div id="serviceTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
                                         <div class="box-header">
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#catalogFormModal">
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="serviceRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceFormModal">
                                                     앱 서비스 등록
                                                 </button>
                                             </div>
@@ -183,7 +183,7 @@
                                                     <th>공개</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="serviceList">
+                                                <tbody id="serviceList" name="dataList">
                                                 <tr>
                                                     <td>9</td>
                                                     <td>10</td>
@@ -220,7 +220,7 @@
             </div>
 
 
-            <!-- Modal Layer-->
+            <!-- [앱 템플릿] Modal Layer-->
             <!-- Starter Modal END -->
             <div class="modal fade" id="starterFormModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg">
@@ -230,13 +230,13 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="starterTitle">앱 템플릿 등록</div>
+                                <div id="starterTitle" name="modalTitle">앱 템플릿 등록</div>
                             </h4>
                         </div>
                         <div class="modal-body">
 
                             <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
-                                <div id="starterModalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                <div id="starterModalLoadingBar" name="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
                                 <form id="starterForm" class="form-horizontal">
                                     <div class="box-body">
 
@@ -244,7 +244,7 @@
                                             <label for="starterName" class="col-sm-3 control-label">이름</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkStarterForm" id="starterName" name="name" placeholder="" />
-                                                <input type="hidden" id="starterId"/>
+                                                <input type="hidden" id="starterId" name="id"/>
                                             </div>
                                         </div>
 
@@ -301,15 +301,15 @@
 
                                         </div>
                                         <div class="form-group">
-                                            <label for="password" class="col-sm-3 control-label">썸네일</label>
+                                            <label for="starterThumbnail" class="col-sm-3 control-label">썸네일</label>
 
                                             <div class="col-sm-9">
-                                                    <input type="file" id="hiddenThumbnail" class="filestyle" data-buttonText=""/>
+                                                    <input type="file" id="starterThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
                                             </div>
 
                                             <div class="col-sm-3"></div>
 
-                                            <div id="divPreview" class="col-sm-9">
+                                            <div id="divPreview" name="divPreview" class="col-sm-9">
                                                 <!-- -->
                                                 <div id="preview" class="file-preview-frame">
                                                     <div class="file-content">
@@ -318,8 +318,8 @@
                                                 </div>
                                                 <div class="pull-left" style="margin: 47px 20px;">
                                                     <div>
-                                                        <label id="labelThumbName"></label>
-                                                        <div id="thumRemove" class="pull-right file-remove-button">
+                                                        <label id="starterLabelThumbName" name="labelThumbName"></label>
+                                                        <div id="thumRemove" name="thumRemove" class="pull-right file-remove-button">
                                                             <i class="fa fa-times"></i>
                                                         </div>
                                                     </div>
@@ -371,9 +371,9 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="starterDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteStarter();">삭제</button>
-                            <button type="button" id="starterSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateStarter();">저장</button>
-                            <button type="button" id="starterRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createStarter();">등록</button>
+                            <button type="button" id="starterDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
+                            <button type="button" id="starterSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateStarter();">저장</button>
+                            <button type="button" id="starterRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createStarter();">등록</button>
                             <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
                         </div>
                     </div>
@@ -381,11 +381,11 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- Starter Modal END -->
+            <!-- Modal END -->
 
 
-            <!-- Develop Modal END -->
-            <div class="modal fade" id="devFormModal" data-backdrop="static" data-keyboard="false">
+            <!-- [앱 개발환경] Modal -->
+            <div class="modal fade" id="devEnvFormModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -393,80 +393,139 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="titleReg">서비스 브로커 등록</div>
-                                <div id="titleDetail">서비스 브로커 상세</div>
+                                <div id="devEnvTitle" name="modalTitle">앱 개발환경 등록</div>
                             </h4>
                         </div>
                         <div class="modal-body">
 
                             <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
-                                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
-                                <form id="serviceBrokerForm" class="form-horizontal">
+                                <div id="devEnvModalLoadingBar" name="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                <form id="devEnvForm" class="form-horizontal">
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="name" class="col-sm-3 control-label">서비스 브로커 이름</label>
+                                            <label for="devEnvName" class="col-sm-3 control-label">이름</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) rabbitmq-service-broker"/>
-                                                <input type="hidden" id="guid"/>
+                                                <input type="text" class="form-control checkDevEnvForm" id="devEnvName" name="name" placeholder="" />
+                                                <input type="hidden" id="devEnvId" name="id"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="username" class="col-sm-3 control-label">사용자 이름</label>
+                                            <label for="categoryDevEnvList" class="col-sm-3 control-label">분류</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="username" name="username" placeholder="ex) admin"/>
+                                                <select class="form-control checkDevEnvForm" id="categoryDevEnvList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <label for="buildPackDevEnvList" class="col-sm-3 control-label">앱 개발환경</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                                <select class="form-control checkDevEnvForm" id="buildPackDevEnvList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="devEnvThumbnail" class="col-sm-3 control-label">썸네일</label>
+
+                                            <div class="col-sm-9">
+                                                <input type="file" id="devEnvThumbnail" class="filestyle" data-buttonText=""/>
+                                            </div>
+
+                                            <div class="col-sm-3"></div>
+
+                                            <div id="divDevEnvPreview" name="divPreview" class="col-sm-9">
+                                                <!-- -->
+                                                <div id="devEnvPreview" class="file-preview-frame">
+                                                    <div class="file-content">
+                                                        <img src="" class="file-preview-image"/>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-left" style="margin: 47px 20px;">
+                                                    <div>
+                                                        <label id="devEnvLabelThumbName" name="labelThumbName"></label>
+                                                        <div id="devEnvThumRemove" name="thumRemove" class="pull-right file-remove-button">
+                                                            <i class="fa fa-times"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- -->
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="devEnvApp" class="col-sm-3 control-label">앱 샘플</label>
+
+                                            <div class="col-sm-9">
+                                                <input type="file" id="devEnvApp" name="appSample" class="filestyle" data-buttonText=""/>
+                                                <span class="help-block" style="font-size: 7px; font-weight: bold; margin-left: 5px;"> 파일 첨부는 1개 파일만 가능합니다.</span>
+                                            </div>
+
+                                            <div class="col-sm-3"></div>
+
+                                            <div id="divDevEnvApp" class="col-sm-9">
+                                                <!-- -->
+                                                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                                   <a href="" >첨부된 파일이 없습니다.</a>
+                                                    <div id="devEnvAppRemove" name="appRemove" class="pull-right file-remove-button">
+                                                        <i class="fa fa-times"></i>
+                                                    </div>
+                                                </p>
+
+                                                <!--<div class="pull-left" style="margin: 47px 20px;">-->
+
+                                                    <!--<div>-->
+                                                        <!--<label id="devEnvLabelAppName"></label>-->
+                                                        <!--<div id="devEnvAppRemove" name="appRemove" class="pull-right file-remove-button">-->
+                                                            <!--<i class="fa fa-times"></i>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+
+
+                                                <!--</div>-->
+                                                <!-- -->
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="isFreeDevEnvArea" class="col-sm-3 control-label">공개</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isFreeDevEnvArea" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="devEnvUseYn" value="Y"/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="devEnvUseYn" value="N" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <label for="devEnvSummary" class="col-sm-3 control-label">요약</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                                <input type="text" class="form-control checkDevEnvForm" id="devEnvSummary" name="summary" placeholder=""/>
                                             </div>
                                         </div>
 
-                                        <div class="form-group required">
-                                            <label for="url" class="col-sm-3 control-label">URL 정보</label>
+                                        <div class="form-group">
+                                            <label for="devEnvDescription" class="col-sm-3 control-label">설명</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="url" name="url" placeholder="ex) http://10.30.40.81:4567"/>
+                                                <textarea class="form-control" rows="5" id="devEnvDescription"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -475,21 +534,20 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">삭제</button>
-                            <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
-                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">저장</button>
-                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">등록</button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="devEnvDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
+                            <button type="button" id="devEnvSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateDevEnv();">저장</button>
+                            <button type="button" id="devEnvRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createDevEnv();">등록</button>
+                            <button type="button" id="devEnvCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- Develop Modal END -->
+            <!-- Modal END -->
 
 
-            <!-- Service Modal END -->
+            <!-- [앱 서비스] Modal-->
             <div class="modal fade" id="serviceFormModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -498,80 +556,188 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="titleReg">서비스 브로커 등록</div>
-                                <div id="titleDetail">서비스 브로커 상세</div>
+                                <div id="serviceTitle" name="modalTitle">앱 서비스 등록</div>
                             </h4>
                         </div>
                         <div class="modal-body">
 
                             <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
-                                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
-                                <form id="serviceBrokerForm" class="form-horizontal">
+                                <div id="serviceModalLoadingBar" name="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                <form id="serviceForm" class="form-horizontal">
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="name" class="col-sm-3 control-label">서비스 브로커 이름</label>
+                                            <label for="serviceName" class="col-sm-3 control-label">이름</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) rabbitmq-service-broker"/>
-                                                <input type="hidden" id="guid"/>
+                                                <input type="text" class="form-control checkServiceForm" id="serviceName" name="name" placeholder="" />
+                                                <input type="hidden" id="serviceId" name="id"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="username" class="col-sm-3 control-label">사용자 이름</label>
+                                            <label for="categoryServiceList" class="col-sm-3 control-label">분류</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="username" name="username" placeholder="ex) admin"/>
+                                                <select class="form-control checkServiceForm" id="categoryServiceList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <label for="serviceServicePackList" class="col-sm-3 control-label">서비스</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                                <select class="form-control checkServiceForm" id="serviceServicePackList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="serviceThumbnail" class="col-sm-3 control-label">썸네일</label>
+
+                                            <div class="col-sm-9">
+                                                <input type="file" id="serviceThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
+                                            </div>
+
+                                            <div class="col-sm-3"></div>
+
+                                            <div id="divServicePreview" name="divPreview" class="col-sm-9">
+                                                <!-- -->
+                                                <div id="servicePreview" class="file-preview-frame">
+                                                    <div class="file-content">
+                                                        <img src="" class="file-preview-image"/>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-left" style="margin: 47px 20px;">
+                                                    <div>
+                                                        <label id="serviceLabelThumbName" name="labelThumbName"></label>
+                                                        <div id="serviceThumRemove" name="thumRemove" class="pull-right file-remove-button">
+                                                            <i class="fa fa-times"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- -->
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" id="serviceParamForm">
+                                            <label for="serviceParam" class="col-sm-3 col-xs-12 control-label">서비스 생성 파라미터</label>
+
+                                            <div class="col-sm-4 col-xs-3">
+                                                <input type="text" class="form-control" id="serviceParam" name="serviceParam"/>
+                                            </div>
+                                            <div class="col-sm-3 col-xs-6">
+                                                <select class="form-control" name="serviceParamType" style="width:auto;">
+                                                    <option value="text">텍스트형</option>
+                                                    <option value="password">패스워드</option>
+                                                    <option value="default">자동입력</option>
+                                                    <option value="userAppointed">관리자 지정</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm-2 col-xs-3">
+                                                <button type="button" class="btn btn-sm btn-primary" id="serviceParamAdd" name="serviceParamAdd">추가</button>
+                                                <!--<button type="button" class="btn btn-sm btn-danger" name="serviceParamRemove">삭제</button>-->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="isFreeServiceArea" class="col-sm-3 control-label">앱 바인드 사용</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isAppBindArea" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="appBindUseYn" value="Y"/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="appBindUseYn" value="N" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="appBindParamArea" style="display: none;">
+                                            <label for="serviceName" class="col-sm-3 col-xs-12 control-label">앱 바인드 파라미터</label>
+                                            <div class="col-sm-4 col-xs-3">
+                                                <input type="text" class="form-control" name="appBindParam"/>
+                                            </div>
+                                            <div class="col-sm-3 col-xs-6">
+                                                <select class="form-control" name="appBindParamType" style="width:auto;">
+                                                    <option value="text">텍스트형</option>
+                                                    <option value="password">패스워드</option>
+                                                    <option value="default">자동입력</option>
+                                                    <option value="userAppointed">관리자 지정</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2 col-xs-3">
+                                                <button type="button" class="btn btn-sm btn-primary" id="appBindParamAdd" name="appBindParamAdd">추가</button>
+                                                <!--<button type="button" class="btn btn-sm btn-danger" name="appBindParamRemove">삭제</button>-->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="isFreeServiceArea" class="col-sm-3 control-label">공개</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isFreeServiceArea" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="serviceUseYn" value="Y"/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="serviceUseYn" value="N" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="isUseDashBoardArea" class="col-sm-3 control-label">대시보드 사용</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isUseDashBoardArea" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="dashBoardUseYn" value="Y"/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="dashBoardUseYn" value="N" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <label for="serviceSummary" class="col-sm-3 control-label">요약</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
+                                                <input type="text" class="form-control checkServiceForm" id="serviceSummary" name="summary" placeholder=""/>
                                             </div>
                                         </div>
 
-                                        <div class="form-group required">
-                                            <label for="url" class="col-sm-3 control-label">URL 정보</label>
+                                        <div class="form-group">
+                                            <label for="serviceDescription" class="col-sm-3 control-label">설명</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="url" name="url" placeholder="ex) http://10.30.40.81:4567"/>
+                                                <textarea class="form-control" rows="5" id="serviceDescription"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -580,23 +746,40 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">삭제</button>
+                            <button type="button" id="serviceDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
                             <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
-                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">저장</button>
-                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">등록</button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="serviceSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateService();">저장</button>
+                            <button type="button" id="serviceRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createService();">등록</button>
+                            <button type="button" id="serviceCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- Service Modal END -->
+            <!-- Modal END -->
 
+            <!-- Confirm Modal -->
+            <div class="modal fade" tabindex="-1" role="dialog" id="confirmModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"> 취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </section>
-
-
 
 
         <!-- /.content -->
@@ -608,10 +791,16 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var STARTER_LIST_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_LIST_PROC_URL}]]*/ "";
-    var DEVELOP_PACK_LIST_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).DEVELOP_PACK_LIST_PROC_URL}]]*/ "";
-    var SERVICE_PACK_LIST_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_LIST_PROC_URL}]]*/ "";
-    var STARTER_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CATALOG_ID}]]*/ '';
+/* To_BE
+ 앱 템플릿 등록시 동일 이름 있는지 체크 DUPLICATED_PROC_URL
+ 앱 템플릿에서 사용중인지 확인 부분
+*/
+
+    var STARTER_PACK_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_PACK_PROC_URL}]]*/ "";
+    var DEVELOP_PACK_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).DEVELOP_PACK_PROC_URL}]]*/ "";
+    var SERVICE_PACK_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_PROC_URL}]]*/ "";
+    var STARTER_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CATALOG_ID}]]*/ "";
+    var BUILD_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).BUILD_PACK_CATALOG_ID}]]*/ "";
     var CATEGORY_LIST_PROC_URL = "/v2/codedetail";
 
     var CLIENT_LIST = new Array();
@@ -628,9 +817,13 @@
     var STARTER_DEV_ENV_LIST;   // 앱 템플릿 상세 [앱 개발환경]
     var STARTER_SERVICE_LIST;   // 앱 템플릿 상세 [서비스]
 
+    var DEV_ENV_CATEGORY_LIST;  // 앱 개발환경 상세 [분류]
+    var DEV_ENV_BUILDPACK_LIST;  // 앱 개발환경 상세 [앱 개발환경]
+
     var ACTIVE_TAB = 'starter'; // 활성화 TAB
 
     var BEFORE_THUMB_PATH;
+    var BEFORE_THUMB_NAME;
 
     $(document.body).ready(function () {
 
@@ -638,7 +831,7 @@
         getBuildPackList();
         getServicePackList();
 
-        // 활성탭 체크
+        // 활성화 탭 체크
         $('.nav-tabs li').each(function(){
             $(this).click(function(e){
                 ACTIVE_TAB = $(e.target).data('tabType');
@@ -646,9 +839,12 @@
         });
 
         // 리스트 클릭시 상세 출력
-        $(document).on( "click", 'tbody tr' ,function(e){
+        $(document).on( "click", 'tbody[name=dataList]' ,function(e){
+
+            initModal();
+
             var id = $(e.target).parent().data('id');
-            //console.log("ACTIVE_TAB::"+ACTIVE_TAB+" id::"+id);
+
             if(ACTIVE_TAB == 'starter'){
                 getStarter(id);
             }else if(ACTIVE_TAB == 'dev'){
@@ -659,48 +855,135 @@
         });
 
         // 파일 선택 변경시 썸네일 프리뷰 갱신
-        $("#hiddenThumbnail").on("change", function () {
+        $("input[name=thumbnail]").on("change", function (e) {
             setPreView($(this));
         });
 
         // 파일 삭제 버튼 처리
-        $('#thumRemove').on('click', function(e){
-            $(":file").filestyle('clear');
-            $('#divPreview').hide();
-            $('#preview img').attr("src","");
+        $('div[name=thumRemove]').on('click', function(e){
+            $('input[name=thumbnail]').filestyle('clear');
+            $('div[name=divPreview]').hide();
+            $('.file-preview-image').attr("src","");
         });
 
-        // 앱 템플릿 정의 등록 버튼 클릭시, 등록 팝업 설정
-        $(document).on( "click", '#starterRegistBtn' ,function(e){
+        // 샘플앱 삭제 버튼 처리
+        $('div[name=appRemove]').on('click', function(e){
+            //$('input[name=appSample]').filestyle('clear');
 
-            $('#starterTitle').text("앱 템플릿 등록");
-
-            $('#starterDeleteBtn').hide();
-            $('#starterSaveBtn').hide();
-            $('#starterRegBtn').show();
-
-            intiStarterModal();
+            //$('#divDevEnvPreview').hide();
+            // 첨부된 파일이 없습니다.
         });
 
+        // 등록 버튼 클릭시, 등록 팝업 이벤트 설정
+        $(document).on( "click", 'button[name=registBtn]' ,function(e){
+
+            $('div[name=modalTitle]').text($(this).text());
+
+            $('button[name=modalDeleteBtn]').hide();
+            $('button[name=modalSaveBtn]').hide();
+            $('button[name=modalRegBtn]').show();
+
+            initModal();
+        });
+
+
+        // POPUP FOCUS INIT
         $('#starterFormModal').on('shown.bs.modal', function () {
             $('#starterName').focus();
         });
 
-        procCallAjax("/v2/codedetail", "GET", {"groupId": STARTER_CATALOG_ID}, procCallbackCategoryList, null);
-        procCallAjax("/v2/developpacks", "GET", null, procCallbackDevEnvList, null);
+        $('#devEnvFormModal').on('shown.bs.modal', function () {
+            $('#devEnvName').focus();
+        });
+
+        $('#serviceFormModal').on('shown.bs.modal', function () {
+            $('#serviceName').focus();
+        });
+
+        //[앱 템플릿] 컴포넌트(추후 리스트 조회의 데이터를 사용하고, 해당 항목의 중복 CALL은 제거) - developpacks, service
+        procCallAjax("/v2/codedetail", "GET", {"groupId": STARTER_CATALOG_ID}, procCallbackStarterCategoryList, null); // [앱 서비스] 변경 시 재실행 필요
+        procCallAjax(DEVELOP_PACK_PROC_URL, "GET", null, procCallbackStarterDevEnvList, null); // [앱 개발환경] 등록/변경/삭제 시 재실행 필요
+
+        //[앱 개발환경] 컴포넌트
+        procCallAjax("/v2/codedetail", "GET", {"groupId": BUILD_PACK_CATALOG_ID}, procCallbackDevEnvCategoryList, null);
+        procCallAjax("/v2/buildpacks", 'GET', null, procCallbackDevEnvBuildPackList, null);
+
+        //[앱 서비스] 컴포넌트
+        //procCallAjax();
+
+        // [앱서비스][서비스 생성 파라미터] 추가 이벤트
+        $(document).on("click", "#serviceParamAdd" ,function(e){
+
+            var temphtml =
+            "<div class='form-group' name='serviceParamAdded'>"
+             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+             +"   <div name='paramArea'>"
+             +"       <div class='col-sm-4 col-xs-3'>"
+             +"           <input type='text' class='form-control' name='serviceParam'/>"
+             +"       </div>"
+             +"       <div class='col-sm-3 col-xs-6'>"
+             +"           <select class='form-control' name='serviceParamType' style='width:auto;'>"
+             +"               <option value='text'>텍스트형</option>"
+             +"               <option value='password'>패스워드</option>"
+             +"               <option value='default'>자동입력</option>"
+             +"               <option value='userAppointed'>관리자 지정</option>"
+             +"           </select>"
+             +"       </div>"
+             +"   </div>"
+             +"   <div class='col-sm-2 col-xs-3'>"
+             +"       <button type='button' class='btn btn-sm btn-danger' name='serviceParamRemove'>삭제</button>"
+             +"   </div>"
+             +" </div>";
+
+            $('#serviceParamForm').after(temphtml);
+
+        })
+
+
+        // [앱서비스][서비스 생성 파라미터] 삭제 이벤트
+        $(document).on("click", "button[name=serviceParamRemove]" ,function(e) {
+            var index = $('button[name=serviceParamRemove]').index(this);
+            $('div[name=serviceParamAdded]:eq('+index+')').remove();
+        });
+
+        // [앱 서비스][앱 바인드 사용] 이벤트
+        $(document).on("click", "input:radio[name=appBindUseYn]" ,function(e){
+            var targetArea = $('#appBindParamArea');
+            if($(e.target).val() == "Y"){
+                targetArea.show();
+            }else{
+                targetArea.hide();
+            }
+        })
+
+
+
     });
 
-    // [분류] 셀렉트 리스트
-    var procCallbackCategoryList = function(data){
+    // [앱 템플릿][분류] 셀렉트 리스트
+    var procCallbackStarterCategoryList = function(data){
         STARTER_CATEGORY_LIST = data.list;
-        defaultCategoryOptionList();
+        defaultStarterCategoryOptionList();
     }
 
-    // [앱 개발환경\ 셀렉트 리스트
-    var procCallbackDevEnvList = function(data){
+    // [앱 템플릿][앱 개발환경] 셀렉트 리스트
+    var procCallbackStarterDevEnvList = function(data){
         STARTER_DEV_ENV_LIST = data.list;
-        defaultDevEnvOptionList();
+        defaultStarterDevEnvOptionList();
     }
+
+    // [앱 개발환경][분류] 셀렉트 리스트
+    var procCallbackDevEnvCategoryList = function(data){
+        DEV_ENV_CATEGORY_LIST = data.list;
+        defaultDevEnvCategoryOptionList();
+    }
+
+    // [앱 개발환경][앱 개발환경] 셀렉트 리스트
+    var procCallbackDevEnvBuildPackList = function(data){
+        DEV_ENV_BUILDPACK_LIST = data.resources;
+        defaultDevEnvBuildpackOptionList();
+    }
+
 
 
     // 미적용(조회 사용여부 확인중)
@@ -713,7 +996,7 @@
 
     function procSearchByKeyword(e) {
 
-        $('#starterListTableArea').hide(); //<tbody id> 값
+        //$('#starterListTableArea').hide(); //<tbody id> 값
         $('#starterList').empty();
 
         var searchKeyword = $(e.target).val();
@@ -740,22 +1023,26 @@
 
     // GET StarterList
     var getStarterList = function () {
+        $('.modal').modal('hide');
+
         var searchKeyword = "";//document.getElementById('searchKeyword').value;
         var param;
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax(STARTER_LIST_PROC_URL, "GET", param, procCallbackGetStarterList, $('#starterTabLoadingBar') );
+        procCallAjax(STARTER_PACK_PROC_URL, "GET", param, procCallbackGetStarterList, $('#starterTabLoadingBar') );
     };
 
     // GET BuildPackList
     var getBuildPackList = function () {
+        $('.modal').modal('hide');
+
         var searchKeyword = "";//document.getElementById('searchKeyword').value;
         var param;
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax(DEVELOP_PACK_LIST_PROC_URL, "GET", param, procCallbackGetBuildPackList, null);
+        procCallAjax(DEVELOP_PACK_PROC_URL, "GET", param, procCallbackGetBuildPackList, null);
     };
 
     // GET ServicePackList
@@ -765,7 +1052,7 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax(SERVICE_PACK_LIST_PROC_URL, "GET", param, procCallbackGetServicePackList, null);
+        procCallAjax(SERVICE_PACK_PROC_URL, "GET", param, procCallbackGetServicePackList, null);
     };
 
 
@@ -776,7 +1063,7 @@
 
         STARTER_SOURCE_LIST = data.list;
 
-        var objTable = $("#templeteList");
+        var objTable = $("#starterList");
         var listLength = data.list.length;
         var htmlString = [];
 
@@ -866,8 +1153,6 @@
     // [앱 템플릿] 상세
     var getStarter = function(id){
 
-        intiStarterModal();
-
         $('#starterTitle').text("앱 템플릿 상세");
         $('#starterDeleteBtn').show();
         $('#starterSaveBtn').show();
@@ -875,7 +1160,7 @@
         $('#starterFormModal').modal('toggle');
 
         // Starter 상세조회
-        procCallAjax("/v2/starterpacks/"+id, "GET", null, procCallbackGetStarter, $('#starterModalLoadingBar '));
+        procCallAjax(STARTER_PACK_PROC_URL + "/" + id, "GET", null, procCallbackGetStarter, $('#starterModalLoadingBar '));
     }
 
     var procCallbackGetStarter = function(data){
@@ -910,7 +1195,7 @@
             });
 
             if(entity.servicePackCategoryNoList.length == 0){
-                defaultServiceOptionList();
+                defaultStarterServiceOptionList();
             }
 
             //썸네일
@@ -920,11 +1205,12 @@
                 var pathEnd = entity.thumbImgPath.length;
                 var fileName = entity.thumbImgPath.substring(pathHeader + 1, pathEnd);
 
-                $('#labelThumbName').text(entity.thumbIimgName);
+                $('#starterLabelThumbName').text(entity.thumbIimgName);
                 $('#preview img').attr('style', 'display: block; height: 60px; width: 60px;');
                 $('#preview img').attr("src","/v2/thumbnail/"+fileName);
 
                 BEFORE_THUMB_PATH = entity.thumbImgPath;
+                BEFORE_THUMB_NAME = fileName;
 
                 $('#divPreview').show();
             }
@@ -938,23 +1224,69 @@
         }
     }
 
+
+
+
     // [앱 개발환경] 상세
     var getBuildPack = function(id){
-        $('#devFormModal').modal('toggle');
-        //procCallAjax(STARTER_LIST_PROC_URL, "GET", param, procCallbackGetStarterList, null );
+
+        $('#devEnvTitle').text("앱 개발환경 상세");
+        $('#devEnvDeleteBtn').show();
+        $('#devEnvSaveBtn').show();
+        $('#devEnvRegBtn').hide();
+        $('#devEnvFormModal').modal('toggle');
+
+        procCallAjax(DEVELOP_PACK_PROC_URL +"/"+id, "GET", null, procCallbackGetDevEnv, $('#devEnvModalLoadingBar '));
     }
 
+    var procCallbackGetDevEnv = function(data){
+
+        var entity = data.list[0];
+
+        if(entity){
+
+            $("#devEnvId").val(entity.no);
+            //이름
+            $("#devEnvName").val(entity.name);
+            //분류
+            $("#categoryDevEnvList").val(entity.classification);
+            //앱 개발환경
+            $("#buildPackDevEnvList").val(entity.buildPackName);
+
+            //썸네일
+            if(entity.thumbImgPath){
+
+                var pathHeader = entity.thumbImgPath.lastIndexOf("/");
+                var pathEnd = entity.thumbImgPath.length;
+                var fileName = entity.thumbImgPath.substring(pathHeader + 1, pathEnd);
+
+                $('#devEnvLabelThumbName').text(entity.thumbIimgName);
+                $('#devEnvPreview img').attr('style', 'display: block; height: 60px; width: 60px;');
+                // 파일 직접 주소 참조 불가. API를 통해 FILE 가져오기
+                $('#devEnvPreview img').attr("src","/v2/thumbnail/"+fileName);
+
+                BEFORE_THUMB_PATH = entity.thumbImgPath;
+                BEFORE_THUMB_NAME = fileName;
+
+                $('div[name=divPreview]').show();
+            }
+
+            //공개
+            eval("$('input:radio[name=devEnvUseYn][value="+entity.useYn+"]').prop('checked', true);");
+            //요약
+            $("#devEnvSummary").val(entity.summary);
+            //설명
+            $("#devEnvDescription").val(entity.description);
+        }
+    }
 
 
 
     // [앱 서비스] 상세
     var getServicePack = function(id){
         $('#serviceFormModal').modal('toggle');
-        //procCallAjax(STARTER_LIST_PROC_URL, "GET", param, procCallbackGetStarterList, null );
+        //procCallAjax(STARTER_PACK_PROC_URL, "GET", param, procCallbackGetStarterList, null );
     }
-
-
-
 
 
 
@@ -967,7 +1299,7 @@
         };
 
         // 파일 첨부 확인 및 업로드
-        var file = $("#hiddenThumbnail")[0].files[0];
+        var file = $("#starterThumbnail")[0].files[0];
         if (file === undefined){
             registStarter();
         }else{
@@ -979,88 +1311,119 @@
 
     //  [앱 템플릿] 등록
     function registStarter(fileInfo){
-        var getList = document.getElementById("selectedServicePackList");
-        var selectedServicePackList = [];
-
-        for (var i = 0; i < getList.length; i++) {
-            selectedServicePackList[i] = getList.options[i].value;
-        }
-
-        var param = {
-            name : $("#starterName").val(),
-            classification : $("#categoryList").val(),
-            useYn : $("input[name=starterUseYn]:checked").val(),
-            summary : $("#summary").val(),
-            description : $("#description").val(),
-            buildPackCategoryNo : $("#buildPackList").val(),
-            servicePackCategoryNoList : selectedServicePackList
-        };
-
-        if(fileInfo){
-            param.thumbImgName = fileInfo.filename;
-            param.thumbImgPath = fileInfo.fileURL;
-            //
-        }
-
-        procCallAjax("/v2/starterpacks", "POST", JSON.stringify(param),init, $('#modalLoadingBar'));
+        procCallAjax(STARTER_PACK_PROC_URL, "POST", JSON.stringify(starterParam(fileInfo)), getStarterList, $('#starterModalLoadingBar'));
     }
 
-    //  앱 템플릿 수정
+    //  앱 템플릿 수정 (파일저장 전 처리)
     function updateStarter() {
 
         if (!procCheckValidStringSpaceClass('checkStarterForm')){
             return false;
         };
 
+        //TO-BE: 파일 업로드 부분은 코딩 마지막에 리팩토링 할것
+
         // 파일 첨부 확인 및 업로드
         var afterThumbPath = $('#preview img').attr("src");
-        var file = $("#hiddenThumbnail")[0].files[0];
+        var file = $("#starterThumbnail")[0].files[0];
 
-        if(BEFORE_THUMB_PATH == ""){
+        if(BEFORE_THUMB_NAME == ""){
             if(afterThumbPath == ""){
-                // PASS
-                modifyStarter();
+                // NOT INCLUDE FILE
+                modifyItem();
             }else{
-                // INSERT THUMB
+                // UPLOAD FILE
                 var formData = new FormData();
                 formData.append("file", file);
-                uploadFile(formData,"POST","/v2/thumbnail",modifyStarter);
+                uploadFile(formData,"POST","/v2/thumbnail",modifyItem);
             }
 
         }else{
-            if(BEFORE_THUMB_PATH == afterThumbPath){
-                modifyStarter();
+
+            var pathHeader = afterThumbPath.lastIndexOf("/");
+            var pathEnd = afterThumbPath.length;
+            var afterThumbName = afterThumbPath.substring(pathHeader + 1, pathEnd);
+
+            if(BEFORE_THUMB_NAME == afterThumbName){
+                var fileInfo = {
+                    filename: $('#starterLabelThumbName').text(),
+                    fileURL: BEFORE_THUMB_PATH
+                };
+                modifyItem(fileInfo);
+                // file name , file url 초기화 됨...
             }else{
-                var pathHeader = BEFORE_THUMB_PATH.lastIndexOf("/");
-                var pathEnd = BEFORE_THUMB_PATH.length;
-                var fileName = BEFORE_THUMB_PATH.substring(pathHeader + 1, pathEnd);
                 //기존 삭제
-                uploadFile(null,"DELETE","/v2/thumbnail/"+ fileName, modifyStarter);
-                console.log("DELETE fileName::"+fileName);
+                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, modifyItem);
+                console.log("DELETE fileName::"+BEFORE_THUMB_NAME);
 
                 if(afterThumbPath != ""){
                     // 신규 이미지 추가
                     var formData = new FormData();
                     formData.append("file", file);
-                    uploadFile(formData,"POST","/v2/thumbnail", modifyStarter);
+                    uploadFile(formData,"POST","/v2/thumbnail", modifyItem);
                 }
 
             }
         }
     }
 
-    function modifyStarter(fileInfo){
+    // 앱 템플릿 수정 (파일저장 후 처리)
+    function modifyItem(fileInfo){
+        // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
         var no = $('#starterId').val();
-        procCallAjax("/v2/starterpacks/"+ no, "PUT", JSON.stringify(returnParam(fileInfo)), init, $('#modalLoadingBar'));
+        procCallAjax(STARTER_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(starterParam(fileInfo)), getStarterList, $('#modalLoadingBar'));
     }
 
-    //  앱 템플릿 삭제
-    function deleteStarter() {
-        var no = $('#starterId').val();
-        procCallAjax("/v2/starterpacks/"+ no, "DELETE", JSON.stringify(returnParam(false)), init, $('#modalLoadingBar'));
+    // [앱 템플릿][앱 개발환경][앱 서비스] 삭제 Confirm layer
+    function deleteModal() {
+
+        var title;
+        var name;
+        if(ACTIVE_TAB == 'starter'){
+            title = "앱 템플릿";
+            name = $('#starterName').val();
+        }else if(ACTIVE_TAB == 'dev'){
+            title = "앱 개발환경";
+            name = $('#devEnvName').val();
+        }else if(ACTIVE_TAB == 'service'){
+            title = "앱 서비스";
+            name  = $('#serviceName').val();
+        }
+        $('#popupButtonText').attr('onclick', "deleteItem();");
+
+        $("#popupTitle").html(title+" 삭제");
+        $("#popupMessage").html(name +/*[[#{delete.confirm.message('')}]]*/ "");
+        $("#popupButtonText").text("삭제");
+        $("#popupButtonText").addClass('pull-left');
+        $("#popupButtonText").show();
+
+        $('#confirmModal').modal('toggle');
     }
 
-    var returnParam = function(fileInfo){
+    //  [앱 템플릿][앱 개발환경][앱 서비스] 삭제
+    function deleteItem() {
+
+        var id,url,callback;
+
+        if(ACTIVE_TAB == 'starter'){
+            id = $('#starterId').val();
+            url = STARTER_PACK_PROC_URL +"/"+id;
+            callback = getStarterList;
+        }else if(ACTIVE_TAB == 'dev'){
+            id = $('#devEnvId').val();
+            url = DEVELOP_PACK_PROC_URL +"/"+id;
+            callback = getBuildPackList;
+        }else if(ACTIVE_TAB == 'service'){
+            id = $('#serviceId').val();
+            url = SERVICE_PACK_PROC_URL +"/"+id;
+            callback = getServicePackList;
+        }
+
+        procCallAjax(url,"DELETE", null, callback, $('div[name=modalLoadingBar]'));
+    }
+
+    // [앱 템플릿] 등록/수정 FORM PARAM
+    var starterParam = function(fileInfo){
 
         var getList = document.getElementById("selectedServicePackList");
         var selectedServicePackList = [];
@@ -1070,15 +1433,13 @@
         }
 
         var param = {
-            name : $("#starterName").val(),
-            classification : $("#categoryList").val(),
-            thumbImgName : $("#thumbImgName").val(),
-            thumbImgPath : $("#thumbImgPath").val(),
-            useYn : $("input[name=starterUseYn]:checked").val(),
-            summary : $("#summary").val(),
-            description : $("#description").val(),
-            buildPackCategoryNo : $("#buildPackList").val(),
-            servicePackCategoryNoList : selectedServicePackList
+            name                        : $("#starterName").val(),
+            classification              : $("#categoryList").val(),
+            useYn                       : $("input[name=starterUseYn]:checked").val(),
+            summary                     : $("#summary").val(),
+            description                 : $("#description").val(),
+            buildPackCategoryNo         : $("#buildPackList").val(),
+            servicePackCategoryNoList   : selectedServicePackList
         };
 
         if(fileInfo){
@@ -1089,6 +1450,67 @@
         return param;
     }
 
+    // [앱 개발환경] 등록/수정 FORM PARAM
+    var devEnvParam= function(fileInfo){
+
+        var param = {
+            name                : $("#devEnvName").val(),
+            classification      : $("#categoryDevEnvList").val(),
+            buildPackName       : $("#buildPackDevEnvList").val(),
+            useYn               : $("input[name=devEnvUseYn]:checked").val(),
+            summary             : $("#devEnvSummary").val(),
+            description         : $("#devEnvDescription").val()
+        };
+
+        if(fileInfo){
+            param.thumbImgName = fileInfo.filename;
+            param.thumbImgPath = fileInfo.fileURL;
+            //param.
+        }
+
+        return param;
+    }
+
+    // [서비스] 등록/수정 FORM PARAM
+    var serviceParam= function(fileInfo){
+
+        var param = {
+//            name                        : $("#starterName").val(),
+//            classification              : $("#categoryList").val(),
+//            useYn                       : $("input[name=starterUseYn]:checked").val(),
+//            summary                     : $("#summary").val(),
+//            description                 : $("#description").val(),
+//            buildPackCategoryNo         : $("#buildPackList").val()
+        };
+
+        if(fileInfo){
+            param.thumbImgName = fileInfo.filename;
+            param.thumbImgPath = fileInfo.fileURL;
+        }
+
+        return param;
+    }
+
+    /* [앱 개발환경] 등록  */
+    function createDevEnv() {
+        if (!procCheckValidStringSpaceClass('checkDevEnvForm')){
+            return false;
+        };
+
+        // 파일 첨부 확인 및 업로드
+        var file = $("#devEnvThumbnail")[0].files[0];
+        if (file === undefined){
+            registDevEnv();
+        }else{
+            var formData = new FormData();
+            formData.append("file", file);
+            uploadFile(formData,"POST","/v2/thumbnail",registDevEnv);
+        }
+    }
+
+    function registDevEnv(fileInfo){
+        procCallAjax(DEVELOP_PACK_PROC_URL, "POST", JSON.stringify(devEnvParam(fileInfo)), getBuildPackList, $('#devEnvModalLoadingBar'));
+    }
 
 
 
@@ -1097,11 +1519,10 @@
 
     /* ************ 컴포넌트 *********** */
     // SET PREVIEW
-    var setPreView = function (objThumbnail, target) {
+    var setPreView = function (objThumbnail) {
         var this_form = objThumbnail[0];
         var file = this_form.files[0];
 
-        console.log(file);
         var img_size = 0;
 
         if (file) {
@@ -1133,27 +1554,21 @@
             reader.onloadend = function (e) {
                 if (img_size > MAX_SIZE) {
                     resetThumbnail();
-
                     var alertMessage = '이미지 크기는 ' + MAX_SIZE + 'Kb를 넘을 수 없습니다.';
-                    var previewMessage = $("#previewMessage");
-
-                    previewMessage.text(alertMessage);
-                    previewMessage.attr('style', 'display: block;');
-
                     //procAlert('warning', alertMessage);
                     notifyAlert('warning','',alertMessage);
 
                     return false;
                 }
 
-                $('#preview img').attr('style', 'display: block; height: 60px; width: 60px;');
-                $('#preview img').attr("src", e.target.result);
-                $('#labelThumbName').text(filename);
+                $('.file-preview-image').attr('style', 'display: block; height: 60px; width: 60px;');
+                $('.file-preview-image').attr("src", e.target.result);
+                $('#starterLabelThumbName').text(filename);
 
             };
 
             reader.readAsDataURL(file);
-            $('#divPreview').show();
+            $('div[name=divPreview]').show();
         } else {
             resetThumbnail();
         }
@@ -1161,42 +1576,58 @@
 
     // RESET THUMBNAIL
     var resetThumbnail = function () {
-        $(":file").filestyle('clear');
-        $('#divPreview').hide();
+        //$(":file").filestyle('clear');
+        $('input[name=thumbnail]').filestyle('clear');
+        $('div[name=divPreview]').hide();
     };
 
-
-
-
-    var init = function (){
-        console.log("SSSSS");
-        getStarterList();
-        $('.modal').modal('hide');
-    }
-
-    // Starter 등록 및 modal 초기화
-    var intiStarterModal = function(){
+    // Modal 초기화
+    var initModal = function(){
 
         if(ACTIVE_TAB == 'starter'){
-            $('#starterId,#starterName,#summary').val('');
-            $('textarea').val('');
-            BEFORE_THUMB_PATH = "";
 
-            //서비스
+            // [앱 템플릿]
+
+            defaultStarterCategoryOptionList();
+            defaultStarterDevEnvOptionList();
+            defaultStarterServiceOptionList();
+
+            // [서비스] 항목
             $('#selectedServicePackList').html('');
-
-            defaultServiceOptionList();
-            defaultCategoryOptionList();
-            defaultDevEnvOptionList();
-
             $('input:radio[name=starterUseYn]:input[value="Y"]').prop('checked', true);
-            $( "#thumRemove" ).trigger( "click" );
+
+        }else if(ACTIVE_TAB == 'dev'){
+
+            // [앱 개발환경]
+
+            defaultDevEnvCategoryOptionList();
+            defaultDevEnvBuildpackOptionList();
+
+            $('input:radio[name=devEnvUseYn]:input[value="Y"]').prop('checked', true);
+            $('div[name=appRemove]').trigger('click');
+
+
+        }else if(ACTIVE_TAB == 'service'){
+
+            // [서비스]
+
+            $('input:radio[name=serviceUseYn]:input[value="Y"]').prop('checked', true);
+            $('div[name=appRemove]').trigger('click');
         }
+
+        BEFORE_THUMB_NAME = "";
+        BEFORE_THUMB_PATH = "";
+
+        $('input[name=id],input[name=name],input[name=summary]').val('');
+        $('textarea').val('');
+        $('div[name=thumRemove]').trigger('click');
+
 
     }
 
-    // 앱 템플릿 상세 - 서비스 셀렉트 박스 초기값
-    function defaultServiceOptionList(){
+
+    // [앱 템플릿] 상세 - 서비스 셀렉트 박스 초기값
+    function defaultStarterServiceOptionList(){
         var objSelectBox = $('#servicePackList');
         objSelectBox.html('');
         $.each(STARTER_SERVICE_LIST, function (index, data) {
@@ -1204,8 +1635,8 @@
         });
     }
 
-    // 앱 템플릿 상세 - 분류 셀렉트 박스 초기값
-    function defaultCategoryOptionList(){
+    // [앱 템플릿] 상세 - 분류 셀렉트 박스 초기값
+    function defaultStarterCategoryOptionList(){
         var objSelectBox = $('#categoryList');
         objSelectBox.html('');
         $.each(STARTER_CATEGORY_LIST, function (index, data) {
@@ -1213,12 +1644,30 @@
         });
     }
 
-    // 앱 템플릿 상세 - 앱 개발 환경 셀렉트 박스 초기값
-    function defaultDevEnvOptionList(){
+    // [앱 템플릿] 상세 - 앱 개발 환경 셀렉트 박스 초기값
+    function defaultStarterDevEnvOptionList(){
         var objSelectBox = $('#buildPackList');
         objSelectBox.html('');
         $.each(STARTER_DEV_ENV_LIST, function (index, data) {
             objSelectBox.append("<option value='" + data.no + "'> " + data.name + " </option>");
+        });
+    }
+
+    // [앱 개발환경] 상세 - 앱 개발 환경 셀렉트 박스 초기값
+    function defaultDevEnvCategoryOptionList(){
+        var objSelectBox = $('#categoryDevEnvList');
+        objSelectBox.html('');
+        $.each(DEV_ENV_CATEGORY_LIST, function (index, data) {
+            objSelectBox.append("<option value='" + data.key + "'> " + data.value + " </option>");
+        });
+    }
+
+    // [앱 개발환경] 상세 - 앱 개발 환경 셀렉트 박스 초기값
+    function defaultDevEnvBuildpackOptionList(){
+        var objSelectBox = $('#buildPackDevEnvList');
+        objSelectBox.html('');
+        $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
+            objSelectBox.append("<option value='" + data.entity.name + "'> " + data.entity.name + " </option>");
         });
     }
 
@@ -1247,19 +1696,6 @@
                 //console.log("FILE "+reqType+" COMPLETE :: data :: ", data);
             }
         });
-    };
-
-    // FILE FORM DATA
-    var getFileFormData = function () {
-        var reqThumbnail = $("#hiddenThumbnail");
-
-        if (reqThumbnail[0].files[0] === undefined) return undefined;
-
-        var formData = new FormData();
-
-        formData.append("file", reqThumbnail[0].files[0]);
-
-        return formData;
     };
 
     /*]]>*/

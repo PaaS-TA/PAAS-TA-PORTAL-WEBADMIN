@@ -263,6 +263,7 @@ public class CommonService {
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
 
+        LOGGER.info(":::::"+commonApiUrl + reqUrl);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
         ResponseEntity<Map> resEntity = restTemplate.exchange(commonApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();

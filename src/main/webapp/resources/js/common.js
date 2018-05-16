@@ -58,8 +58,19 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
             if (data) {
                 callback(data, param);
                 //procAlert('success', RESULT_STATUS_SUCCESS_MESSAGE);
-                if(reqMethod != "GET"){
-                    notifyAlert('success',reqMethod,'SUCCESS.');
+
+                switch (reqMethod) {
+                    case "PUT" :
+                        notifyAlert('success',"",'수정 완료 되었습니다.');
+                        break;
+                    case "POST" :
+                        notifyAlert('success',"",'생성 완료 되었습니다.');
+                        break;
+                    case "DELETE" :
+                        notifyAlert('success',"",'삭제 완료 되었습니다.');
+                        break;
+                    default :
+                        break;
                 }
             } else {
                 var resData = {RESULT : RESULT_STATUS_SUCCESS,
@@ -430,7 +441,15 @@ var procCheckValidStringSpaceClass = function(classString) {
 
     var objStringLength = objString.length;
     for (var i = 0; i < objStringLength; i++) {
-        if (0 == objString[i].value.replace(/ /g,"").length) {
+
+        // SELECT 일시 조건 VALIDATION 추가
+        if(objString[i].nodeName == "SELECT"){
+            if(objString[i].options.length < 1){
+                objString.eq(i).focus();
+                notifyAlert('warning','',INFO_EMPTY_REQUEST_DATA);
+                return false;
+            }
+        }else if (0 == objString[i].value.replace(/ /g,"").length) {
             objString.eq(i).focus();
             //procAlert("warning", INFO_EMPTY_REQUEST_DATA);
             notifyAlert('warning','',INFO_EMPTY_REQUEST_DATA);
@@ -440,6 +459,7 @@ var procCheckValidStringSpaceClass = function(classString) {
 
     return true;
 };
+
 
 // CHECK VALID URL
 var procCheckValidUrl = function(reqUrl) {

@@ -67,26 +67,6 @@
     line-height: 50px;
 }
 
-/*.custom-thumbnail {*/
-    /*display: block;*/
-    /*-webkit-transition: border 0.2s ease-in-out;*/
-    /*-o-transition: border 0.2s ease-in-out;*/
-    /*transition: border 0.2s ease-in-out;*/
-/*}*/
-
-/*.custom-thumbnail > img,*/
-/*.custom-thumbnail a > img {*/
-    /*width: 60px;*/
-    /*height: 60px;*/
-    /*padding: 2px;*/
-    /*background-color: #ffffff;*/
-    /*border: 3px solid #fff;*/
-    /*border-radius: 0px;*/
-    /*margin-left: auto;*/
-    /*margin-right: auto;*/
-    /*margin-top: -5px;*/
-/*}*/
-
 .ml20 {
     margin-left: 10px !important
 }

@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +22,6 @@ import java.util.Map;
  * @since 2016.9.28 최초작성
  */
 @Controller
-@RequestMapping(value = {"/client"})
 public class ClientController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
@@ -79,14 +75,14 @@ public class ClientController {
     /**
      * 클라이언트 목록 조회
      *
-     * @param param Map
+     * @param
      * @return Map client list
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/getClientList"}, method = RequestMethod.POST)
+    @GetMapping(value = {Constants.V2_URL + "/clients"})
     @ResponseBody
-    public Map<String, Object> getClientList(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procCfApiRestTemplate("/client/getClientList", HttpMethod.POST, param, null);
+    public Map<String, Object> getClientList() throws Exception {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/clients", HttpMethod.GET, null, null);
     }
 
 

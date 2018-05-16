@@ -293,7 +293,7 @@ class CatalogController extends Common {
 
 
     /**
-     * 앱 템플릿명 목록을 조회한다.
+     * [앱 템플릿] 목록을 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -306,7 +306,7 @@ class CatalogController extends Common {
 
 
     /**
-     * 앱 템플릿명 목록을 조회한다.
+     * [앱 템플릿] 상세 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -319,7 +319,7 @@ class CatalogController extends Common {
 
 
     /**
-     * 앱 템플릿명 목록을 조회한다.
+     * [앱 템플릿]
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -332,7 +332,7 @@ class CatalogController extends Common {
 
 
     /**
-     * 앱 개발환경 카탈로그 개수 조회
+     * [앱 개발환경] 목록을 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -344,7 +344,7 @@ class CatalogController extends Common {
     }
 
     /**
-     * 앱 개발환경 카탈로그 개수 조회
+     * [앱 개발환경] 상세 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -357,7 +357,7 @@ class CatalogController extends Common {
 
 
     /**
-     * 앱 개발환경 카탈로그 개수 조회
+     * [앱 템플릿]에서 사용중인 [앱 개발환경] 개수를 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -395,7 +395,7 @@ class CatalogController extends Common {
     }
 
     /**
-     * 서비스 카탈로그 목록을 조회한다.
+     * [앱 템플릿]에서 사용중인 [서비스 카탈로그] 개수를 조회한다.
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)

@@ -213,9 +213,9 @@ public class Constants {
     /**
      * 카탈로그 관리 화면 API URL
      */
-    public static final String STARTER_LIST_PROC_URL      = V2_URL + "/starterpacks";
-    public static final String DEVELOP_PACK_LIST_PROC_URL = V2_URL + "/developpacks";
-    public static final String SERVICE_PACK_LIST_PROC_URL = V2_URL + "/servicepacks";
+    public static final String STARTER_PACK_PROC_URL = V2_URL + "/starterpacks";
+    public static final String DEVELOP_PACK_PROC_URL = V2_URL + "/developpacks";
+    public static final String SERVICE_PACK_PROC_URL = V2_URL + "/servicepacks";
 
 
 
