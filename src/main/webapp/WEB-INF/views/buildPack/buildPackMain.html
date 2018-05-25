@@ -147,32 +147,28 @@
 
   function updateBuildPack(data, refresh){
 
+    var guid = data.data('guid');
     var position = data.find('select[name=positionNo]').val();
-    var enable = "";
-    var lock = "";
-// guid 만 data에서 가져오고 나머지는 현재 선택된 항목 가져 오는걸로 변경
+    var enable  = data.find('input[name=isEnabled]').prop("checked");
+    var lock = data.find('input[name=isLocked]').prop("checked");
+
     var param = {
-      guid:  data.data('guid'),
-      position: data.position,
-      enable : data.enabled,
-      lock : data.locked
+      guid:  guid,
+      position: position,
+      enable : enable,
+      lock : lock
     }
 
-    var procCallbackUpdateBuildPack = function(data){
-      if(data){//
-        procAlert("success", '빌드팩 정보가 저장되었습니다.');
-        if(refresh) {
-          $("#buildPackList").html("");
-          getBuildPackList();
-        }
-      }
-    }
-
-    //procCallAjax("/v2/buildpacks/"+guid, "PUT", JSON.stringify(param), procCallbackUpdateBuildPack, $('#loadingBar'));
+    procCallAjax("/v2/buildpacks/"+guid, "PUT", JSON.stringify(param), procCallbackUpdateBuildPack, $('#loadingBar'));
   }
 
-
-
+  var procCallbackUpdateBuildPack = function(data){
+    if(data){
+      $("#buildPackList").html("");
+      getBuildPackList();
+    }
+  }
+//$("input[name=dashBoardUseYn]:checked").val()
   /*]]>*/
 </script>
 
