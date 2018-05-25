@@ -146,6 +146,16 @@ public class CatalogService {
     }
 
     /**
+     * 앱 개발환경 카탈로그 카운터를 조회한다.
+     *
+     * @return Map(자바클래스)
+     */
+
+    public Map<String, Object> getServices() {
+        return commonService.procCfApiRestTemplate(V2_URL + "/services", HttpMethod.GET, null, null);
+    }
+
+    /**
      * 빌드 팩을 저장한다.
      *
      * @param param Catalog(모델클래스)

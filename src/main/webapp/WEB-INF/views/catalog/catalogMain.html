@@ -433,7 +433,7 @@
                                             <label for="devEnvThumbnail" class="col-sm-3 control-label">썸네일</label>
 
                                             <div class="col-sm-9">
-                                                <input type="file" id="devEnvThumbnail" class="filestyle" data-buttonText=""/>
+                                                <input type="file" id="devEnvThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
                                             </div>
 
                                             <div class="col-sm-3"></div>
@@ -470,12 +470,13 @@
 
                                             <div id="divDevEnvApp" class="col-sm-9">
                                                 <!-- -->
-                                                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                                   <a href="" >첨부된 파일이 없습니다.</a>
-                                                    <div id="devEnvAppRemove" name="appRemove" class="pull-right file-remove-button">
-                                                        <i class="fa fa-times"></i>
-                                                    </div>
-                                                </p>
+                                                <div style="padding: 19px; background-color: #f5f5f5; border: 1px solid #e3e3e3;">
+                                                        <div id="devEnvLabelAppName">
+                                                            <a href="javascript:void(0);" onclick="procDownload('http://115.68.46.218:10008/v1/KEY_b8a1fd0cba6640688712e5f2f838baeb/portal-container/518430f68e0c48919d7c4afa467ab80a-1527060543260-cHl0aG9uLXNhbXBsZS56aXA%3D', 'python-sample.zip')">python-sample.zip (3.12 KB)</a>
+                                                            <!--<a href="" >첨부된 파일이 없습니다.</a>-->
+                                                            <i class="fa fa-times file-remove-button" id="devEnvAppRemove" name="appRemove"></i>
+                                                        </div>
+                                                </div>
 
                                                 <!--<div class="pull-left" style="margin: 47px 20px;">-->
 
@@ -621,11 +622,11 @@
 
                                         </div>
 
-                                        <div class="form-group" id="serviceParamForm">
-                                            <label for="serviceParam" class="col-sm-3 col-xs-12 control-label">서비스 생성 파라미터</label>
+                                        <div class="form-group" name="serviceParamForm">
+                                            <label for="serviceParamInput" class="col-sm-3 col-xs-12 control-label">서비스 생성 파라미터</label>
 
                                             <div class="col-sm-4 col-xs-3">
-                                                <input type="text" class="form-control" id="serviceParam" name="serviceParam"/>
+                                                <input type="text" class="form-control" id="serviceParamInput" name="serviceParamInput"/>
                                             </div>
                                             <div class="col-sm-3 col-xs-6">
                                                 <select class="form-control" name="serviceParamType" style="width:auto;">
@@ -638,7 +639,6 @@
 
                                             <div class="col-sm-2 col-xs-3">
                                                 <button type="button" class="btn btn-sm btn-primary" id="serviceParamAdd" name="serviceParamAdd">추가</button>
-                                                <!--<button type="button" class="btn btn-sm btn-danger" name="serviceParamRemove">삭제</button>-->
                                             </div>
                                         </div>
 
@@ -655,7 +655,7 @@
                                                     </div>
                                                     <div class="col-sm-10">
                                                         <label>
-                                                            <input type="radio" name="appBindUseYn" value="N" />
+                                                            <input type="radio" name="appBindUseYn" value="N"/>
                                                             N
                                                         </label>
                                                     </div>
@@ -664,10 +664,10 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group" id="appBindParamArea" style="display: none;">
-                                            <label for="serviceName" class="col-sm-3 col-xs-12 control-label">앱 바인드 파라미터</label>
+                                        <div class="form-group" name="appBindParamForm">
+                                            <label for="appBindParamInput" class="col-sm-3 col-xs-12 control-label">앱 바인드 파라미터</label>
                                             <div class="col-sm-4 col-xs-3">
-                                                <input type="text" class="form-control" name="appBindParam"/>
+                                                <input type="text" class="form-control" id="appBindParamInput" name="appBindParamInput"/>
                                             </div>
                                             <div class="col-sm-3 col-xs-6">
                                                 <select class="form-control" name="appBindParamType" style="width:auto;">
@@ -679,7 +679,6 @@
                                             </div>
                                             <div class="col-sm-2 col-xs-3">
                                                 <button type="button" class="btn btn-sm btn-primary" id="appBindParamAdd" name="appBindParamAdd">추가</button>
-                                                <!--<button type="button" class="btn btn-sm btn-danger" name="appBindParamRemove">삭제</button>-->
                                             </div>
                                         </div>
 
@@ -799,13 +798,17 @@
     var STARTER_PACK_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_PACK_PROC_URL}]]*/ "";
     var DEVELOP_PACK_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).DEVELOP_PACK_PROC_URL}]]*/ "";
     var SERVICE_PACK_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_PROC_URL}]]*/ "";
+
     var STARTER_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CATALOG_ID}]]*/ "";
     var BUILD_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).BUILD_PACK_CATALOG_ID}]]*/ "";
+    var SERVICE_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CATALOG_ID}]]*/ "";
+
     var CATEGORY_LIST_PROC_URL = "/v2/codedetail";
 
     var CLIENT_LIST = new Array();
 
     var MAX_SIZE = 500; // KB
+    var NOT_FOUND_ATTACH_FILE_MESSAGE = "첨부된 파일이 없습니다.";
 
     // LIST DATA
     var STARTER_SOURCE_LIST;    // 앱 템플릿 리스트
@@ -818,12 +821,21 @@
     var STARTER_SERVICE_LIST;   // 앱 템플릿 상세 [서비스]
 
     var DEV_ENV_CATEGORY_LIST;  // 앱 개발환경 상세 [분류]
-    var DEV_ENV_BUILDPACK_LIST;  // 앱 개발환경 상세 [앱 개발환경]
+    var DEV_ENV_BUILDPACK_LIST; // 앱 개발환경 상세 [앱 개발환경]
+
+    var SERVICE_CATEGORY_LIST;  // 앱 서비스 상세 [분류]
+    var SERVICE_SERVICE_LIST;   // 앱 서비스 상세 [서비스]
 
     var ACTIVE_TAB = 'starter'; // 활성화 TAB
 
-    var BEFORE_THUMB_PATH;
-    var BEFORE_THUMB_NAME;
+    var BEFORE_THUMB_PATH; // 썸네일 파일 경로
+    var BEFORE_THUMB_NAME; // 썸네일 명(storage file name)
+
+    var BEFORE_SAMPLE_APP_PATH; // 샘플앱 경로
+    var BEFORE_SAMPLE_APP_NAME; // 샘플앱 명(storage file name)
+    var BEFORE_SAMPLE_APP_LABEL_NAME; //샘플앱 파일명
+    var BEFORE_SAMPLE_APP_SIZE; // 샘플앱 크기
+
 
     $(document.body).ready(function () {
 
@@ -866,12 +878,15 @@
             $('.file-preview-image').attr("src","");
         });
 
-        // 샘플앱 삭제 버튼 처리
-        $('div[name=appRemove]').on('click', function(e){
-            //$('input[name=appSample]').filestyle('clear');
+        // 앱 샘플 파일 선택 변경시 파일정보 영역 갱신
+        $("#devEnvApp").on("change", function (e) {
+            //setAppSample($(this));
+            procSetFileInfo($(this)[0].files);
+        });
 
-            //$('#divDevEnvPreview').hide();
-            // 첨부된 파일이 없습니다.
+        // 앱 샘플 삭제 버튼 처리
+        $('#devEnvAppRemove').on('click', function(e){
+            resetAppSample("<a>"+NOT_FOUND_ATTACH_FILE_MESSAGE+"</a>");
         });
 
         // 등록 버튼 클릭시, 등록 팝업 이벤트 설정
@@ -901,49 +916,30 @@
         });
 
         //[앱 템플릿] 컴포넌트(추후 리스트 조회의 데이터를 사용하고, 해당 항목의 중복 CALL은 제거) - developpacks, service
-        procCallAjax("/v2/codedetail", "GET", {"groupId": STARTER_CATALOG_ID}, procCallbackStarterCategoryList, null); // [앱 서비스] 변경 시 재실행 필요
+        procCallAjax(CATEGORY_LIST_PROC_URL, "GET", {"groupId": STARTER_CATALOG_ID}, procCallbackStarterCategoryList, null); // [앱 서비스] 변경 시 재실행 필요
         procCallAjax(DEVELOP_PACK_PROC_URL, "GET", null, procCallbackStarterDevEnvList, null); // [앱 개발환경] 등록/변경/삭제 시 재실행 필요
+        //DEVELOP_PACK_PROC_URL - 앱 개발 환경 리스트와 동일 URL
+
 
         //[앱 개발환경] 컴포넌트
-        procCallAjax("/v2/codedetail", "GET", {"groupId": BUILD_PACK_CATALOG_ID}, procCallbackDevEnvCategoryList, null);
+        procCallAjax(CATEGORY_LIST_PROC_URL, "GET", {"groupId": BUILD_PACK_CATALOG_ID}, procCallbackDevEnvCategoryList, null);
         procCallAjax("/v2/buildpacks", 'GET', null, procCallbackDevEnvBuildPackList, null);
 
         //[앱 서비스] 컴포넌트
-        //procCallAjax();
+        procCallAjax(CATEGORY_LIST_PROC_URL, "GET", {"groupId": SERVICE_PACK_CATALOG_ID}, procCallbackServiceCategoryList, null);
+        procCallAjax("/v2/services", "GET", null, procCallbackServiceServiceList, null);
+
 
         // [앱서비스][서비스 생성 파라미터] 추가 이벤트
         $(document).on("click", "#serviceParamAdd" ,function(e){
-
-            var temphtml =
-            "<div class='form-group' name='serviceParamAdded'>"
-             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
-             +"   <div name='paramArea'>"
-             +"       <div class='col-sm-4 col-xs-3'>"
-             +"           <input type='text' class='form-control' name='serviceParam'/>"
-             +"       </div>"
-             +"       <div class='col-sm-3 col-xs-6'>"
-             +"           <select class='form-control' name='serviceParamType' style='width:auto;'>"
-             +"               <option value='text'>텍스트형</option>"
-             +"               <option value='password'>패스워드</option>"
-             +"               <option value='default'>자동입력</option>"
-             +"               <option value='userAppointed'>관리자 지정</option>"
-             +"           </select>"
-             +"       </div>"
-             +"   </div>"
-             +"   <div class='col-sm-2 col-xs-3'>"
-             +"       <button type='button' class='btn btn-sm btn-danger' name='serviceParamRemove'>삭제</button>"
-             +"   </div>"
-             +" </div>";
-
-            $('#serviceParamForm').after(temphtml);
-
+            appServiceParamAdd();
         })
 
 
         // [앱서비스][서비스 생성 파라미터] 삭제 이벤트
         $(document).on("click", "button[name=serviceParamRemove]" ,function(e) {
-            var index = $('button[name=serviceParamRemove]').index(this);
-            $('div[name=serviceParamAdded]:eq('+index+')').remove();
+            var index = $('button[name=serviceParamRemove]').index(this) +1;
+            $('div[name=serviceParamForm]:eq('+index+')').remove();
         });
 
         // [앱 서비스][앱 바인드 사용] 이벤트
@@ -956,6 +952,17 @@
             }
         })
 
+        // [앱서비스][앱바인드 파라미터] 추가 이벤트
+        $(document).on("click", "#appBindParamAdd" ,function(e){
+            appBindParamAdd();
+        })
+
+
+        // [앱서비스][앱 바인드 파라미터] 삭제 이벤트
+        $(document).on("click", "button[name=appBindParamRemove]" ,function(e) {
+            var index = $('button[name=appBindParamRemove]').index(this) +1 ;
+            $('div[name=appBindParamForm]:eq('+index+')').remove();
+        });
 
 
     });
@@ -982,6 +989,18 @@
     var procCallbackDevEnvBuildPackList = function(data){
         DEV_ENV_BUILDPACK_LIST = data.resources;
         defaultDevEnvBuildpackOptionList();
+    }
+
+    // [앱 서비스][분류] 셀렉트 리스트
+    var procCallbackServiceCategoryList = function(data){
+        SERVICE_CATEGORY_LIST = data.list;
+        defaultServiceCategoryOptionList();
+    }
+
+    // [앱 서비스][서비스] 셀렉트 리스트
+    var procCallbackServiceServiceList = function(data){
+        SERVICE_SERVICE_LIST = data.resources;
+        defaultServiceServiceOptionList();
     }
 
 
@@ -1047,6 +1066,8 @@
 
     // GET ServicePackList
     var getServicePackList = function () {
+        $('.modal').modal('hide');
+
         var searchKeyword = "";//document.getElementById('searchKeyword').value;
         var param = "";
         if (null != searchKeyword && "" != searchKeyword) {
@@ -1205,7 +1226,7 @@
                 var pathEnd = entity.thumbImgPath.length;
                 var fileName = entity.thumbImgPath.substring(pathHeader + 1, pathEnd);
 
-                $('#starterLabelThumbName').text(entity.thumbIimgName);
+                $('#starterLabelThumbName').text(entity.thumbImgName);
                 $('#preview img').attr('style', 'display: block; height: 60px; width: 60px;');
                 $('#preview img').attr("src","/v2/thumbnail/"+fileName);
 
@@ -1223,8 +1244,6 @@
             $("#description").val(entity.description);
         }
     }
-
-
 
 
     // [앱 개발환경] 상세
@@ -1253,14 +1272,14 @@
             //앱 개발환경
             $("#buildPackDevEnvList").val(entity.buildPackName);
 
-            //썸네일
+            // 썸네일
             if(entity.thumbImgPath){
 
                 var pathHeader = entity.thumbImgPath.lastIndexOf("/");
                 var pathEnd = entity.thumbImgPath.length;
                 var fileName = entity.thumbImgPath.substring(pathHeader + 1, pathEnd);
 
-                $('#devEnvLabelThumbName').text(entity.thumbIimgName);
+                $('#devEnvLabelThumbName').text(entity.thumbImgName);
                 $('#devEnvPreview img').attr('style', 'display: block; height: 60px; width: 60px;');
                 // 파일 직접 주소 참조 불가. API를 통해 FILE 가져오기
                 $('#devEnvPreview img').attr("src","/v2/thumbnail/"+fileName);
@@ -1269,6 +1288,21 @@
                 BEFORE_THUMB_NAME = fileName;
 
                 $('div[name=divPreview]').show();
+            }
+
+            // 앱 샘플
+            if(entity.appSampleFilePath){
+
+                var pathHeader = entity.appSampleFilePath.lastIndexOf("/");
+                var pathEnd = entity.appSampleFilePath.length;
+                var fileName = entity.appSampleFilePath.substring(pathHeader + 1, pathEnd);
+
+                BEFORE_SAMPLE_APP_PATH = entity.appSampleFilePath;
+                BEFORE_SAMPLE_APP_NAME = fileName;
+                BEFORE_SAMPLE_APP_LABEL_NAME = entity.appSampleFileName;
+                BEFORE_SAMPLE_APP_SIZE = entity.appSampleFileSize;
+
+                procSetFileLabel(entity.appSampleFileName, entity.appSampleFileSize, BEFORE_SAMPLE_APP_PATH);
             }
 
             //공개
@@ -1284,10 +1318,93 @@
 
     // [앱 서비스] 상세
     var getServicePack = function(id){
+
+        $('#serviceTitle').text("앱 서비스 상세");
+        $('#serviceDeleteBtn').show();
+        $('#serviceSaveBtn').show();
+        $('#serviceRegBtn').hide();
         $('#serviceFormModal').modal('toggle');
-        //procCallAjax(STARTER_PACK_PROC_URL, "GET", param, procCallbackGetStarterList, null );
+
+        procCallAjax(SERVICE_PACK_PROC_URL +"/"+id, "GET", null, procCallbackGetServicePack, $('#serviceModalLoadingBar '));
     }
 
+    var procCallbackGetServicePack = function(data){
+
+        var entity = data.list[0];
+
+        if(entity){
+
+            $("#serviceId").val(entity.no);
+            //이름
+            $("#serviceName").val(entity.name);
+            //분류
+            $("#categoryServiceList").val(entity.classification);
+            //서비스
+            $("#serviceServicePackList").val(entity.servicePackName);
+
+            //썸네일
+            if(entity.thumbImgPath){
+
+                var pathHeader = entity.thumbImgPath.lastIndexOf("/");
+                var pathEnd = entity.thumbImgPath.length;
+                var fileName = entity.thumbImgPath.substring(pathHeader + 1, pathEnd);
+
+                $('#devEnvLabelThumbName').text(entity.thumbImgName);
+                $('#devEnvPreview img').attr('style', 'display: block; height: 60px; width: 60px;');
+                // 파일 직접 주소 참조 불가. API를 통해 FILE 가져오기
+                $('#devEnvPreview img').attr("src","/v2/thumbnail/"+fileName);
+
+                BEFORE_THUMB_PATH = entity.thumbImgPath;
+                BEFORE_THUMB_NAME = fileName;
+
+                $('div[name=divPreview]').show();
+            }
+
+
+            //서비스 생성 파라미터 리스트
+            if(entity.parameter != ''){ // entity.useYn
+                var obj = jQuery.parseJSON(entity.parameter);
+                var index = 0;
+                $.each(obj,function(key, value) {
+                    console.log("AAAA");
+                    console.log('key:'+key+', value:'+value);
+                    if(index == 0){
+                        // Fixed Area Set
+                        setAppServiceParam(index, key, value)
+                    }else{
+                        // Dynamic Area Create
+                        appServiceParamAdd(index, key, value);
+                    }
+                    index++;
+                });
+            }
+
+            //앱 바인드 파라미터 사용여부
+            eval("$('input:radio[name=appBindUseYn][value="+entity.useYn+"]').prop('checked', true);");
+
+            // 앱 바인드 파라미터 리스트
+            if(entity.appBindYn == 'Y' && entity.appBindParameter != ''){ // entity.useYn
+                var obj = jQuery.parseJSON(entity.appBindParameter);
+                var index = 0;
+                $.each(obj,function(key, value) {
+                    //console.log('key:'+key+', value:'+value);
+                    if(index == 0){
+                        setAppBindParam(index, key, value)
+                    }else{
+                        appBindParamAdd(index, key, value);
+                    }
+                    index++;
+                });
+            }
+
+            //공개
+            eval("$('input:radio[name=serviceUseYn][value="+entity.useYn+"]').prop('checked', true);");
+            //요약
+            $("#serviceSummary").val(entity.summary);
+            //설명
+            $("#serviceDescription").val(entity.description);
+        }
+    }
 
 
     /* ************ C.U.D *********** */
@@ -1314,14 +1431,12 @@
         procCallAjax(STARTER_PACK_PROC_URL, "POST", JSON.stringify(starterParam(fileInfo)), getStarterList, $('#starterModalLoadingBar'));
     }
 
-    //  앱 템플릿 수정 (파일저장 전 처리)
+    //  [앱 템플릿] 수정 (파일저장 전 처리)
     function updateStarter() {
 
         if (!procCheckValidStringSpaceClass('checkStarterForm')){
             return false;
         };
-
-        //TO-BE: 파일 업로드 부분은 코딩 마지막에 리팩토링 할것
 
         // 파일 첨부 확인 및 업로드
         var afterThumbPath = $('#preview img').attr("src");
@@ -1330,12 +1445,12 @@
         if(BEFORE_THUMB_NAME == ""){
             if(afterThumbPath == ""){
                 // NOT INCLUDE FILE
-                modifyItem();
+                modifyStarterItem();
             }else{
                 // UPLOAD FILE
                 var formData = new FormData();
                 formData.append("file", file);
-                uploadFile(formData,"POST","/v2/thumbnail",modifyItem);
+                uploadFile(formData,"POST","/v2/thumbnail",modifyStarterItem);
             }
 
         }else{
@@ -1349,29 +1464,29 @@
                     filename: $('#starterLabelThumbName').text(),
                     fileURL: BEFORE_THUMB_PATH
                 };
-                modifyItem(fileInfo);
-                // file name , file url 초기화 됨...
+                modifyStarterItem(fileInfo);
             }else{
                 //기존 삭제
-                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, modifyItem);
-                console.log("DELETE fileName::"+BEFORE_THUMB_NAME);
+                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, modifyStarterItem);
 
                 if(afterThumbPath != ""){
                     // 신규 이미지 추가
                     var formData = new FormData();
                     formData.append("file", file);
-                    uploadFile(formData,"POST","/v2/thumbnail", modifyItem);
+                    uploadFile(formData,"POST","/v2/thumbnail", modifyStarterItem);
                 }
 
             }
         }
+
+        notifyAlert('success',"",'수정 완료 되었습니다.');
     }
 
-    // 앱 템플릿 수정 (파일저장 후 처리)
-    function modifyItem(fileInfo){
+    // [앱 템플릿] 수정 (파일저장 후 처리)
+    function modifyStarterItem(fileInfo){
         // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
         var no = $('#starterId').val();
-        procCallAjax(STARTER_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(starterParam(fileInfo)), getStarterList, $('#modalLoadingBar'));
+        procCallAjax(STARTER_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(starterParam(fileInfo)), getStarterList, null);
     }
 
     // [앱 템플릿][앱 개발환경][앱 서비스] 삭제 Confirm layer
@@ -1419,6 +1534,16 @@
             callback = getServicePackList;
         }
 
+        // 썸네일 파일 삭제
+        if(BEFORE_THUMB_NAME != ""){
+            uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, null);
+        }
+        // SAMPLE APP 파일 삭제
+        if(BEFORE_SAMPLE_APP_NAME != ""){
+            uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_SAMPLE_APP_NAME, null);
+        }
+
+        // 리스트 삭제
         procCallAjax(url,"DELETE", null, callback, $('div[name=modalLoadingBar]'));
     }
 
@@ -1463,33 +1588,59 @@
         };
 
         if(fileInfo){
-            param.thumbImgName = fileInfo.filename;
-            param.thumbImgPath = fileInfo.fileURL;
-            //param.
+            $.extend(param, fileInfo);
         }
-
         return param;
     }
 
     // [서비스] 등록/수정 FORM PARAM
     var serviceParam= function(fileInfo){
 
+
+        // 서비스 생성 파라미터
+        var inputParamJson = new Object();
+
+        $.each( $("input[name=serviceParamInput]") , function (index, data) {
+            var jsonKey   = eval("$('input[name=serviceParamInput]:eq("+index+")').val()");
+            var jsonValue = eval("$('select[name=serviceParamType]:eq("+index+")').val()");
+            if(jsonKey != ""){
+                inputParamJson[jsonKey] = jsonValue;
+            }
+        });
+
+        // 앱바인드 파라미터
+        var inputAppBindParamJson = new Object();
+
+        $.each( $("input[name=appBindParamInput]") , function (index, data) {
+            var jsonKey   = eval("$('input[name=appBindParamInput]:eq("+index+")').val()");
+            var jsonValue = eval("$('select[name=appBindParamType]:eq("+index+")').val()");
+            if(jsonKey != ""){
+                inputAppBindParamJson[jsonKey] = jsonValue;
+            }
+        });
+
         var param = {
-//            name                        : $("#starterName").val(),
-//            classification              : $("#categoryList").val(),
-//            useYn                       : $("input[name=starterUseYn]:checked").val(),
-//            summary                     : $("#summary").val(),
-//            description                 : $("#description").val(),
-//            buildPackCategoryNo         : $("#buildPackList").val()
+            name                        : $("#serviceName").val(),
+            classification              : $("#categoryServiceList").val(),
+            classificationValue         : $("#categoryServiceList option:selected").text(),
+            servicePackName             : $("#serviceServicePackList").val(),
+            parameter                   : JSON.stringify(inputParamJson),
+            appBindYn                   : $("input[name=appBindUseYn]:checked").val(),
+            appBindParameter            : JSON.stringify(inputAppBindParamJson),
+            dashboardUseYn              : $("input[name=dashBoardUseYn]:checked").val(),
+            useYn                       : $("input[name=serviceUseYn]:checked").val(),
+            summary                     : $("#serviceSummary").val(),
+            description                 : $("#serviceDescription").val()
         };
 
         if(fileInfo){
-            param.thumbImgName = fileInfo.filename;
-            param.thumbImgPath = fileInfo.fileURL;
+            $.extend(param, fileInfo);
         }
 
         return param;
     }
+
+    var FILE_INFO = {};
 
     /* [앱 개발환경] 등록  */
     function createDevEnv() {
@@ -1497,19 +1648,220 @@
             return false;
         };
 
-        // 파일 첨부 확인 및 업로드
+        FILE_INFO = {};
+
+        // 썸네일 파일 첨부 확인 및 업로드
         var file = $("#devEnvThumbnail")[0].files[0];
-        if (file === undefined){
+
+        var AppFile = $("#devEnvApp")[0].files[0];
+
+        // STORAGE API 현재는 MULTI UPLOAD 지원 않음. 추후 formData.append("file[]", 로 처리할것
+        if (file === undefined && AppFile === undefined){
             registDevEnv();
         }else{
-            var formData = new FormData();
-            formData.append("file", file);
-            uploadFile(formData,"POST","/v2/thumbnail",registDevEnv);
+
+            if(file !== undefined){
+                var formData = new FormData();
+                formData.append("file", file);
+                uploadFile(formData,"POST","/v2/thumbnail",createDevEnvThumbFileInfo);
+            }else{
+                // App 등록으로 pass
+                registDevEnvSampleApp();
+            }
+
         }
     }
 
-    function registDevEnv(fileInfo){
-        procCallAjax(DEVELOP_PACK_PROC_URL, "POST", JSON.stringify(devEnvParam(fileInfo)), getBuildPackList, $('#devEnvModalLoadingBar'));
+    // [썸네일] 파일 등록
+    function createDevEnvThumbFileInfo(data){
+        if(data != null){
+            FILE_INFO.thumbImgName  = data.filename;
+            FILE_INFO.thumbImgPath  = data.fileURL;
+        }
+        // 앱 샘플 등록
+        registDevEnvSampleApp();
+    }
+
+    // [앱 샘플] 파일 등록
+    function createAppFileInfo(data){
+        if(data != null){
+            FILE_INFO.appSampleFileName  = data.filename;
+            FILE_INFO.appSampleFilePath  = data.fileURL;
+            FILE_INFO.appSampleFileSize  = data.length;;
+        }
+        registDevEnv();
+    }
+
+    // [앱 샘플] 파일 등록
+    function registDevEnvSampleApp(){
+
+        var AppFile = $("#devEnvApp")[0].files[0];
+        if(AppFile !== undefined){
+            var formData = new FormData();
+            formData.append("file", AppFile);
+            uploadFile(formData,"POST","/v2/thumbnail",createAppFileInfo);
+        }else{
+            registDevEnv();
+        }
+    }
+
+    // [앱 개발환경] 등록 (썸네일/앱샘플 업로드 이후)
+    function registDevEnv(){
+        procCallAjax(DEVELOP_PACK_PROC_URL, "POST", JSON.stringify(devEnvParam(FILE_INFO)), getBuildPackList, $('#devEnvModalLoadingBar'));
+    }
+
+    //  [앱 개발환경] 수정 (썸네일 파일저장 전 처리)
+    function updateDevEnv() {
+
+        if (!procCheckValidStringSpaceClass('checkDevEnvForm')){
+            return false;
+        };
+
+        FILE_INFO = {}; // 파일정보 초기화
+
+        // 썸네일 파일 첨부 확인 및 업로드
+        var afterThumbPath = $('#devEnvPreview img').attr("src");
+        var thumbFile = $("#devEnvThumbnail")[0].files[0];
+
+        var formData = new FormData();
+        formData.append("file", thumbFile);
+
+        if(BEFORE_THUMB_NAME == ""){
+            if(afterThumbPath != ""){
+                // UPLOAD FILE
+                uploadFile(formData,"POST","/v2/thumbnail",updateThumbFileInfo);
+            }else{
+                updateSampleApp();
+            }
+
+        }else{
+
+            var pathHeader = afterThumbPath.lastIndexOf("/");
+            var pathEnd = afterThumbPath.length;
+            var afterThumbName = afterThumbPath.substring(pathHeader + 1, pathEnd);
+            // 기존 파일과 파일명 비교
+            if(BEFORE_THUMB_NAME == afterThumbName){
+
+                FILE_INFO.thumbImgName  = $('#devEnvLabelThumbName').text();
+                FILE_INFO.thumbImgPath  = BEFORE_THUMB_PATH;
+
+                updateThumbFileInfo(null);
+
+            }else{
+                //기존 삭제
+                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, null);
+                FILE_INFO.thumbImgName = "";
+                FILE_INFO.thumbImgPath = "";
+
+                if(afterThumbPath != ""){
+                    // 신규 이미지 추가
+                    uploadFile(formData,"POST","/v2/thumbnail", updateThumbFileInfo);
+                }else{
+                    updateThumbFileInfo(null);
+                }
+            }
+        }
+    }
+
+
+    // [썸네일] 파일 등록
+    function updateThumbFileInfo(data){
+        if(data != null){
+            FILE_INFO.thumbImgName  = data.filename;
+            FILE_INFO.thumbImgPath  = data.fileURL;
+        }
+        // 앱 샘플 수정
+        updateSampleApp();
+    }
+
+    // [앱 샘플] 파일 수정
+    function updateAppFileInfo(data){
+        if(data != null){
+            FILE_INFO.appSampleFileName  = data.filename;
+            FILE_INFO.appSampleFilePath  = data.fileURL;
+            FILE_INFO.appSampleFileSize  = data.length;;
+        }
+        modifyDevEnv();
+    }
+
+    // [앱 개발환경] 수정 (썸네일 처리 후 앱샘플 처리)
+    function updateSampleApp(){
+
+        var appFile = $("#devEnvApp")[0].files[0];
+        var formData = new FormData();
+        formData.append("file", appFile);
+
+        // 초기 미등록
+        if(BEFORE_SAMPLE_APP_NAME == ""){
+
+            if(appFile !== undefined){
+                // 신규 앱샘플 파일 추가
+                uploadFile(formData,"POST","/v2/thumbnail", updateAppFileInfo);
+            }else{
+                // 첨부 없음
+                modifyDevEnv();
+            }
+
+        }else{
+
+            if(appFile !== undefined){ // 업로드 파일 업데이트
+                // 기존 앱샘플 파일 삭제
+                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_SAMPLE_APP_NAME, null);
+                // 신규 앱샘플 파일 추가
+                uploadFile(formData,"POST","/v2/thumbnail", updateAppFileInfo);
+            }else{ // 첨부 없음
+                FILE_INFO.appSampleFileName  = BEFORE_SAMPLE_APP_LABEL_NAME;
+                FILE_INFO.appSampleFilePath  = BEFORE_SAMPLE_APP_PATH;
+                FILE_INFO.appSampleFileSize  = BEFORE_SAMPLE_APP_SIZE;
+
+                updateAppFileInfo(null);
+            }
+        }
+    }
+
+    // [앱 개발환경] 수정 (파일저장 후 처리)
+    function modifyDevEnv(){
+        // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
+        var no = $('#devEnvId').val();
+        procCallAjax(DEVELOP_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(devEnvParam(FILE_INFO)), getBuildPackList, $('#devEnvModalLoadingBar') );
+    }
+
+
+
+    /* [앱 서비스] 등록  */
+    function createService() {
+
+        if (!procCheckValidStringSpaceClass('checkServiceForm')){
+            return false;
+        };
+
+        FILE_INFO = {}; // 파일정보 초기화
+
+        // 썸네일 파일 첨부 확인 및 업로드
+        var file = $("#serviceThumbnail")[0].files[0];
+
+        if (file === undefined){
+            registService(null);
+        }else{
+            var formData = new FormData();
+            formData.append("file", file);
+            uploadFile(formData,"POST","/v2/thumbnail",registService);
+        }
+    }
+
+    //  [앱 서비스] 등록
+    function registService(){
+        procCallAjax(SERVICE_PACK_PROC_URL, "POST", JSON.stringify(serviceParam(FILE_INFO)), getServicePackList, $('#serviceModalLoadingBar'));
+    }
+
+    //  [앱 서비스] 수정 (썸네일 파일저장 전 처리)
+    function updateService(){
+
+        if (!procCheckValidStringSpaceClass('checkServiceForm')){
+            return false;
+        };
+
+        FILE_INFO = {}; // 파일정보 초기화
     }
 
 
@@ -1534,7 +1886,7 @@
             var ext = this_form.value.substring(pathMiddle + 1, pathEnd).toLowerCase();
 
             if (ext != "jpg" && ext != "png" && ext != "gif") {
-                procAlert('warning', '이미지 파일(jpg, png, gif)만 등록 가능합니다.');
+                notifyAlert('warning','','이미지 파일(jpg, png, gif)만 등록 가능합니다.');
                 //fileinput FileReader 참고
                 resetThumbnail();
                 return false;
@@ -1555,7 +1907,6 @@
                 if (img_size > MAX_SIZE) {
                     resetThumbnail();
                     var alertMessage = '이미지 크기는 ' + MAX_SIZE + 'Kb를 넘을 수 없습니다.';
-                    //procAlert('warning', alertMessage);
                     notifyAlert('warning','',alertMessage);
 
                     return false;
@@ -1563,7 +1914,14 @@
 
                 $('.file-preview-image').attr('style', 'display: block; height: 60px; width: 60px;');
                 $('.file-preview-image').attr("src", e.target.result);
-                $('#starterLabelThumbName').text(filename);
+
+                if(ACTIVE_TAB == 'starter'){
+                    $('#starterLabelThumbName').text(filename);
+                }else if(ACTIVE_TAB == 'dev'){
+                    $('#devEnvLabelThumbName').text(filename);
+                }else if(ACTIVE_TAB == 'service'){
+                    $('#serviceLabelThumbName').text(filename);
+                }
 
             };
 
@@ -1581,9 +1939,16 @@
         $('div[name=divPreview]').hide();
     };
 
+    // RESET APP SAMPLE
+    var resetAppSample = function (strHtml) {
+        $('#devEnvApp').filestyle('clear');
+        var target = $('#devEnvLabelAppName');
+        target.html(strHtml);
+    };
+
     // Modal 초기화
     var initModal = function(){
-
+        // 등록/수정/삭제 시 새로고침한 데이터를 다시 셀렉트 컴포넌트에 적용(default method)
         if(ACTIVE_TAB == 'starter'){
 
             // [앱 템플릿]
@@ -1604,27 +1969,95 @@
             defaultDevEnvBuildpackOptionList();
 
             $('input:radio[name=devEnvUseYn]:input[value="Y"]').prop('checked', true);
-            $('div[name=appRemove]').trigger('click');
+            $('#devEnvAppRemove').trigger('click');
 
 
         }else if(ACTIVE_TAB == 'service'){
 
-            // [서비스]
+            // [앱 서비스]
+            defaultServiceCategoryOptionList();
+            defaultServiceServiceOptionList();
 
-            $('input:radio[name=serviceUseYn]:input[value="Y"]').prop('checked', true);
+            $('input:radio[name=serviceUseYn]:input[value="Y"]').prop('checked', true); // 공개 여부
+            $('input:radio[name=appBindUseYn]:input[value="Y"]').prop('checked', true); // 앱 바인드 파라미터 사용
+            $('input:radio[name=dashBoardUseYn]:input[value="N"]').prop('checked', true); // 대시보드 사용
+
+            // 초기화
+            $('input[name=serviceParamInput]').val("");
+            $('input[name=appBindParamInput]').val("");
+
+            // 파라미터 추가 영역 삭제
+            $('.service-param-added').remove();
+            $('.app-bind-param-added').remove();
+
             $('div[name=appRemove]').trigger('click');
         }
 
         BEFORE_THUMB_NAME = "";
         BEFORE_THUMB_PATH = "";
+        BEFORE_SAMPLE_APP_NAME = "";
+        BEFORE_SAMPLE_APP_PATH = "";
 
         $('input[name=id],input[name=name],input[name=summary]').val('');
         $('textarea').val('');
         $('div[name=thumRemove]').trigger('click');
 
-
     }
 
+    // SET FILE INFO
+    var procSetFileInfo = function(reqFile) {
+        var fileName = reqFile[0].name;
+        var limitFileSizeMb = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).CATALOG_APP_SAMPLE_LIMIT_FILE_SIZE_MB}]]*/ "";
+        var limitFileSize = parseInt(limitFileSizeMb) << 20;
+        var orgFileSize = reqFile[0].size;
+        if (limitFileSize < orgFileSize) {
+            var alertMessage = '파일 크기는 ' + limitFileSizeMb + ' MB 를 넘을 수 없습니다.';
+            notifyAlert("danger","",alertMessage);
+            return false;
+        }
+        //REQUEST_APP_SAMPLE_FILE = reqFile;
+        procSetFileLabel(fileName, orgFileSize, null);
+    };
+
+    // SET FILE LABEL
+    var procSetFileLabel = function(reqFileName, reqOrgFileSize, reqFilePath) {
+        if (null == reqFileName || '' == reqFileName){
+            return false;
+        }
+        //var doc = document;
+        var fileSize = procConvertFormatNumber(procCalculateFloor(parseInt(reqOrgFileSize) / 1024, 2));
+        var fileName = reqFileName + " (" + fileSize + " KB)";
+        //doc.getElementById('appSampleFileName').value = reqFileName;
+        //doc.getElementById('appSampleFileSize').value = reqOrgFileSize;
+
+        var linkHtml;
+        if ( reqFilePath != null ) {
+            linkHtml = '<a href="javascript:void(0);" onclick="procDownload(\'' + reqFilePath + '\', \'' + reqFileName + '\')">' + fileName + '</a>';
+        }else{
+            linkHtml = '<a>' + fileName + '</a>';
+        }
+        linkHtml += "<i class='fa fa-times file-remove-button' id='devEnvAppRemove' name='appRemove'></i>";
+
+        $('#devEnvLabelAppName').html(linkHtml);
+
+        // 앱 샘플 삭제 버튼 처리
+        $('#devEnvAppRemove').on('click', function(e){
+            resetAppSample("<a>"+NOT_FOUND_ATTACH_FILE_MESSAGE+"</a>");
+        });
+
+    };
+
+    // CONVERT FORMAT NUMBER
+    var procConvertFormatNumber = function (reqString) {
+        return reqString.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
+    // CALCULATE FLOOR
+    var procCalculateFloor = function(reqNumber, reqPosition) {
+        var digits = Math.pow(10, reqPosition);
+        var num = Math.round(reqNumber * digits) / digits;
+        return num.toFixed(reqPosition);
+    };
 
     // [앱 템플릿] 상세 - 서비스 셀렉트 박스 초기값
     function defaultStarterServiceOptionList(){
@@ -1644,7 +2077,7 @@
         });
     }
 
-    // [앱 템플릿] 상세 - 앱 개발 환경 셀렉트 박스 초기값
+    // [앱 템플릿] 상세 - [앱 개발 환경] 셀렉트 박스 초기값
     function defaultStarterDevEnvOptionList(){
         var objSelectBox = $('#buildPackList');
         objSelectBox.html('');
@@ -1653,7 +2086,7 @@
         });
     }
 
-    // [앱 개발환경] 상세 - 앱 개발 환경 셀렉트 박스 초기값
+    // [앱 개발환경] 상세 - [분류] 셀렉트 박스 초기값
     function defaultDevEnvCategoryOptionList(){
         var objSelectBox = $('#categoryDevEnvList');
         objSelectBox.html('');
@@ -1662,12 +2095,30 @@
         });
     }
 
-    // [앱 개발환경] 상세 - 앱 개발 환경 셀렉트 박스 초기값
+    // [앱 개발환경] 상세 - [앱 개발 환경] 셀렉트 박스 초기값
     function defaultDevEnvBuildpackOptionList(){
         var objSelectBox = $('#buildPackDevEnvList');
         objSelectBox.html('');
         $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
             objSelectBox.append("<option value='" + data.entity.name + "'> " + data.entity.name + " </option>");
+        });
+    }
+
+    // [앱 서비스] 상세 - [분류] 셀렉트 박스 초기값
+    function defaultServiceCategoryOptionList(){
+        var objSelectBox = $('#categoryServiceList');
+        objSelectBox.html('');
+        $.each(SERVICE_CATEGORY_LIST, function (index, data) {
+            objSelectBox.append("<option value='" + data.key + "'> " + data.value + " </option>");
+        });
+    }
+
+    // [앱 서비스] 상세 - [서비스] 셀렉트 박스 초기값
+    function defaultServiceServiceOptionList(){
+        var objSelectBox = $('#serviceServicePackList');
+        objSelectBox.html('');
+        $.each(SERVICE_SERVICE_LIST, function (index, data) {
+            objSelectBox.append("<option value='" + data.entity.label + "'> " + data.entity.label + " </option>");
         });
     }
 
@@ -1684,9 +2135,13 @@
 
                 if(reqType == "DELETE"){ // 삭제시 파일정보 초기화
                    data.filename = "";
-                   data.fileURL = "";
+                   data.fileURL  = "";
+                   data.length   = "";
                 }
-                reqProcFunction(data);
+
+                if(reqProcFunction != null){
+                    reqProcFunction(data);
+                }
             },
             error: function(xhr, status, error) {
                 notifyAlert("danger","",JSON.parse(xhr.responseText).customMessage);
@@ -1697,6 +2152,85 @@
             }
         });
     };
+
+    // [앱 서비스] 상세 - [앱 바인드 파라미터] 템플릿
+    function appBindParamAdd(index, input, type){
+
+        var tempHtml =
+                "<div class='form-group app-bind-param-added' name='appBindParamForm'>"
+                +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+                +"   <div name='paramArea'>"
+                +"       <div class='col-sm-4 col-xs-3'>"
+                +"           <input type='text' class='form-control' name='appBindParamInput'/>"
+                +"       </div>"
+                +"       <div class='col-sm-3 col-xs-6'>"
+                +"           <select class='form-control' name='appBindParamType' style='width:auto;'>"
+                +"               <option value='text'>텍스트형</option>"
+                +"               <option value='password'>패스워드</option>"
+                +"               <option value='default'>자동입력</option>"
+                +"               <option value='userAppointed'>관리자 지정</option>"
+                +"           </select>"
+                +"       </div>"
+                +"   </div>"
+                +"   <div class='col-sm-2 col-xs-3'>"
+                +"       <button type='button' class='btn btn-sm btn-danger' name='appBindParamRemove'>삭제</button>"
+                +"   </div>"
+                +" </div>";
+
+        $('div[name=appBindParamForm]:last').after(tempHtml);
+
+        if(index != undefined){
+            input = (input == undefined) ? "" : input;
+            type = (type == undefined) ? "" : type;
+            setAppBindParam(index, input, type);
+        }
+
+    }
+
+    // [앱 서비스] 상세 - [앱 바인드 파라미터] 셋팅
+    function setAppBindParam(index, input, type){
+        eval("$('input[name=appBindParamInput]:eq("+index+")').val('"+input+"')");
+        eval("$('select[name=appBindParamType]:eq("+index+")').val('"+type+"')");
+    }
+
+    // [앱 서비스] 상세 - [앱 서비스 파라미터] 템플릿
+    function appServiceParamAdd(index, input, type){
+
+        var tempHtml =
+                "<div class='form-group service-param-added' name='serviceParamForm'>"
+                +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+                +"   <div name='paramArea'>"
+                +"       <div class='col-sm-4 col-xs-3'>"
+                +"           <input type='text' class='form-control' name='serviceParamInput'/>"
+                +"       </div>"
+                +"       <div class='col-sm-3 col-xs-6'>"
+                +"           <select class='form-control' name='serviceParamType' style='width:auto;'>"
+                +"               <option value='text'>텍스트형</option>"
+                +"               <option value='password'>패스워드</option>"
+                +"               <option value='default'>자동입력</option>"
+                +"               <option value='userAppointed'>관리자 지정</option>"
+                +"           </select>"
+                +"       </div>"
+                +"   </div>"
+                +"   <div class='col-sm-2 col-xs-3'>"
+                +"       <button type='button' class='btn btn-sm btn-danger' name='serviceParamRemove'>삭제</button>"
+                +"   </div>"
+                +" </div>";
+
+        $('div[name=serviceParamForm]:last').after(tempHtml);
+
+        if(index != undefined){
+            input = (input == undefined) ? "" : input;
+            type = (type == undefined) ? "" : type;
+            setAppServiceParam(index, input, type);
+        }
+    }
+
+    // [앱 서비스] 상세 - [앱 서비스 파라미터] 셋팅
+    function setAppServiceParam(index, input, type){
+        eval("$('input[name=serviceParamInput]:eq("+index+")').val('"+input+"')");
+        eval("$('select[name=serviceParamType]:eq("+index+")').val('"+type+"')");
+    }
 
     /*]]>*/
 </script>

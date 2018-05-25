@@ -53,7 +53,7 @@ public class Catalog {
     private int appSampleFileSize;
     private String appBindYn;
     private String parameter;
-    private String app_bind_parameter;
+    private String appBindParameter;
     private int diskSize;
     private int MemorySize;
     private String dashboardUseYn;
@@ -799,8 +799,8 @@ public class Catalog {
      *
      * @return 파라미터
      */
-    public String getApp_bind_parameter() {
-        return app_bind_parameter;
+    public String getAppBindParameter() {
+        return appBindParameter;
     }
 
     /**
@@ -809,8 +809,8 @@ public class Catalog {
      * @param app_bind_parameter 파라미터
      */
 
-    public void setApp_bind_parameter(String app_bind_parameter) {
-        this.app_bind_parameter = app_bind_parameter;
+    public void setAppBindParameter(String appBindParameter) {
+        this.appBindParameter = appBindParameter;
     }
 
     /**
@@ -913,7 +913,7 @@ public class Catalog {
                 ", appSampleFileSize=" + appSampleFileSize +
                 ", appBindYn='" + appBindYn + '\'' +
                 ", parameter='" + parameter + '\'' +
-                ", app_bind_parameter='" + app_bind_parameter + '\'' +
+                ", appBindParameter='" + appBindParameter + '\'' +
                 ", diskSize=" + diskSize +
                 ", MemorySize=" + MemorySize +
                 ", dashboardUseYn='" + dashboardUseYn + '\'' +

@@ -213,7 +213,6 @@ class CatalogController extends Common {
     /**
      * 이미지 파일을 삭제한다.
      *
-     * @param param Catalog(모델클래스)
      * @return Response<String> (relays response from storage api)
      */
     @DeleteMapping( V2_URL + "/thumbnail/{filename:.+}" )
@@ -317,20 +316,6 @@ class CatalogController extends Common {
         return catalogService.getStarterPack(no, param);
     }
 
-
-    /**
-     * [앱 템플릿]
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @GetMapping(V2_URL + "/starterpacks/count")
-    @ResponseBody
-    public Map<String, Object> getStarterNamesCount(@ModelAttribute Catalog param) {
-        return catalogService.getStarterPackCount(param);
-    }
-
-
     /**
      * [앱 개발환경] 목록을 조회한다.
      *
@@ -353,19 +338,6 @@ class CatalogController extends Common {
     @ResponseBody
     public Map<String, Object> getBuildPackCatalog(@PathVariable("no") int no, @ModelAttribute Catalog param) {
         return catalogService.getDevelopPackCatalog(no, param);
-    }
-
-
-    /**
-     * [앱 템플릿]에서 사용중인 [앱 개발환경] 개수를 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @GetMapping(V2_URL + "/developpacks/count")
-    @ResponseBody
-    public Map<String, Object> getBuildPackCatalogCount(@ModelAttribute Catalog param) {
-        return catalogService.getDevelopPackCatalogCount(param);
     }
 
     /**
@@ -395,7 +367,31 @@ class CatalogController extends Common {
     }
 
     /**
-     * [앱 템플릿]에서 사용중인 [서비스 카탈로그] 개수를 조회한다.
+     * [앱 템플릿] 해당 이름으로 등록된 [앱 템플릿] 개수를 조회한다.(등록 중복체크 용도)
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping(V2_URL + "/starterpacks/count")
+    @ResponseBody
+    public Map<String, Object> getStarterNamesCount(@ModelAttribute Catalog param) {
+        return catalogService.getStarterPackCount(param);
+    }
+
+    /**
+     * [앱 템플릿]에서 사용중인 [앱 개발환경] 개수를 조회한다.(앱 개발환경 삭제 가능체크 용도)
+     *
+     * @param param Catalog(모델클래스)
+     * @return Map(자바클래스)
+     */
+    @GetMapping(V2_URL + "/developpacks/count")
+    @ResponseBody
+    public Map<String, Object> getBuildPackCatalogCount(@ModelAttribute Catalog param) {
+        return catalogService.getDevelopPackCatalogCount(param);
+    }
+
+    /**
+     * [앱 템플릿]에서 사용중인 [앱 서비스] 개수를 조회한다.(앱 서비스 삭제 가능체크 용도)
      *
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
@@ -405,6 +401,18 @@ class CatalogController extends Common {
     public Map<String, Object> getServicePackCatalogCount(@ModelAttribute Catalog param) {
         return catalogService.getServicePackCatalogCount(param);
     }
+
+    /**
+     * [앱 서비스] 서비스 목록을 조회한다.
+     *
+     * @return Map(자바클래스)
+     */
+    @GetMapping(V2_URL + "/services")
+    @ResponseBody
+    public Map<String, Object> getServices() {
+        return catalogService.getServices();
+    }
+
     /*
      * ------------------------------------------------------------------------------------조회 끝
      */
@@ -548,33 +556,6 @@ class CatalogController extends Common {
     public Map<String, Object> deleteServicePackCatalog(@PathVariable int no) {
         return catalogService.deleteServicePackCatalog(no);
     }
-
-
-    /**
-     * 앱 개발환경 카탈로그 삭제 가능여부를 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getCheckDeleteBuildPackCatalogCount"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getCheckDeleteBuildPackCatalogCount(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getCheckDeleteBuildPackCatalogCount", HttpMethod.POST, param, null);
-    }
-
-
-    /**
-     * 서비스 카탈로그 삭제 가능여부를 조회한다.
-     *
-     * @param param Catalog(모델클래스)
-     * @return Map(자바클래스)
-     */
-    @RequestMapping(value = {"/getCheckDeleteServicePackCatalogCount"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getCheckDeleteServicePackCatalogCount(@RequestBody Catalog param) {
-        return commonService.procRestTemplate("/catalog/getCheckDeleteServicePackCatalogCount", HttpMethod.POST, param, null);
-    }
-
 
     /*
      * ------------------------------------------------------------------------------------삭제 끝

@@ -214,7 +214,7 @@
                                         <div class="form-group required has-feedback"><!-- has-success has-feedback --><!--has-error has-feedback -->
                                             <label for="name" class="col-sm-3 control-label">이름</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="name" name="useCheck" placeholder="예시) 20G_quota"/>
+                                                <input type="text" class="form-control toCheckStringOrg toCheckStringSpace" id="name" name="useCheck" placeholder="예시) 20G_quota"/>
                                                 <input type="hidden" id="quotaId" class="toCheckString"/>
                                                 <span class="glyphicon form-control-feedback" ></span>
                                             </div>
@@ -224,7 +224,7 @@
                                             <label for="organization" class="col-xs-9 col-sm-3 control-label">생성 조직명</label>
                                             <div class="col-xs-9 col-sm-3">
 
-                                                <select class="form-control toCheckString" id="organization">
+                                                <select class="form-control toCheckStringSpace" id="organization">
                                                     <option value=""></option>
                                                 </select>
 
@@ -237,7 +237,7 @@
                                         <div class="form-group required">
                                             <label for="memorySize" class="col-sm-3 control-label">메모리(MB)</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control toCheckString" type="number" id="memorySize" placeholder="예시) 1024, 10240"/>
+                                                <input class="form-control toCheckStringOrg toCheckStringSpace" type="number" id="memorySize" placeholder="예시) 1024, 10240"/>
                                             </div>
                                         </div>
 
@@ -363,9 +363,17 @@
     var ORG_LIST_MAP = new Map(); // 조직 할당량정의에서 사용할 조직 정보 Map
 
     var init = function(){
+        // 삭제후 조회시 딜레이 필요.
+//        setTimeout(function() {
+//            getOrgQuotaDefinitionList();
+//            getSpaceQuotaDefinitionList();
+//            $('#quotaDefinitionFormModal').modal('hide');
+//        }, 1000);
+
         getOrgQuotaDefinitionList();
         getSpaceQuotaDefinitionList();
         $('#quotaDefinitionFormModal').modal('hide');
+
     };
 
     $(document).ready(function () {
@@ -398,14 +406,6 @@
             $('#name').attr("disabled",false);
             $('#organization').attr("disabled",false);
 
-            // 공간 할당량 정의시에만 조직 정보 선택 추가
-            if(ACTIVE_TAB == 'org'){
-                $('#organizationReg').hide();
-                $('#organization').removeClass('toCheckString');
-            }else{
-                $('#organizationReg').show();
-                $('#organization').addClass('toCheckString');
-            }
         });
 
         // 리스트 클릭시, 상세 팝업 설정
@@ -659,11 +659,8 @@
     // 허용량 정의 생성
     function createQuotaDefinition() {
 
-        $('#quotaId').removeClass('toCheckString'); //체크 제외
-
-        if (!procCheckValidStringSpace()){
-            return false;
-        };
+        var apiUrl;
+        var checkClassStr;
 
         var param = {
             name                    : $('#name').val(),
@@ -676,14 +673,19 @@
             nonBasicServicesAllowed : $(':input:radio[name=optionsRadios]:checked').val()
         };
 
-        var apiUrl;
-
         if(ACTIVE_TAB == 'org'){
             apiUrl = "/v2/orgs/quota-definitions";
+            checkClassStr = 'toCheckStringOrg';
         }else{
             apiUrl = "/v2/spaces/quota-definitions";
             param.orginazationGuid = $('#organization option:selected').val();
+            checkClassStr = 'toCheckStringSpace';
         }
+
+        if (!procCheckValidStringSpaceClass(checkClassStr)){
+            return false;
+        };
+
         procCallAjax(apiUrl, "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
 
@@ -691,12 +693,8 @@
     function updateQuotaDefinition() {
 
         var quotaId = $('#quotaId').val();
-
-        $('#quotaId').addClass('toCheckString'); //체크 포함
-//
-        if (!procCheckValidStringSpace()){
-            return false;
-        };
+        var apiUrl;
+        var checkClassStr;
 
         var param = {
             name                    : $('#name').val(),
@@ -709,14 +707,18 @@
             nonBasicServicesAllowed : $(':input:radio[name=optionsRadios]:checked').val()
         };
 
-        var apiUrl;
-
         if(ACTIVE_TAB == 'org'){
             apiUrl = "/v2/orgs/quota-definitions/"+quotaId;
+            checkClassStr = 'toCheckStringOrg';
         }else{
             apiUrl = "/v2/spaces/quota-definitions/"+quotaId;
             param.orginazationGuid = $('#organization option:selected').val();
+            checkClassStr = 'checkClassStrSpace';
         }
+
+        if (!procCheckValidStringSpaceClass(checkClassStr)){
+            return false;
+        };
 
         procCallAjax(apiUrl, "PUT", JSON.stringify(param), init, null);
     }
@@ -750,7 +752,8 @@
             apiUrl = "/v2/spaces/quota-definitions/"+quotaId;
         }
 
-        procCallAjax(apiUrl, "DELETE", null, init, null);
+        //procCallAjax(apiUrl, "DELETE", null, init, null);
+        procCallAjaxForSyncDelete(apiUrl, "DELETE", null, init, null);
     }
 
     // 조직 할당량 정의 리스트 출력
@@ -818,6 +821,46 @@
 
         init();
     }
+
+
+    //
+    var procCallAjaxForSyncDelete = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {
+        var reqData = "";
+
+        if (param != null) {
+            reqData = param;
+        }
+        $.ajax({
+            url: reqUrl,
+            method: reqMethod,
+            data: reqData,
+            dataType: 'json',
+            //async: false,
+            contentType: "application/json",
+            beforeSend: function(){
+                if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                    $targetLoadingBarElement.removeClass("hide");
+                }
+            },
+            success: function(data) {
+
+            },
+            error: function(xhr, status, error) {
+
+            },
+            complete : function(data) {
+
+                callback();
+
+                if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
+                    $targetLoadingBarElement.addClass('hide');
+                }
+                notifyAlert('success',"",'삭제 완료 되었습니다.');
+            }
+        });
+    };
+
+
     /*]]>*/
 </script>
 </body>

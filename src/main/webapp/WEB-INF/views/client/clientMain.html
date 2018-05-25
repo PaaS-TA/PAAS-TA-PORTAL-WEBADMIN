@@ -154,7 +154,6 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
   /*<![CDATA[*/
-  var GET_CLIENT_FORM = "/client/clientForm";
   var LOADED_LIST_COUNT = 0;
   var GET_CLIENT_LIST = "/v2/clients";
   var CURRENT_OFFSET = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ 0;
@@ -217,8 +216,7 @@
       var idx;
       for (idx = CURRENT_OFFSET; idx < loopEnd; idx++) {
 
-        htmlString.push('<tr><td style="cursor:pointer;" '
-                + 'onclick="procMoveClientForm(\'' + resultList[idx] + '\')">' + resultList[idx] + '</td></tr>');
+        htmlString.push('<tr><td style="cursor:pointer;">' + resultList[idx] + '</td></tr>');
       }
 
       LOADED_LIST_COUNT += idx;
@@ -237,14 +235,6 @@
       objTableTitle.show();
       objTableArea.show();
     }
-  };
-
-
-  // MOVE PAGE
-  var procMoveClientForm = function(reqParam) {
-    var hiddenForm = $('#hiddenForm');
-    $('#clientId').val(reqParam);
-    hiddenForm.attr({action:GET_CLIENT_FORM, method:"POST"}).submit();
   };
 
   // GET MORE LIST

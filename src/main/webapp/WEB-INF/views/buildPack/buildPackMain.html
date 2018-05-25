@@ -83,13 +83,14 @@
 
     //순서 Event
     $(document).on('change','select[name=positionNo]',function(){
-
-      updateBuildPack( $(this).closest('tr').data(), true );
+      updateBuildPack( $(this).closest('tr'), true );
     });
 
     //사용유무,Lock유무 Event
     $(document).on('change','input[name=isEnabled],input[name=isLocked]',function(){
-      updateBuildPack( $(this).closest('tr').data(), false );
+      console.log($(this).closest('tr').find('input[name=isEnabled]').val());
+      console.log($(this).closest('tr').find('input[name=isEnabled]').val());
+      updateBuildPack( $(this).closest('tr'), false );
     });
 
   });
@@ -127,8 +128,8 @@
           locked = "checked";
         }
 
-        $("#buildPackList").append(" <tr align='center' " +
-                "data-position='"+index+"' data-guid='"+data.metadata.guid+"' data-enabled='"+data.entity.enabled+"' data-locked='"+data.entity.locked+"'>" +
+        $("#buildPackList").append(
+                "<tr align='center' data-guid='"+data.metadata.guid+"' >" +
                 "<td> " + data.entity.name + "</td>" +
                 "<td> " + data.entity.filename + "</td>" +
 //                "<td class='col-md-1' align='center'><select id='position"+ index +"' style='width:50px;' onChange=updateBuildPack('"+ data.metadata.guid +"'," + index + ",true); >" + positionOption + "</select></td>" +
@@ -146,10 +147,12 @@
 
   function updateBuildPack(data, refresh){
 
-    var guid = data.guid;
-
+    var position = data.find('select[name=positionNo]').val();
+    var enable = "";
+    var lock = "";
+// guid 만 data에서 가져오고 나머지는 현재 선택된 항목 가져 오는걸로 변경
     var param = {
-      guid:  guid,
+      guid:  data.data('guid'),
       position: data.position,
       enable : data.enabled,
       lock : data.locked
@@ -165,7 +168,7 @@
       }
     }
 
-    procCallAjax("/v2/buildpacks/"+guid, "PUT", JSON.stringify(param), procCallbackUpdateBuildPack, $('#loadingBar'));
+    //procCallAjax("/v2/buildpacks/"+guid, "PUT", JSON.stringify(param), procCallbackUpdateBuildPack, $('#loadingBar'));
   }
 
 

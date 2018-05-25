@@ -59,18 +59,20 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
                 callback(data, param);
                 //procAlert('success', RESULT_STATUS_SUCCESS_MESSAGE);
 
-                switch (reqMethod) {
-                    case "PUT" :
-                        notifyAlert('success',"",'수정 완료 되었습니다.');
-                        break;
-                    case "POST" :
-                        notifyAlert('success',"",'생성 완료 되었습니다.');
-                        break;
-                    case "DELETE" :
-                        notifyAlert('success',"",'삭제 완료 되었습니다.');
-                        break;
-                    default :
-                        break;
+                if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
+                    switch (reqMethod) {
+                        case "PUT" :
+                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            break;
+                        case "POST" :
+                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            break;
+                        case "DELETE" :
+                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            break;
+                        default :
+                            break;
+                    }
                 }
             } else {
                 var resData = {RESULT : RESULT_STATUS_SUCCESS,

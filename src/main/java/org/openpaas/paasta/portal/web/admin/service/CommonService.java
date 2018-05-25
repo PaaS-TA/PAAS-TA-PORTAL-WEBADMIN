@@ -244,7 +244,9 @@ public class CommonService {
         ResponseEntity<Map> resEntity = restTemplate.exchange(cfApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        if(resultMap != null){
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        }
         return resultMap;
     }
 
