@@ -158,8 +158,7 @@ public class CommonService {
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
         LOGGER.info("procRestTemplateV2 reqToken :: " + reqToken);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        //For Eureka / Zuul
-        LOGGER.info("apiUrl(TestLog)::" + apiUrl);
+        LOGGER.info("apiUrl::" + apiUrl);
         ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
 
         //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
@@ -181,12 +180,8 @@ public class CommonService {
         restTemplate = new RestTemplate();
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
-
-//        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
-
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        //For Eureka / Zuul
-        LOGGER.info("apiUrl(TestLog)::" + apiUrl);
+        LOGGER.info("apiUrl::" + apiUrl);
         ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
 
         //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
@@ -240,7 +235,7 @@ public class CommonService {
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
 
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        LOGGER.info("cfApiUrl(TestLog)::" + cfApiUrl + reqUrl);
+        LOGGER.info("cfApiUrl::" + cfApiUrl + reqUrl);
         ResponseEntity<Map> resEntity = restTemplate.exchange(cfApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
@@ -265,7 +260,7 @@ public class CommonService {
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
 
-        LOGGER.info(":::::"+commonApiUrl + reqUrl);
+        LOGGER.info("CommonApiUrl::"+commonApiUrl + reqUrl);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
         ResponseEntity<Map> resEntity = restTemplate.exchange(commonApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();

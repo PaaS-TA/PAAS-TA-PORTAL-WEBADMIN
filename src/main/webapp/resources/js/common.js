@@ -55,9 +55,13 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
         },
         success: function(data) {
 
+            if(data.message){
+                notifyAlert('info','',data.message);
+                return false;
+            }
+
             if (data) {
                 callback(data, param);
-                //procAlert('success', RESULT_STATUS_SUCCESS_MESSAGE);
 
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
@@ -82,13 +86,10 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
             }
         },
         error: function(xhr, status, error) {
-            var resData = {RESULT : RESULT_STATUS_FAIL,
-                RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
-
+            //var resData = {RESULT : RESULT_STATUS_FAIL,
+            //    RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
             //callback(resData, param);
-
             console.log("ERROR :: error :: ", error);
-            //procAlert("danger", JSON.parse(xhr.responseText).message);
             notifyAlert('danger','',JSON.parse(xhr.responseText).message);
         },
         complete : function(data) {
