@@ -54,6 +54,7 @@ public class AuthorityManagementController extends Common{
     @GetMapping(V2_URL+"/authority/group")
     @ResponseBody
     public Map<String, Object> getUaaUserInfo() throws Exception {
+        //사용안함???
         return authorityManagementService.getUaaUserInfo("/authority/group", HttpMethod.GET, null, null);
     }
 

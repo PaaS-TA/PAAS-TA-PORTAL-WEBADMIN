@@ -964,6 +964,18 @@
             $('div[name=appBindParamForm]:eq('+index+')').remove();
         });
 
+        // [앱서비스][앱 바인드 파라미터] 활성/비활성 이벤트
+        $(document).on("change", "input[name=appBindUseYn]" ,function(e) {
+            var useYn = $(this).val();
+            if(useYn == 'Y'){
+               $('div[name=appBindParamForm]').show();
+            }else if(useYn == 'N'){
+                $('div[name=appBindParamForm]').hide();
+                $('.app-bind-param-added').remove();
+                $('#appBindParamInput').val('');
+                $('select[name=appBindParamType]:eq(0)').val('text');
+            }
+        });
 
     });
 
@@ -1349,10 +1361,10 @@
                 var pathEnd = entity.thumbImgPath.length;
                 var fileName = entity.thumbImgPath.substring(pathHeader + 1, pathEnd);
 
-                $('#devEnvLabelThumbName').text(entity.thumbImgName);
-                $('#devEnvPreview img').attr('style', 'display: block; height: 60px; width: 60px;');
+                $('#serviceLabelThumbName').text(entity.thumbImgName);
+                $('#servicePreview img').attr('style', 'display: block; height: 60px; width: 60px;');
                 // 파일 직접 주소 참조 불가. API를 통해 FILE 가져오기
-                $('#devEnvPreview img').attr("src","/v2/thumbnail/"+fileName);
+                $('#servicePreview img').attr("src","/v2/thumbnail/"+fileName);
 
                 BEFORE_THUMB_PATH = entity.thumbImgPath;
                 BEFORE_THUMB_NAME = fileName;
@@ -1360,14 +1372,12 @@
                 $('div[name=divPreview]').show();
             }
 
-
             //서비스 생성 파라미터 리스트
-            if(entity.parameter != ''){ // entity.useYn
+            if(entity.parameter != ''){
                 var obj = jQuery.parseJSON(entity.parameter);
                 var index = 0;
                 $.each(obj,function(key, value) {
-                    console.log("AAAA");
-                    console.log('key:'+key+', value:'+value);
+                    //console.log('key:'+key+', value:'+value);
                     if(index == 0){
                         // Fixed Area Set
                         setAppServiceParam(index, key, value)
@@ -1380,7 +1390,11 @@
             }
 
             //앱 바인드 파라미터 사용여부
-            eval("$('input:radio[name=appBindUseYn][value="+entity.useYn+"]').prop('checked', true);");
+            eval("$('input:radio[name=appBindUseYn][value="+entity.appBindYn+"]').prop('checked', true);");
+
+            if(entity.appBindYn !== undefined && entity.appBindYn == 'N'){
+                $('input:radio[name=appBindUseYn]').trigger( "change" );
+            }
 
             // 앱 바인드 파라미터 리스트
             if(entity.appBindYn == 'Y' && entity.appBindParameter != ''){ // entity.useYn
@@ -1729,7 +1743,7 @@
         if(BEFORE_THUMB_NAME == ""){
             if(afterThumbPath != ""){
                 // UPLOAD FILE
-                uploadFile(formData,"POST","/v2/thumbnail",updateThumbFileInfo);
+                uploadFile(formData,"POST","/v2/thumbnail",updateDevEnvThumbFileInfo);
             }else{
                 updateSampleApp();
             }
@@ -1745,7 +1759,7 @@
                 FILE_INFO.thumbImgName  = $('#devEnvLabelThumbName').text();
                 FILE_INFO.thumbImgPath  = BEFORE_THUMB_PATH;
 
-                updateThumbFileInfo(null);
+                updateDevEnvThumbFileInfo(null);
 
             }else{
                 //기존 삭제
@@ -1755,9 +1769,9 @@
 
                 if(afterThumbPath != ""){
                     // 신규 이미지 추가
-                    uploadFile(formData,"POST","/v2/thumbnail", updateThumbFileInfo);
+                    uploadFile(formData,"POST","/v2/thumbnail", updateDevEnvThumbFileInfo);
                 }else{
-                    updateThumbFileInfo(null);
+                    updateDevEnvThumbFileInfo(null);
                 }
             }
         }
@@ -1765,7 +1779,7 @@
 
 
     // [썸네일] 파일 등록
-    function updateThumbFileInfo(data){
+    function updateDevEnvThumbFileInfo(data){
         if(data != null){
             FILE_INFO.thumbImgName  = data.filename;
             FILE_INFO.thumbImgPath  = data.fileURL;
@@ -1841,12 +1855,22 @@
         var file = $("#serviceThumbnail")[0].files[0];
 
         if (file === undefined){
-            registService(null);
+            registService();
         }else{
             var formData = new FormData();
             formData.append("file", file);
-            uploadFile(formData,"POST","/v2/thumbnail",registService);
+            uploadFile(formData,"POST","/v2/thumbnail",createServiceThumbFileInfo);
         }
+    }
+
+    // [썸네일] 파일 등록
+    function createServiceThumbFileInfo(data){
+        if(data != null){
+            FILE_INFO.thumbImgName  = data.filename;
+            FILE_INFO.thumbImgPath  = data.fileURL;
+        }
+        // 앱 샘플 등록
+        registService();
     }
 
     //  [앱 서비스] 등록
@@ -1862,10 +1886,67 @@
         };
 
         FILE_INFO = {}; // 파일정보 초기화
+
+        // 썸네일 파일 첨부 확인 및 업로드
+        var afterThumbPath = $('#servicePreview img').attr("src");
+        var thumbFile = $("#serviceThumbnail")[0].files[0];
+
+        var formData = new FormData();
+        formData.append("file", thumbFile);
+
+        if(BEFORE_THUMB_NAME == ""){
+            if(afterThumbPath != ""){
+                // UPLOAD FILE
+                uploadFile(formData,"POST","/v2/thumbnail",updateServiceThumbFileInfo);
+            }else{
+                modifyService();
+            }
+
+        }else{
+
+            var pathHeader = afterThumbPath.lastIndexOf("/");
+            var pathEnd = afterThumbPath.length;
+            var afterThumbName = afterThumbPath.substring(pathHeader + 1, pathEnd);
+            // 기존 파일과 파일명 비교
+            if(BEFORE_THUMB_NAME == afterThumbName){
+
+                FILE_INFO.thumbImgName  = $('#serviceLabelThumbName').text();
+                FILE_INFO.thumbImgPath  = BEFORE_THUMB_PATH;
+
+                updateServiceThumbFileInfo(null);
+
+            }else{
+                //기존 삭제
+                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, null);
+                FILE_INFO.thumbImgName = "";
+                FILE_INFO.thumbImgPath = "";
+
+                if(afterThumbPath != ""){
+                    // 신규 이미지 추가
+                    uploadFile(formData,"POST","/v2/thumbnail", updateServiceThumbFileInfo);
+                }else{
+                    updateServiceThumbFileInfo(null);
+                }
+            }
+        }
+
     }
 
+    // [앱 서비스] [썸네일] 파일 등록
+    function updateServiceThumbFileInfo(data){
+        if(data != null){
+            FILE_INFO.thumbImgName  = data.filename;
+            FILE_INFO.thumbImgPath  = data.fileURL;
+        }
+        modifyService();
+    }
 
-
+    // [앱 서비스] 수정 (파일저장 후 처리)
+    function modifyService(){
+        // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
+        var no = $('#serviceId').val();
+        procCallAjax(SERVICE_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(serviceParam(FILE_INFO)), getServicePackList, $('#serviceModalLoadingBar') );
+    }
 
 
 
