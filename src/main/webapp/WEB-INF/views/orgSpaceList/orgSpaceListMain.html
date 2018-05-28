@@ -142,7 +142,7 @@
             var QuotaMap = new Map();
             for (var i = 0; i < data.resources.length; i++) {
                 orgName[i] = data.resources[i].entity.name;
-                idMap.set(orgName[i],data.resources[i].metadata.id);
+                idMap.set(orgName[i],data.resources[i].metadata.guid);
                 QuotaMap.set(orgName[i],data.resources[i].entity.quotaDefinitionId);
             }
             orgName.sort();
@@ -191,7 +191,7 @@
                 $("#spaceTable").append (
                         "<tr id='orgSpaceViewArea-table-content-space-no"+(eventId+1)+"'>"+
                         "<td>"+(eventId+1)+"</td>"+
-                        "<td>" + space.entity.name + "&nbsp; <a href='#none' onClick=\"procGetSpaceSummary('"+ space.metadata.id +"','" + space.entity.spaceQuotaDefinitionId + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
+                        "<td>" + space.entity.name + "&nbsp; <a href='#none' onClick=\"procGetSpaceSummary('"+ space.metadata.guid +"','" + space.entity.space_quota_definition_guid + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
                         "</tr>"
                 )
             });
@@ -242,14 +242,13 @@
     var procGetSpaceSummary = function (spaceId, spaceQuotaId) {
         $("#modaltitle").html("영역 상세 정보");
         $("#modalbody").html("데이터를 불러오고 있습니다.");
+        spaceQuotaText = "없음";
 
-        console.log(spaceQuotaId);
         if(spaceQuotaId != "null") {
-            procCallAjax2("/orgSpaceList/"+spaceQuotaId+"/SpaceQuota","GET", null, procCallbackGetSpaceQuota);
+            //procCallAjax2(V2_URL+"/spaces/quota-definitions/"+spaceQuotaId,"GET", null, procCallbackGetSpaceQuota);
+            // To-Be : Quota 정보 관리 추가
         }
-        else{
-            spaceQuotaText = "없음";
-        }
+
         procCallAjax2(V2_URL + "/spaces/"+spaceId+"/summary","GET", null, procCallbackGetSpaceSummary);
     };
 
@@ -271,15 +270,19 @@
         } else {
             spaceQuotaText = "";
         }
+
+        $("#modalbody").html("<b>Domains</b> : " + domainNames +
+                "<br><b>Quota</b> : " + quotaName + " (" + MemoryLimit + "M memory limit, " + totalRoutes + " routes, " + totalServices + " services, " + paidServices + ")" +
+                "<br><b>Spaces</b> : " + spaces);
     }
 
     // GET ORG SUMMARY CALLBACK
     var procCallbackGetSpaceSummary = function(data, param) {
 
         apps = "없음";
-        for (var i = 0; i < data.applications.length; i++) {
-            if (i != 0) apps += " , " + data.applications[i].name;
-            else apps = data.applications[i].name;
+        for (var i = 0; i < data.apps.length; i++) {
+            if (i != 0) apps += " , " + data.apps[i].name;
+            else apps = data.apps[i].name;
         }
 
         services = "없음";
@@ -288,7 +291,10 @@
             else services = data.services[i].name;
         }
 
-        $("#modalbody").html("<b>Org</b> : " + data.name + "<br><b>Apps</b> : " + apps +
+        $("#modalbody").html(
+                "<br><b>Org</b> : " + currentOrg +
+                "<br><b>Space</b> : " + data.name +
+                "<br><b>Apps</b> : " + apps +
                 "<br><b>Domains</b> : " + domainNames +
                 "<br><b>Services</b> : " + services +
                 "<br><b>Quota</b> : " + spaceQuotaText);
