@@ -242,12 +242,14 @@
 
     // USER MANAGEMENT POPUP
     var procUserManagementPopup = function (reqType, reqUserId) {
-        if (!procCheckEmailValidation(reqUserId)) return false;
 
         var reqMessage = '';
         var reqFunction = '';
         var reqButton = '';
         if (REQUEST_TYPE_RESET_PASSWORD == reqType) {
+            if (!procCheckEmailValidation(reqUserId)){
+                return false;
+            }
             reqMessage = /*[[#{common.info.popup.reset.password.message}]]*/ "";
             reqFunction = 'resetPassword("' + reqUserId + '");';
             reqButton = '전송';
@@ -340,7 +342,8 @@
 
         var regExpPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
         if (!regExpPattern.test(reqUserId)) {
-            procAlert("danger", /*[[#{common.email.validation.error.message}]]*/ "");
+            //procAlert("danger", /*[[#{common.email.validation.error.message}]]*/ "");
+            notifyAlert('danger',"",/*[[#{common.email.validation.error.message}]]*/ "");
             return false;
         }
         return true;
