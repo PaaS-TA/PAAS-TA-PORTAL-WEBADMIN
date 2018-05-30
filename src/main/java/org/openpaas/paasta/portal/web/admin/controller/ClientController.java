@@ -1,5 +1,6 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
+import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import java.util.Map;
  * @since 2016.9.28 최초작성
  */
 @Controller
-public class ClientController {
+public class ClientController  extends Common {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
 
@@ -34,7 +35,7 @@ public class ClientController {
      *
      * @return ModelAndView client main
      */
-    @RequestMapping(value = {"/clientMain"}, method = RequestMethod.GET)
+    @GetMapping(value = {"/clientMain"})
     public ModelAndView getClientMain() {
         return new ModelAndView(){{setViewName("/client/clientMain");}};
     }
@@ -44,15 +45,15 @@ public class ClientController {
      *
      * @return ModelAndView client form
      */
-    @RequestMapping(value = {"/clientForm"}, method = RequestMethod.GET)
-    public ModelAndView getClientForm() {
-        ModelAndView mv = new ModelAndView();
-
-        mv.addObject("INSERT_FLAG", Constants.CUD_C);
-        mv.setViewName("/client/clientForm");
-
-        return mv;
-    }
+//    @GetMapping(value = {"/clientForm"})
+//    public ModelAndView getClientForm() {
+//        ModelAndView mv = new ModelAndView();
+//
+//        mv.addObject("INSERT_FLAG", Constants.CUD_C);
+//        mv.setViewName("/client/clientForm");
+//
+//        return mv;
+//    }
 
     /**
      * 클라이언트 조회/수정 페이지 이동
@@ -60,7 +61,7 @@ public class ClientController {
      * @param req the req
      * @return ModelAndView client form
      */
-    @RequestMapping(value = {"/clientForm"}, method = RequestMethod.POST)
+    @GetMapping(value = {"/clientForm"})
     public ModelAndView getClientForm(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView();
 
@@ -82,21 +83,21 @@ public class ClientController {
     @GetMapping(value = {Constants.V2_URL + "/clients"})
     @ResponseBody
     public Map<String, Object> getClientList() throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/clients", HttpMethod.GET, null, null);
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/clients", HttpMethod.GET, null, this.getToken());
     }
 
 
     /**
      * 클라이언트 정보 조회
      *
-     * @param param Map
+     * @param clientId
      * @return Map client
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/getClient"}, method = RequestMethod.POST)
+    @GetMapping(value = {Constants.V2_URL + "/clients/{clientId}"})
     @ResponseBody
-    public Map<String, Object> getClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procCfApiRestTemplate("/client/getClient", HttpMethod.POST, param, null);
+    public Map<String, Object> getClient(@PathVariable String clientId) throws Exception {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/clients/"+clientId, HttpMethod.GET, null, this.getToken());
     }
 
     /**
@@ -106,10 +107,10 @@ public class ClientController {
      * @return Map map
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/registerClient"}, method = RequestMethod.POST)
+    @PostMapping(value = {Constants.V2_URL + "/clients"})
     @ResponseBody
     public Map<String, Object> registerClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procCfApiRestTemplate("/client/registerClient", HttpMethod.POST, param, null);
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/clients", HttpMethod.POST, param, this.getToken());
     }
 
     /**
@@ -119,10 +120,10 @@ public class ClientController {
      * @return Map map
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/updateClient"}, method = RequestMethod.POST)
+    @PutMapping(value = {Constants.V2_URL + "/clients"})
     @ResponseBody
     public Map<String, Object> updateClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procCfApiRestTemplate("/client/updateClient", HttpMethod.POST, param, null);
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/clients", HttpMethod.PUT, param, this.getToken());
     }
 
     /**
@@ -132,10 +133,10 @@ public class ClientController {
      * @return Map map
      * @throws Exception the exception
      */
-    @RequestMapping(value = {"/deleteClient"}, method = RequestMethod.POST)
+    @DeleteMapping(value = {Constants.V2_URL + "/clients"})
     @ResponseBody
     public Map<String, Object> deleteClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procRestTemplate("/client/deleteClient", HttpMethod.POST, param, null);
+        return commonService.procRestTemplate(Constants.V2_URL + "/clients", HttpMethod.DELETE, param, this.getToken());
     }
 
 }

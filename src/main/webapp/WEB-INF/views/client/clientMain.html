@@ -9,142 +9,142 @@
   <aside>/</aside>
 
   <!-- Content Wrapper. Contains page content -->
-    <div layout:fragment="content" class="content-wrapper">
+  <div layout:fragment="content" class="content-wrapper">
 
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1>
-          클라이언트 목록
-        </h1>
-      </section>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        클라이언트 목록
+      </h1>
+    </section>
 
-      <!-- Main content -->
-      <section class="content">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="box">
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
 
-              <div class="box-footer" style="padding-bottom:0px;">
+            <div class="box-footer" style="padding-bottom:0px;">
 
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="row">
-                      <div class="col-xs-7 col-sm-5">
-                        <div class="input-group input-group-sm">
-                          <div class="input-group-btn">
-                            <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
-                          </div>
-                          <input type="text" name="table_search" id="searchKeyword" class="form-control" style="margin-left:-1px;"  placeholder="Search" onkeyup="procSearchByKeyword(event);"/>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="row">
+                    <div class="col-xs-7 col-sm-5">
+                      <div class="input-group input-group-sm">
+                        <div class="input-group-btn">
+                          <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
                         </div>
+                        <input type="text" name="table_search" id="searchKeyword" class="form-control" style="margin-left:-1px;"  placeholder="Search" onkeyup="procSearchByKeyword(event);"/>
                       </div>
-
-                      <div class="col-xs-5 col-sm-7">
-                        <button type="button" id="register" class="btn btn-primary btn-sm pull-right" onclick="procMovePage(GET_CLIENT_FORM);">
-                          클라이언트 등록
-                        </button>
-                      </div>
-
                     </div>
+
+                    <div class="col-xs-5 col-sm-7">
+                      <button type="button" id="register" class="btn btn-primary btn-sm pull-right" onclick="procMovePage(GET_CLIENT_FORM);">
+                        클라이언트 등록
+                      </button>
+                    </div>
+
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="box-body">
-                <table class="table table-striped text-center"> <!-- table-responsive -->
-                  <thead>
-                  <tr>
-                    <th>클라이언트 ID</th>
-                  </tr>
-                  </thead>
-                  <tbody id="clientInfoTable">
-                  <!--<tr class="text-center">-->
-                    <!--<td><b>클라이언트 ID</b></td>-->
-                  <!--</tr>-->
+            <div class="box-body">
+              <table class="table table-striped text-center"> <!-- table-responsive -->
+                <thead>
+                <tr>
+                  <th>클라이언트 ID</th>
+                </tr>
+                </thead>
+                <tbody id="clientInfoTable">
+                <!--<tr class="text-center">-->
+                <!--<td><b>클라이언트 ID</b></td>-->
+                <!--</tr>-->
                 </tbody>
-                </table>
-                <div id="buttonGetMoreList" style="text-align:center;">
-                  <button type="button" class="btn btn-primary btn-sm" onclick="procGetMoreList();">
-                    <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-                  </button>
-                </div>
+              </table>
+              <div id="buttonGetMoreList" style="text-align:center;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="procGetMoreList();">
+                  <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                </button>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
+            <!-- /.box-body -->
           </div>
+          <!-- /.box -->
         </div>
+      </div>
 
-        <!-- Modal Layer-->
-        <div class="modal fade" id="client-form" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span></button>
+      <!-- Modal Layer-->
+      <div class="modal fade" id="client-form" style="display: none;">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span></button>
 
-                <h4 class="modal-title">서비스 브로커 등록</h4>
-              </div>
-              <div class="modal-body">
+              <h4 class="modal-title">서비스 브로커 등록</h4>
+            </div>
+            <div class="modal-body">
 
-                <div class="box">
-                  <!--<div class="box-header"></div>-->
-                  <!-- /.box-header -->
-                  <!-- form start -->
-                  <form class="form-horizontal">
-                    <div class="box-body">
+              <div class="box">
+                <!--<div class="box-header"></div>-->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal">
+                  <div class="box-body">
 
-                      <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">서비스 브로커 이름</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="name" placeholder="ex) rabbitmq-service-broker"/>
-                        </div>
+                    <div class="form-group">
+                      <label for="name" class="col-sm-2 control-label">서비스 브로커 이름</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="name" placeholder="ex) rabbitmq-service-broker"/>
                       </div>
-
-                      <div class="form-group">
-                        <label for="userName" class="col-sm-2 control-label">사용자 이름</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="userName" placeholder="ex) admin"/>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="userPassword" class="col-sm-2 control-label">사용자 패스워드</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="userPassword" placeholder="ex) admin"/>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="url" class="col-sm-2 control-label">URL 정보</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="url" placeholder="ex) http://10.30.40.81:4567"/>
-                        </div>
-                      </div>
-
                     </div>
-                  </form>
-                </div>
 
+                    <div class="form-group">
+                      <label for="userName" class="col-sm-2 control-label">사용자 이름</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="userName" placeholder="ex) admin"/>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="userPassword" class="col-sm-2 control-label">사용자 패스워드</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="userPassword" placeholder="ex) admin"/>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="url" class="col-sm-2 control-label">URL 정보</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="url" placeholder="ex) http://10.30.40.81:4567"/>
+                      </div>
+                    </div>
+
+                  </div>
+                </form>
               </div>
-              <div class="modal-footer" style="border-top: 0px">
-                <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
-                <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
-                <button type="button" class="btn btn-sm btn-primary">등록</button>
-              </div>
+
             </div>
-            <!-- /.modal-content -->
+            <div class="modal-footer" style="border-top: 0px">
+              <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">닫기</button>
+              <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
+              <button type="button" class="btn btn-sm btn-primary">등록</button>
+            </div>
           </div>
-          <!-- /.modal-dialog -->
+          <!-- /.modal-content -->
         </div>
-        <!-- Modal Layer-->
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- Modal Layer-->
 
-        <form id="hiddenForm">
-          <input type="hidden" id="clientId" name="clientId" value="" />
-        </form>
+      <form id="hiddenForm">
+        <input type="hidden" id="clientId" name="clientId" value="" />
+      </form>
 
-      </section>
-      <!-- /.content -->
-    </div>
+    </section>
+    <!-- /.content -->
+  </div>
   <!-- /.content-wrapper -->
 
   <footer></footer>
@@ -154,6 +154,7 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
   /*<![CDATA[*/
+  var GET_CLIENT_FORM = "/clientForm";
   var LOADED_LIST_COUNT = 0;
   var GET_CLIENT_LIST = "/v2/clients";
   var CURRENT_OFFSET = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ 0;
@@ -161,7 +162,7 @@
   var CLIENT_LIST = new Array();
   var CURRENT_LIST;
 
-  $(document).ready(function () {
+  $(document).ready(function(){
     getClientList();
   });
 
@@ -192,7 +193,7 @@
     var listLength = data.length;
     var htmlString = [];
 
-    if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ 0 == CURRENT_OFFSET) {
+    if (/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ == CURRENT_OFFSET) {
       LOADED_LIST_COUNT = 0;
       objTable.html('');
     }
@@ -216,7 +217,8 @@
       var idx;
       for (idx = CURRENT_OFFSET; idx < loopEnd; idx++) {
 
-        htmlString.push('<tr><td style="cursor:pointer;">' + resultList[idx] + '</td></tr>');
+        htmlString.push('<tr><td style="cursor:pointer;" '
+                + 'onclick="procMoveClientForm(\'' + resultList[idx] + '\')">' + resultList[idx] + '</td></tr>');
       }
 
       LOADED_LIST_COUNT += idx;
@@ -235,6 +237,14 @@
       objTableTitle.show();
       objTableArea.show();
     }
+  };
+
+
+  // MOVE PAGE
+  var procMoveClientForm = function(reqParam) {
+    var hiddenForm = $('#hiddenForm');
+    $('#clientId').val(reqParam);
+    hiddenForm.attr({action:GET_CLIENT_FORM, method:"POST"}).submit();
   };
 
   // GET MORE LIST

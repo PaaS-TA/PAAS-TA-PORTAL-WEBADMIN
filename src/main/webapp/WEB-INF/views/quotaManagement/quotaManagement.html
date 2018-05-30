@@ -47,7 +47,7 @@
 
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
                                                 <div class="has-feedback">
-                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event,'org');" placeholder="이름으로 검색"/>
+                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
                                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                                 </div>
                                             </div>
@@ -121,7 +121,7 @@
                                             <h3 class="box-title"></h3>
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
                                                 <div class="has-feedback">
-                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event,'space');" placeholder="이름으로 검색"/>
+                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
                                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                                 </div>
                                             </div>
@@ -460,7 +460,7 @@
 
     function procSearchByKeyword(e) {
 
-        var searchKeyword = $(e.target).val();
+        var searchKeyword = $(e.target).val().toLowerCase();
         var searchResult = [];
         var newIdx = 0;
 
@@ -468,7 +468,7 @@
 
         for (var i=0; i < SOURCE_LIST.length; i++ ){
 
-            if (SOURCE_LIST[i].entity.name.includes(searchKeyword)) {
+            if (SOURCE_LIST[i].entity.name.toLowerCase().includes(searchKeyword)) {
                 searchResult[newIdx++] = SOURCE_LIST[i];
             }
         }
@@ -776,6 +776,10 @@
                     "<td>" + convertDataToView(data.entity.total_reserved_route_ports)  + "</td>"
             );
         });
+
+        if(dataList.length == 0){
+            objTable.append('<tr><td colspan="7">'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
+        }
     };
 
     // 공간 할당량 정의 리스트 출력
@@ -800,6 +804,9 @@
             );
         });
 
+        if(dataList.length == 0){
+            objTable.append('<tr><td colspan="8">'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
+        }
     };
 
     // 조직 정보 조회(공간 할당량정의시 참조 정보)

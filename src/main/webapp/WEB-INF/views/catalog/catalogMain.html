@@ -24,13 +24,63 @@
                     <div class="box">
                         <div class="box-header with-border">
 
+                            <div class="box box-default collapsed-box" style="margin-bottom: 8px; border-top-color: #ded6d2;"><!--box-solid-->
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">검색 조건</h3>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body" style="display:none;">
+
+                                    <form class="form-horizontal" id="catalogSearch"><!--form-inline-->
+                                        <div class="form-group col-sm-12">
+                                            <label for="searchUseYn" class="control-label col-sm-3 col-xs-12">공개 여부</label>
+                                            <div class="checkbox col-sm-8 col-xs-5" id="searchUseYn">
+                                                <label class="col-sm-3">
+                                                    <input type="checkbox" name="search" id="searchUseY" checked="checked"/>
+                                                    공개
+                                                </label>
+                                                <label class="col-sm-4">
+                                                    <input type="checkbox" name="search" id="searchUseN" checked="checked"/>
+                                                    비공개
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-12">
+                                            <label for="searchItem" class="control-label col-sm-3 col-xs-12">검색 항목</label>
+                                            <div class="checkbox col-sm-8 col-xs-5" id="searchItem">
+                                                <label class="col-sm-3">
+                                                    <input type="checkbox" name="search" id="searchItemName" checked="checked"/>
+                                                    이름
+                                                </label>
+                                                <label class="col-sm-3">
+                                                    <input type="checkbox" name="search" id="searchItemSummary" checked="checked"/>
+                                                    요약
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-12">
+                                            <label for="searchValue" class="control-label col-sm-3 col-xs-12">검색어</label>
+                                            <div class="has-feedback col-sm-4 col-xs-12">
+                                                <input type="text" id="searchValue" class="form-control"/>
+                                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                                <input style="visibility:hidden; width:0px;"/><!-- Auto Summit 방지용 -->
+                                            </div>
+
+                                        </div>
+                                    </form>
+
+                                </div>
+                             </div>
+
                             <div class="nav-tabs-custom" style="margin-bottom:0px;">
                                 <ul class="nav nav-tabs">
-
                                     <li class="header no-padding active"><a href="#starterTab" data-toggle="tab" aria-expanded="true"  data-tab-type="starter">앱 템플릿</a></li>
                                     <li class="header no-padding"><a href="#devTab" data-toggle="tab" aria-expanded="false" data-tab-type="dev">앱 개발환경</a></li>
                                     <li class="header no-padding"><a href="#serviceTab" data-toggle="tab" aria-expanded="false" data-tab-type="service">앱 서비스</a></li>
-
                                 </ul>
                             </div>
 
@@ -805,9 +855,9 @@
 
     var CATEGORY_LIST_PROC_URL = "/v2/codedetail";
 
-    var CLIENT_LIST = new Array();
+    //var CLIENT_LIST = new Array();
 
-    var MAX_SIZE = 500; // KB
+    var THUMB_MAX_SIZE = 500; // KB
     var NOT_FOUND_ATTACH_FILE_MESSAGE = "첨부된 파일이 없습니다.";
 
     // LIST DATA
@@ -847,11 +897,25 @@
         $('.nav-tabs li').each(function(){
             $(this).click(function(e){
                 ACTIVE_TAB = $(e.target).data('tabType');
+
+                // 조건 검색 초기화 추가
+                $("#catalogSearch")[0].reset();
+                if(ACTIVE_TAB == 'starter'){
+                    //getStarterList(); // 탭클릭시 API재조회는 해당 항목 사용
+                    printStarterList(STARTER_SOURCE_LIST);
+                }else if(ACTIVE_TAB == 'dev'){
+                    //getBuildPackList();
+                    printDevEnvList(DEV_SOURCE_LIST);
+                }else if(ACTIVE_TAB == 'service'){
+                    //getServicePackList();
+                    printServiceList(SERVICE_SOURCE_LIST);
+                }
+
             });
         });
 
         // 리스트 클릭시 상세 출력
-        $(document).on( "click", 'tbody[name=dataList]' ,function(e){
+        $(document).on( "mouseup", 'tbody[name=dataList]' ,function(e){
 
             initModal();
 
@@ -977,6 +1041,16 @@
             }
         });
 
+        $(document).on("change","input[name=search]", function(e){
+            procSearchByKeyword();
+        });
+
+        $(document).on("keyup","#searchValue", function(e){
+            procSearchByKeyword();
+        });
+
+
+
     });
 
     // [앱 템플릿][분류] 셀렉트 리스트
@@ -1015,174 +1089,189 @@
         defaultServiceServiceOptionList();
     }
 
+    // 검색조회
+    function procSearchByKeyword() {
 
+        var searchKeyword       = $("#searchValue").val().toLowerCase();
+        var isSearchItemName    = $("#searchItemName").prop("checked");
+        var isSearchItemSummary = $("#searchItemSummary").prop("checked");
+        var isSearchUseY        = $('#searchUseY').prop("checked");
+        var isSearchUseN        = $('#searchUseN').prop("checked");
 
-    // 미적용(조회 사용여부 확인중)
-    // CHECK SEARCH FORM KEY EVENT
-    var procCheckSearchFormKeyEvent = function (e) {
-        if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
-            //procGetSearchList();
+        var SOURCE_LIST;
+
+        switch(ACTIVE_TAB){
+            case 'starter' : SOURCE_LIST = STARTER_SOURCE_LIST; break;
+            case 'dev'     : SOURCE_LIST = DEV_SOURCE_LIST; break;
+            case 'service' : SOURCE_LIST = SERVICE_SOURCE_LIST; break;
+            default        : break;
         }
-    };
 
-    function procSearchByKeyword(e) {
-
-        //$('#starterListTableArea').hide(); //<tbody id> 값
-        $('#starterList').empty();
-
-        var searchKeyword = $(e.target).val();
-        var searchResult = new Array();
+        var searchResult = [];
         var newIdx = 0;
-        for (var i = 0; i < CLIENT_LIST.length; i++) {
 
-            if (CLIENT_LIST[i].includes(document.getElementById('searchKeyword').value)) {
-                searchResult[newIdx++] = CLIENT_LIST[i];
+        for (var i=0; i < SOURCE_LIST.length; i++ ){
+
+            var name    = SOURCE_LIST[i].name.toLowerCase();
+            var summary = SOURCE_LIST[i].summary.toLowerCase();
+            var useYn   = SOURCE_LIST[i].useYn.toUpperCase();
+
+            //[공개여부] 체크
+            if( isSearchUseY && isSearchUseN ){ // 둘 다 체크
+            }else if(!isSearchUseY && !isSearchUseN) {// 둘 다 해제
+                continue;
+            }else { // 하나만 체크
+
+                if(isSearchUseY){
+                    if(useYn == 'N'){
+                        continue;
+                    }
+                }else{
+                    if(useYn == 'Y'){
+                        continue;
+                    }
+                }
+            }
+
+            // [검색항목] 체크
+            if(isSearchItemName && isSearchItemSummary){
+                if (name.includes(searchKeyword) || summary.includes(searchKeyword) ) {
+                    searchResult[newIdx++] = SOURCE_LIST[i];
+                }
+            }else{
+                if(isSearchItemName){
+                    if (name.includes(searchKeyword)) {
+                        searchResult[newIdx++] = SOURCE_LIST[i];
+                    }
+                }
+                if(isSearchItemSummary){
+                    if (summary.includes(searchKeyword)) {
+                        searchResult[newIdx++] = SOURCE_LIST[i];
+                    }
+                }
             }
         }
 
-        CURRENT_LIST = searchResult;
-        var reqParam = {'searchKeyword': searchKeyword};
-        getStarterList(reqParam);
+        switch(ACTIVE_TAB){
+            case 'starter' : printStarterList(searchResult); break;
+            case 'dev'     : printDevEnvList(searchResult); break;
+            case 'service' : printServiceList(searchResult); break;
+            default        : break;
+        }
+
     }
 
     // BIND :: BUTTON EVENT
-    $("#btnSearch").on("click", function () {
-        //procGetSearchList();
-    });
-
-
+//    $("#btnSearch").on("click", function () {
+//        //procGetSearchList();
+//    });
 
     // GET StarterList
     var getStarterList = function () {
         $('.modal').modal('hide');
-
-        var searchKeyword = "";//document.getElementById('searchKeyword').value;
-        var param;
-        if (null != searchKeyword && "" != searchKeyword) {
-            param = {"searchKeyword": searchKeyword};
-        }
-        procCallAjax(STARTER_PACK_PROC_URL, "GET", param, procCallbackGetStarterList, $('#starterTabLoadingBar') );
+        $('#catalogSearch')[0].reset();
+        procCallAjax(STARTER_PACK_PROC_URL, "GET", null, procCallbackGetStarterList, $('#starterTabLoadingBar') );
     };
 
     // GET BuildPackList
     var getBuildPackList = function () {
         $('.modal').modal('hide');
-
-        var searchKeyword = "";//document.getElementById('searchKeyword').value;
-        var param;
-        if (null != searchKeyword && "" != searchKeyword) {
-            param = {"searchKeyword": searchKeyword};
-        }
-        procCallAjax(DEVELOP_PACK_PROC_URL, "GET", param, procCallbackGetBuildPackList, null);
+        $('#catalogSearch')[0].reset();
+        procCallAjax(DEVELOP_PACK_PROC_URL, "GET", null, procCallbackGetBuildPackList, $('#devEnvTabLoadingBar'));
     };
 
     // GET ServicePackList
     var getServicePackList = function () {
         $('.modal').modal('hide');
-
-        var searchKeyword = "";//document.getElementById('searchKeyword').value;
-        var param = "";
-        if (null != searchKeyword && "" != searchKeyword) {
-            param = {"searchKeyword": searchKeyword};
-        }
-        procCallAjax(SERVICE_PACK_PROC_URL, "GET", param, procCallbackGetServicePackList, null);
+        $('#catalogSearch')[0].reset();
+        procCallAjax(SERVICE_PACK_PROC_URL, "GET", null, procCallbackGetServicePackList, $('#serviceTabLoadingBar'));
     };
-
-
 
 
     // GET LIST CALLBACK StarterList
     var procCallbackGetStarterList = function (data) {
-
         STARTER_SOURCE_LIST = data.list;
+        printStarterList(STARTER_SOURCE_LIST);
+    };
+
+    // [앱 서비스] 리스트 출력
+    function printStarterList(dataList) {
 
         var objTable = $("#starterList");
-        var listLength = data.list.length;
-        var htmlString = [];
-
         objTable.html('');
 
-        if (listLength < 1) {
+        $.each(dataList, function (id, data) {
+            var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
+            objTable.append('<tr style="cursor:pointer;" data-id='+data.no+'>'
+                    + '<td>' + data.name + '</td>'
+                    + '<td>' + data.summary + '</td>'
+                    + '<td>' + data.classificationValue + '</td>'
+                    + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
+                    + '</tr>');
+        });
+
+        if(dataList.length == 0){
             objTable.append('<tr><td colspan="4">'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
-            objTable.show();
-
-        } else {
-            var catalogList = data.list;
-
-            $.each(catalogList, function (id, data) {
-                var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
-                htmlString.push('<tr style="cursor:pointer;" data-id='+data.no+'>'
-                        + '<td>' + data.name + '</td>'
-                        + '<td>' + data.summary + '</td>'
-                        + '<td>' + data.classificationValue + '</td>'
-                        + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
-                        + '</tr>');
-            });
-
-            objTable.append(htmlString);
         }
     };
 
     // GET LIST CALLBACK BuildPackList
     var procCallbackGetBuildPackList = function (data) {
-        var objTable = $("#devList");
-        var listLength = data.list.length;
-        var htmlString = [];
+        DEV_SOURCE_LIST = data.list;
+        printDevEnvList(DEV_SOURCE_LIST);
+    };
 
+    // [앱 개발환경] 리스트 출력
+    function printDevEnvList(dataList) {
+
+        var objTable = $("#devList");
         objTable.html('');
 
-        if (listLength < 1) {
+        $.each(dataList, function (id, data) {
+            var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
+            objTable.append('<tr style="cursor:pointer;" data-id='+data.no+'>'
+                    + '<td>' + data.name + '</td>'
+                    + '<td>' + data.summary + '</td>'
+                    + '<td>' + data.classificationValue + '</td>'
+                    + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
+                    + '</tr>');
+        });
+
+        if(dataList.length == 0){
             objTable.append('<tr><td colspan="4">'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
-            objTable.show();
-
-        } else {
-            var catalogList = data.list;
-
-            $.each(catalogList, function (id, data) {
-                var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
-                htmlString.push('<tr style="cursor:pointer;" data-id='+data.no+'>'
-                        + '<td>' + data.name + '</td>'
-                        + '<td>' + data.summary + '</td>'
-                        + '<td>' + data.classificationValue + '</td>'
-                        + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
-                        + '</tr>');
-            });
-            objTable.append(htmlString);
         }
     };
 
     // GET LIST CALLBACK ServicePackList
     var procCallbackGetServicePackList = function (data) {
-        var objTable = $('#serviceList');
-        var listLength = data.list.length;
-        var serviceListHtml = [];
-
-        objTable.html('');
-
-        if (listLength < 1) {
-            objTable.append('<tr><td colspan="4">'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
-            objTable.show();
-
-        } else {
-            STARTER_SERVICE_LIST = data.list;
-
-            $.each(STARTER_SERVICE_LIST, function (id, data) {
-
-                var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
-                serviceListHtml.push('<tr style="cursor:pointer;" data-id='+data.no+'>'
-                        + '<td>' + data.name + '</td>'
-                        + '<td>' + data.summary + '</td>'
-                        + '<td>' + data.classificationValue + '</td>'
-                        + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
-                        + '</tr>');
-            });
-            objTable.append(serviceListHtml);
-        }
-
+        SERVICE_SOURCE_LIST = data.list;
+        printServiceList(SERVICE_SOURCE_LIST);
     };
 
+    // [앱 개발환경] 리스트 출력
+    function printServiceList(dataList) {
 
-    /* ************ 상세 *********** */
+        var objTable = $('#serviceList');
+        objTable.html('');
+
+        STARTER_SERVICE_LIST = dataList;
+
+        $.each(dataList, function (id, data) {
+
+            var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
+            objTable.append('<tr style="cursor:pointer;" data-id='+data.no+'>'
+                    + '<td>' + data.name + '</td>'
+                    + '<td>' + data.summary + '</td>'
+                    + '<td>' + data.classificationValue + '</td>'
+                    + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
+                    + '</tr>');
+        });
+
+        if(dataList.length == 0){
+            objTable.append('<tr><td colspan="4">'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
+        }
+    };
+
     // [앱 템플릿] 상세
     var getStarter = function(id){
 
@@ -1420,6 +1509,49 @@
         }
     }
 
+//   validation Duplicate Name
+//    var checkDupNameCount = function(){
+//        var name;
+//        var url;
+//        var callback;
+//
+//        if(ACTIVE_TAB == 'starter'){
+//            name = $('#starterName').val();
+//            url = STARTER_PACK_PROC_URL;
+//            callback = procCallbackCheckDupStarterNameCount;
+//        }else if(ACTIVE_TAB == 'dev'){
+//            id = $('#devEnvName').val();
+//            url = DEVELOP_PACK_PROC_URL;
+//            callback = procCallbackCheckDupDevEnvNameCount;
+//        }else if(ACTIVE_TAB == 'service'){
+//            id = $('#serviceName').val();
+//            url = SERVICE_PACK_PROC_URL;
+//            callback = procCallbackCheckDupServiceNameCount;
+//        }
+//
+//        procCallAjax( url +"/count", "GET",{"name":name}, callback, null);
+//    }
+//
+//    function procCallbackCheckDupStarterNameCount(data){
+//        if( !(data.startpackcount < 1) ){
+//            return false;
+//        }
+//    }
+//
+//    function procCallbackCheckDupDevEnvNameCount(data){
+//        if( !(data.buildpackcount < 1) ){
+//            return false;
+//        }
+//    }
+//
+//    function procCallbackCheckDupServiceNameCount(data){
+//        if( !(data.servicepackcount < 1) ){
+//            return false;
+//        }
+//    }
+
+
+
 
     /* ************ C.U.D *********** */
     //  [앱 템플릿] 생성
@@ -1448,7 +1580,7 @@
     //  [앱 템플릿] 수정 (파일저장 전 처리)
     function updateStarter() {
 
-        if (!procCheckValidStringSpaceClass('checkStarterForm')){
+        if (!procCheckValidStringSpaceClass("checkStarterForm")){
             return false;
         };
 
@@ -1493,7 +1625,7 @@
             }
         }
 
-        notifyAlert('success',"",'수정 완료 되었습니다.');
+        notifyAlert('success',"","수정 완료 되었습니다.");
     }
 
     // [앱 템플릿] 수정 (파일저장 후 처리)
@@ -1523,10 +1655,10 @@
         $("#popupTitle").html(title+" 삭제");
         $("#popupMessage").html(name +/*[[#{delete.confirm.message('')}]]*/ "");
         $("#popupButtonText").text("삭제");
-        $("#popupButtonText").addClass('pull-left');
+        $("#popupButtonText").addClass("pull-left");
         $("#popupButtonText").show();
 
-        $('#confirmModal').modal('toggle');
+        $('#confirmModal').modal("toggle");
     }
 
     //  [앱 템플릿][앱 개발환경][앱 서비스] 삭제
@@ -1985,9 +2117,9 @@
             };
 
             reader.onloadend = function (e) {
-                if (img_size > MAX_SIZE) {
+                if (img_size > THUMB_MAX_SIZE) {
                     resetThumbnail();
-                    var alertMessage = '이미지 크기는 ' + MAX_SIZE + 'Kb를 넘을 수 없습니다.';
+                    var alertMessage = '이미지 크기는 ' + THUMB_MAX_SIZE + 'Kb를 넘을 수 없습니다.';
                     notifyAlert('warning','',alertMessage);
 
                     return false;

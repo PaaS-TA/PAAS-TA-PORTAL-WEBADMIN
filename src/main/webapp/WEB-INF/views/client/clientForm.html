@@ -166,6 +166,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
   if(INSERT_FLAG == null){
     INSERT_FLAG = "";
   }
+  var TO_LIST = "/clientMain";
 
   var CLIENT_PATH = "/client/clients";
 
@@ -238,7 +239,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     if (!procCheckValidation(param)) return false;
 
     if (clientOption.val().indexOf(checkString) == -1) {
-      procAlert("warning", '<spring:message code="common.client.option.validation.error.message" />');
+      procAlert("warning", ''); // common.client.option.validation.error.message
       clientOption.focus();
       return false;
     }
