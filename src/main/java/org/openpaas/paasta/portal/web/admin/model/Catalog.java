@@ -51,6 +51,7 @@ public class Catalog {
     private String appSampleFileName;
     private String appSampleFilePath;
     private int appSampleFileSize;
+    private String docFileUrl;
     private String appBindYn;
     private String parameter;
     private String appBindParameter;
@@ -218,6 +219,24 @@ public class Catalog {
      */
     public void setThumbImgPath(String thumbImgPath) {
         this.thumbImgPath = thumbImgPath;
+    }
+
+    /**
+     * GETTER 문서 파일 경로
+     *
+     * @param docFileUrl 문서 파일 경로
+     */
+    public String getDocFileUrl() {
+        return docFileUrl;
+    }
+
+    /**
+     * SETTER 문서 파일 경로
+     *
+     * @param docFileUrl 문서 파일 경로
+     */
+    public void setDocFileUrl(String docFileUrl) {
+        this.docFileUrl = docFileUrl;
     }
 
     /**
@@ -911,6 +930,7 @@ public class Catalog {
                 ", appSampleFileName='" + appSampleFileName + '\'' +
                 ", appSampleFilePath='" + appSampleFilePath + '\'' +
                 ", appSampleFileSize=" + appSampleFileSize +
+                ", docFileUrl=" + docFileUrl +
                 ", appBindYn='" + appBindYn + '\'' +
                 ", parameter='" + parameter + '\'' +
                 ", appBindParameter='" + appBindParameter + '\'' +

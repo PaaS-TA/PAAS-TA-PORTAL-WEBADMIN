@@ -2,7 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="../layout/default">
-<head></head>
+<head>
+    <script layout:fragment="ext_inc_script" type="text/javascript" src="/resources/bower_components/ckeditor/ckeditor.js"
+            th:src="@{../../resources/bower_components/ckeditor/ckeditor.js}"></script>
+</head>
 <body>
 <div>
     <header></header>
@@ -350,6 +353,7 @@
                                             </div>
 
                                         </div>
+
                                         <div class="form-group">
                                             <label for="starterThumbnail" class="col-sm-3 control-label">썸네일</label>
 
@@ -522,26 +526,18 @@
                                                 <!-- -->
                                                 <div style="padding: 19px; background-color: #f5f5f5; border: 1px solid #e3e3e3;">
                                                         <div id="devEnvLabelAppName">
-                                                            <a href="javascript:void(0);" onclick="procDownload('http://115.68.46.218:10008/v1/KEY_b8a1fd0cba6640688712e5f2f838baeb/portal-container/518430f68e0c48919d7c4afa467ab80a-1527060543260-cHl0aG9uLXNhbXBsZS56aXA%3D', 'python-sample.zip')">python-sample.zip (3.12 KB)</a>
-                                                            <!--<a href="" >첨부된 파일이 없습니다.</a>-->
-                                                            <i class="fa fa-times file-remove-button" id="devEnvAppRemove" name="appRemove"></i>
                                                         </div>
                                                 </div>
 
-                                                <!--<div class="pull-left" style="margin: 47px 20px;">-->
-
-                                                    <!--<div>-->
-                                                        <!--<label id="devEnvLabelAppName"></label>-->
-                                                        <!--<div id="devEnvAppRemove" name="appRemove" class="pull-right file-remove-button">-->
-                                                            <!--<i class="fa fa-times"></i>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-
-
-                                                <!--</div>-->
-                                                <!-- -->
                                             </div>
 
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="devEnvDocFileUrl" class="col-sm-3 control-label">문서 URL</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="devEnvDocFileUrl" name="name" placeholder="http://" />
+                                            </div>
                                         </div>
 
                                         <div class="form-group required">
@@ -577,8 +573,16 @@
                                             <label for="devEnvDescription" class="col-sm-3 control-label">설명</label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" rows="5" id="devEnvDescription"></textarea>
+                                                <script th:inline="javascript" type="text/javascript">
+                                                    /*<![CDATA[*/
+                                                    // Replace the <textarea id="editor1"> with a CKEditor
+                                                    // instance, using default configuration.
+                                                    CKEDITOR.replace( 'devEnvDescription' );
+                                                    /*]]>*/
+                                                </script>
                                             </div>
                                         </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -670,6 +674,13 @@
                                                 <!-- -->
                                             </div>
 
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="serviceDocFileUrl" class="col-sm-3 control-label">문서 URL</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="serviceDocFileUrl" name="name" placeholder="http://" />
+                                            </div>
                                         </div>
 
                                         <div class="form-group" name="serviceParamForm">
@@ -787,8 +798,16 @@
                                             <label for="serviceDescription" class="col-sm-3 control-label">설명</label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" rows="5" id="serviceDescription"></textarea>
+                                                <script th:inline="javascript" type="text/javascript">
+                                                    /*<![CDATA[*/
+                                                    // Replace the <textarea id="editor1"> with a CKEditor
+                                                    // instance, using default configuration.
+                                                    CKEDITOR.replace( 'serviceDescription' );
+                                                    /*]]>*/
+                                                </script>
                                             </div>
                                         </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -796,7 +815,6 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" id="serviceDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
-                            <!--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">목록</button>-->
                             <button type="button" id="serviceSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateService();">저장</button>
                             <button type="button" id="serviceRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createService();">등록</button>
                             <button type="button" id="serviceCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
@@ -1411,7 +1429,9 @@
             //요약
             $("#devEnvSummary").val(entity.summary);
             //설명
-            $("#devEnvDescription").val(entity.description);
+            CKEDITOR.instances.devEnvDescription.setData(entity.description);
+            //문서URL
+            $('#devEnvDocFileUrl').val(entity.docFileUrl);
         }
     }
 
@@ -1505,7 +1525,9 @@
             //요약
             $("#serviceSummary").val(entity.summary);
             //설명
-            $("#serviceDescription").val(entity.description);
+            CKEDITOR.instances.serviceDescription.setData(entity.description);
+            //문서URL
+            $('#serviceDocFileUrl').val(entity.docFileUrl);
         }
     }
 
@@ -1730,7 +1752,8 @@
             buildPackName       : $("#buildPackDevEnvList").val(),
             useYn               : $("input[name=devEnvUseYn]:checked").val(),
             summary             : $("#devEnvSummary").val(),
-            description         : $("#devEnvDescription").val()
+            description         : CKEDITOR.instances.devEnvDescription.getData(),
+            docFileUrl          : $("#devEnvDocFileUrl").val()
         };
 
         if(fileInfo){
@@ -1776,7 +1799,8 @@
             dashboardUseYn              : $("input[name=dashBoardUseYn]:checked").val(),
             useYn                       : $("input[name=serviceUseYn]:checked").val(),
             summary                     : $("#serviceSummary").val(),
-            description                 : $("#serviceDescription").val()
+            description                 : CKEDITOR.instances.serviceDescription.getData(),
+            docFileUrl                  : $("#serviceDocFileUrl").val()
         };
 
         if(fileInfo){
