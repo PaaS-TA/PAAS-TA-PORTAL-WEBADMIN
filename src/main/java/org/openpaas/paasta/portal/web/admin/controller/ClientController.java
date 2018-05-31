@@ -129,14 +129,14 @@ public class ClientController  extends Common {
     /**
      * 클라이언트 삭제
      *
-     * @param param Map
+     * @param clientId
      * @return Map map
      * @throws Exception the exception
      */
-    @DeleteMapping(value = {Constants.V2_URL + "/clients"})
+    @DeleteMapping(value = {Constants.V2_URL + "/clients/{clientId}"})
     @ResponseBody
-    public Map<String, Object> deleteClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procRestTemplate(Constants.V2_URL + "/clients", HttpMethod.DELETE, param, this.getToken());
+    public Map<String, Object> deleteClient(@PathVariable String clientId) throws Exception {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/clients/" + clientId, HttpMethod.DELETE, null, this.getToken());
     }
 
 }
