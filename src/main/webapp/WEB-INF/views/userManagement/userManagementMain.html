@@ -323,7 +323,7 @@
 
     // DELETE USER ACCOUNT
     var deleteUserAccount = function (reqUserId) {
-        userManagementCallAjax(REST_URL+"/" + reqUserId+ "/authority", {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
+        userManagementCallAjax(REST_URL+"/" + reqUserId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
     };
 
 
