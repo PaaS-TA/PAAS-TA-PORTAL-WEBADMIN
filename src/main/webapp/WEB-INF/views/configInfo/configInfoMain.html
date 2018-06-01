@@ -222,19 +222,19 @@
         if (0 != value.length) {
             if (0 == value.replace(/ /g,"").length) {
                 $('#' + name).focus();
-                procAlert("warning", /*[[#{common.info.empty.req.data}]]*/ "");
+                notifyAlert("warning", "" ,/*[[#{common.info.empty.req.data}]]*/ "");
                 return false;
             }
 
             if (value.includes(' ')) {
                 $('#' + name).focus();
-                procAlert("warning",/*[[#{common.url.validation.error.message}]]*/ "");
+                notifyAlert("warning", "" ,/*[[#{common.url.validation.error.message}]]*/ "");
                 return false;
             }
             if(name!='smtp_url'){
                 if (!procCheckValidUrl(value)) {
                     $('#' + name).focus();
-                    procAlert("warning", /*[[#{common.url.validation.error.message}]]*/ "");
+                    notifyAlert("warning", "" ,/*[[#{common.url.validation.error.message}]]*/ "");
                     return false;
                 }
             }
@@ -255,7 +255,7 @@
             contentType: "application/json",
             success: function(data){
                 if(data){
-                    procAlert("success", '설정이 저장되었습니다.');
+                    notifyAlert("success", "" ,"설정이 저장되었습니다.");
                 }
             }
         });
