@@ -58,6 +58,7 @@ public class Catalog {
     private int diskSize;
     private int MemorySize;
     private String dashboardUseYn;
+    private String tagsParam;
 
     /**
      * GETTER 카탈로그 번호
@@ -224,7 +225,7 @@ public class Catalog {
     /**
      * GETTER 문서 파일 경로
      *
-     * @param docFileUrl 문서 파일 경로
+     * @return docFileUrl 문서 파일 경로
      */
     public String getDocFileUrl() {
         return docFileUrl;
@@ -843,7 +844,7 @@ public class Catalog {
     /**
      * SETTER 파라미터
      *
-     * @param app_bind_parameter 파라미터
+     * @param appBindParameter 파라미터
      */
 
     public void setAppBindParameter(String appBindParameter) {
@@ -904,23 +905,6 @@ public class Catalog {
         this.dashboardUseYn = dashboardUseYn;
     }
 
-    /**
-     * GETTER 요금 유료/무료
-     *
-     * @return 요금 유료/무료
-     */
-    public String getPay() {
-        return pay;
-    }
-
-    /**
-     * SETTER 대시보드 사용유무
-     *
-     * @param pay 요금 유료/무료
-     */
-    public void setPay(String pay) {
-        this.pay = pay;
-    }
 
     @Override
     public String toString() {
