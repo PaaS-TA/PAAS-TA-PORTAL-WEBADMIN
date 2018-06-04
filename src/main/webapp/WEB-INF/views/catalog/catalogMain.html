@@ -362,6 +362,28 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group">
+                                            <label for="isstarterPayArea" class="col-sm-3 control-label">유료/무료</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isstarterPayArea" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="starterpayYn" value="Y"/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="starterpayYn" value="N" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
                                         <div class="form-group required">
                                             <label for="summary" class="col-sm-3 control-label">요약</label>
                                             <div class="col-sm-9">
@@ -511,6 +533,28 @@
                                                     <div class="col-sm-10">
                                                         <label>
                                                             <input type="radio" name="devEnvUseYn" value="N" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="isdevEnvPayArea" class="col-sm-3 control-label">유료/무료</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isdevEnvPayArea" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="devEnvpayYn" value="Y"/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="devEnvpayYn" value="N" />
                                                             N
                                                         </label>
                                                     </div>
@@ -736,6 +780,29 @@
                                                     <div class="col-sm-10">
                                                         <label>
                                                             <input type="radio" name="dashBoardUseYn" value="N" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="isPaydArea" class="col-sm-3 control-label">유료/무료</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isPaydArea" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="payYn" value="Y"/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="payYn" value="N" />
                                                             N
                                                         </label>
                                                     </div>
@@ -1314,6 +1381,10 @@
 
             //공개
             eval("$('input:radio[name=starterUseYn][value="+entity.useYn+"]').prop('checked', true);");
+
+            //유료/무료
+            eval("$('input:radio[name=starterpayYn][value="+entity.pay+"]').prop('checked', true);");
+
             //요약
             $("#summary").val(entity.summary);
             //설명
@@ -1383,6 +1454,10 @@
 
             //공개
             eval("$('input:radio[name=devEnvUseYn][value="+entity.useYn+"]').prop('checked', true);");
+
+            //유료/무료
+            eval("$('input:radio[name=devEnvpayYn][value="+entity.pay+"]').prop('checked', true);");
+
             //요약
             $("#devEnvSummary").val(entity.summary);
             //설명
@@ -1407,6 +1482,8 @@
     }
 
     var procCallbackGetServicePack = function(data){
+
+        console.log(data);
 
         var entity = data.list[0];
 
@@ -1479,6 +1556,11 @@
 
             //공개
             eval("$('input:radio[name=serviceUseYn][value="+entity.useYn+"]').prop('checked', true);");
+
+
+            //유료/무료
+            eval("$('input:radio[name=payYn][value="+entity.pay+"]').prop('checked', true);");
+
             //요약
             $("#serviceSummary").val(entity.summary);
             //설명
@@ -1682,15 +1764,18 @@
             selectedServicePackList[i] = getList.options[i].value;
         }
 
+
         var param = {
             name                        : $("#starterName").val(),
             classification              : $("#categoryList").val(),
             useYn                       : $("input[name=starterUseYn]:checked").val(),
+            pay                         : $("input[name=starterpayYn]:checked").val(),
             summary                     : $("#summary").val(),
             description                 : $("#description").val(),
             buildPackCategoryNo         : $("#buildPackList").val(),
             servicePackCategoryNoList   : selectedServicePackList
         };
+
 
         if(fileInfo){
             param.thumbImgName = fileInfo.filename;
@@ -1708,6 +1793,7 @@
             classification      : $("#categoryDevEnvList").val(),
             buildPackName       : $("#buildPackDevEnvList").val(),
             useYn               : $("input[name=devEnvUseYn]:checked").val(),
+            pay                 : $("input[name=devEnvpayYn]:checked").val(),
             summary             : $("#devEnvSummary").val(),
             description         : CKEDITOR.instances.devEnvDescription.getData(),
             docFileUrl          : $("#devEnvDocFileUrl").val()
@@ -1755,6 +1841,7 @@
             appBindParameter            : JSON.stringify(inputAppBindParamJson),
             dashboardUseYn              : $("input[name=dashBoardUseYn]:checked").val(),
             useYn                       : $("input[name=serviceUseYn]:checked").val(),
+            pay                         : $("input[name=payYn]:checked").val(),
             summary                     : $("#serviceSummary").val(),
             description                 : CKEDITOR.instances.serviceDescription.getData(),
             docFileUrl                  : $("#serviceDocFileUrl").val()

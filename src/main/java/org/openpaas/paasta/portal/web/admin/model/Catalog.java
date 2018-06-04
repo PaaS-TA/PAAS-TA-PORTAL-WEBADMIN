@@ -52,7 +52,6 @@ public class Catalog {
     private String appSampleFilePath;
     private int appSampleFileSize;
     private String docFileUrl;
-    private String tagsParam;
     private String appBindYn;
     private String parameter;
     private String appBindParameter;
@@ -905,6 +904,23 @@ public class Catalog {
         this.dashboardUseYn = dashboardUseYn;
     }
 
+    /**
+     * GETTER 요금 유료/무료
+     *
+     * @return 요금 유료/무료
+     */
+    public String getPay() {
+        return pay;
+    }
+
+    /**
+     * SETTER 대시보드 사용유무
+     *
+     * @param pay 요금 유료/무료
+     */
+    public void setPay(String pay) {
+        this.pay = pay;
+    }
 
     @Override
     public String toString() {
@@ -948,9 +964,8 @@ public class Catalog {
                 ", appSampleStartYn='" + appSampleStartYn + '\'' +
                 ", appSampleFileName='" + appSampleFileName + '\'' +
                 ", appSampleFilePath='" + appSampleFilePath + '\'' +
-                ", appSampleFileSize=" + appSampleFileSize + '\'' +
-                ", docFileUrl=" + docFileUrl + '\'' +
-                ", tagsParam='" + tagsParam + '\'' +
+                ", appSampleFileSize=" + appSampleFileSize +
+                ", docFileUrl=" + docFileUrl +
                 ", appBindYn='" + appBindYn + '\'' +
                 ", parameter='" + parameter + '\'' +
                 ", appBindParameter='" + appBindParameter + '\'' +

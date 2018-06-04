@@ -161,23 +161,23 @@ class CatalogController extends Common {
             addObject("REQUEST_NO", req.getParameter("no"));
         }};
     }
-    
+
     private ResponseEntity<byte[]> generateMethodNotAllowResponse() {
-        final ResponseEntity<byte[]> resEntity = new ResponseEntity<>( HttpStatus.METHOD_NOT_ALLOWED );
+        final ResponseEntity<byte[]> resEntity = new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
         return resEntity;
     }
 
     /**
      * 이미지 파일을 가져온다.
-     * 
+     *
      * @param thumbnailFilename
-     * @return ResponseEntity<byte[]> (relays response from storage api)
+     * @return ResponseEntity<byte   [   ]> (relays response from storage api)
      */
-    @GetMapping( V2_URL + "/thumbnail/{filename}" )
+    @GetMapping(V2_URL + "/thumbnail/{filename}")
     @ResponseBody
     public ResponseEntity<byte[]> getThumbnail(@PathVariable("filename") String thumbnailFilename) {
-        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary( thumbnailFilename, HttpMethod.GET, null, getToken() );
-        if (result.getHeaders().getContentType().toString().toLowerCase().startsWith( "image" )) {
+        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(thumbnailFilename, HttpMethod.GET, null, getToken());
+        if (result.getHeaders().getContentType().toString().toLowerCase().startsWith("image")) {
             return result;
         } else {
             return generateMethodNotAllowResponse();
@@ -188,24 +188,24 @@ class CatalogController extends Common {
      * 이미지 파일을 업로드한다.
      *
      * @param multipartFile MultipartFile(Spring 클래스)
-     * @return ResponseEntity<Map<String, Object>> (relays response from storage api)
+     * @return ResponseEntity<Map < String ,   Object>> (relays response from storage api)
      * @throws Exception Exception(자바클래스)
      */
-    @SuppressWarnings( "unchecked" )
-    @PostMapping( V2_URL + "/thumbnail" )
+    @SuppressWarnings("unchecked")
+    @PostMapping(V2_URL + "/thumbnail")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> uploadThumbnail(@RequestParam("file") MultipartFile multipartFile) throws Exception {
         try {
             MultiValueMap<String, Object> requestBodyObject = new LinkedMultiValueMap<>();
-            requestBodyObject.add( "file", new MultipartFileResource( multipartFile ) );
-            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText( null, HttpMethod.POST, requestBodyObject, getToken());
-            Map<String, Object> resultMap = new ObjectMapper().readValue( result.getBody().toString(), Map.class );
+            requestBodyObject.add("file", new MultipartFileResource(multipartFile));
+            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(null, HttpMethod.POST, requestBodyObject, getToken());
+            Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
             resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
-            
-            final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String,Object>>(resultMap, result.getHeaders(), result.getStatusCode());
+
+            final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String, Object>>(resultMap, result.getHeaders(), result.getStatusCode());
             return generateResponseEntity;
         } finally {
-            IOUtils.closeQuietly( multipartFile.getInputStream() );
+            IOUtils.closeQuietly(multipartFile.getInputStream());
         }
     }
 
@@ -215,34 +215,34 @@ class CatalogController extends Common {
      *
      * @return Response<String> (relays response from storage api)
      */
-    @DeleteMapping( V2_URL + "/thumbnail/{filename:.+}" )
+    @DeleteMapping(V2_URL + "/thumbnail/{filename:.+}")
     @ResponseBody
     public ResponseEntity<String> deleteThumbnailImage(@PathVariable("filename") String thumbnailFilename) {
-        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText( thumbnailFilename, HttpMethod.DELETE, null, getToken() );
+        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(thumbnailFilename, HttpMethod.DELETE, null, getToken());
         return result;
     }
 
     /**
      * 앱 샘플 파일을 가져온다.
-     * 
+     *
      * @param appSampleFilename
-     * @return ResponseEntity<byte[]> (relays response from storage api)
+     * @return ResponseEntity<byte   [   ]> (relays response from storage api)
      */
-    @GetMapping( V2_URL + "/appsample/{filename}" )
+    @GetMapping(V2_URL + "/appsample/{filename}")
     @ResponseBody
     public ResponseEntity<byte[]> getAppSampleFile(@PathVariable("filename") String appSampleFilename) {
-        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary( appSampleFilename, HttpMethod.GET, null, getToken() );
-        switch ( result.getHeaders().getContentType().toString().toLowerCase() ) {
-        // zip, tar, rar, bz, bz2, 7z
-        case "application/zip": 
-        case "application/x-tar": 
-        case "application/x-rar-compressed": 
-        case "application/x-bzip": 
-        case "application/x-bzip2": 
-        case "application/x-7z-compressed": 
-            return result;
-        default:
-            return generateMethodNotAllowResponse();
+        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(appSampleFilename, HttpMethod.GET, null, getToken());
+        switch (result.getHeaders().getContentType().toString().toLowerCase()) {
+            // zip, tar, rar, bz, bz2, 7z
+            case "application/zip":
+            case "application/x-tar":
+            case "application/x-rar-compressed":
+            case "application/x-bzip":
+            case "application/x-bzip2":
+            case "application/x-7z-compressed":
+                return result;
+            default:
+                return generateMethodNotAllowResponse();
         }
     }
 
@@ -250,24 +250,24 @@ class CatalogController extends Common {
      * 앱 샘플 파일을 업로드한다.
      *
      * @param multipartFile MultipartFile(Spring 클래스)
-     * @return ResponseEntity<Map<String, Object>> (relays response from storage api)
+     * @return ResponseEntity<Map < String ,   Object>> (relays response from storage api)
      * @throws Exception Exception(자바클래스)
      */
-    @SuppressWarnings( "unchecked" )
-    @PostMapping( V2_URL + "/appsample" )
+    @SuppressWarnings("unchecked")
+    @PostMapping(V2_URL + "/appsample")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> uploadAppSampleFile(@RequestParam("file") MultipartFile multipartFile) throws Exception {
         try {
             MultiValueMap<String, Object> requestBodyObject = new LinkedMultiValueMap<>();
-            requestBodyObject.add( "file", new MultipartFileResource( multipartFile ) );
-            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText( null, HttpMethod.POST, requestBodyObject, getToken());
-            Map<String, Object> resultMap = new ObjectMapper().readValue( result.getBody().toString(), Map.class );
+            requestBodyObject.add("file", new MultipartFileResource(multipartFile));
+            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(null, HttpMethod.POST, requestBodyObject, getToken());
+            Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
             resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
-            
-            final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String,Object>>(resultMap, result.getHeaders(), result.getStatusCode());
+
+            final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String, Object>>(resultMap, result.getHeaders(), result.getStatusCode());
             return generateResponseEntity;
         } finally {
-            IOUtils.closeQuietly( multipartFile.getInputStream() );
+            IOUtils.closeQuietly(multipartFile.getInputStream());
         }
     }
 
@@ -278,14 +278,14 @@ class CatalogController extends Common {
      * @param appSampleFilename
      * @return ResponseEntity&lt;String&gt; (relays response from storage api)
      */
-    @DeleteMapping( V2_URL + "/appsample/{filename}" )
+    @DeleteMapping(V2_URL + "/appsample/{filename}")
     @ResponseBody
-    public ResponseEntity<String> deleteAppSampleFile(@PathVariable("filename") String appSampleFilename ) {
-        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText( appSampleFilename, HttpMethod.DELETE, null, getToken() );
+    public ResponseEntity<String> deleteAppSampleFile(@PathVariable("filename") String appSampleFilename) {
+        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(appSampleFilename, HttpMethod.DELETE, null, getToken());
         return result;
     }
 
-    
+
     /*
      * ------------------------------------------------------------------------------------조회
      */
@@ -484,7 +484,6 @@ class CatalogController extends Common {
     @PutMapping(value = {V2_URL + "/starterpacks/{no}"})
     @ResponseBody
     public Map<String, Object> updateStarterPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
-        LOGGER.info(param.toString());
         return catalogService.updateStarterPack(no, param);
     }
 
@@ -511,6 +510,7 @@ class CatalogController extends Common {
     @PutMapping(value = {V2_URL + "/servicepacks/{no}"})
     @ResponseBody
     public Map<String, Object> updateServicePack(@PathVariable int no, @RequestBody Catalog param) throws Exception {
+        LOGGER.info("updateServicePack :::: " + param.toString());
         return catalogService.updateServicePackCatalog(no, param);
     }
 

@@ -2,6 +2,8 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.model.UserManagement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,9 @@ import java.util.Map;
  */
 @RestController
 public class UserManagementController extends Common {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
+
     private final String V2_URL = "/v2";
 
     /**
@@ -43,8 +48,9 @@ public class UserManagementController extends Common {
      */
     @GetMapping(V2_URL + "/usermgnts")
     @ResponseBody
-    public Map<String, Object> getUserInfoList() {
-        return userManagementService.getUserInfoList("/usermgnts", HttpMethod.GET, null, null);
+    public Map<String, Object> getUserInfoList(@ModelAttribute UserManagement param) {
+        LOGGER.info("UserManagement :::: " + param.toString());
+        return userManagementService.getUserInfoList("/usermgnts", HttpMethod.GET, param, null);
     }
 
     @GetMapping(V2_URL + "/usermgnts/{userid}")
@@ -58,32 +64,34 @@ public class UserManagementController extends Common {
      * 비밀번호를 초기화한다.
      *
      * @param userid user id
-     * @param param model UserManagement
+     * @param param  model UserManagement
      * @return Map(자바클래스)
      */
     @PutMapping(V2_URL + "/usermgnts/{userid}/resetpassword")
     @ResponseBody
     public Map<String, Object> setResetPassword(@PathVariable String userid, @RequestBody UserManagement param) {
-        return userManagementService.setResetPassword("/usermgnts/"+userid+"/resetpassword", HttpMethod.PUT, param, null);
+        return userManagementService.setResetPassword("/usermgnts/" + userid + "/resetpassword", HttpMethod.PUT, param, null);
     }
 
     /**
      * 운영권한을 수정한다.
+     *
      * @param userid user id
-     * @param param model UserManagement
+     * @param param  model UserManagement
      * @return Map(자바클래스)
      */
     @PutMapping(V2_URL + "/usermgnts/{userid}/authority")
     @ResponseBody
-    public Map<String, Object> updateOperatingAuthority(@PathVariable String userid, @RequestBody UserManagement param ) throws UnsupportedEncodingException {
-        return userManagementService.updateOperatingAuthority("/usermgnts/"+userid+"/authority", HttpMethod.PUT, param, null);
+    public Map<String, Object> updateOperatingAuthority(@PathVariable String userid, @RequestBody UserManagement param) throws UnsupportedEncodingException {
+        return userManagementService.updateOperatingAuthority("/usermgnts/" + userid + "/authority", HttpMethod.PUT, param, null);
     }
 
 
     /**
      * 사용자 계정을 삭제한다.
+     *
      * @param userid user id
-     * @param param model UserManagement
+     * @param param  model UserManagement
      * @return Map(자바클래스)
      */
     @DeleteMapping(V2_URL + "/usermgnts/{userid}")

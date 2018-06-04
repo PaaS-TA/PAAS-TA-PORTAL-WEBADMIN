@@ -86,6 +86,7 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
     public Map<String, Object> updateStarterPack(int no, Catalog param) {
+
         param.setUserId(commonService.getUserId());
         return commonService.procCommonApiRestTemplate(V2_URL + "/starterpacks/" + no, HttpMethod.PUT, param, null);
     }
