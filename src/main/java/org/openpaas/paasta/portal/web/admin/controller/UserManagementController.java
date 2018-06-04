@@ -1,5 +1,6 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.model.UserManagement;
 import org.slf4j.Logger;
@@ -63,14 +64,15 @@ public class UserManagementController extends Common {
     /**
      * 비밀번호를 초기화한다.
      *
-     * @param userid user id
-     * @param param  model UserManagement
+     * @param map user id
      * @return Map(자바클래스)
      */
-    @PutMapping(V2_URL + "/usermgnts/{userid}/resetpassword")
+    @PostMapping(V2_URL + "/usermgnts/password/email")
     @ResponseBody
-    public Map<String, Object> setResetPassword(@PathVariable String userid, @RequestBody UserManagement param) {
-        return userManagementService.setResetPassword("/usermgnts/" + userid + "/resetpassword", HttpMethod.PUT, param, null);
+    public Map<String, Object> setResetPassword(@RequestBody Map map) {
+
+        LOGGER.info("############### " + map.toString());
+        return userManagementService.setResetPassword("/users/password/email", HttpMethod.POST, map, null);
     }
 
     /**

@@ -87,14 +87,16 @@
 
 
         var reParam = null;
-        // if (param != null && param != '') {
-        //     reParam = JSON.stringify(param);
-        // }
+        if (param != null && param != '' && type != "GET") {
+            reParam = JSON.stringify(param);
+        }else{
+            reParam  = param;
+        }
 
         $.ajax({
             url: reqUrl,
             method: type,
-            data: param,
+            data: reParam,
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
@@ -295,7 +297,16 @@
 
     // RESET PASSWORD
     var resetPassword = function (reqUserId) {
-        userManagementCallAjax(REST_URL + "/" + reqUserId + "/resetpassword", {userId: reqUserId}, procCallbackResetPassword, "PUT");
+        alert(reqUserId)
+
+        var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+        if (regex.test(reqUserId) == false) {
+            procAlert("danger", /*[[#{common.email.validation.error.message}]]*/ "");
+        } else {
+            userManagementCallAjax(REST_URL + "/password/email", {"userid": reqUserId}, procCallbackResetPassword, "POST");
+        }
+
+
     };
 
 
