@@ -7,6 +7,7 @@ import java.util.UUID;
  * 카탈로그(모델클래스)
  * 카탈로그 정보를 가지고 있는 데이터 모델 bean 클래스
  * Json 어노테이션을 사용해서 JSON 형태로 제공
+ *
  */
 public class Catalog {
 
@@ -20,7 +21,6 @@ public class Catalog {
     private String thumbImgName;
     private String thumbImgPath;
     private String useYn;
-    private String pay;
     private String userId;
     private String created;
     private String lastModified;
@@ -58,6 +58,7 @@ public class Catalog {
     private int diskSize;
     private int MemorySize;
     private String dashboardUseYn;
+    private String tagsParam;
 
     /**
      * GETTER 카탈로그 번호
@@ -224,7 +225,7 @@ public class Catalog {
     /**
      * GETTER 문서 파일 경로
      *
-     * @param docFileUrl 문서 파일 경로
+     * @return docFileUrl 문서 파일 경로
      */
     public String getDocFileUrl() {
         return docFileUrl;
@@ -237,6 +238,24 @@ public class Catalog {
      */
     public void setDocFileUrl(String docFileUrl) {
         this.docFileUrl = docFileUrl;
+    }
+
+    /**
+     * GETTER 태그 파라미터 리스트
+     *
+     * @return 태그 파라미터 리스트
+     */
+    public String getTagsParam() {
+        return tagsParam;
+    }
+
+    /**
+     * SETTER 태그 파라미터 리스트
+     *
+     * @param tagsParam 태그 파라미터 리스트
+     */
+    public void setTagsParam(String tagsParam) {
+        this.tagsParam = tagsParam;
     }
 
     /**
@@ -825,7 +844,7 @@ public class Catalog {
     /**
      * SETTER 파라미터
      *
-     * @param app_bind_parameter 파라미터
+     * @param appBindParameter 파라미터
      */
 
     public void setAppBindParameter(String appBindParameter) {
@@ -886,26 +905,57 @@ public class Catalog {
         this.dashboardUseYn = dashboardUseYn;
     }
 
-    /**
-     * GETTER 요금 유료/무료
-     *
-     * @return 요금 유료/무료
-     */
-    public String getPay() {
-        return pay;
-    }
-
-    /**
-     * SETTER 대시보드 사용유무
-     *
-     * @param pay 요금 유료/무료
-     */
-    public void setPay(String pay) {
-        this.pay = pay;
-    }
 
     @Override
     public String toString() {
-        return "Catalog{" + "no=" + no + ", name='" + name + '\'' + ", classification='" + classification + '\'' + ", classificationValue='" + classificationValue + '\'' + ", classificationSummary='" + classificationSummary + '\'' + ", summary='" + summary + '\'' + ", description='" + description + '\'' + ", thumbImgName='" + thumbImgName + '\'' + ", thumbImgPath='" + thumbImgPath + '\'' + ", useYn='" + useYn + '\'' + ", pay='" + pay + '\'' + ", userId='" + userId + '\'' + ", created='" + created + '\'' + ", lastModified='" + lastModified + '\'' + ", buildPackName='" + buildPackName + '\'' + ", servicePackName='" + servicePackName + '\'' + ", starterCategoryNo=" + starterCategoryNo + ", servicePackCategoryNo=" + servicePackCategoryNo + ", buildPackCategoryNo=" + buildPackCategoryNo + ", searchKeyword='" + searchKeyword + '\'' + ", searchTypeColumn='" + searchTypeColumn + '\'' + ", searchTypeUseYn='" + searchTypeUseYn + '\'' + ", servicePackCategoryNoList=" + servicePackCategoryNoList + ", catalogNo=" + catalogNo + ", catalogType='" + catalogType + '\'' + ", servicePlan='" + servicePlan + '\'' + ", appName='" + appName + '\'' + ", orgName='" + orgName + '\'' + ", spaceName='" + spaceName + '\'' + ", serviceInstanceName='" + serviceInstanceName + '\'' + ", appGuid=" + appGuid + ", serviceInstanceGuid=" + serviceInstanceGuid + ", servicePlanList=" + servicePlanList + ", limitSize=" + limitSize + ", hostName='" + hostName + '\'' + ", domainName='" + domainName + '\'' + ", routeName='" + routeName + '\'' + ", appSampleStartYn='" + appSampleStartYn + '\'' + ", appSampleFileName='" + appSampleFileName + '\'' + ", appSampleFilePath='" + appSampleFilePath + '\'' + ", appSampleFileSize=" + appSampleFileSize + ", docFileUrl='" + docFileUrl + '\'' + ", appBindYn='" + appBindYn + '\'' + ", parameter='" + parameter + '\'' + ", appBindParameter='" + appBindParameter + '\'' + ", diskSize=" + diskSize + ", MemorySize=" + MemorySize + ", dashboardUseYn='" + dashboardUseYn + '\'' + '}';
+        return "Catalog{" +
+                "no=" + no +
+                ", name='" + name + '\'' +
+                ", classification='" + classification + '\'' +
+                ", classificationValue='" + classificationValue + '\'' +
+                ", classificationSummary='" + classificationSummary + '\'' +
+                ", summary='" + summary + '\'' +
+                ", description='" + description + '\'' +
+                ", thumbImgName='" + thumbImgName + '\'' +
+                ", thumbImgPath='" + thumbImgPath + '\'' +
+                ", useYn='" + useYn + '\'' +
+                ", userId='" + userId + '\'' +
+                ", created='" + created + '\'' +
+                ", lastModified='" + lastModified + '\'' +
+                ", buildPackName='" + buildPackName + '\'' +
+                ", servicePackName='" + servicePackName + '\'' +
+                ", starterCategoryNo=" + starterCategoryNo +
+                ", servicePackCategoryNo=" + servicePackCategoryNo +
+                ", buildPackCategoryNo=" + buildPackCategoryNo +
+                ", searchKeyword='" + searchKeyword + '\'' +
+                ", searchTypeColumn='" + searchTypeColumn + '\'' +
+                ", searchTypeUseYn='" + searchTypeUseYn + '\'' +
+                ", servicePackCategoryNoList=" + servicePackCategoryNoList +
+                ", catalogNo=" + catalogNo +
+                ", catalogType='" + catalogType + '\'' +
+                ", servicePlan='" + servicePlan + '\'' +
+                ", appName='" + appName + '\'' +
+                ", orgName='" + orgName + '\'' +
+                ", spaceName='" + spaceName + '\'' +
+                ", serviceInstanceName='" + serviceInstanceName + '\'' +
+                ", appGuid=" + appGuid +
+                ", serviceInstanceGuid=" + serviceInstanceGuid +
+                ", servicePlanList=" + servicePlanList +
+                ", limitSize=" + limitSize +
+                ", hostName='" + hostName + '\'' +
+                ", domainName='" + domainName + '\'' +
+                ", routeName='" + routeName + '\'' +
+                ", appSampleStartYn='" + appSampleStartYn + '\'' +
+                ", appSampleFileName='" + appSampleFileName + '\'' +
+                ", appSampleFilePath='" + appSampleFilePath + '\'' +
+                ", appSampleFileSize=" + appSampleFileSize +
+                ", docFileUrl=" + docFileUrl +
+                ", appBindYn='" + appBindYn + '\'' +
+                ", parameter='" + parameter + '\'' +
+                ", appBindParameter='" + appBindParameter + '\'' +
+                ", diskSize=" + diskSize +
+                ", MemorySize=" + MemorySize +
+                ", dashboardUseYn='" + dashboardUseYn + '\'' +
+                '}';
     }
 }
