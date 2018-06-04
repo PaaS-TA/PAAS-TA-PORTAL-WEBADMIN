@@ -15,38 +15,41 @@
             </h3>
         </section>
         <section class="content">
-              <div class="box" id="userInfoViewArea">
-                  <div class="box-header">
-                  <div class="box-tools">
-                      <div class="input-group input-group-sm" style="width: 450px;">
-                          <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="searchKeyword" onkeypress="procCheckSearchFormKeyEvent(event);"/>
-                          <div class="input-group-btn" >
-                              <button type="submit"  id="btnSearch" class="btn btn-default" onclick="procButtonClick()"><i class="fa fa-search"></i></button>
-                          </div>
-                      </div>
-                  </div>
-                      <div style="height: 30px">
-                      </div>
-                  </div>
-                    <div class="box-body" id="userInfoMessageArea"></div>
-                        <table id="userInfoTableArea" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th style="text-align: center;"> 사용자 계정 </th>
-                                <th style="text-align: center;"> 이름 </th>
-                                <th style="text-align: center;"> 전화번호 </th>
-                                <th style="text-align: center;"> 관리자 유무 </th>
-                                <th style="text-align: center;"> 상태 </th>
-                                <th style="text-align: center;"> 관리 </th>
-                            </tr>
-                            </thead>
-                            <tbody id="userInfoTable" style="text-align: center;">
-                            </tbody>
-                        </table>
-                    <!-- /.box-body -->
+            <div class="box" id="userInfoViewArea">
+                <div class="box-header">
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 450px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search"
+                                   id="searchKeyword" onkeypress="procCheckSearchFormKeyEvent(event);"/>
+                            <div class="input-group-btn">
+                                <button type="submit" id="btnSearch" class="btn btn-default"
+                                        onclick="procButtonClick()"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height: 30px">
+                    </div>
                 </div>
-            <input type="hidden" id="currentPageNo" name="currentPageNo" value="" />
-            <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="box-body" id="userInfoMessageArea"></div>
+                <table id="userInfoTableArea" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;"> 사용자 계정</th>
+                        <th style="text-align: center;"> 이름</th>
+                        <th style="text-align: center;"> 전화번호</th>
+                        <th style="text-align: center;"> 관리자 유무</th>
+                        <th style="text-align: center;"> 상태</th>
+                        <th style="text-align: center;"> 관리</th>
+                    </tr>
+                    </thead>
+                    <tbody id="userInfoTable" style="text-align: center;">
+                    </tbody>
+                </table>
+                <!-- /.box-body -->
+            </div>
+            <input type="hidden" id="currentPageNo" name="currentPageNo" value=""/>
+            <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -58,7 +61,8 @@
                             <p>One fine body…</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="modalButtonText" data-dismiss="modal">확인</button>
+                            <button type="button" class="btn btn-primary" id="modalButtonText" data-dismiss="modal">확인
+                            </button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -73,85 +77,83 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
     var V2_URL = "/v2";
-    var REST_URL = V2_URL+ "/usermgnts";
+    var REST_URL = V2_URL + "/usermgnts";
     var LOADED_LIST_COUNT = 0;
     var BOOLEN_SEARCH = false;
     var REQUEST_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
     var REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY = "UPDATE_OPERATING_AUTHORITY";
     var REQUEST_TYPE_DELETE_USER_ACCOUNT = "DELETE_USER_ACCOUNT";
-    var userManagementCallAjax = function(reqUrl, param, callback, type) {
+    var userManagementCallAjax = function (reqUrl, param, callback, type) {
 
 
         var reParam = null;
-        if((type == "PUT" || type =="DELETE") && param !=null)
-        {
-            reParam = JSON.stringify(param);
-        }
+        // if (param != null && param != '') {
+        //     reParam = JSON.stringify(param);
+        // }
 
         $.ajax({
             url: reqUrl,
             method: type,
-            data: reParam,
+            data: param,
             dataType: 'json',
             contentType: "application/json",
-            success: function(data) {
+            success: function (data) {
                 if (data) {
                     callback(data, param);
                 } else {
-                    var resData = {RESULT : RESULT_STATUS_SUCCESS,
-                        RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
+                    var resData = {
+                        RESULT: RESULT_STATUS_SUCCESS,
+                        RESULT_MESSAGE: RESULT_STATUS_SUCCESS_MESSAGE
+                    };
 
                     callback(resData, param);
                 }
             },
-            error: function(xhr, status, error) {
-                var resData = {RESULT : RESULT_STATUS_FAIL,
-                    RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
+            error: function (xhr, status, error) {
+                var resData = {
+                    RESULT: RESULT_STATUS_FAIL,
+                    RESULT_MESSAGE: JSON.parse(xhr.responseText).message
+                };
 
                 callback(resData, param);
 
                 console.log("ERROR :: error :: ", error);
                 procAlert("danger", JSON.parse(xhr.responseText).message);
             },
-            complete : function(data) {
+            complete: function (data) {
                 console.log("COMPLETE :: data :: ", data);
             }
         });
     };
 
     // GET LIST
-    var getUserInfoList = function(reqPageNo) {
+    var getUserInfoList = function (reqPageNo) {
         $('#buttonGetMoreList').hide();
 
-        var param = {searchKeyword : document.getElementById('searchKeyword').value.toLowerCase(),
-            pageSize :  /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "" ,
-            pageNo : reqPageNo
+        var param = {
+            searchKeyword: document.getElementById('searchKeyword').value.toLowerCase(),
+            pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "",
+            pageNo: reqPageNo
         };
-        if(BOOLEN_SEARCH)
-        {
-            userManagementCallAjax(REST_URL+"/"+document.getElementById('searchKeyword').value.toLowerCase(), param, procCallbackGetUserInfoList,"GET");
-            BOOLEN_SEARCH =false;
-        }
-        else{
-            userManagementCallAjax(REST_URL, param, procCallbackGetUserInfoList,"GET");
-        }
+
+        userManagementCallAjax(REST_URL, param, procCallbackGetUserInfoList, "GET");
+
     };
 
-    var procButtonClick = function()
-    {
+    var procButtonClick = function () {
         BOOLEN_SEARCH = true;
         getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "");
     }
 
-    var procCheckSearchFormKeyEvent = function(e) {
-        if (e.keyCode==13 && e.srcElement.type != 'textarea') {
+    var procCheckSearchFormKeyEvent = function (e) {
+        if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
             BOOLEN_SEARCH = true;
             getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "");
         }
     };
 
     // GET LIST CALLBACK
-    var procCallbackGetUserInfoList = function(data, reqParam) {
+    var procCallbackGetUserInfoList = function (data, reqParam) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
         var objTableArea = $('#userInfoTableArea');
         var objTable = $('#userInfoTable');
@@ -163,7 +165,7 @@
 
         document.getElementById('currentPageNo').value = reqPageNo;
 
-        if (reqPageNo == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "" ) {
+        if (reqPageNo == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "") {
             LOADED_LIST_COUNT = 0;
             objTable.html('');
         }
@@ -182,18 +184,18 @@
             var menuText = '';
 
             for (var i = 0; i < listLength; i++) {
-                boldClass = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ ""== resultList[i].adminYn ? 'fwb' : '';
+                boldClass = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "" == resultList[i].adminYn ? 'fwb' : '';
                 menuText = '운영권한 부여';
-                var telephone =  resultList[i].tellPhone == null ? '-' : resultList[i].tellPhone ;
-                if ( resultList[i].adminYn  == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") menuText = '운영권한 삭제';
+                var telephone = resultList[i].tellPhone == null ? '-' : resultList[i].tellPhone;
+                if (resultList[i].adminYn == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") menuText = '운영권한 삭제';
 
-                if ( resultList[i].status == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_STATUS_APPROVAL}]]*/  "") {
-                    htmlString.push('<tr id="Managementtable' + i + '" name=" '+ resultList[i].userId + '">'
+                if (resultList[i].status == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_STATUS_APPROVAL}]]*/  "") {
+                    htmlString.push('<tr id="Managementtable' + i + '" name=" ' + resultList[i].userId + '">'
                         + '<td class="col-md-4 ' + boldClass + '">' + resultList[i].userId + '</td>'
                         + '<td class="col-md-2 ' + boldClass + '">' + resultList[i].userName + '</td>'
-                        + '<td class="col-md-2 ' + boldClass + '">'  + telephone  + '</td>'
+                        + '<td class="col-md-2 ' + boldClass + '">' + telephone + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
-                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-primary">' + '승인' + '</span>'+'</td>'
+                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-primary">' + '승인' + '</span>' + '</td>'
                         + '<td class="col-md-2 tac ' + boldClass + '">'
                         + '<div class="dropdown">'
                         + '<label class="fa fa-gears" id="dropdownMenu' + i + '" ' + 'data-toggle="dropdown" aria-expanded="false" aria-hidden="true" style="cursor: pointer;"></label>'
@@ -208,7 +210,7 @@
                         + '<td class="col-md-3 ' + boldClass + '">' + resultList[i].userName + '</td>'
                         + '<td class="col-md-2 ' + boldClass + '">' + telephone + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
-                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + '생성' + '</span>'+ '</td>'
+                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + '생성' + '</span>' + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">'
                         + '<div class="dropdown"><label class="fa fa-gears" style="color: #dddddd;"></label>'
                         + '</div>');
@@ -235,7 +237,7 @@
 
 
     // GET MORE LIST
-    var procGetMoreList = function() {
+    var procGetMoreList = function () {
         getUserInfoList(parseInt(document.getElementById('currentPageNo').value) + 1);
     };
 
@@ -247,7 +249,7 @@
         var reqFunction = '';
         var reqButton = '';
         if (REQUEST_TYPE_RESET_PASSWORD == reqType) {
-            if (!procCheckEmailValidation(reqUserId)){
+            if (!procCheckEmailValidation(reqUserId)) {
                 return false;
             }
             reqMessage = /*[[#{common.info.popup.reset.password.message}]]*/ "";
@@ -270,7 +272,7 @@
         modalInit('사용자 관리', reqMessage, reqFunction, reqButton);
     };
 
-    var modalInit = function(reqTitle, reqMessage, procFunction, reqButtonText) {
+    var modalInit = function (reqTitle, reqMessage, procFunction, reqButtonText) {
         if (reqTitle == null || reqTitle.length < 1) return false;
         if (reqMessage == null || reqMessage.length < 1) return false;
         if (procFunction == null) return false;
@@ -287,19 +289,18 @@
 
 
     // CLOSE POPUP
-    var procClosePopup = function() {
+    var procClosePopup = function () {
         $('div.modal').modal();
     };
 
     // RESET PASSWORD
     var resetPassword = function (reqUserId) {
-        userManagementCallAjax(REST_URL+"/" + reqUserId + "/resetpassword", {userId : reqUserId}, procCallbackResetPassword,"PUT");
+        userManagementCallAjax(REST_URL + "/" + reqUserId + "/resetpassword", {userId: reqUserId}, procCallbackResetPassword, "PUT");
     };
 
 
-
     // RESET PASSWORD CALLBACK
-    var procCallbackResetPassword = function(data) {
+    var procCallbackResetPassword = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
         procAlert("success", /*[[#{common.info.result.success}]]*/ "");
@@ -308,12 +309,12 @@
 
     // UPDATE OPERATING AUTHORITY
     var updateOperatingAuthority = function (reqUserId) {
-        userManagementCallAjax(REST_URL+"/" + reqUserId + "/authority", {userId : reqUserId}, procCallbackUpdateOperatingAuthority,"PUT");
+        userManagementCallAjax(REST_URL + "/" + reqUserId + "/authority", {userId: reqUserId}, procCallbackUpdateOperatingAuthority, "PUT");
     };
 
 
     // UPDATE OPERATING AUTHORITY CALLBACK
-    var procCallbackUpdateOperatingAuthority = function(data) {
+    var procCallbackUpdateOperatingAuthority = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
         procInitPage();
@@ -323,12 +324,12 @@
 
     // DELETE USER ACCOUNT
     var deleteUserAccount = function (reqUserId) {
-        userManagementCallAjax(REST_URL+"/" + reqUserId, {userId : reqUserId}, procCallbackDeleteUserAccount,"DELETE");
+        userManagementCallAjax(REST_URL + "/" + reqUserId, {userId: reqUserId}, procCallbackDeleteUserAccount, "DELETE");
     };
 
 
     // DELETE USER ACCOUNT CALLBACK
-    var procCallbackDeleteUserAccount = function(data) {
+    var procCallbackDeleteUserAccount = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
         procInitPage();
@@ -343,21 +344,21 @@
         var regExpPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
         if (!regExpPattern.test(reqUserId)) {
             //procAlert("danger", /*[[#{common.email.validation.error.message}]]*/ "");
-            notifyAlert('danger',"",/*[[#{common.email.validation.error.message}]]*/ "");
+            notifyAlert('danger', "", /*[[#{common.email.validation.error.message}]]*/ "");
             return false;
         }
         return true;
     };
     // INIT PAGE
-    var procInitPage = function() {
+    var procInitPage = function () {
         procAlert("info", WELCOME_MESSAGE);
         $('#userInfoViewArea').hide();
-        getUserInfoList( /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "");
+        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "");
     };
 
 
     // ON LOAD
-    $(document.body).ready(function() {
+    $(document.body).ready(function () {
         procInitPage();
     });
     /*]]>*/

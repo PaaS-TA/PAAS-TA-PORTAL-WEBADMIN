@@ -27,6 +27,7 @@ public class UserManagement {
     private String searchKeyword;
     private int totalCount;
 
+
     /**
      * GETTER 사용자 아이디
      *
