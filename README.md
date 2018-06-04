@@ -1,4 +1,4 @@
-# PAAS-TA-PORTAL-WEBUSER
+# PAAS-TA-PORTAL-WEBADMIN
 
 ## 버전 정보
 Portal v2.0 Sprint를 수정중인 버전이다.
