@@ -52,6 +52,7 @@ public class Catalog {
     private String appSampleFilePath;
     private int appSampleFileSize;
     private String docFileUrl;
+    private String tagsParam;
     private String appBindYn;
     private String parameter;
     private String appBindParameter;
@@ -237,6 +238,24 @@ public class Catalog {
      */
     public void setDocFileUrl(String docFileUrl) {
         this.docFileUrl = docFileUrl;
+    }
+
+    /**
+     * GETTER 태그 파라미터 리스트
+     *
+     * @return 태그 파라미터 리스트
+     */
+    public String getTagsParam() {
+        return tagsParam;
+    }
+
+    /**
+     * SETTER 태그 파라미터 리스트
+     *
+     * @param tagsParam 태그 파라미터 리스트
+     */
+    public void setTagsParam(String tagsParam) {
+        this.tagsParam = tagsParam;
     }
 
     /**
@@ -929,8 +948,9 @@ public class Catalog {
                 ", appSampleStartYn='" + appSampleStartYn + '\'' +
                 ", appSampleFileName='" + appSampleFileName + '\'' +
                 ", appSampleFilePath='" + appSampleFilePath + '\'' +
-                ", appSampleFileSize=" + appSampleFileSize +
-                ", docFileUrl=" + docFileUrl +
+                ", appSampleFileSize=" + appSampleFileSize + '\'' +
+                ", docFileUrl=" + docFileUrl + '\'' +
+                ", tagsParam='" + tagsParam + '\'' +
                 ", appBindYn='" + appBindYn + '\'' +
                 ", parameter='" + parameter + '\'' +
                 ", appBindParameter='" + appBindParameter + '\'' +
