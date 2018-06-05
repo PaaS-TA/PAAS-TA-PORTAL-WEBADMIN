@@ -792,12 +792,12 @@
                                         </div>
 
 
-                                        <div class="form-group" name="tagParamForm">
+                                        <div class="form-group" name="tagParamForm" style="height:50px;">
                                             <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <input type="text" class="form-control" id="tagParamInput" name="tagParamInput"/>
                                             </div>
-                                            <div class="col-sm-3 col-xs-6">
+                                            <div class="col-sm-2 col-xs-3">
                                                 <select class="form-control" name="tagParamType" style="width:auto;">
                                                     <option value="colors1">tag1</option>
                                                     <option value="colors2">tag2</option>
@@ -807,24 +807,16 @@
                                                     <option value="colors6">tag6</option>
                                                 </select>
                                             </div>
+                                            <div class="col-sm-1 col-xs-3">
+                                                <div class="col-sm-1 col-xs-1">
+                                                    <button class="user_btn colors1 hide" name="tagPreview" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
+                                                </div>
+                                            </div>
                                             <div class="col-sm-2 col-xs-3">
                                                 <button type="button" class="btn btn-sm btn-primary" id="tagParamAdd" name="tagParamAdd">추가</button>
                                             </div>
-
-
-
                                         </div>
-                                        <div class="form-group">
-                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label"></label>
-                                            <div class="col-sm-3 col-xs-1" style="width: 400px">
-                                                <button class="user_btn user_colors1">tag1</button>
-                                                <button class="user_btn user_colors2">tab2</button>
-                                                <button class="user_btn user_colors3">tag3</button>
-                                                <button class="user_btn user_colors4">tag4</button>
-                                                <button class="user_btn user_colors5">tag5</button>
-                                                <button class="user_btn user_colors6">tag6</button>
-                                            </div>
-                                        </div>
+
                                         <div class="form-group required">
                                             <label for="serviceSummary" class="col-sm-3 control-label">요약</label>
                                             <div class="col-sm-9">
@@ -1105,7 +1097,32 @@
             procSearchByKeyword();
         });
 
+        // [앱서비스][태그] 추가 이벤트
+        $(document).on("click", "#tagParamAdd" ,function(e){
+            appTagParamAdd();
+        })
 
+        // [앱서비스][태그] 삭제 이벤트
+        $(document).on("click", "button[name=tagParamRemove]" ,function(e) {
+            var index = $('button[name=tagParamRemove]').index(this) +1 ;
+            $('div[name=tagParamForm]:eq('+index+')').remove();
+        });
+
+        // [앱서비스][태그] PREVIEW
+        $(document).on("change keyup","input[name=tagParamInput],select[name=tagParamType]",function(e){
+            var target          = $(e.target).closest("div[name=tagParamForm]");
+            var text            = target.find("input[name=tagParamInput]").val();
+            var textClass       = target.find("select[name=tagParamType]").val();
+            var tagPreviewArea  = target.find("button[name=tagPreview]");
+
+            if(text == ""){
+                tagPreviewArea.addClass("hide");
+            }else{
+                tagPreviewArea.text(text);
+                tagPreviewArea.removeClass('hide');
+                tagPreviewArea.addClass(textClass);
+            }
+        })
 
     });
 
@@ -1497,8 +1514,6 @@
 
     var procCallbackGetServicePack = function(data){
 
-        console.log(data);
-
         var entity = data.list[0];
 
         if(entity){
@@ -1563,6 +1578,21 @@
                         setAppBindParam(index, key, value)
                     }else{
                         appBindParamAdd(index, key, value);
+                    }
+                    index++;
+                });
+            }
+
+            // 태그 리스트
+            if(entity.tagsParam != ''){ // entity.useYn
+                var obj = jQuery.parseJSON(entity.tagsParam);
+                var index = 0;
+                $.each(obj,function(key, value) {
+                    //console.log('key:'+key+', value:'+value);
+                    if(index == 0){
+                        setTagParam(index, key, value)
+                    }else{
+                        appTagParamAdd(index, key, value);
                     }
                     index++;
                 });
@@ -1845,6 +1875,17 @@
             }
         });
 
+        // 태그
+        var inputTagParamJson = new Object();
+
+        $.each( $("input[name=tagParamInput]") , function (index, data) {
+            var jsonKey   = eval("$('input[name=tagParamInput]:eq("+index+")').val()");
+            var jsonValue = eval("$('select[name=tagParamType]:eq("+index+")').val()");
+            if(jsonKey != ""){
+                inputTagParamJson[jsonKey] = jsonValue;
+            }
+        });
+
         var param = {
             name                        : $("#serviceName").val(),
             classification              : $("#categoryServiceList").val(),
@@ -1858,7 +1899,8 @@
             pay                         : $("input[name=payYn]:checked").val(),
             summary                     : $("#serviceSummary").val(),
             description                 : CKEDITOR.instances.serviceDescription.getData(),
-            docFileUrl                  : $("#serviceDocFileUrl").val()
+            docFileUrl                  : $("#serviceDocFileUrl").val(),
+            tagsParam                   : JSON.stringify(inputTagParamJson)
         };
 
         if(fileInfo){
@@ -2280,10 +2322,13 @@
             // 초기화
             $('input[name=serviceParamInput]').val("");
             $('input[name=appBindParamInput]').val("");
+            $('input[name=tagParamInput]').val("");
 
             // 파라미터 추가 영역 삭제
             $('.service-param-added').remove();
             $('.app-bind-param-added').remove();
+            $('.tag-param-added').remove();
+
 
             $('div[name=appRemove]').trigger('click');
         }
@@ -2538,16 +2583,21 @@
             +"       <div class='col-sm-4 col-xs-3'>"
             +"           <input type='text' class='form-control' name='tagParamInput'/>"
             +"       </div>"
-            +"       <div class='col-sm-3 col-xs-6'>"
+            +"       <div class='col-sm-2 col-xs-3'>"
             +"           <select class='form-control' name='tagParamType' style='width:auto;'>"
-            +"               <option value='text'>tag1</option>"
-            +"               <option value='password'>tag2</option>"
-            +"               <option value='default'>tag3</option>"
-            +"               <option value='userAppointed'>tag4</option>"
-            +"               <option value='userAppointed'>tag5</option>"
-            +"               <option value='userAppointed'>tag6</option>"
+            +"               <option value='colors1'>tag1</option>"
+            +"               <option value='colors2'>tag2</option>"
+            +"               <option value='colors3'>tag3</option>"
+            +"               <option value='colors4'>tag4</option>"
+            +"               <option value='colors5'>tag5</option>"
+            +"               <option value='colors6'>tag6</option>"
             +"           </select>"
             +"       </div>"
+            +"   </div>"
+            +"   <div class='col-sm-1 col-xs-3'>"
+            +"        <div class='col-sm-1 col-xs-1'>"
+            +"          <button class='user_btn colors1 hide' name='tagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
+            +"     </div>"
             +"   </div>"
             +"   <div class='col-sm-2 col-xs-3'>"
             +"       <button type='button' class='btn btn-sm btn-danger' name='tagParamRemove'>삭제</button>"
@@ -2555,6 +2605,25 @@
             +" </div>";
 
         $('div[name=tagParamForm]:last').after(tempHtml);
+
+        if(input !== undefined){
+            eval("$('button[name=tagPreview]:eq("+index+")').text('"+input+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').removeClass('hide')");
+            setTagParam(index, input, type);
+        }
+    }
+
+    // [앱 서비스] 상세 - [앱 바인드 파라미터] 셋팅
+    function setTagParam(index, input, type){
+        eval("$('input[name=tagParamInput]:eq("+index+")').val('"+input+"')");
+        eval("$('select[name=tagParamType]:eq("+index+")').val('"+type+"')");
+
+        if(input !== undefined){
+            eval("$('button[name=tagPreview]:eq("+index+")').text('"+input+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').removeClass('hide')");
+        }
     }
 
 
