@@ -5,6 +5,8 @@
 <head>
     <script layout:fragment="ext_inc_script" type="text/javascript" src="/resources/bower_components/ckeditor/ckeditor.js"
             th:src="@{../../resources/bower_components/ckeditor/ckeditor.js}"></script>
+
+
 </head>
 <body>
 <div>
@@ -174,6 +176,7 @@
                                                 <button type="button" class="btn btn-block btn-primary btn-sm" id="serviceRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceFormModal">
                                                     앱 서비스 등록
                                                 </button>
+
                                             </div>
                                         </div>
 
@@ -789,28 +792,39 @@
                                         </div>
 
 
+                                        <div class="form-group" name="tagParamForm">
+                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <div class="col-sm-4 col-xs-3">
+                                                <input type="text" class="form-control" id="tagParamInput" name="tagParamInput"/>
+                                            </div>
+                                            <div class="col-sm-3 col-xs-6">
+                                                <select class="form-control" name="tagParamType" style="width:auto;">
+                                                    <option value="colors1">tag1</option>
+                                                    <option value="colors2">tag2</option>
+                                                    <option value="colors3">tag3</option>
+                                                    <option value="colors4">tag4</option>
+                                                    <option value="colors5">tag5</option>
+                                                    <option value="colors6">tag6</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2 col-xs-3">
+                                                <button type="button" class="btn btn-sm btn-primary" id="tagParamAdd" name="tagParamAdd">추가</button>
+                                            </div>
+
+
+
+                                        </div>
                                         <div class="form-group">
-                                            <label for="isPaydArea" class="col-sm-3 control-label">유료/무료</label>
-                                            <div class="col-sm-9">
-
-                                                <div id="isPaydArea" class="radio">
-                                                    <div class="col-sm-2">
-                                                        <label>
-                                                            <input type="radio" name="payYn" value="Y"/>
-                                                            Y
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-sm-10">
-                                                        <label>
-                                                            <input type="radio" name="payYn" value="N" />
-                                                            N
-                                                        </label>
-                                                    </div>
-                                                </div>
-
+                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label"></label>
+                                            <div class="col-sm-3 col-xs-1" style="width: 400px">
+                                                <button class="user_btn user_colors1">tag1</button>
+                                                <button class="user_btn user_colors2">tab2</button>
+                                                <button class="user_btn user_colors3">tag3</button>
+                                                <button class="user_btn user_colors4">tag4</button>
+                                                <button class="user_btn user_colors5">tag5</button>
+                                                <button class="user_btn user_colors6">tag6</button>
                                             </div>
                                         </div>
-
                                         <div class="form-group required">
                                             <label for="serviceSummary" class="col-sm-3 control-label">요약</label>
                                             <div class="col-sm-9">
@@ -2512,6 +2526,37 @@
         eval("$('input[name=serviceParamInput]:eq("+index+")').val('"+input+"')");
         eval("$('select[name=serviceParamType]:eq("+index+")').val('"+type+"')");
     }
+
+
+    // [앱 서비스] 상세 - [Tag 파라미터] 템플릿
+    function appTagParamAdd(index, input, type){
+
+        var tempHtml =
+            "<div class='form-group tag-param-added' name='tagParamForm'>"
+            +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+            +"   <div name='paramArea'>"
+            +"       <div class='col-sm-4 col-xs-3'>"
+            +"           <input type='text' class='form-control' name='tagParamInput'/>"
+            +"       </div>"
+            +"       <div class='col-sm-3 col-xs-6'>"
+            +"           <select class='form-control' name='tagParamType' style='width:auto;'>"
+            +"               <option value='text'>tag1</option>"
+            +"               <option value='password'>tag2</option>"
+            +"               <option value='default'>tag3</option>"
+            +"               <option value='userAppointed'>tag4</option>"
+            +"               <option value='userAppointed'>tag5</option>"
+            +"               <option value='userAppointed'>tag6</option>"
+            +"           </select>"
+            +"       </div>"
+            +"   </div>"
+            +"   <div class='col-sm-2 col-xs-3'>"
+            +"       <button type='button' class='btn btn-sm btn-danger' name='tagParamRemove'>삭제</button>"
+            +"   </div>"
+            +" </div>";
+
+        $('div[name=tagParamForm]:last').after(tempHtml);
+    }
+
 
     /*]]>*/
 </script>
