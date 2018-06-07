@@ -1687,19 +1687,21 @@
             return false;
         };
 
+        FILE_INFO = {}; // 파일정보 초기화
+
         // 파일 첨부 확인 및 업로드
         var afterThumbPath = $('#preview img').attr("src");
-        var file = $("#starterThumbnail")[0].files[0];
+        var thumbFile = $("#starterThumbnail")[0].files[0];
+
+        var formData = new FormData();
+        formData.append("file", thumbFile);
 
         if(BEFORE_THUMB_NAME == ""){
-            if(afterThumbPath == ""){
-                // NOT INCLUDE FILE
-                modifyStarterItem();
-            }else{
+            if(afterThumbPath != ""){
                 // UPLOAD FILE
-                var formData = new FormData();
-                formData.append("file", file);
-                uploadFile(formData,"POST","/v2/thumbnail",modifyStarterItem);
+                uploadFile(formData,"POST","/v2/thumbnail",updateStarterThumbFileInfo);
+            }else{
+                modifyStarter();
             }
 
         }else{
@@ -1709,33 +1711,45 @@
             var afterThumbName = afterThumbPath.substring(pathHeader + 1, pathEnd);
 
             if(BEFORE_THUMB_NAME == afterThumbName){
-                var fileInfo = {
-                    filename: $('#starterLabelThumbName').text(),
-                    fileURL: BEFORE_THUMB_PATH
-                };
-                modifyStarterItem(fileInfo);
+
+                FILE_INFO.thumbImgName  = $('#starterLabelThumbName').text();
+                FILE_INFO.thumbImgPath  = BEFORE_THUMB_PATH;
+
+                updateStarterThumbFileInfo(null);
+
             }else{
                 //기존 삭제
-                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, modifyStarterItem);
+                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, null);
+                FILE_INFO.thumbImgName = "";
+                FILE_INFO.thumbImgPath = "";
 
                 if(afterThumbPath != ""){
                     // 신규 이미지 추가
-                    var formData = new FormData();
-                    formData.append("file", file);
-                    uploadFile(formData,"POST","/v2/thumbnail", modifyStarterItem);
+                    uploadFile(formData,"POST","/v2/thumbnail", updateStarterThumbFileInfo);
+                }else{
+                    updateStarterThumbFileInfo(null);
                 }
 
             }
         }
-
         notifyAlert('success',"","수정 완료 되었습니다.");
     }
 
+
+    // [앱 템플릿] [썸네일] 파일 등록
+    function updateStarterThumbFileInfo(data){
+        if(data != null){
+            FILE_INFO.thumbImgName  = data.filename;
+            FILE_INFO.thumbImgPath  = data.fileURL;
+        }
+        modifyStarter();
+    }
+
     // [앱 템플릿] 수정 (파일저장 후 처리)
-    function modifyStarterItem(fileInfo){
+    function modifyStarter(){
         // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
         var no = $('#starterId').val();
-        procCallAjax(STARTER_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(starterParam(fileInfo)), getStarterList, null);
+        procCallAjax(STARTER_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(starterParam(FILE_INFO)), getStarterList, $('#starterModalLoadingBar') );
     }
 
     // [앱 템플릿][앱 개발환경][앱 서비스] 삭제 Confirm layer
