@@ -15,7 +15,10 @@
             </h3>
         </section>
         <section class="content">
+
             <div class="box" id="userInfoViewArea">
+                <div id="serviceModalLoadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
+
                 <div class="box-header">
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 450px;">
@@ -31,6 +34,7 @@
                     </div>
                 </div>
                 <div class="box-body" id="userInfoMessageArea"></div>
+
                 <table id="userInfoTableArea" class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -83,50 +87,7 @@
     var REQUEST_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
     var REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY = "UPDATE_OPERATING_AUTHORITY";
     var REQUEST_TYPE_DELETE_USER_ACCOUNT = "DELETE_USER_ACCOUNT";
-    var userManagementCallAjax = function (reqUrl, param, callback, type) {
 
-
-        var reParam = null;
-        if (param != null && param != '' && type != "GET") {
-            reParam = JSON.stringify(param);
-        }else{
-            reParam  = param;
-        }
-
-        $.ajax({
-            url: reqUrl,
-            method: type,
-            data: reParam,
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                if (data) {
-                    callback(data, param);
-                } else {
-                    var resData = {
-                        RESULT: RESULT_STATUS_SUCCESS,
-                        RESULT_MESSAGE: RESULT_STATUS_SUCCESS_MESSAGE
-                    };
-
-                    callback(resData, param);
-                }
-            },
-            error: function (xhr, status, error) {
-                var resData = {
-                    RESULT: RESULT_STATUS_FAIL,
-                    RESULT_MESSAGE: JSON.parse(xhr.responseText).message
-                };
-
-                callback(resData, param);
-
-                console.log("ERROR :: error :: ", error);
-                procAlert("danger", JSON.parse(xhr.responseText).message);
-            },
-            complete: function (data) {
-                console.log("COMPLETE :: data :: ", data);
-            }
-        });
-    };
 
     // GET LIST
     var getUserInfoList = function (reqPageNo) {
@@ -138,7 +99,7 @@
             pageNo: reqPageNo
         };
 
-        userManagementCallAjax(REST_URL, param, procCallbackGetUserInfoList, "GET");
+        procCallAjax(REST_URL, "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
 
     };
 
@@ -202,9 +163,9 @@
                         + '<div class="dropdown">'
                         + '<label class="fa fa-gears" id="dropdownMenu' + i + '" ' + 'data-toggle="dropdown" aria-expanded="false" aria-hidden="true" style="cursor: pointer;"></label>'
                         + '<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu' + i + '">'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId + '\')"> 비밀번호 초기화 </a></li>'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY + '\', \'' + resultList[i].userId + '\')"> ' + menuText + ' </a></li>'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\')"> 계정 삭제 </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> 비밀번호 초기화 </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + menuText + ' </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\', \'' + resultList[i].userGuid + '\')"> 계정 삭제 </a></li>'
                         + '</ul></div>');
                 } else {
                     htmlString.push('<tr id="Managementtable' + i + '">'
@@ -245,7 +206,7 @@
 
 
     // USER MANAGEMENT POPUP
-    var procUserManagementPopup = function (reqType, reqUserId) {
+    var procUserManagementPopup = function (reqType, reqUserId,reqUserGuid) {
 
         var reqMessage = '';
         var reqFunction = '';
@@ -267,7 +228,7 @@
 
         if (REQUEST_TYPE_DELETE_USER_ACCOUNT == reqType) {
             reqMessage = /*[[#{common.info.popup.delete.user.account.message}]]*/ "";
-            reqFunction = 'deleteUserAccount("' + reqUserId + '");';
+            reqFunction = 'deleteUserAccount("' + reqUserGuid + '");';
             reqButton = '삭제';
         }
 
@@ -303,7 +264,8 @@
         if (regex.test(reqUserId) == false) {
             procAlert("danger", /*[[#{common.email.validation.error.message}]]*/ "");
         } else {
-            userManagementCallAjax(REST_URL + "/password/email", {"userid": reqUserId}, procCallbackResetPassword, "POST");
+            var param = {userid: reqUserId};
+            procCallAjax(REST_URL + "/password/email", "POST", JSON.stringify(param), procCallbackResetPassword, $('#serviceModalLoadingBar'));
         }
 
 
@@ -320,7 +282,8 @@
 
     // UPDATE OPERATING AUTHORITY
     var updateOperatingAuthority = function (reqUserId) {
-        userManagementCallAjax(REST_URL + "/" + reqUserId + "/authority", {userId: reqUserId}, procCallbackUpdateOperatingAuthority, "PUT");
+        var param = {userid: reqUserId};
+        procCallAjax(REST_URL + "/" + reqUserId + "/authority", 'PUT', JSON.stringify(param), procCallbackUpdateOperatingAuthority, $('#serviceModalLoadingBar'));
     };
 
 
@@ -334,8 +297,9 @@
 
 
     // DELETE USER ACCOUNT
-    var deleteUserAccount = function (reqUserId) {
-        userManagementCallAjax(REST_URL + "/" + reqUserId, {userId: reqUserId}, procCallbackDeleteUserAccount, "DELETE");
+    var deleteUserAccount = function (reqUserGuid) {
+        var param = {guid: reqUserGuid};
+        procCallAjax(REST_URL + "/" + reqUserGuid, 'DELETE', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
     };
 
 

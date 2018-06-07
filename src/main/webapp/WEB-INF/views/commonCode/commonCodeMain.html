@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-
+                        <div id="serviceModalLoadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
                         <div class="box-footer" style="padding-bottom:0px;">
 
                             <div class="row">
@@ -58,7 +58,7 @@
 
                                         <div class="b-group pull-right">
                                             <button type="button" id="GroupRegister" class="btn btn-sm btn-primary"
-                                                    data-toggle="modal" data-target="#codeGrouprModal">등록
+                                                    data-toggle="modal" data-target="#codeGrouprModal" onclick="modalInitInsert()">등록
                                             </button>
                                         </div>
                                         <br/>
@@ -147,11 +147,11 @@
                                             <label for="id" class="col-sm-4 control-label">코드 ID</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="id"
-                                                       name="codeGroup" placeholder="ex) STARTER_CATALOG"/>
+                                                       name="codeGroup" placeholder="ex) STARTER_CATALOG" onkeypress="procCheckValidStringSpaceGroup()" onkeyup="procCheckValidStringSpaceGroup()"/>
                                                 <!--<input type="hidden" id="id"/>-->
+                                                <label id="validation_group" style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
                                             </div>
                                         </div>
-
                                         <div class="form-group">
                                             <label for="name" class="col-sm-4 control-label">코드 이름</label>
                                             <div class="col-sm-8">
@@ -174,7 +174,7 @@
                             <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right"
                                     onClick="createGroup();">등록
                             </button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left"
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" onclick="modalInit()"
                                     data-dismiss="modal">닫기
                             </button>
                         </div>
@@ -409,8 +409,6 @@
 
     function init() {
         getCodeGroupList();
-        console.log("      "+ 3)
-//        $('#useYn').attr('checked', true);
         $("#DetailRegister").hide();
 
         $('#codeGrouprModal').modal('hide');
@@ -430,37 +428,27 @@
         }
     };
 
-
+    var isGroupValidation = false;
     // CHECK VALID STRING SPACE : 'name' Unify = codeGroup
-    var procCheckValidStringSpaceGroup = function (reqString) {
-
-        var target = $("input[name='codeGroup'].toCheckString");
-        if ($("input[name='codeGroup'].toCheckString").length > 0) {
-            for (var i = 0; i < target.length; i++) {
-                if (0 == target[i].value.replace(/ /g, "").length) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
+    function procCheckValidStringSpaceGroup() {
+        var target =$("input[name='codeGroup']").val();
+        var blank_pattern = /[\s]/g;
+        if(blank_pattern.test(target) == true){
+            console.log('blank_pattern ::::');
+            $("#validation_group").show();
+            isGroupValidation = false;
             return false;
         }
-    };
 
-    // CHECK VALID STRING SPACE : 'name' Unify = codeDetail
-    var procCheckValidStringSpaceDetail = function (reqString) {
 
-        var target = $("input[name='codeDetail'].toCheckString");
-        if ($("input[name='codeDetail'].toCheckString").length > 0) {
-            for (var i = 0; i < target.length; i++) {
-                if (0 == target[i].value.replace(/ /g, "").length) {
-                    console.log(target[i].value);
-                }
-            }
-            return true;
-        } else {
+        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+        if(special_pattern.test(target) == true){
+            $("#validation_group").show();
+            isGroupValidation = false;
             return false;
         }
+        $("#validation_group").hide();
+        isGroupValidation = true;
     };
 
 
@@ -472,7 +460,8 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax2(LIST_GROUP_PROC_URL, "GET", param, procCallbackGetCodeGroupList);
+        procCallAjax(LIST_GROUP_PROC_URL, "GET", param, procCallbackGetCodeGroupList, $('#serviceModalLoadingBar'));
+
     };
 
 
@@ -484,7 +473,8 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax2(LIST_DETAIL_PROC_URL, "GET", param, procCallbackGetCodeDetailList);
+        procCallAjax(LIST_DETAIL_PROC_URL, "GET", param, procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+
     };
 
 
@@ -531,10 +521,12 @@
                     $("#id").val(data.list[0].id);
                     $("#name").val(data.list[0].name);
                 }
-
+                $("#id").attr("readonly", true);
                 $('#codeGrouprModal').modal('toggle');
+                $("#validation_group").hide();
             }
         });
+
     }
 
 
@@ -575,10 +567,18 @@
     };
 
 
+    function modalInitInsert() {
+        $("#id").attr("readonly",false);
+        $("#validation_group").hide();
+        $("#validation_detail").hide();
+    }
+
+
     function getCodeDetail(key) {
         $("#DetailRegister").show();
         $("#groupId").val(key);
-        procCallAjax2("/v2/codedetail?groupId=" + key, 'GET', '', procCallbackGetCodeDetailList);
+        procCallAjax("/v2/codedetail?groupId=" + key, "GET", '', procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+
     }
 
 
@@ -606,8 +606,8 @@
 
     //createGroup
     function createGroup() {
-
-        if (!procCheckValidStringSpaceGroup()) {
+        console.log("procCheckValidStringSpaceGroup() ::: " +isGroupValidation);
+        if (isGroupValidation == false) {
             return false;
         }
 
@@ -634,16 +634,13 @@
             }
 
         });
+        modalInit();
     }
 
     //updateGroup
     function updateGroup() {
 
         var id = $('#id').val();
-
-        if (!procCheckValidStringSpaceGroup()) {
-            return false;
-        }
 
         var param = {
             id: id,
@@ -666,13 +663,15 @@
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
         });
+        modalInit();
     }
 
     //deleteGroup
     function deleteGroupModal() {
         var groupId = $("#groupId").val();
-        procCallAjax2("/v2/codegroup/" + groupId, "DELETE", '',deleteGroup);
+        procCallAjax("/v2/codegroup/" + groupId, "DELETE", '', deleteGroup, $('#serviceModalLoadingBar'));
         getCodeGroupList();
+        modalInit();
     }
 
     var deleteGroup = function (data) {
@@ -686,10 +685,6 @@
         var groupId = $('#groupId').val();
         var reqUseYn = $("input:radio[id='useYn']:checked").val();
         var param = $("#codeDetailForm").serializeObject();
-
-        if (!procCheckValidStringSpaceDetail()) {
-            return false;
-        }
 
         var param = {
             groupId: groupId,
@@ -721,14 +716,9 @@
 
     //updateDetail
     var updateDetail = function () {
-//        var groupId = $('#groupId').val();
+
         var no = $('#detailNo').val();
-//        var reqUseYn = $("input:radio[id='useYn']:checked").val();
         var param = $("#codeDetailForm").serializeObject();
-        console.log("      "+ 1)
-        if (!procCheckValidStringSpaceDetail()) {
-            return false;
-        }
 
         var param = {
             no:no,
@@ -763,7 +753,8 @@
     //deleteGroup
     function deleteDetailModal() {
         var no = $("#detailNo").val();
-        procCallAjax2("/v2/codedetail/" + no, "DELETE", '',deleteDetail);
+        procCallAjax("/v2/codedetail/" + no, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
+
         console.log("      "+ 1)
         getCodeDetail(); //getcodeList 삭제한 부분만 나오게 수정 할 것
     }
@@ -772,6 +763,8 @@
         console.log("      "+ 2)
         init();
     }
+
+
 
 
     /*]]>*/
