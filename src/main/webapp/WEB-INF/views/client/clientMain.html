@@ -488,12 +488,10 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     var newIdx = 0;
     for (var i=0; i < CLIENT_LIST.length; i++ ){
 
-      if (CLIENT_LIST[i].includes(document.getElementById('searchKeyword').value)) {
+      if (CLIENT_LIST[i].client_id.toLowerCase().includes(document.getElementById('searchKeyword').value.toLowerCase())) {
         searchResult[newIdx++] = CLIENT_LIST[i];
       }
     }
-
-    CLIENT_LIST = searchResult;
     printData(searchResult);
 
   }
