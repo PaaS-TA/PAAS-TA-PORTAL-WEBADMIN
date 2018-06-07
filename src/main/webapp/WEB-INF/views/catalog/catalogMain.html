@@ -79,7 +79,7 @@
                                     </form>
 
                                 </div>
-                             </div>
+                            </div>
 
                             <div class="nav-tabs-custom" style="margin-bottom:0px;">
                                 <ul class="nav nav-tabs">
@@ -223,11 +223,11 @@
                                     </div><!-- /.box -->
                                 </div><!-- /.tab-pane tab_3 -->
 
-                             </div><!-- /.tab-content -->
+                            </div><!-- /.tab-content -->
 
                         </div>
                     </div><!-- /.div -->
-                <!-- -->
+                    <!-- -->
 
                 </div>
             </div>
@@ -292,14 +292,14 @@
                                             <div class="col-sm-1" style="text-align:center; margin-top:20px"><!--margin:20px 1.0% 0px 0.0%;-->
                                                 <div>
                                                     <span type="button" class="glyphicon glyphicon-chevron-right"
-                                                           style="font-size:22px;color:#ababab; cursor: pointer;"
-                                                           onClick="SelectMoveRows(document.getElementById('servicePackList'), document.getElementById('selectedServicePackList'))">
+                                                          style="font-size:22px;color:#ababab; cursor: pointer;"
+                                                          onClick="SelectMoveRows(document.getElementById('servicePackList'), document.getElementById('selectedServicePackList'))">
                                                     </span>
                                                 </div>
                                                 <div>
                                                     <span type="button" class="glyphicon glyphicon-chevron-left"
-                                                           style="font-size:22px;color:#818181; cursor: pointer;"
-                                                           onClick="SelectMoveRows(document.getElementById('selectedServicePackList'), document.getElementById('servicePackList'))">
+                                                          style="font-size:22px;color:#818181; cursor: pointer;"
+                                                          onClick="SelectMoveRows(document.getElementById('selectedServicePackList'), document.getElementById('servicePackList'))">
                                                     </span>
                                                 </div>
                                             </div>
@@ -318,7 +318,7 @@
                                             <label for="starterThumbnail" class="col-sm-3 control-label">썸네일</label>
 
                                             <div class="col-sm-9">
-                                                    <input type="file" id="starterThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
+                                                <input type="file" id="starterThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
                                             </div>
 
                                             <div class="col-sm-3"></div>
@@ -508,8 +508,8 @@
                                             <div id="divDevEnvApp" class="col-sm-9">
                                                 <!-- -->
                                                 <div style="padding: 19px; background-color: #f5f5f5; border: 1px solid #e3e3e3;">
-                                                        <div id="devEnvLabelAppName">
-                                                        </div>
+                                                    <div id="devEnvLabelAppName">
+                                                    </div>
                                                 </div>
 
                                             </div>
@@ -567,6 +567,7 @@
                                                 <button type="button" class="btn btn-sm btn-primary" id="devEnvtagParamAdd" name="devEnvtagParamAdd">추가</button>
                                             </div>
                                         </div>
+
 
                                         <div class="form-group required">
                                             <label for="devEnvSummary" class="col-sm-3 control-label">요약</label>
@@ -810,7 +811,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                    <button class="user_btn colors1 hide" name="tagPreview" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
+                                                <button class="user_btn colors1 hide" name="tagPreview" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
                                             </div>
                                             <div class="col-sm-2 col-xs-3">
                                                 <button type="button" class="btn btn-sm btn-primary" id="tagParamAdd" name="tagParamAdd">추가</button>
@@ -888,10 +889,10 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-/* To_BE
- 앱 템플릿 등록시 동일 이름 있는지 체크 DUPLICATED_PROC_URL
- 앱 템플릿에서 사용중인지 확인 부분
-*/
+    /* To_BE
+     앱 템플릿 등록시 동일 이름 있는지 체크 DUPLICATED_PROC_URL
+     앱 템플릿에서 사용중인지 확인 부분
+    */
 
     var STARTER_PACK_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_PACK_PROC_URL}]]*/ "";
     var DEVELOP_PACK_PROC_URL = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).DEVELOP_PACK_PROC_URL}]]*/ "";
@@ -1080,7 +1081,7 @@
         $(document).on("change", "input[name=appBindUseYn]" ,function(e) {
             var useYn = $(this).val();
             if(useYn == 'Y'){
-               $('div[name=appBindParamForm]').show();
+                $('div[name=appBindParamForm]').show();
             }else if(useYn == 'N'){
                 $('div[name=appBindParamForm]').hide();
                 $('.app-bind-param-added').remove();
@@ -1096,6 +1097,62 @@
         $(document).on("keyup","#searchValue", function(e){
             procSearchByKeyword();
         });
+
+
+        // [앱개발환경][태그] 추가 이벤트
+        $(document).on("click", "#startertagParamAdd" ,function(e){
+            appStarterTagParamAdd();
+        })
+
+        // [앱개발환경][태그] 삭제 이벤트
+        $(document).on("click", "button[name=startertagParamRemove]" ,function(e) {
+            var index = $('button[name=startertagParamRemove]').index(this) +1 ;
+            $('div[name=startertagParamForm]:eq('+index+')').remove();
+        });
+
+        // [앱개발환경][태그] PREVIEW
+        $(document).on("change keyup","input[name=startertagParamInput],select[name=startertagParamType]",function(e){
+            var target          = $(e.target).closest("div[name=startertagParamForm]");
+            var text            = target.find("input[name=startertagParamInput]").val();
+            var textClass       = target.find("select[name=startertagParamType]").val();
+            var tagPreviewArea  = target.find("button[name=startertagPreview]");
+
+            if(text == ""){
+                tagPreviewArea.addClass("hide");
+            }else{
+                tagPreviewArea.text(text);
+                tagPreviewArea.removeClass('hide');
+                tagPreviewArea.addClass(textClass);
+            }
+        })
+
+
+        // [앱템플릿][태그] 추가 이벤트
+        $(document).on("click", "#devEnvtagParamAdd" ,function(e){
+            appDevEnvTagParamAdd();
+        })
+
+        // [앱템플릿][태그] 삭제 이벤트
+        $(document).on("click", "button[name=devEnvtagParamRemove]" ,function(e) {
+            var index = $('button[name=devEnvtagParamRemove]').index(this) +1 ;
+            $('div[name=devEnvtagParamForm]:eq('+index+')').remove();
+        });
+
+        // [앱템플릿][태그] PREVIEW
+        $(document).on("change keyup","input[name=devEnvtagParamInput],select[name=devEnvtagParamType]",function(e){
+            var target          = $(e.target).closest("div[name=devEnvtagParamForm]");
+            var text            = target.find("input[name=devEnvtagParamInput]").val();
+            var textClass       = target.find("select[name=devEnvtagParamType]").val();
+            var tagPreviewArea  = target.find("button[name=devEnvtagPreview]");
+
+            if(text == ""){
+                tagPreviewArea.addClass("hide");
+            }else{
+                tagPreviewArea.text(text);
+                tagPreviewArea.removeClass('hide');
+                tagPreviewArea.addClass(textClass);
+            }
+        })
 
         // [앱서비스][태그] 추가 이벤트
         $(document).on("click", "#tagParamAdd" ,function(e){
@@ -1235,9 +1292,9 @@
     }
 
     // BIND :: BUTTON EVENT
-//    $("#btnSearch").on("click", function () {
-//        //procGetSearchList();
-//    });
+    //    $("#btnSearch").on("click", function () {
+    //        //procGetSearchList();
+    //    });
 
     // GET StarterList
     var getStarterList = function () {
@@ -1276,11 +1333,11 @@
         $.each(dataList, function (id, data) {
             var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
             objTable.append('<tr style="cursor:pointer;" data-id='+data.no+'>'
-                    + '<td>' + data.name + '</td>'
-                    + '<td>' + data.summary + '</td>'
-                    + '<td>' + data.classificationValue + '</td>'
-                    + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
-                    + '</tr>');
+                + '<td>' + data.name + '</td>'
+                + '<td>' + data.summary + '</td>'
+                + '<td>' + data.classificationValue + '</td>'
+                + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
+                + '</tr>');
         });
 
         if(dataList.length == 0){
@@ -1303,11 +1360,11 @@
         $.each(dataList, function (id, data) {
             var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
             objTable.append('<tr style="cursor:pointer;" data-id='+data.no+'>'
-                    + '<td>' + data.name + '</td>'
-                    + '<td>' + data.summary + '</td>'
-                    + '<td>' + data.classificationValue + '</td>'
-                    + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
-                    + '</tr>');
+                + '<td>' + data.name + '</td>'
+                + '<td>' + data.summary + '</td>'
+                + '<td>' + data.classificationValue + '</td>'
+                + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
+                + '</tr>');
         });
 
         if(dataList.length == 0){
@@ -1333,11 +1390,11 @@
 
             var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
             objTable.append('<tr style="cursor:pointer;" data-id='+data.no+'>'
-                    + '<td>' + data.name + '</td>'
-                    + '<td>' + data.summary + '</td>'
-                    + '<td>' + data.classificationValue + '</td>'
-                    + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
-                    + '</tr>');
+                + '<td>' + data.name + '</td>'
+                + '<td>' + data.summary + '</td>'
+                + '<td>' + data.classificationValue + '</td>'
+                + '<td><span class="label label-default '+useYnClass+'">' + data.useYn + '</span></td>'
+                + '</tr>');
         });
 
         if(dataList.length == 0){
@@ -1617,7 +1674,7 @@
                 var obj = jQuery.parseJSON(entity.tagsParam);
                 var index = 0;
                 $.each(obj,function(key, value) {
-                    //console.log('key:'+key+', value:'+value);
+                    console.log('key:'+key+', value:'+value);
                     if(index == 0){
                         setTagParam(index, key, value)
                     }else{
@@ -1641,46 +1698,46 @@
         }
     }
 
-//   validation Duplicate Name
-//    var checkDupNameCount = function(){
-//        var name;
-//        var url;
-//        var callback;
-//
-//        if(ACTIVE_TAB == 'starter'){
-//            name = $('#starterName').val();
-//            url = STARTER_PACK_PROC_URL;
-//            callback = procCallbackCheckDupStarterNameCount;
-//        }else if(ACTIVE_TAB == 'dev'){
-//            id = $('#devEnvName').val();
-//            url = DEVELOP_PACK_PROC_URL;
-//            callback = procCallbackCheckDupDevEnvNameCount;
-//        }else if(ACTIVE_TAB == 'service'){
-//            id = $('#serviceName').val();
-//            url = SERVICE_PACK_PROC_URL;
-//            callback = procCallbackCheckDupServiceNameCount;
-//        }
-//
-//        procCallAjax( url +"/count", "GET",{"name":name}, callback, null);
-//    }
-//
-//    function procCallbackCheckDupStarterNameCount(data){
-//        if( !(data.startpackcount < 1) ){
-//            return false;
-//        }
-//    }
-//
-//    function procCallbackCheckDupDevEnvNameCount(data){
-//        if( !(data.buildpackcount < 1) ){
-//            return false;
-//        }
-//    }
-//
-//    function procCallbackCheckDupServiceNameCount(data){
-//        if( !(data.servicepackcount < 1) ){
-//            return false;
-//        }
-//    }
+    //   validation Duplicate Name
+    //    var checkDupNameCount = function(){
+    //        var name;
+    //        var url;
+    //        var callback;
+    //
+    //        if(ACTIVE_TAB == 'starter'){
+    //            name = $('#starterName').val();
+    //            url = STARTER_PACK_PROC_URL;
+    //            callback = procCallbackCheckDupStarterNameCount;
+    //        }else if(ACTIVE_TAB == 'dev'){
+    //            id = $('#devEnvName').val();
+    //            url = DEVELOP_PACK_PROC_URL;
+    //            callback = procCallbackCheckDupDevEnvNameCount;
+    //        }else if(ACTIVE_TAB == 'service'){
+    //            id = $('#serviceName').val();
+    //            url = SERVICE_PACK_PROC_URL;
+    //            callback = procCallbackCheckDupServiceNameCount;
+    //        }
+    //
+    //        procCallAjax( url +"/count", "GET",{"name":name}, callback, null);
+    //    }
+    //
+    //    function procCallbackCheckDupStarterNameCount(data){
+    //        if( !(data.startpackcount < 1) ){
+    //            return false;
+    //        }
+    //    }
+    //
+    //    function procCallbackCheckDupDevEnvNameCount(data){
+    //        if( !(data.buildpackcount < 1) ){
+    //            return false;
+    //        }
+    //    }
+    //
+    //    function procCallbackCheckDupServiceNameCount(data){
+    //        if( !(data.servicepackcount < 1) ){
+    //            return false;
+    //        }
+    //    }
 
     //
     /* ************ C.U.D *********** */
@@ -1714,21 +1771,19 @@
             return false;
         };
 
-        FILE_INFO = {}; // 파일정보 초기화
-
         // 파일 첨부 확인 및 업로드
         var afterThumbPath = $('#preview img').attr("src");
-        var thumbFile = $("#starterThumbnail")[0].files[0];
-
-        var formData = new FormData();
-        formData.append("file", thumbFile);
+        var file = $("#starterThumbnail")[0].files[0];
 
         if(BEFORE_THUMB_NAME == ""){
-            if(afterThumbPath != ""){
-                // UPLOAD FILE
-                uploadFile(formData,"POST","/v2/thumbnail",updateStarterThumbFileInfo);
+            if(afterThumbPath == ""){
+                // NOT INCLUDE FILE
+                modifyStarterItem();
             }else{
-                modifyStarter();
+                // UPLOAD FILE
+                var formData = new FormData();
+                formData.append("file", file);
+                uploadFile(formData,"POST","/v2/thumbnail",modifyStarterItem);
             }
 
         }else{
@@ -1738,23 +1793,20 @@
             var afterThumbName = afterThumbPath.substring(pathHeader + 1, pathEnd);
 
             if(BEFORE_THUMB_NAME == afterThumbName){
-
-                FILE_INFO.thumbImgName  = $('#starterLabelThumbName').text();
-                FILE_INFO.thumbImgPath  = BEFORE_THUMB_PATH;
-
-                updateStarterThumbFileInfo(null);
-
+                var fileInfo = {
+                    filename: $('#starterLabelThumbName').text(),
+                    fileURL: BEFORE_THUMB_PATH
+                };
+                modifyStarterItem(fileInfo);
             }else{
                 //기존 삭제
-                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, null);
-                FILE_INFO.thumbImgName = "";
-                FILE_INFO.thumbImgPath = "";
+                uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_THUMB_NAME, modifyStarterItem);
 
                 if(afterThumbPath != ""){
                     // 신규 이미지 추가
-                    uploadFile(formData,"POST","/v2/thumbnail", updateStarterThumbFileInfo);
-                }else{
-                    updateStarterThumbFileInfo(null);
+                    var formData = new FormData();
+                    formData.append("file", file);
+                    uploadFile(formData,"POST","/v2/thumbnail", modifyStarterItem);
                 }
 
             }
@@ -1763,21 +1815,11 @@
         notifyAlert('success',"","수정 완료 되었습니다.");
     }
 
-
-    // [앱 템플릿] [썸네일] 파일 등록
-    function updateStarterThumbFileInfo(data){
-        if(data != null){
-            FILE_INFO.thumbImgName  = data.filename;
-            FILE_INFO.thumbImgPath  = data.fileURL;
-        }
-        modifyStarter();
-    }
-
     // [앱 템플릿] 수정 (파일저장 후 처리)
-    function modifyStarter(){
+    function modifyStarterItem(FILE_INFO){
         // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
         var no = $('#starterId').val();
-        procCallAjax(STARTER_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(starterParam(FILE_INFO)), getStarterList, $('#starterModalLoadingBar') );
+        procCallAjax(STARTER_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(starterParam(FILE_INFO)), getStarterList, null);
     }
 
     // [앱 템플릿][앱 개발환경][앱 서비스] 삭제 Confirm layer
@@ -1849,6 +1891,17 @@
         }
 
 
+        // 태그
+        var inputTagParamJson = new Object();
+
+        $.each( $("input[name=startertagParamInput]") , function (index, data) {
+            var jsonKey   = eval("$('input[name=startertagParamInput]:eq("+index+")').val()");
+            var jsonValue = eval("$('select[name=startertagParamType]:eq("+index+")').val()");
+            if(jsonKey != ""){
+                inputTagParamJson[jsonKey] = jsonValue;
+            }
+        });
+
         var param = {
             name                        : $("#starterName").val(),
             classification              : $("#categoryList").val(),
@@ -1857,7 +1910,8 @@
             summary                     : $("#summary").val(),
             description                 : $("#description").val(),
             buildPackCategoryNo         : $("#buildPackList").val(),
-            servicePackCategoryNoList   : selectedServicePackList
+            servicePackCategoryNoList   : selectedServicePackList,
+            tagsParam                   : JSON.stringify(inputTagParamJson)
         };
 
 
@@ -1871,6 +1925,17 @@
 
     // [앱 개발환경] 등록/수정 FORM PARAM
     var devEnvParam= function(fileInfo){
+
+        // 태그
+        var inputTagParamJson = new Object();
+
+        $.each( $("input[name=devEnvtagParamInput]") , function (index, data) {
+            var jsonKey   = eval("$('input[name=devEnvtagParamInput]:eq("+index+")').val()");
+            var jsonValue = eval("$('select[name=devEnvtagParamType]:eq("+index+")').val()");
+            if(jsonKey != ""){
+                inputTagParamJson[jsonKey] = jsonValue;
+            }
+        });
 
         var param = {
             name                : $("#devEnvName").val(),
@@ -2348,7 +2413,7 @@
 
             $('input:radio[name=devEnvUseYn]:input[value="Y"]').prop('checked', true);
             $('#devEnvAppRemove').trigger('click');
-
+            $('.tag-param-added').remove();
 
         }else if(ACTIVE_TAB == 'service'){
 
@@ -2515,9 +2580,9 @@
             , success : function(data){
 
                 if(reqType == "DELETE"){ // 삭제시 파일정보 초기화
-                   data.filename = "";
-                   data.fileURL  = "";
-                   data.length   = "";
+                    data.filename = "";
+                    data.fileURL  = "";
+                    data.length   = "";
                 }
 
                 if(reqProcFunction != null){
@@ -2538,25 +2603,25 @@
     function appBindParamAdd(index, input, type){
 
         var tempHtml =
-                "<div class='form-group app-bind-param-added' name='appBindParamForm'>"
-                +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
-                +"   <div name='paramArea'>"
-                +"       <div class='col-sm-4 col-xs-3'>"
-                +"           <input type='text' class='form-control' name='appBindParamInput'/>"
-                +"       </div>"
-                +"       <div class='col-sm-3 col-xs-6'>"
-                +"           <select class='form-control' name='appBindParamType' style='width:auto;'>"
-                +"               <option value='text'>텍스트형</option>"
-                +"               <option value='password'>패스워드</option>"
-                +"               <option value='default'>자동입력</option>"
-                +"               <option value='userAppointed'>관리자 지정</option>"
-                +"           </select>"
-                +"       </div>"
-                +"   </div>"
-                +"   <div class='col-sm-2 col-xs-3'>"
-                +"       <button type='button' class='btn btn-sm btn-danger' name='appBindParamRemove'>삭제</button>"
-                +"   </div>"
-                +" </div>";
+            "<div class='form-group app-bind-param-added' name='appBindParamForm'>"
+            +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+            +"   <div name='paramArea'>"
+            +"       <div class='col-sm-4 col-xs-3'>"
+            +"           <input type='text' class='form-control' name='appBindParamInput'/>"
+            +"       </div>"
+            +"       <div class='col-sm-3 col-xs-6'>"
+            +"           <select class='form-control' name='appBindParamType' style='width:auto;'>"
+            +"               <option value='text'>텍스트형</option>"
+            +"               <option value='password'>패스워드</option>"
+            +"               <option value='default'>자동입력</option>"
+            +"               <option value='userAppointed'>관리자 지정</option>"
+            +"           </select>"
+            +"       </div>"
+            +"   </div>"
+            +"   <div class='col-sm-2 col-xs-3'>"
+            +"       <button type='button' class='btn btn-sm btn-danger' name='appBindParamRemove'>삭제</button>"
+            +"   </div>"
+            +" </div>";
 
         $('div[name=appBindParamForm]:last').after(tempHtml);
 
@@ -2578,25 +2643,25 @@
     function appServiceParamAdd(index, input, type){
 
         var tempHtml =
-                "<div class='form-group service-param-added' name='serviceParamForm'>"
-                +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
-                +"   <div name='paramArea'>"
-                +"       <div class='col-sm-4 col-xs-3'>"
-                +"           <input type='text' class='form-control' name='serviceParamInput'/>"
-                +"       </div>"
-                +"       <div class='col-sm-3 col-xs-6'>"
-                +"           <select class='form-control' name='serviceParamType' style='width:auto;'>"
-                +"               <option value='text'>텍스트형</option>"
-                +"               <option value='password'>패스워드</option>"
-                +"               <option value='default'>자동입력</option>"
-                +"               <option value='userAppointed'>관리자 지정</option>"
-                +"           </select>"
-                +"       </div>"
-                +"   </div>"
-                +"   <div class='col-sm-2 col-xs-3'>"
-                +"       <button type='button' class='btn btn-sm btn-danger' name='serviceParamRemove'>삭제</button>"
-                +"   </div>"
-                +" </div>";
+            "<div class='form-group service-param-added' name='serviceParamForm'>"
+            +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+            +"   <div name='paramArea'>"
+            +"       <div class='col-sm-4 col-xs-3'>"
+            +"           <input type='text' class='form-control' name='serviceParamInput'/>"
+            +"       </div>"
+            +"       <div class='col-sm-3 col-xs-6'>"
+            +"           <select class='form-control' name='serviceParamType' style='width:auto;'>"
+            +"               <option value='text'>텍스트형</option>"
+            +"               <option value='password'>패스워드</option>"
+            +"               <option value='default'>자동입력</option>"
+            +"               <option value='userAppointed'>관리자 지정</option>"
+            +"           </select>"
+            +"       </div>"
+            +"   </div>"
+            +"   <div class='col-sm-2 col-xs-3'>"
+            +"       <button type='button' class='btn btn-sm btn-danger' name='serviceParamRemove'>삭제</button>"
+            +"   </div>"
+            +" </div>";
 
         $('div[name=serviceParamForm]:last').after(tempHtml);
 
@@ -2612,6 +2677,112 @@
         eval("$('input[name=serviceParamInput]:eq("+index+")').val('"+input+"')");
         eval("$('select[name=serviceParamType]:eq("+index+")').val('"+type+"')");
     }
+
+
+    // [앱 개발환경] 상세 - [Tag 파라미터] 템플릿
+    function appStarterTagParamAdd(index, input, type){
+        var tempHtml =
+            "<div class='form-group tag-param-added' name='startertagParamForm'>"
+            +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+            +"   <div name='paramArea'>"
+            +"       <div class='col-sm-4 col-xs-3'>"
+            +"           <input type='text' class='form-control' name='startertagParamInput'/>"
+            +"       </div>"
+            +"       <div class='col-sm-2 col-xs-3'>"
+            +"           <select class='form-control' name='startertagParamType' style='width:auto;'>"
+            +"               <option value='colors1'>tag1</option>"
+            +"               <option value='colors2'>tag2</option>"
+            +"               <option value='colors3'>tag3</option>"
+            +"               <option value='colors4'>tag4</option>"
+            +"               <option value='colors5'>tag5</option>"
+            +"               <option value='colors6'>tag6</option>"
+            +"           </select>"
+            +"       </div>"
+            +"   </div>"
+            +"   <div class='col-sm-1 col-xs-3'>"
+            +"          <button class='user_btn colors1 hide' name='startertagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
+            +"   </div>"
+            +"   <div class='col-sm-2 col-xs-3'>"
+            +"       <button type='button' class='btn btn-sm btn-danger' name='startertagParamRemove'>삭제</button>"
+            +"   </div>"
+            +" </div>";
+
+        $('div[name=startertagParamForm]:last').after(tempHtml);
+
+        if(input !== undefined){
+            eval("$('button[name=startertagPreview]:eq("+index+")').text('"+input+"')");
+            eval("$('button[name=startertagPreview]:eq("+index+")').addClass('"+type+"')");
+            eval("$('button[name=startertagPreview]:eq("+index+")').removeClass('hide')");
+            setDevEnvTagParam(index, input, type);
+        }
+    }
+
+    // [앱 개발환경] 상세 - [앱 Tag] 셋팅
+    function setStarterTagParam(index, input, type){
+
+        eval("$('input[name=startertagParamInput]:eq("+index+")').val('"+input+"')");
+        eval("$('select[name=startertagParamType]:eq("+index+")').val('"+type+"')");
+
+        if(input !== undefined){
+            eval("$('button[name=startertagPreview]:eq("+index+")').text('"+input+"')");
+            eval("$('button[name=startertagPreview]:eq("+index+")').addClass('"+type+"')");
+            eval("$('button[name=startertagPreview]:eq("+index+")').removeClass('hide')");
+        }
+    }
+
+
+
+    // [앱 템플릿] 상세 - [Tag 파라미터] 템플릿
+    function appDevEnvTagParamAdd(index, input, type){
+        var tempHtml =
+            "<div class='form-group tag-param-added' name='devEnvtagParamForm'>"
+            +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+            +"   <div name='paramArea'>"
+            +"       <div class='col-sm-4 col-xs-3'>"
+            +"           <input type='text' class='form-control' name='devEnvtagParamInput'/>"
+            +"       </div>"
+            +"       <div class='col-sm-2 col-xs-3'>"
+            +"           <select class='form-control' name='devEnvtagParamType' style='width:auto;'>"
+            +"               <option value='colors1'>tag1</option>"
+            +"               <option value='colors2'>tag2</option>"
+            +"               <option value='colors3'>tag3</option>"
+            +"               <option value='colors4'>tag4</option>"
+            +"               <option value='colors5'>tag5</option>"
+            +"               <option value='colors6'>tag6</option>"
+            +"           </select>"
+            +"       </div>"
+            +"   </div>"
+            +"   <div class='col-sm-1 col-xs-3'>"
+            +"          <button class='user_btn colors1 hide' name='devEnvtagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
+            +"   </div>"
+            +"   <div class='col-sm-2 col-xs-3'>"
+            +"       <button type='button' class='btn btn-sm btn-danger' name='devEnvtagParamRemove'>삭제</button>"
+            +"   </div>"
+            +" </div>";
+
+        $('div[name=devEnvtagParamForm]:last').after(tempHtml);
+
+        if(input !== undefined){
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').text('"+input+"')");
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').addClass('"+type+"')");
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').removeClass('hide')");
+            setDevEnvTagParam(index, input, type);
+        }
+    }
+
+    // [앱 템플릿] 상세 - [앱 Tag] 셋팅
+    function setDevEnvTagParam(index, input, type){
+
+        eval("$('input[name=devEnvtagParamInput]:eq("+index+")').val('"+input+"')");
+        eval("$('select[name=devEnvtagParamType]:eq("+index+")').val('"+type+"')");
+
+        if(input !== undefined){
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').text('"+input+"')");
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').addClass('"+type+"')");
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').removeClass('hide')");
+        }
+    }
+
 
 
     // [앱 서비스] 상세 - [Tag 파라미터] 템플릿
@@ -2636,9 +2807,7 @@
             +"       </div>"
             +"   </div>"
             +"   <div class='col-sm-1 col-xs-3'>"
-            +"        <div class='col-sm-1 col-xs-1'>"
             +"          <button class='user_btn colors1 hide' name='tagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
-            +"     </div>"
             +"   </div>"
             +"   <div class='col-sm-2 col-xs-3'>"
             +"       <button type='button' class='btn btn-sm btn-danger' name='tagParamRemove'>삭제</button>"
@@ -2655,8 +2824,10 @@
         }
     }
 
-    // [앱 서비스] 상세 - [앱 바인드 파라미터] 셋팅
+    // [앱 서비스] 상세 - [앱 Tag] 셋팅
     function setTagParam(index, input, type){
+        console.log($('input[name=tagParamInput]:eq("+index+")').val('"+input+"'))
+
         eval("$('input[name=tagParamInput]:eq("+index+")').val('"+input+"')");
         eval("$('select[name=tagParamType]:eq("+index+")').val('"+type+"')");
 
@@ -2666,6 +2837,9 @@
             eval("$('button[name=tagPreview]:eq("+index+")').removeClass('hide')");
         }
     }
+
+
+
 
 
     /*]]>*/
