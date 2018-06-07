@@ -89,12 +89,12 @@ public class UserManagementController extends Common {
     /**
      * 사용자 계정을 삭제한다.
      *
-     * @param userid user id
+     * @param guid user Guid
      * @return Map(자바클래스)
      */
-    @DeleteMapping(V2_URL + "/usermgnts/{userid}")
+    @DeleteMapping(V2_URL + "/usermgnts/{guid}")
     @ResponseBody
-    public Map<String, Object> deleteUserAccount(@PathVariable String userid) {
-        return userManagementService.deleteUserAccount("/users/" + userid, HttpMethod.DELETE, null, this.getToken());
+    public Map<String, Object> deleteUserAccount(@PathVariable String guid) {
+        return userManagementService.deleteUserAccount("/user/" + guid + "/all", HttpMethod.DELETE, null, this.getToken());
     }
 }

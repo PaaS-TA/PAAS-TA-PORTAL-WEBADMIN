@@ -163,9 +163,9 @@
                         + '<div class="dropdown">'
                         + '<label class="fa fa-gears" id="dropdownMenu' + i + '" ' + 'data-toggle="dropdown" aria-expanded="false" aria-hidden="true" style="cursor: pointer;"></label>'
                         + '<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu' + i + '">'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId + '\')"> 비밀번호 초기화 </a></li>'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY + '\', \'' + resultList[i].userId + '\')"> ' + menuText + ' </a></li>'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\')"> 계정 삭제 </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> 비밀번호 초기화 </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + menuText + ' </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\', \'' + resultList[i].userGuid + '\')"> 계정 삭제 </a></li>'
                         + '</ul></div>');
                 } else {
                     htmlString.push('<tr id="Managementtable' + i + '">'
@@ -206,7 +206,7 @@
 
 
     // USER MANAGEMENT POPUP
-    var procUserManagementPopup = function (reqType, reqUserId) {
+    var procUserManagementPopup = function (reqType, reqUserId,reqUserGuid) {
 
         var reqMessage = '';
         var reqFunction = '';
@@ -228,7 +228,7 @@
 
         if (REQUEST_TYPE_DELETE_USER_ACCOUNT == reqType) {
             reqMessage = /*[[#{common.info.popup.delete.user.account.message}]]*/ "";
-            reqFunction = 'deleteUserAccount("' + reqUserId + '");';
+            reqFunction = 'deleteUserAccount("' + reqUserGuid + '");';
             reqButton = '삭제';
         }
 
@@ -297,9 +297,9 @@
 
 
     // DELETE USER ACCOUNT
-    var deleteUserAccount = function (reqUserId) {
-        var param = {userid: reqUserId};
-        procCallAjax(REST_URL + "/" + reqUserId, 'DELETE', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
+    var deleteUserAccount = function (reqUserGuid) {
+        var param = {guid: reqUserGuid};
+        procCallAjax(REST_URL + "/" + reqUserGuid, 'DELETE', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
     };
 
 
