@@ -2020,7 +2020,9 @@
 
     /* [앱 개발환경] 등록  */
     function createDevEnv() {
+        $('#devEnvModalLoadingBar').removeClass("hide");
         if (!procCheckValidStringSpaceClass('checkDevEnvForm')){
+            $('#devEnvModalLoadingBar').addClass('hide');
             return false;
         };
 
@@ -2088,8 +2090,10 @@
 
     //  [앱 개발환경] 수정 (썸네일 파일저장 전 처리)
     function updateDevEnv() {
-
+        $('#devEnvModalLoadingBar').removeClass("hide");
         if (!procCheckValidStringSpaceClass('checkDevEnvForm')){
+            $('#devEnvModalLoadingBar').addClass('hide');
+
             return false;
         };
 
@@ -2570,6 +2574,7 @@
 
     // reqType 따른 파일 업로드 / 삭제 처리
     var uploadFile = function(formData, reqType, reqUploadUrl, reqProcFunction) {
+
         $.ajax({
             url : reqUploadUrl
             , method : reqType
@@ -2577,7 +2582,7 @@
             , contentType : false
             , data : formData
             , dataType : "json"
-            , success : function(data){
+            ,success : function(data){
 
                 if(reqType == "DELETE"){ // 삭제시 파일정보 초기화
                     data.filename = "";
@@ -2590,11 +2595,11 @@
                 }
             },
             error: function(xhr, status, error) {
-                notifyAlert("danger","",JSON.parse(xhr.responseText).customMessage);
-                //console.log("FILE "+reqType+" ERROR :: error :: ", error);
+                console.log("ERROR :: error :: ", error);
+                notifyAlert('danger','',JSON.parse(xhr.responseText).message);
             },
             complete : function(data) {
-                //console.log("FILE "+reqType+" COMPLETE :: data :: ", data);
+                console.log("COMPLETE :: data :: ", data);
             }
         });
     };
