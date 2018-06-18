@@ -93,7 +93,7 @@ public class Constants {
     /**
      * 카탈로그 애플리케이션 샘플 파일 크기 제한
      */
-    public static final int CATALOG_APP_SAMPLE_LIMIT_FILE_SIZE_MB = 100;
+    public static final int CATALOG_APP_SAMPLE_LIMIT_FILE_SIZE_MB = 50;
     /**
      * 파일 타입 이미지
      */
