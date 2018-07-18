@@ -43,6 +43,7 @@
                         <th style="text-align: center;"> 전화번호</th>
                         <th style="text-align: center;"> 관리자 유무</th>
                         <th style="text-align: center;"> 상태</th>
+                        <th style="text-align: center;"> 승인</th>
                         <th style="text-align: center;"> 관리</th>
                     </tr>
                     </thead>
@@ -86,6 +87,7 @@
     var BOOLEN_SEARCH = false;
     var REQUEST_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
     var REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY = "UPDATE_OPERATING_AUTHORITY";
+    var REQUEST_TYPE_UPDATE_LOGIN_ACTIVE = "UPDATE_LOGIN_ACTIVE";
     var REQUEST_TYPE_DELETE_USER_ACCOUNT = "DELETE_USER_ACCOUNT";
 
 
@@ -141,17 +143,19 @@
             objMessageArea.show();
 
         } else {
+            console.log(data.list);
             var resultList = data.list;
             var totalListCount = resultList[0].totalCount;
             var boldClass = '';
             var menuText = '';
-
+            var activeText = '';
             for (var i = 0; i < listLength; i++) {
                 boldClass = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "" == resultList[i].adminYn ? 'fwb' : '';
                 menuText = '운영권한 부여';
+                activeText = '포탈접속 부여';
                 var telephone = resultList[i].tellPhone == null ? '-' : resultList[i].tellPhone;
                 if (resultList[i].adminYn == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") menuText = '운영권한 삭제';
-
+                if (resultList[i].active == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") activeText = '포탈접속 해제';
                 if (resultList[i].status == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_STATUS_APPROVAL}]]*/  "") {
                     htmlString.push('<tr id="Managementtable' + i + '" name=" ' + resultList[i].userId + '">'
                         + '<td class="col-md-4 ' + boldClass + '">' + resultList[i].userId + '</td>'
@@ -159,12 +163,14 @@
                         + '<td class="col-md-2 ' + boldClass + '">' + telephone + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-primary">' + '승인' + '</span>' + '</td>'
+                        + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].active + '</td>'
                         + '<td class="col-md-2 tac ' + boldClass + '">'
                         + '<div class="dropdown">'
                         + '<label class="fa fa-gears" id="dropdownMenu' + i + '" ' + 'data-toggle="dropdown" aria-expanded="false" aria-hidden="true" style="cursor: pointer;"></label>'
                         + '<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu' + i + '">'
                         + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> 비밀번호 초기화 </a></li>'
                         + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + menuText + ' </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_LOGIN_ACTIVE + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + activeText + ' </a></li>'
                         + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\', \'' + resultList[i].userGuid + '\')"> 계정 삭제 </a></li>'
                         + '</ul></div>');
                 } else {
@@ -174,6 +180,7 @@
                         + '<td class="col-md-2 ' + boldClass + '">' + telephone + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + '생성' + '</span>' + '</td>'
+                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + resultList[i].active + '</span>' + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">'
                         + '<div class="dropdown"><label class="fa fa-gears" style="color: #dddddd;"></label>'
                         + '</div>');
@@ -219,19 +226,21 @@
             reqFunction = 'resetPassword("' + reqUserId + '");';
             reqButton = '전송';
         }
-
-        if (REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY == reqType) {
+        else if (REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY == reqType) {
             reqMessage = /*[[#{common.info.popup.update.operating.authority.message}]]*/ "";
             reqFunction = 'updateOperatingAuthority("' + reqUserId + '");';
             reqButton = '실행';
         }
-
-        if (REQUEST_TYPE_DELETE_USER_ACCOUNT == reqType) {
+        else if (REQUEST_TYPE_DELETE_USER_ACCOUNT == reqType) {
             reqMessage = /*[[#{common.info.popup.delete.user.account.message}]]*/ "";
             reqFunction = 'deleteUserAccount("' + reqUserGuid + '");';
             reqButton = '삭제';
         }
-
+        else if (REQUEST_TYPE_UPDATE_LOGIN_ACTIVE == reqType){
+            reqMessage = "사용자포탈 로그인 접속 가능 상태를 수정하시겠습니까";
+            reqFunction = 'updateUserActive("' + reqUserId+'");';
+            reqButton = '수정';
+        }
         modalInit('사용자 관리', reqMessage, reqFunction, reqButton);
     };
 
@@ -282,7 +291,7 @@
 
     // UPDATE OPERATING AUTHORITY
     var updateOperatingAuthority = function (reqUserId) {
-        var param = {userid: reqUserId};
+        var param = {userGuid: reqUserId};
         procCallAjax(REST_URL + "/" + reqUserId + "/authority", 'PUT', JSON.stringify(param), procCallbackUpdateOperatingAuthority, $('#serviceModalLoadingBar'));
     };
 
@@ -302,11 +311,17 @@
         procCallAjax(REST_URL + "/" + reqUserGuid, 'DELETE', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
     };
 
+    // UPDATE USER ACTIVE
+    var updateUserActive = function(reqUserId){
+        var param = {userGuid: reqUserId};
+        procCallAjax(REST_URL + "/" + reqUserId+"/active", 'PUT', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
+    };
 
     // DELETE USER ACCOUNT CALLBACK
     var procCallbackDeleteUserAccount = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) return false;
 
+        console.log(data.ACTIVE);
         procInitPage();
         procAlert("success", /*[[#{common.info.result.success}]]*/ "");
     };

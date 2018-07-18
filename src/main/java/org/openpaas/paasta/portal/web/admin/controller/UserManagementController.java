@@ -97,4 +97,17 @@ public class UserManagementController extends Common {
     public Map<String, Object> deleteUserAccount(@PathVariable String guid) {
         return userManagementService.deleteUserAccount("/user/" + guid + "/all", HttpMethod.DELETE, null, this.getToken());
     }
+
+
+    /**
+     * 사용자가 로그인 가능 유무 수정
+     *
+     * @param guid user Guid
+     * @return Map(자바클래스)
+     */
+    @PutMapping(V2_URL + "/usermgnts/{guid}/active")
+    @ResponseBody
+    public Map<String, Object> updateUserActive(@PathVariable String guid, @RequestBody UserManagement param) {
+        return userManagementService.updateUserActive("/usermgnts/" + guid + "/active", HttpMethod.PUT, param, this.getToken());
+    }
 }

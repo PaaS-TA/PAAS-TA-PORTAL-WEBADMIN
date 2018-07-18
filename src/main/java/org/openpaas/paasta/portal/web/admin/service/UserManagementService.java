@@ -1,12 +1,14 @@
 package org.openpaas.paasta.portal.web.admin.service;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.model.UserManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Created by MIN on 2018-03-28.
@@ -62,6 +64,17 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> deleteUserAccount(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
+        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+    }
+
+    /**
+     * 사용자가 로그인 가능 유무 수정
+     *
+     * @param param UserManagement(모델클래스)
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> updateUserActive(String reqUrl, HttpMethod httpMethod, UserManagement param, String reqToken) {
+       commonService.procCfApiRestTemplate(V2_URL+"/user/" + param.getUserGuid() + "/active", httpMethod, param, reqToken);
         return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
     }
 
