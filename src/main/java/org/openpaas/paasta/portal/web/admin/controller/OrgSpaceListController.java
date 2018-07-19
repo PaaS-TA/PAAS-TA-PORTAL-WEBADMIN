@@ -50,7 +50,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/orgs")
     public Map<String, Object> getOrgsForAdmin() throws Exception {
-        return orgSpaceListService.getOrgsForAdmin("/orgs", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getOrgsForAdmin("/orgs-admin", HttpMethod.GET, null, getToken());
     }
 
     /**
