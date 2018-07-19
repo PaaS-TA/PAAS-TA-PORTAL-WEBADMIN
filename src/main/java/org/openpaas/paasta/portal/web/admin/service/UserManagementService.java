@@ -74,7 +74,8 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> updateUserActive(String reqUrl, HttpMethod httpMethod, UserManagement param, String reqToken) {
-       commonService.procCfApiRestTemplate(V2_URL+"/user/" + param.getUserGuid() + "/active", httpMethod, param, reqToken);
+       Map<String, Object> result = commonService.procCfApiRestTemplate(V2_URL+"/user/" + param.getUserGuid() + "/active", httpMethod, param, reqToken);
+       param.setActive(result.get("active").toString().equals("true")?"Y":"N");
         return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
     }
 

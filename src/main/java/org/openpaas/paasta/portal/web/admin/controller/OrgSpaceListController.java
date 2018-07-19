@@ -63,7 +63,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/orgs/{orgid}/spaces")
     public Map<String, Object> getSpacesForAdmin(@PathVariable String orgid) throws Exception {
-        return orgSpaceListService.getSpacesForAdmin("/orgs/"+orgid+"/spaces", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpacesForAdmin("/orgs/"+orgid+"/spaces-admin", HttpMethod.GET, null, getToken());
     }
 
     /**
@@ -74,7 +74,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/orgs/{orgid}/summary")
     public  Map<String, Object> getOrgSummary(@PathVariable String orgid) {
-        return orgSpaceListService.getOrgSummary("/orgs/"+orgid+"/summary", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getOrgSummary("/orgs/"+orgid+"/summary-admin", HttpMethod.GET, null, getToken());
     }
 
 
@@ -86,7 +86,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/orgs/{orgid}/quota")
     public Map<String, Object> getOrgQuota(@PathVariable String orgid) {
-        return orgSpaceListService.getOrgQuota("/orgs/"+orgid+"/quota", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getOrgQuota("/orgs/"+orgid+"/quota-admin", HttpMethod.GET, null, getToken());
     }
 
 
@@ -109,7 +109,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/spaces/{spacequtaid}/quota")
     public Map<String, Object> getSpaceQuota(@PathVariable String spacequtaid) {
-        return orgSpaceListService.getSpaceQuota("/spaces/"+ spacequtaid+"/quota", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpaceQuota("/spaces/"+ spacequtaid+"/quota-admin", HttpMethod.GET, null, getToken());
     }
 
     /**
@@ -119,7 +119,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/spaces")
     public Map<String, Object> getSpace() {
-        return orgSpaceListService.getSpace("/spaces", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpace("/spaces-admin", HttpMethod.GET, null, getToken());
 
     }
 

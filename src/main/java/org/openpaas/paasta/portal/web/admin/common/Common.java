@@ -69,7 +69,7 @@ public class Common {
         final Object authPrincipal = auth.getPrincipal();
         if ( authPrincipal instanceof String )
             return ( (String) authPrincipal );
-        
+
         User user = (User) authPrincipal;
 
         //token 만료 시간 비교
