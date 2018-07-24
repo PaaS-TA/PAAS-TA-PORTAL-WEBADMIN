@@ -14,5 +14,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://127.0.0.1:2221/eureka/
+      registry-fetch-interval-seconds: 5
   instance:
     hostname: ${spring.cloud.client.hostname}
+    lease-expiration-duration-in-seconds: 5
+    lease-renewal-interval-in-seconds: 10
