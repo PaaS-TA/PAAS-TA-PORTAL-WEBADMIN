@@ -1666,7 +1666,7 @@
                 $.each(obj,function(key, value) {
                     //console.log('key:'+key+', value:'+value);
                     if(index == 0){
-                        setAppBindParam(index, key, value)
+                        setAppBindParam(index, key, value);
                     }else{
                         appBindParamAdd(index, key, value);
                     }
@@ -1692,15 +1692,19 @@
             //공개
             eval("$('input:radio[name=serviceUseYn][value="+entity.useYn+"]').prop('checked', true);");
 
-
+            // 대시보드 사용여부
+            eval("$('input:radio[name=dashBoardUseYn][value="+entity.dashboardUseYn+"]').prop('checked', true);");
 
             //요약
             $("#serviceSummary").val(entity.summary);
+
             //설명
             CKEDITOR.instances.serviceDescription.setData(entity.description);
+
             //문서URL
             $('#serviceDocFileUrl').val(entity.docFileUrl);
         }
+
     }
 
     //   validation Duplicate Name
