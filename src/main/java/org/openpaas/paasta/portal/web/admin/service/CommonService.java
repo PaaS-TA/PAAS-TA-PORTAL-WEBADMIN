@@ -232,6 +232,7 @@ public class CommonService {
         restTemplate = new RestTemplate();
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
+        LOGGER.info(base64Authorization);
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
 
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
