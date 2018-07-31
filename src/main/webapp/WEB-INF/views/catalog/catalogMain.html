@@ -2546,6 +2546,7 @@
     function defaultStarterDevEnvOptionList(){
         var objSelectBox = $('#buildPackList');
         objSelectBox.html('');
+        objSelectBox.append("<option value='0'>NONE</option>");
         $.each(STARTER_DEV_ENV_LIST, function (index, data) {
             objSelectBox.append("<option value='" + data.no + "'> " + data.name + " </option>");
         });
@@ -2564,6 +2565,7 @@
     function defaultDevEnvBuildpackOptionList(){
         var objSelectBox = $('#buildPackDevEnvList');
         objSelectBox.html('');
+        objSelectBox.append("<option value='NONE'>NONE</option>");
         $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
             objSelectBox.append("<option value='" + data.entity.name + "'> " + data.entity.name + " </option>");
         });
@@ -2582,6 +2584,7 @@
     function defaultServiceServiceOptionList(){
         var objSelectBox = $('#serviceServicePackList');
         objSelectBox.html('');
+        objSelectBox.append("<option value='NONE'>NONE</option>");
         $.each(SERVICE_SERVICE_LIST, function (index, data) {
             objSelectBox.append("<option value='" + data.entity.label + "'> " + data.entity.label + " </option>");
         });
