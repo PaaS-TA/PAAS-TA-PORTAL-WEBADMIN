@@ -1477,6 +1477,7 @@
 
 
             // 태그 리스트
+            // 태그 리스트
             if(entity.tagsParam != ''){ // entity.useYn
                 var obj = jQuery.parseJSON(entity.tagsParam);
                 var index = 0;
@@ -2001,11 +2002,16 @@
             }
         });
 
+        var serviceServicePackList = 'NONE';
+        if($("#serviceServicePackList").val() != '' && $("#serviceServicePackList").val() != null && $("#serviceServicePackList").val() != 'null' && $("#serviceServicePackList").val() != 'undefined'){
+            serviceServicePackList = $("#serviceServicePackList").val();
+        }
+
         var param = {
             name                        : $("#serviceName").val(),
             classification              : $("#categoryServiceList").val(),
             classificationValue         : $("#categoryServiceList option:selected").text(),
-            servicePackName             : $("#serviceServicePackList").val(),
+            servicePackName             : serviceServicePackList,
             parameter                   : JSON.stringify(inputParamJson),
             appBindYn                   : $("input[name=appBindUseYn]:checked").val(),
             appBindParameter            : JSON.stringify(inputAppBindParamJson),
