@@ -1477,6 +1477,7 @@
 
 
             // 태그 리스트
+            // 태그 리스트
             if(entity.tagsParam != ''){ // entity.useYn
                 var obj = jQuery.parseJSON(entity.tagsParam);
                 var index = 0;
@@ -1666,7 +1667,7 @@
                 $.each(obj,function(key, value) {
                     //console.log('key:'+key+', value:'+value);
                     if(index == 0){
-                        setAppBindParam(index, key, value)
+                        setAppBindParam(index, key, value);
                     }else{
                         appBindParamAdd(index, key, value);
                     }
@@ -1692,15 +1693,19 @@
             //공개
             eval("$('input:radio[name=serviceUseYn][value="+entity.useYn+"]').prop('checked', true);");
 
-
+            // 대시보드 사용여부
+            eval("$('input:radio[name=dashBoardUseYn][value="+entity.dashboardUseYn+"]').prop('checked', true);");
 
             //요약
             $("#serviceSummary").val(entity.summary);
+
             //설명
             CKEDITOR.instances.serviceDescription.setData(entity.description);
+
             //문서URL
             $('#serviceDocFileUrl').val(entity.docFileUrl);
         }
+
     }
 
     //   validation Duplicate Name
@@ -1997,11 +2002,16 @@
             }
         });
 
+        var serviceServicePackList = 'NONE';
+        if($("#serviceServicePackList").val() != '' && $("#serviceServicePackList").val() != null && $("#serviceServicePackList").val() != 'null' && $("#serviceServicePackList").val() != 'undefined'){
+            serviceServicePackList = $("#serviceServicePackList").val();
+        }
+
         var param = {
             name                        : $("#serviceName").val(),
             classification              : $("#categoryServiceList").val(),
             classificationValue         : $("#categoryServiceList option:selected").text(),
-            servicePackName             : $("#serviceServicePackList").val(),
+            servicePackName             : serviceServicePackList,
             parameter                   : JSON.stringify(inputParamJson),
             appBindYn                   : $("input[name=appBindUseYn]:checked").val(),
             appBindParameter            : JSON.stringify(inputAppBindParamJson),
@@ -2536,6 +2546,7 @@
     function defaultStarterDevEnvOptionList(){
         var objSelectBox = $('#buildPackList');
         objSelectBox.html('');
+        objSelectBox.append("<option value='0'>NONE</option>");
         $.each(STARTER_DEV_ENV_LIST, function (index, data) {
             objSelectBox.append("<option value='" + data.no + "'> " + data.name + " </option>");
         });
@@ -2554,6 +2565,7 @@
     function defaultDevEnvBuildpackOptionList(){
         var objSelectBox = $('#buildPackDevEnvList');
         objSelectBox.html('');
+        objSelectBox.append("<option value='NONE'>NONE</option>");
         $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
             objSelectBox.append("<option value='" + data.entity.name + "'> " + data.entity.name + " </option>");
         });
@@ -2572,6 +2584,7 @@
     function defaultServiceServiceOptionList(){
         var objSelectBox = $('#serviceServicePackList');
         objSelectBox.html('');
+        objSelectBox.append("<option value='NONE'>NONE</option>");
         $.each(SERVICE_SERVICE_LIST, function (index, data) {
             objSelectBox.append("<option value='" + data.entity.label + "'> " + data.entity.label + " </option>");
         });
