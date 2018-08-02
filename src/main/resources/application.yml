@@ -74,10 +74,7 @@ management:
 # HTTP Server
 server:
   port: ${PORT:8090}   # HTTP (Tomcat) port
-  session:
-    timeout: 600
-
-
+  session-timeout: 300
 ---
 spring:
   profiles: local

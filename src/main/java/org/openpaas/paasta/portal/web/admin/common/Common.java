@@ -82,16 +82,6 @@ public class Common {
 
                 Map result;
 
-                /*
-                HttpEntity requestEntity = new HttpEntity(resBody);
-                ResponseEntity rssResponse = restTemplate.exchange(
-                        apiUrl + "/login",
-                        HttpMethod.POST,
-                        requestEntity,
-                        Map.class);
-
-                result = (Map)rssResponse.getBody();
-*/
                 result = commonService.procCfApiRestTemplate("/login", HttpMethod.POST, resBody, null);
 
                 user.setToken((String) result.get("token"));
