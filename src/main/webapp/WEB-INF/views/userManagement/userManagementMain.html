@@ -43,7 +43,6 @@
                         <th style="text-align: center;"> 전화번호</th>
                         <th style="text-align: center;"> 관리자</th>
                         <th style="text-align: center;"> 상태</th>
-                        <th style="text-align: center;"> 로그인</th>
                         <th style="text-align: center;"> 관리</th>
                     </tr>
                     </thead>
@@ -152,18 +151,17 @@
             for (var i = 0; i < listLength; i++) {
                 boldClass = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "" == resultList[i].adminYn ? 'fwb' : '';
                 menuText = '운영권한 부여';
-                activeText = '포탈접속 부여';
+                activeText = '접속권한 부여';
                 var telephone = resultList[i].tellPhone == null ? '-' : resultList[i].tellPhone;
                 if (resultList[i].adminYn == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") menuText = '운영권한 삭제';
-                if (resultList[i].active == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") activeText = '포탈접속 해제';
-                if (resultList[i].status == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_STATUS_APPROVAL}]]*/  "") {
+                if (resultList[i].active == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") activeText = '접속권한 해제';
+                if (resultList[i].active == 'Y') {
                     htmlString.push('<tr id="Managementtable' + i + '" name=" ' + resultList[i].userId + '">'
                         + '<td class="col-md-4 ' + boldClass + '">' + resultList[i].userId + '</td>'
                         + '<td class="col-md-2 ' + boldClass + '">' + resultList[i].userName + '</td>'
                         + '<td class="col-md-2 ' + boldClass + '">' + telephone + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-primary">' + '승인' + '</span>' + '</td>'
-                        + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].active + '</td>'
                         + '<td class="col-md-2 tac ' + boldClass + '">'
                         + '<div class="dropdown">'
                         + '<label class="fa fa-gears" id="dropdownMenu' + i + '" ' + 'data-toggle="dropdown" aria-expanded="false" aria-hidden="true" style="cursor: pointer;"></label>'
@@ -174,16 +172,21 @@
                         + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\', \'' + resultList[i].userGuid + '\')"> 계정 삭제 </a></li>'
                         + '</ul></div>');
                 } else {
-                    htmlString.push('<tr id="Managementtable' + i + '">'
+                    htmlString.push('<tr id="Managementtable' + i + '" name=" ' + resultList[i].userId + '">'
                         + '<td class="col-md-4 ' + boldClass + '">' + resultList[i].userId + '</td>'
-                        + '<td class="col-md-3 ' + boldClass + '">' + resultList[i].userName + '</td>'
+                        + '<td class="col-md-2 ' + boldClass + '">' + resultList[i].userName + '</td>'
                         + '<td class="col-md-2 ' + boldClass + '">' + telephone + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
-                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + '생성' + '</span>' + '</td>'
-                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + resultList[i].active + '</span>' + '</td>'
-                        + '<td class="col-md-1 tac ' + boldClass + '">'
-                        + '<div class="dropdown"><label class="fa fa-gears" style="color: #dddddd;"></label>'
-                        + '</div>');
+                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + '비승인' + '</span>' + '</td>'
+                        + '<td class="col-md-2 tac ' + boldClass + '">'
+                        + '<div class="dropdown">'
+                        + '<label class="fa fa-gears" id="dropdownMenu' + i + '" ' + 'data-toggle="dropdown" aria-expanded="false" aria-hidden="true" style="cursor: pointer;"></label>'
+                        + '<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu' + i + '">'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> 비밀번호 초기화 </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + menuText + ' </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_LOGIN_ACTIVE + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + activeText + ' </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\', \'' + resultList[i].userGuid + '\')"> 계정 삭제 </a></li>'
+                        + '</ul></div>');
                 }
 
                 htmlString.push('</td></tr>');
