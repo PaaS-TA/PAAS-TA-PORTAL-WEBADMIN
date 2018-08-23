@@ -340,9 +340,9 @@
 
     // DELETE USER ACCOUNT CALLBACK
     var procCallbackDeleteUserAccount = function (data) {
-        if (RESULT_STATUS_FAIL == data.RESULT) return false;
-
-        console.log(data.ACTIVE);
+        if (RESULT_STATUS_FAIL == data.RESULT) {
+            console.log(data);
+        }
         procInitPage();
         procAlert("success", /*[[#{common.info.result.success}]]*/ "");
     };
