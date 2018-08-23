@@ -47,10 +47,10 @@ public class UserManagementController extends Common {
      *
      * @return Map(자바클래스)
      */
-    @GetMapping(V2_URL + "/usermgnts")
+    @GetMapping(V2_URL + "/usermgnts/{filter}/user")
     @ResponseBody
-    public Map<String, Object> getUserInfoList(@ModelAttribute UserManagement param) {
-        return userManagementService.getUserInfoList("/usermgnts?searchKeyword=" + param.getSearchKeyword(), HttpMethod.GET, param, null);
+    public Map<String, Object> getUserInfoList(@PathVariable String filter, @ModelAttribute UserManagement param) {
+        return userManagementService.getUserInfoList("/usermgnts/"+filter+"/user?searchKeyword="+param.getSearchKeyword(), HttpMethod.GET, param, null);
     }
 
     @GetMapping(V2_URL + "/usermgnts/{userid}")
@@ -95,7 +95,7 @@ public class UserManagementController extends Common {
     @DeleteMapping(V2_URL + "/usermgnts/{guid}")
     @ResponseBody
     public Map<String, Object> deleteUserAccount(@PathVariable String guid) {
-        return userManagementService.deleteUserAccount("/user/" + guid + "/all", HttpMethod.DELETE, null, this.getToken());
+        return userManagementService.deleteUserAccount( guid , HttpMethod.DELETE, null, this.getToken());
     }
 
 

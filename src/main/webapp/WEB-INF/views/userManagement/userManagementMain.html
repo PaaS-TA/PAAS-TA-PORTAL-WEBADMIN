@@ -20,10 +20,15 @@
                 <div id="serviceModalLoadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
 
                 <div class="box-header">
+                    <select class="form-control toCheckString" id="access" style="width:150px; margin-left: 355px;margin-top: -5px;" onchange="selectChange()">
+                        <option value="All" selected="true">전체보기</option>
+                        <option value="t">승인</option>
+                        <option value="f">비승인</option>
+                    </select>
                     <div class="box-tools">
-                        <div class="input-group input-group-sm" style="width: 450px;">
+                        <div class="input-group input-group-sm" style="width: 450px; height: 34px" >
                             <input type="text" name="table_search" class="form-control pull-right" placeholder="Search"
-                                   id="searchKeyword" onkeypress="procCheckSearchFormKeyEvent(event);"/>
+                                   id="searchKeyword" onkeypress="procCheckSearchFormKeyEvent(event);" style="height: 34px;"/>
                             <div class="input-group-btn">
                                 <button type="submit" id="btnSearch" class="btn btn-default"
                                         onclick="procButtonClick()"><i class="fa fa-search"></i></button>
@@ -82,6 +87,7 @@
     /*<![CDATA[*/
     var V2_URL = "/v2";
     var REST_URL = V2_URL + "/usermgnts";
+    var REST_URL_ACCESS = V2_URL + "/usermgnts/access/";
     var LOADED_LIST_COUNT = 0;
     var BOOLEN_SEARCH = false;
     var REQUEST_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
@@ -93,14 +99,14 @@
     // GET LIST
     var getUserInfoList = function (reqPageNo) {
         $('#buttonGetMoreList').hide();
-
+        var filter = $("#access").val();
         var param = {
             searchKeyword: document.getElementById('searchKeyword').value.toLowerCase(),
             pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "",
             pageNo: reqPageNo
         };
 
-        procCallAjax(REST_URL, "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL+"/" +filter +"/user", "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
 
     };
 
@@ -115,6 +121,18 @@
             getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "");
         }
     };
+
+    var selectChange = function(){
+        $('#buttonGetMoreList').hide();
+        var filter = $("#access").val();
+        var param = {
+            searchKeyword: document.getElementById('searchKeyword').value.toLowerCase(),
+            pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "",
+            pageNo: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ ""
+        };
+        procCallAjax(REST_URL+"/"+filter+"/user" , "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
+    }
+
 
     // GET LIST CALLBACK
     var procCallbackGetUserInfoList = function (data, reqParam) {
@@ -151,10 +169,10 @@
             for (var i = 0; i < listLength; i++) {
                 boldClass = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "" == resultList[i].adminYn ? 'fwb' : '';
                 menuText = '운영권한 부여';
-                activeText = '접속권한 부여';
+                activeText = '가입 승인';
                 var telephone = resultList[i].tellPhone == null ? '-' : resultList[i].tellPhone;
                 if (resultList[i].adminYn == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") menuText = '운영권한 삭제';
-                if (resultList[i].active == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") activeText = '접속권한 해제';
+                if (resultList[i].active == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") activeText = '가입 해제';
                 if (resultList[i].active == 'Y') {
                     htmlString.push('<tr id="Managementtable' + i + '" name=" ' + resultList[i].userId + '">'
                         + '<td class="col-md-4 ' + boldClass + '">' + resultList[i].userId + '</td>'
