@@ -64,7 +64,6 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> deleteUserAccount(String guid, HttpMethod httpMethod, Object param, String reqToken) {
-        commonService.procCfApiRestTemplate(V2_URL+"/users/"+ guid, httpMethod, null, reqToken);
         return commonService.procCommonApiRestTemplate(V2_URL+"/user/" + guid + "/all", httpMethod, param, reqToken);
     }
 
