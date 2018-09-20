@@ -578,7 +578,6 @@
         $("#DetailRegister").show();
         $("#groupId").val(key);
         procCallAjax("/v2/codedetail?groupId=" + key, "GET", '', procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
-
     }
 
 
@@ -703,7 +702,8 @@
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    //procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    notifyAlert('success',"",'생성 완료 되었습니다.');
                     init();
                 }
             },
@@ -712,6 +712,7 @@
             }
 
         });
+        getCodeDetail();
     }
 
     //updateDetail
@@ -737,7 +738,8 @@
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    //procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    notifyAlert('success',"",'수정 완료 되었습니다.');
                     init();
                 }
             },
@@ -746,9 +748,8 @@
             }
 
         });
+        getCodeDetail();
     };
-
-
 
     //deleteGroup
     function deleteDetailModal() {
@@ -763,9 +764,6 @@
         console.log("      "+ 2)
         init();
     }
-
-
-
 
     /*]]>*/
 </script>
