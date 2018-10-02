@@ -339,6 +339,7 @@
     var LIST_GROUP_PROC_URL = "/v2/codegroup"
     var LIST_DETAIL_PROC_URL = "/v2/codedetail"
     var groupId;
+    var selectKey;
     var no;
     var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
@@ -575,6 +576,7 @@
 
 
     function getCodeDetail(key) {
+        selectKey = key;
         $("#DetailRegister").show();
         $("#groupId").val(key);
         procCallAjax("/v2/codedetail?groupId=" + key, "GET", '', procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
@@ -702,17 +704,17 @@
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    //procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
                     notifyAlert('success',"",'생성 완료 되었습니다.');
                     init();
+                    getCodeDetail(selectKey);
                 }
             },
             error: function (xhr, status, error) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
-
         });
-        getCodeDetail();
+
     }
 
     //updateDetail
@@ -741,14 +743,13 @@
                     //procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
                     notifyAlert('success',"",'수정 완료 되었습니다.');
                     init();
+                    getCodeDetail(selectKey);
                 }
             },
             error: function (xhr, status, error) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
-
         });
-        getCodeDetail();
     };
 
     //deleteGroup
@@ -756,13 +757,13 @@
         var no = $("#detailNo").val();
         procCallAjax("/v2/codedetail/" + no, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
 
-        console.log("      "+ 1)
-        getCodeDetail(); //getcodeList 삭제한 부분만 나오게 수정 할 것
+        console.log("      "+ 1);
     }
 
     var deleteDetail = function (data) {
         console.log("      "+ 2)
         init();
+        getCodeDetail(selectKey);
     }
 
     /*]]>*/
