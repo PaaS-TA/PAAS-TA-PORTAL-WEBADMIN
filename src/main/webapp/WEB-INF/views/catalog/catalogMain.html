@@ -799,12 +799,15 @@
                                             </div>
                                         </div>
 
-
                                         <div class="form-group" name="tagParamForm" style="height:50px;">
                                             <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
-                                                <input type="text" class="form-control" id="tagParamInput" name="tagParamInput"/>
+                                                <select class="form-control" id="tagParamInput" name="tagParamInput">
+                                                    <option value="paasta">paasta</option>
+                                                    <option value="community">community</option>
+                                                </select>
                                             </div>
+
                                             <div class="col-sm-2 col-xs-3">
                                                 <select class="form-control" name="tagParamType" style="width:auto;">
                                                     <option value="colors1">tag1</option>
@@ -818,10 +821,34 @@
                                             <div class="col-sm-1 col-xs-3">
                                                 <button class="user_btn colors1 hide" name="tagPreview" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
                                             </div>
+                                        </div>
+
+
+                                        <div class="form-group" name="tagParamFormPaidFree" style="height:50px;">
+                                            <label for="tagParamInputPaidFree" class="col-sm-3 col-xs-12 control-label"></label>
+                                            <div class="col-sm-4 col-xs-3">
+                                                <select class="form-control" id="tagParamInputPaidFree" name="tagParamInput">
+                                                    <option value="pay">pay</option>
+                                                    <option value="free">free</option>
+                                                </select>
+                                            </div>
+
                                             <div class="col-sm-2 col-xs-3">
-                                                <button type="button" class="btn btn-sm btn-primary" id="tagParamAdd" name="tagParamAdd">추가</button>
+                                                <select class="form-control" name="tagParamType" style="width:auto;">
+                                                    <option value="colors1">tag1</option>
+                                                    <option value="colors2">tag2</option>
+                                                    <option value="colors3">tag3</option>
+                                                    <option value="colors4">tag4</option>
+                                                    <option value="colors5">tag5</option>
+                                                    <option value="colors6">tag6</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-1 col-xs-3">
+                                                <button class="user_btn colors1 hide" name="tagPreview" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
                                             </div>
                                         </div>
+
+
 
                                         <div class="form-group required">
                                             <label for="serviceSummary" class="col-sm-3 control-label">요약</label>
@@ -1160,20 +1187,36 @@
         })
 
         // [앱서비스][태그] 추가 이벤트
-        $(document).on("click", "#tagParamAdd" ,function(e){
-            appTagParamAdd();
-        })
+//        $(document).on("click", "#tagParamAdd" ,function(e){
+//            appTagParamAdd();
+//        })
 
         // [앱서비스][태그] 삭제 이벤트
-        $(document).on("click", "button[name=tagParamRemove]" ,function(e) {
-            var index = $('button[name=tagParamRemove]').index(this) +1 ;
-            $('div[name=tagParamForm]:eq('+index+')').remove();
-        });
+//        $(document).on("click", "button[name=tagParamRemove]" ,function(e) {
+//            var index = $('button[name=tagParamRemove]').index(this) +1 ;
+//            $('div[name=tagParamForm]:eq('+index+')').remove();
+//        });
 
         // [앱서비스][태그] PREVIEW
-        $(document).on("change keyup","input[name=tagParamInput],select[name=tagParamType]",function(e){
+        $(document).on("change keyup","select[name=tagParamInput],select[name=tagParamType]",function(e){
             var target          = $(e.target).closest("div[name=tagParamForm]");
-            var text            = target.find("input[name=tagParamInput]").val();
+            var text            = target.find("select[name=tagParamInput]").val();
+            var textClass       = target.find("select[name=tagParamType]").val();
+            var tagPreviewArea  = target.find("button[name=tagPreview]");
+
+            if(text == ""){
+                tagPreviewArea.addClass("hide");
+            }else{
+                tagPreviewArea.text(text);
+                tagPreviewArea.removeClass('hide');
+                tagPreviewArea.addClass(textClass);
+            }
+        })
+
+        // [앱서비스][태그] [PaidFree] PREVIEW
+        $(document).on("change keyup","select[name=tagParamInput],select[name=tagParamType]",function(e){
+            var target          = $(e.target).closest("div[name=tagParamFormPaidFree]");
+            var text            = target.find("select[name=tagParamInput]").val();
             var textClass       = target.find("select[name=tagParamType]").val();
             var tagPreviewArea  = target.find("button[name=tagPreview]");
 
@@ -1682,11 +1725,12 @@
                 $.each(obj,function(key, value) {
                     console.log('key:'+key+', value:'+value);
                     if(index == 0){
-                        setTagParam(index, key, value)
-                    }else{
-                        appTagParamAdd(index, key, value);
+                        setTagParam(index, key, value);
                     }
-                    index++;
+                    else{
+                        appTagParamAdd(index, key, value);
+                        appTagParamAddPaidFree(index, key, value);
+                    }
                 });
             }
 
@@ -1994,8 +2038,8 @@
         // 태그
         var inputTagParamJson = new Object();
 
-        $.each( $("input[name=tagParamInput]") , function (index, data) {
-            var jsonKey   = eval("$('input[name=tagParamInput]:eq("+index+")').val()");
+        $.each( $("select[name=tagParamInput]") , function (index, data) {
+            var jsonKey   = eval("$('select[name=tagParamInput]:eq("+index+")').val()");
             var jsonValue = eval("$('select[name=tagParamType]:eq("+index+")').val()");
             if(jsonKey != ""){
                 inputTagParamJson[jsonKey] = jsonValue;
@@ -2447,7 +2491,9 @@
             // 초기화
             $('input[name=serviceParamInput]').val("");
             $('input[name=appBindParamInput]').val("");
-            $('input[name=tagParamInput]').val("");
+            $('select[name=tagParamInput]').val("");
+            $('button[name=tagPreview]').val("");
+
 
             // 파라미터 추가 영역 삭제
             $('.service-param-added').remove();
@@ -2726,9 +2772,9 @@
             +"   <div class='col-sm-1 col-xs-3'>"
             +"          <button class='user_btn colors1 hide' name='startertagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
             +"   </div>"
-            +"   <div class='col-sm-2 col-xs-3'>"
-            +"       <button type='button' class='btn btn-sm btn-danger' name='startertagParamRemove'>삭제</button>"
-            +"   </div>"
+//            +"   <div class='col-sm-2 col-xs-3'>"
+//            +"       <button type='button' class='btn btn-sm btn-danger' name='startertagParamRemove'>삭제</button>"
+//            +"   </div>"
             +" </div>";
 
         $('div[name=startertagParamForm]:last').after(tempHtml);
@@ -2810,14 +2856,16 @@
 
 
     // [앱 서비스] 상세 - [Tag 파라미터] 템플릿
-    function appTagParamAdd(index, input, type){
+    function appTagParamAdd(index, type, type2){
 
         var tempHtml =
             "<div class='form-group tag-param-added' name='tagParamForm'>"
             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
             +"   <div name='paramArea'>"
             +"       <div class='col-sm-4 col-xs-3'>"
-            +"           <input type='text' class='form-control' name='tagParamInput'/>"
+            +"           <select class='form-control' name='tagParamInput'/>"
+            +"               <option value='paasta'>paasta</option>"
+            +"               <option value='community'>community</option>"
             +"       </div>"
             +"       <div class='col-sm-2 col-xs-3'>"
             +"           <select class='form-control' name='tagParamType' style='width:auto;'>"
@@ -2829,41 +2877,74 @@
             +"               <option value='colors6'>tag6</option>"
             +"           </select>"
             +"       </div>"
-            +"   </div>"
             +"   <div class='col-sm-1 col-xs-3'>"
             +"          <button class='user_btn colors1 hide' name='tagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
             +"   </div>"
-            +"   <div class='col-sm-2 col-xs-3'>"
-            +"       <button type='button' class='btn btn-sm btn-danger' name='tagParamRemove'>삭제</button>"
             +"   </div>"
             +" </div>";
 
         $('div[name=tagParamForm]:last').after(tempHtml);
 
-        if(input !== undefined){
-            eval("$('button[name=tagPreview]:eq("+index+")').text('"+input+"')");
-            eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type+"')");
+        if(type !== undefined){
+            eval("$('button[name=tagPreview]:eq("+index+")').text('"+type+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type2+"')");
             eval("$('button[name=tagPreview]:eq("+index+")').removeClass('hide')");
-            setTagParam(index, input, type);
+            setTagParam(index, type2, type);
         }
     }
 
     // [앱 서비스] 상세 - [앱 Tag] 셋팅
-    function setTagParam(index, input, type){
-        console.log($('input[name=tagParamInput]:eq("+index+")').val('"+input+"'))
+    function setTagParam(index, type, type2){
+        console.log($('select[name=tagParamInput]:eq("+index+")').val('"+type+"'))
 
-        eval("$('input[name=tagParamInput]:eq("+index+")').val('"+input+"')");
-        eval("$('select[name=tagParamType]:eq("+index+")').val('"+type+"')");
+        eval("$('select[name=tagParamInput]:eq("+index+")').val('"+type+"')");
+        eval("$('select[name=tagParamType]:eq("+index+")').val('"+type2+"')");
 
-        if(input !== undefined){
-            eval("$('button[name=tagPreview]:eq("+index+")').text('"+input+"')");
-            eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type+"')");
+        if(type !== undefined){
+            eval("$('button[name=tagPreview]:eq("+index+")').text('"+type+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type2+"')");
             eval("$('button[name=tagPreview]:eq("+index+")').removeClass('hide')");
         }
     }
 
+    /*2018-10-04 Tag Paid Free */
+    // [앱 서비스] 상세 - [Tag Paid Free 파라미터] 템플릿
+    function appTagParamAddPaidFree(index, type, type2){
 
+        var tempHtml =
+            "<div class='form-group tag-param-added' name='tagParamInput'>"
+            +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+            +"   <div name='paramArea'>"
+            +"       <div class='col-sm-4 col-xs-3'>"
+            +"           <select class='form-control' name='tagParamInput'/>"
+            +"               <option value='pay'>pay</option>"
+            +"               <option value='free'>free</option>"
+            +"       </div>"
+            +"       <div class='col-sm-2 col-xs-3'>"
+            +"           <select class='form-control' name='tagParamType' style='width:auto;'>"
+            +"               <option value='colors1'>tag1</option>"
+            +"               <option value='colors2'>tag2</option>"
+            +"               <option value='colors3'>tag3</option>"
+            +"               <option value='colors4'>tag4</option>"
+            +"               <option value='colors5'>tag5</option>"
+            +"               <option value='colors6'>tag6</option>"
+            +"           </select>"
+            +"       </div>"
+            +"   <div class='col-sm-1 col-xs-3'>"
+            +"          <button class='user_btn colors1 hide' name='tagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
+            +"   </div>"
+            +"   </div>"
+            +" </div>";
 
+        $('div[name=tagParamFormPaidFree]:last').after(tempHtml);
+
+        if(type !== undefined){
+            eval("$('button[name=tagPreview]:eq("+index+")').text('"+type+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type2+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').removeClass('hide')");
+            setTagParam(index, type2, type);
+        }
+    }
 
 
     /*]]>*/
