@@ -98,7 +98,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/spaces/{spaceid}/summary")
     public Map<String, Object> getSpaceSummary(@PathVariable String spaceid) {
-        return orgSpaceListService.getSpaceSummary("/spaces/"+ spaceid+ "/summary", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpaceSummary("/spaces/"+ spaceid+ "/summary-admin", HttpMethod.GET, null, getToken());
     }
 
     /**

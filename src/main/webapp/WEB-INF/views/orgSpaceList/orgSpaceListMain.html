@@ -208,7 +208,8 @@
         $("#modalbody").html("데이터를 불러오고 있습니다.");
         OrgId = orgid;
         //procCallAjax2(V2_URL + "/orgs/"+quotaid+"/quota","GET", null, procCallbackGetOrgQuota);
-        procCallAjax2(V2_URL + "/orgs/"+orgid+"/quota","GET", null, procCallbackGetOrgQuota);
+        //procCallAjax2(V2_URL + "/orgs/"+orgid+"/quota","GET", null, procCallbackGetOrgQuota);
+        procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary", "GET",null, procCallbackGetOrgSummary);
     };
 
     // GET ORG SUMMARY CALLBACK
