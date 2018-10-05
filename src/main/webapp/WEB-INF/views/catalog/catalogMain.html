@@ -1151,6 +1151,7 @@
             var classname = 'user_btn ' + $('#tag2').val();
             $('#tagPreviewPaidFree').removeAttr('class').attr('class', classname);
         })
+
         $(document).on("change keyup","input[name=startertagParamInput],select[name=startertagParamType]",function(e){
 
             var target          = $(e.target).closest("div[name=startertagParamForm]");
@@ -1222,6 +1223,22 @@
         //         tagPreviewArea.addClass(textClass);
         //     }
         // })
+
+        // [앱서비스][태그] [tagPreviewClassification] PREVIEW
+        $(document).on("change keyup","select[name=tagParamInput],select[name=tagParamType]",function(e){
+            var target          = $(e.target).closest("div[name=tagParamForm]");
+            var text            = target.find("select[name=tagParamInput]").val();
+            var textClass       = target.find("select[name=tagParamType]").val();
+            var tagPreviewArea  = target.find("button[name=tagPreview]");
+
+            if(text == ""){
+                tagPreviewArea.addClass("hide");
+            }else{
+                tagPreviewArea.text(text);
+                tagPreviewArea.removeClass('hide');
+                tagPreviewArea.addClass(textClass);
+            }
+        })
 
         // [앱서비스][태그] [PaidFree] PREVIEW
         $(document).on("change keyup","select[name=tagParamInput],select[name=tagParamType]",function(e){
