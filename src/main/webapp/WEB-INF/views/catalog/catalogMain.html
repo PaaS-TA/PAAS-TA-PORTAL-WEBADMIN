@@ -803,7 +803,7 @@
                                             <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="tagParamInput" name="tagParamInput">
-                                                    <option value="paasta">paasta</option>
+                                                    <option value="paasta" >paasta</option>
                                                     <option value="community">community</option>
                                                 </select>
                                             </div>
@@ -819,7 +819,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                <button class="user_btn colors1 hide" name="tagPreview" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
+                                                <button class="user_btn colors1 hide" name="tagPreview" id ="tagPreviewClassification" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
                                             </div>
                                         </div>
 
@@ -844,11 +844,9 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                <button class="user_btn colors1 hide" name="tagPreview" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
+                                                <button class="user_btn colors1 hide" name="tagPreview" id="tagPreviewPaidFree" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
                                             </div>
                                         </div>
-
-
 
                                         <div class="form-group required">
                                             <label for="serviceSummary" class="col-sm-3 control-label">요약</label>
@@ -1724,13 +1722,14 @@
                 var index = 0;
                 $.each(obj,function(key, value) {
                     console.log('key:'+key+', value:'+value);
-                    if(index == 0){
+                    if(index !== ""){
                         setTagParam(index, key, value);
                     }
                     else{
                         appTagParamAdd(index, key, value);
                         appTagParamAddPaidFree(index, key, value);
                     }
+                    index++;
                 });
             }
 
@@ -2266,7 +2265,6 @@
     }
 
 
-
     /* [앱 서비스] 등록  */
     function createService() {
 
@@ -2491,8 +2489,11 @@
             // 초기화
             $('input[name=serviceParamInput]').val("");
             $('input[name=appBindParamInput]').val("");
-            $('select[name=tagParamInput]').val("");
-            $('button[name=tagPreview]').val("");
+            /*$('select[name=tagParamInput]').val("");*/
+            $('select[id=tagParamInput]').val("paasta");
+            $('select[id=tagParamInputPaidFree]').val("pay");
+            /*$('select[name=tagParamType]').val("");*/
+//            $('option:selected[name=tagParamType]:input[value="colors1"]').prop('selected', true);
 
 
             // 파라미터 추가 영역 삭제
@@ -2863,7 +2864,7 @@
             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
             +"   <div name='paramArea'>"
             +"       <div class='col-sm-4 col-xs-3'>"
-            +"           <select class='form-control' name='tagParamInput'/>"
+            +"           <select class='form-control' name='tagParamInput' id='tagPreviewClassification'/>"
             +"               <option value='paasta'>paasta</option>"
             +"               <option value='community'>community</option>"
             +"       </div>"
@@ -2916,7 +2917,7 @@
             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
             +"   <div name='paramArea'>"
             +"       <div class='col-sm-4 col-xs-3'>"
-            +"           <select class='form-control' name='tagParamInput'/>"
+            +"           <select class='form-control' name='tagParamInput' id='tagPreviewPaidFree'/>"
             +"               <option value='pay'>pay</option>"
             +"               <option value='free'>free</option>"
             +"       </div>"
@@ -2945,7 +2946,6 @@
             setTagParam(index, type2, type);
         }
     }
-
 
     /*]]>*/
 </script>
