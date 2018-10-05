@@ -819,7 +819,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                <button class="user_btn colors1" name="tagPreview" id ="tagPreviewClassification" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paasta</button>
+                                                <button class="user_btn colors1 " name="tagPreview" id="tag1param" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paasta</button>
                                             </div>
                                         </div>
 
@@ -1142,14 +1142,16 @@
 
         // [앱개발환경][태그] PREVIEW
 
-        $(document).on("change keyup","select[id=tag1]",function(e){
+        $(document).on("change keyup","select[id=tag1], select[id=tagParamInput]",function(e){
+            var value = $('#tagParamInput').val();
             var classname = 'user_btn ' + $('#tag1').val();
-            $('#tagPreviewClassification').removeAttr('class').attr('class', classname);
+            $('#tag1param').removeAttr('class').attr('class', classname).text(value);
         })
 
-        $(document).on("change keyup","select[id=tag2]",function(e){
+        $(document).on("change keyup","select[id=tag2], select[id=tagParamInputPaidFree]",function(e){
+            var value = $('#tagParamInputPaidFree').val();
             var classname = 'user_btn ' + $('#tag2').val();
-            $('#tagPreviewPaidFree').removeAttr('class').attr('class', classname);
+            $('#tagPreviewPaidFree').removeAttr('class').attr('class', classname).val(value);
         })
         $(document).on("change keyup","input[name=startertagParamInput],select[name=startertagParamType]",function(e){
 
