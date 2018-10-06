@@ -546,7 +546,7 @@
                                         </div>
 
                                         <div class="form-group" name="devEnvtagParamForm" style="height:50px;">
-                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="devEnvtagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="devEnvtagParamInput" name="devEnvtagParamInput">
                                                     <option value="paasta">paasta</option>
@@ -564,12 +564,12 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                <button class="user_btn colors1" name="devEnvtagPreview" id ="devEnvtagkinds" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paasta</button>
+                                                <button class="user_btn colors1" name="devEnvtagPreview" id ="devEnvtagPreviewClassification" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paasta</button>
                                             </div>
                                         </div>
 
                                         <div class="form-group" name="devEnvtagParamFormPaidFree" style="height:50px;">
-                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="devEnvtagParamInputPaidFree" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="devEnvtagParamInputPaidFree" name="devEnvtagParamInput">
                                                     <option value="pay">pay</option>
@@ -587,7 +587,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                <button class="user_btn colors1" name="devEnvtagPreview" id ="devEnvtagPaidFree" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">pay</button>
+                                                <button class="user_btn colors1" name="devEnvtagPreview" id ="devEnvtagPreviewPaidFree" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">pay</button>
                                             </div>
                                         </div>
 
@@ -1154,13 +1154,13 @@
         $(document).on("change keyup","select[id=devEnvtag1], select[id=devEnvtagParamInput]",function(e){
             var value = $('#devEnvtagParamInput').val();
             var classname = 'user_btn ' + $('#devEnvtag1').val();
-            $('#devEnvtagkinds').removeAttr('class').attr('class', classname).text(value);
+            $('#devEnvtagPreviewClassification').removeAttr('class').attr('class', classname).text(value);
         })
 
         $(document).on("change keyup","select[id=devEnvtag2], select[id=devEnvtagParamInputPaidFree]",function(e){
             var value = $('#devEnvtagParamInputPaidFree').val();
             var classname = 'user_btn ' + $('#devEnvtag2').val();
-            $('#devEnvtagPaidFree').removeAttr('class').attr('class', classname).val(value);
+            $('#devEnvtagPreviewPaidFree').removeAttr('class').attr('class', classname).val(value);
         })
 
 
@@ -2509,8 +2509,8 @@
             $('select[id=devEnvtagParamInputPaidFree]').val("pay");
             $('select[id=devEnvtag1]').val("colors1");
             $('select[id=devEnvtag2]').val("colors1");
-            $('#devEnvtagParamClassification').removeAttr('class').attr('class', 'user_btn colors1');
-            $('#devEnvtagParamPaidFree').removeAttr('class').attr('class', 'user_btn colors1');
+            $('#devEnvtagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1');
+            $('#devEnvtagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1');
 
             $('input:radio[name=devEnvUseYn]:input[value="Y"]').prop('checked', true);
             $('#devEnvAppRemove').trigger('click');
@@ -2535,6 +2535,7 @@
             $('select[id=tag2]').val("colors1");
             $('#tagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1');
             $('#tagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1');
+
 
             // 파라미터 추가 영역 삭제
             $('.service-param-added').remove();
@@ -2843,7 +2844,7 @@
             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
             +"   <div name='paramArea'>"
             +"       <div class='col-sm-4 col-xs-3'>"
-            +"           <select class='form-control' name='devEnvtagParamInput' id='devEnvtagParamClassification'>"
+            +"           <select class='form-control' name='devEnvtagParamInput' id='devEnvtagPreviewClassification'>"
             +"               <option value='paasta'>paasta</option>"
             +"               <option value='community'>community</option>"
             +"           </select>"
@@ -2881,7 +2882,7 @@
             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
             +"   <div name='paramArea'>"
             +"       <div class='col-sm-4 col-xs-3'>"
-            +"           <select class='form-control' name='devEnvtagParamInput' id='devEnvtagParamPaidFree'>"
+            +"           <select class='form-control' name='devEnvtagParamInput' id='devEnvtagPreviewPaidFree'>"
             +"               <option value='pay'>pay</option>"
             +"               <option value='free'>free</option>"
             +"           </select>"
