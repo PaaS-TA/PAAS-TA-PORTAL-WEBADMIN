@@ -548,10 +548,13 @@
                                         <div class="form-group" name="devEnvtagParamForm" style="height:50px;">
                                             <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
-                                                <input type="text" class="form-control" id="devEnvtagParamInput" name="devEnvtagParamInput"/>
+                                                <select class="form-control" id="devEnvtagParamInput" name="devEnvtagParamInput">
+                                                    <option value="paasta">paasta</option>
+                                                    <option value="community">community</option>
+                                                </select>
                                             </div>
                                             <div class="col-sm-2 col-xs-3">
-                                                <select class="form-control" name="devEnvtagParamType" style="width:auto;">
+                                                <select class="form-control" name="devEnvtagParamType" id="devEnvtag1" style="width:auto;">
                                                     <option value="colors1">tag1</option>
                                                     <option value="colors2">tag2</option>
                                                     <option value="colors3">tag3</option>
@@ -561,13 +564,32 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                <button class="user_btn colors1 hide" name="devEnvtagPreview" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">tag1</button>
-                                            </div>
-                                            <div class="col-sm-2 col-xs-3">
-                                                <button type="button" class="btn btn-sm btn-primary" id="devEnvtagParamAdd" name="devEnvtagParamAdd">추가</button>
+                                                <button class="user_btn colors1" name="devEnvtagPreview" id ="devEnvtagkinds" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paasta</button>
                                             </div>
                                         </div>
 
+                                        <div class="form-group" name="devEnvtagParamFormPaidFree" style="height:50px;">
+                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <div class="col-sm-4 col-xs-3">
+                                                <select class="form-control" id="devEnvtagParamInputPaidFree" name="devEnvtagParamInput">
+                                                    <option value="pay">pay</option>
+                                                    <option value="free">free</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2 col-xs-3">
+                                                <select class="form-control" name="devEnvtagParamType" id="devEnvtag2" style="width:auto;">
+                                                    <option value="colors1">tag1</option>
+                                                    <option value="colors2">tag2</option>
+                                                    <option value="colors3">tag3</option>
+                                                    <option value="colors4">tag4</option>
+                                                    <option value="colors5">tag5</option>
+                                                    <option value="colors6">tag6</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-1 col-xs-3">
+                                                <button class="user_btn colors1" name="devEnvtagPreview" id ="devEnvtagPaidFree" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">pay</button>
+                                            </div>
+                                        </div>
 
                                         <div class="form-group required">
                                             <label for="devEnvSummary" class="col-sm-3 control-label">요약</label>
@@ -919,7 +941,7 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    /* To_BE
+    /* To_BEf
      앱 템플릿 등록시 동일 이름 있는지 체크 DUPLICATED_PROC_URL
      앱 템플릿에서 사용중인지 확인 부분
     */
@@ -1128,20 +1150,21 @@
             procSearchByKeyword();
         });
 
-
-        // [앱개발환경][태그] 추가 이벤트
-        $(document).on("click", "#startertagParamAdd" ,function(e){
-            appStarterTagParamAdd();
+        // [앱개발환경][태그] PREVIEW
+        $(document).on("change keyup","select[id=devEnvtag1], select[id=devEnvtagParamInput]",function(e){
+            var value = $('#devEnvtagParamInput').val();
+            var classname = 'user_btn ' + $('#devEnvtag1').val();
+            $('#devEnvtagkinds').removeAttr('class').attr('class', classname).text(value);
         })
 
-        // [앱개발환경][태그] 삭제 이벤트
-        $(document).on("click", "button[name=startertagParamRemove]" ,function(e) {
-            var index = $('button[name=startertagParamRemove]').index(this) +1 ;
-            $('div[name=startertagParamForm]:eq('+index+')').remove();
-        });
+        $(document).on("change keyup","select[id=devEnvtag2], select[id=devEnvtagParamInputPaidFree]",function(e){
+            var value = $('#devEnvtagParamInputPaidFree').val();
+            var classname = 'user_btn ' + $('#devEnvtag2').val();
+            $('#devEnvtagPaidFree').removeAttr('class').attr('class', classname).val(value);
+        })
 
-        // [앱개발환경][태그] PREVIEW
 
+        // [앱서비스][태그] PREVIEW
         $(document).on("change keyup","select[id=tag1], select[id=tagParamInput]",function(e){
             var value = $('#tagParamInput').val();
             var classname = 'user_btn ' + $('#tag1').val();
@@ -1171,21 +1194,10 @@
         })
 
 
-        // [앱템플릿][태그] 추가 이벤트
-        $(document).on("click", "#devEnvtagParamAdd" ,function(e){
-            appDevEnvTagParamAdd();
-        })
-
-        // [앱템플릿][태그] 삭제 이벤트
-        $(document).on("click", "button[name=devEnvtagParamRemove]" ,function(e) {
-            var index = $('button[name=devEnvtagParamRemove]').index(this) +1 ;
-            $('div[name=devEnvtagParamForm]:eq('+index+')').remove();
-        });
-
-        // [앱템플릿][태그] PREVIEW
-        $(document).on("change keyup","input[name=devEnvtagParamInput],select[name=devEnvtagParamType]",function(e){
+        // [앱개발환경][태그][devEnvtagParamClassification] PREVIEW
+        $(document).on("change keyup","select[name=devEnvtagParamInput],select[name=devEnvtagParamType]",function(e){
             var target          = $(e.target).closest("div[name=devEnvtagParamForm]");
-            var text            = target.find("input[name=devEnvtagParamInput]").val();
+            var text            = target.find("select[name=devEnvtagParamInput]").val();
             var textClass       = target.find("select[name=devEnvtagParamType]").val();
             var tagPreviewArea  = target.find("button[name=devEnvtagPreview]");
 
@@ -1198,33 +1210,21 @@
             }
         })
 
-        // [앱서비스][태그] 추가 이벤트
-//        $(document).on("click", "#tagParamAdd" ,function(e){
-//            appTagParamAdd();
-//        })
+        // [앱개발환경][태그][devEnvtagParamPaidFree] PREVIEW
+        $(document).on("change keyup","select[name=devEnvtagParamInput],select[name=devEnvtagParamType]",function(e){
+            var target          = $(e.target).closest("div[name=devEnvtagParamFormPaidFree]");
+            var text            = target.find("select[name=devEnvtagParamInput]").val();
+            var textClass       = target.find("select[name=devEnvtagParamType]").val();
+            var tagPreviewArea  = target.find("button[name=devEnvtagPreview]");
 
-        // [앱서비스][태그] 삭제 이벤트
-//        $(document).on("click", "button[name=tagParamRemove]" ,function(e) {
-//            var index = $('button[name=tagParamRemove]').index(this) +1 ;
-//            $('div[name=tagParamForm]:eq('+index+')').remove();
-//        });
-
-        // [앱서비스][태그] PREVIEW
-        // $(document).on("change keyup","select[name=tagParamInput],select[name=tagParamType]",function(e){
-        //     console.log("아아아아");
-        //     var target          = $(e.target).closest("div[name=tagParamForm]");
-        //     var text            = target.find("select[name=tagParamInput]").val();
-        //     var textClass       = target.find("select[name=tagParamType]").val();
-        //     var tagPreviewArea  = target.find("button[name=tagPreview]");
-        //
-        //     if(text == ""){
-        //         tagPreviewArea.addClass("hide");
-        //     }else{
-        //         tagPreviewArea.text(text);
-        //         tagPreviewArea.removeClass('hide');
-        //         tagPreviewArea.addClass(textClass);
-        //     }
-        // })
+            if(text == ""){
+                tagPreviewArea.addClass("hide");
+            }else{
+                tagPreviewArea.text(text);
+                tagPreviewArea.removeClass('hide');
+                tagPreviewArea.addClass(textClass);
+            }
+        })
 
         // [앱서비스][태그] [tagPreviewClassification] PREVIEW
         $(document).on("change keyup","select[name=tagParamInput],select[name=tagParamType]",function(e){
@@ -1644,10 +1644,11 @@
                 var index = 0;
                 $.each(obj,function(key, value) {
                     console.log(index + ' key:'+key+', value:'+value);
-                    if(index == 0){
+                    if(index !== ""){
                         setDevEnvTagParam(index, key, value)
                     }else{
                         appDevEnvTagParamAdd(index, key, value);
+                        appDevEnvTagParamAddPaidFree(index, key, value);
                     }
                     index++;
                 });
@@ -2013,8 +2014,8 @@
         // 태그
         var inputTagParamJson = new Object();
 
-        $.each( $("input[name=devEnvtagParamInput]") , function (index, data) {
-            var jsonKey   = eval("$('input[name=devEnvtagParamInput]:eq("+index+")').val()");
+        $.each( $("select[name=devEnvtagParamInput]") , function (index, data) {
+            var jsonKey   = eval("$('select[name=devEnvtagParamInput]:eq("+index+")').val()");
             var jsonValue = eval("$('select[name=devEnvtagParamType]:eq("+index+")').val()");
             if(jsonKey != ""){
                 inputTagParamJson[jsonKey] = jsonValue;
@@ -2503,6 +2504,14 @@
             defaultDevEnvCategoryOptionList();
             defaultDevEnvBuildpackOptionList();
 
+            //초기화
+            $('select[id=devEnvtagParamInput]').val("paasta");
+            $('select[id=devEnvtagParamInputPaidFree]').val("pay");
+            $('select[id=devEnvtag1]').val("colors1");
+            $('select[id=devEnvtag2]').val("colors1");
+            $('#devEnvtagParamClassification').removeAttr('class').attr('class', 'user_btn colors1');
+            $('#devEnvtagParamPaidFree').removeAttr('class').attr('class', 'user_btn colors1');
+
             $('input:radio[name=devEnvUseYn]:input[value="Y"]').prop('checked', true);
             $('#devEnvAppRemove').trigger('click');
             $('.tag-param-added').remove();
@@ -2520,23 +2529,17 @@
             // 초기화
             $('input[name=serviceParamInput]').val("");
             $('input[name=appBindParamInput]').val("");
-            /*$('select[name=tagParamInput]').val("");*/
             $('select[id=tagParamInput]').val("paasta");
             $('select[id=tagParamInputPaidFree]').val("pay");
-            $('#tagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1');
-            $('#tagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1');
             $('select[id=tag1]').val("colors1");
             $('select[id=tag2]').val("colors1");
-
-            /*$('select[name=tagParamType]').val("");*/
-//            $('option:selected[name=tagParamType]:input[value="colors1"]').prop('selected', true);
-
+            $('#tagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1');
+            $('#tagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1');
 
             // 파라미터 추가 영역 삭제
             $('.service-param-added').remove();
             $('.app-bind-param-added').remove();
             $('.tag-param-added').remove();
-
 
             $('div[name=appRemove]').trigger('click');
         }
@@ -2785,7 +2788,6 @@
         eval("$('select[name=serviceParamType]:eq("+index+")').val('"+type+"')");
     }
 
-
     // [앱 개발환경] 상세 - [Tag 파라미터] 템플릿
     function appStarterTagParamAdd(index, input, type){
         var tempHtml =
@@ -2809,9 +2811,6 @@
             +"   <div class='col-sm-1 col-xs-3'>"
             +"          <button class='user_btn colors1 hide' name='startertagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
             +"   </div>"
-//            +"   <div class='col-sm-2 col-xs-3'>"
-//            +"       <button type='button' class='btn btn-sm btn-danger' name='startertagParamRemove'>삭제</button>"
-//            +"   </div>"
             +" </div>";
 
         $('div[name=startertagParamForm]:last').after(tempHtml);
@@ -2837,16 +2836,17 @@
         }
     }
 
-
-
     // [앱 템플릿] 상세 - [Tag 파라미터] 템플릿
-    function appDevEnvTagParamAdd(index, input, type){
+    function appDevEnvTagParamAdd(index, type, type2){
         var tempHtml =
             "<div class='form-group tag-param-added' name='devEnvtagParamForm'>"
             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
             +"   <div name='paramArea'>"
             +"       <div class='col-sm-4 col-xs-3'>"
-            +"           <input type='text' class='form-control' name='devEnvtagParamInput'/>"
+            +"           <select class='form-control' name='devEnvtagParamInput' id='devEnvtagParamClassification'>"
+            +"               <option value='paasta'>paasta</option>"
+            +"               <option value='community'>community</option>"
+            +"           </select>"
             +"       </div>"
             +"       <div class='col-sm-2 col-xs-3'>"
             +"           <select class='form-control' name='devEnvtagParamType' style='width:auto;'>"
@@ -2862,35 +2862,68 @@
             +"   <div class='col-sm-1 col-xs-3'>"
             +"          <button class='user_btn colors1 hide' name='devEnvtagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
             +"   </div>"
-            +"   <div class='col-sm-2 col-xs-3'>"
-            +"       <button type='button' class='btn btn-sm btn-danger' name='devEnvtagParamRemove'>삭제</button>"
-            +"   </div>"
             +" </div>";
 
         $('div[name=devEnvtagParamForm]:last').after(tempHtml);
 
-        if(input !== undefined){
-            eval("$('button[name=devEnvtagPreview]:eq("+index+")').text('"+input+"')");
-            eval("$('button[name=devEnvtagPreview]:eq("+index+")').addClass('"+type+"')");
+        if(type !== undefined){
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').text('"+type+"')");
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').addClass('"+type2+"')");
             eval("$('button[name=devEnvtagPreview]:eq("+index+")').removeClass('hide')");
-            setDevEnvTagParam(index, input, type);
+            setDevEnvTagParam(index, type, type2);
+        }
+    }
+
+    // [앱 템플릿] 상세 - [Tag Paid Free 파라미터] 템플릿 20181005
+    function appDevEnvTagParamAddPaidFree(index, type, type2){
+        var tempHtml =
+            "<div class='form-group tag-param-added' name='devEnvtagParamForm'>"
+            +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
+            +"   <div name='paramArea'>"
+            +"       <div class='col-sm-4 col-xs-3'>"
+            +"           <select class='form-control' name='devEnvtagParamInput' id='devEnvtagParamPaidFree'>"
+            +"               <option value='pay'>pay</option>"
+            +"               <option value='free'>free</option>"
+            +"           </select>"
+            +"       </div>"
+            +"       <div class='col-sm-2 col-xs-3'>"
+            +"           <select class='form-control' name='devEnvtagParamType' style='width:auto;'>"
+            +"               <option value='colors1'>tag1</option>"
+            +"               <option value='colors2'>tag2</option>"
+            +"               <option value='colors3'>tag3</option>"
+            +"               <option value='colors4'>tag4</option>"
+            +"               <option value='colors5'>tag5</option>"
+            +"               <option value='colors6'>tag6</option>"
+            +"           </select>"
+            +"       </div>"
+            +"   </div>"
+            +"   <div class='col-sm-1 col-xs-3'>"
+            +"          <button class='user_btn colors1 hide' name='devEnvtagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
+            +"   </div>"
+            +" </div>";
+
+        $('div[name=devEnvtagParamFormPaidFree]:last').after(tempHtml);
+
+        if(type !== undefined){
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').text('"+type+"')");
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').addClass('"+type2+"')");
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').removeClass('hide')");
+            setDevEnvTagParam(index, type, type2);
         }
     }
 
     // [앱 템플릿] 상세 - [앱 Tag] 셋팅
-    function setDevEnvTagParam(index, input, type){
+    function setDevEnvTagParam(index, type, type2){
 
-        eval("$('input[name=devEnvtagParamInput]:eq("+index+")').val('"+input+"')");
-        eval("$('select[name=devEnvtagParamType]:eq("+index+")').val('"+type+"')");
+        eval("$('select[name=devEnvtagParamInput]:eq("+index+")').val('"+type+"')");
+        eval("$('select[name=devEnvtagParamType]:eq("+index+")').val('"+type2+"')");
 
-        if(input !== undefined){
-            eval("$('button[name=devEnvtagPreview]:eq("+index+")').text('"+input+"')");
-            eval("$('button[name=devEnvtagPreview]:eq("+index+")').addClass('"+type+"')");
+        if(type !== undefined){
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').text('"+type+"')");
+            eval("$('button[name=devEnvtagPreview]:eq("+index+")').addClass('"+type2+"')");
             eval("$('button[name=devEnvtagPreview]:eq("+index+")').removeClass('hide')");
         }
     }
-
-
 
     // [앱 서비스] 상세 - [Tag 파라미터] 템플릿
     function appTagParamAdd(index, type, type2){
@@ -2930,21 +2963,6 @@
         }
     }
 
-    // [앱 서비스] 상세 - [앱 Tag] 셋팅
-    function setTagParam(index, type, type2){
-        console.log($('select[name=tagParamInput]:eq("+index+")').val('"+type+"'))
-
-        eval("$('select[name=tagParamInput]:eq("+index+")').val('"+type+"')");
-        eval("$('select[name=tagParamType]:eq("+index+")').val('"+type2+"')");
-
-        if(type !== undefined){
-            eval("$('button[name=tagPreview]:eq("+index+")').text('"+type+"')");
-            eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type2+"')");
-            eval("$('button[name=tagPreview]:eq("+index+")').removeClass('hide')");
-        }
-    }
-
-    /*2018-10-04 Tag Paid Free */
     // [앱 서비스] 상세 - [Tag Paid Free 파라미터] 템플릿
     function appTagParamAddPaidFree(index, type, type2){
 
@@ -2980,6 +2998,20 @@
             eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type2+"')");
             eval("$('button[name=tagPreview]:eq("+index+")').removeClass('hide')");
             setTagParam(index, type2, type);
+        }
+    }
+
+    // [앱 서비스] 상세 - [앱 Tag] 셋팅
+    function setTagParam(index, type, type2){
+        console.log($('select[name=tagParamInput]:eq("+index+")').val('"+type+"'))
+
+        eval("$('select[name=tagParamInput]:eq("+index+")').val('"+type+"')");
+        eval("$('select[name=tagParamType]:eq("+index+")').val('"+type2+"')");
+
+        if(type !== undefined){
+            eval("$('button[name=tagPreview]:eq("+index+")').text('"+type+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').addClass('"+type2+"')");
+            eval("$('button[name=tagPreview]:eq("+index+")').removeClass('hide')");
         }
     }
 
