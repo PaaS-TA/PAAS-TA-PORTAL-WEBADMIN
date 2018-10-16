@@ -2551,8 +2551,8 @@
             $('select[id=startertagParamInputPaidFree]').val("pay");
             $('select[id=startertag1]').val("colors1");
             $('select[id=startertag2]').val("colors1");
-            $('#startertagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1');
-            $('#startertagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1');
+            $('#startertagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1').text('paasta');
+            $('#startertagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1').text('pay');
 
             // [서비스] 항목
             $('#selectedServicePackList').html('');
@@ -2570,9 +2570,8 @@
             $('select[id=devEnvtagParamInputPaidFree]').val("pay");
             $('select[id=devEnvtag1]').val("colors1");
             $('select[id=devEnvtag2]').val("colors1");
-            $('#devEnvtagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1');
-            $('#devEnvtagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1');
-
+            $('#devEnvtagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1').text('paasta');
+            $('#devEnvtagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1').text('pay');
             $('input:radio[name=devEnvUseYn]:input[value="Y"]').prop('checked', true);
             $('#devEnvAppRemove').trigger('click');
             $('.tag-param-added').remove();
@@ -2594,8 +2593,8 @@
             $('select[id=tagParamInputPaidFree]').val("pay");
             $('select[id=tag1]').val("colors1");
             $('select[id=tag2]').val("colors1");
-            $('#tag1param').removeAttr('class').attr('class', 'user_btn colors1');
-            $('#tagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1');
+            $('#tag1param').removeAttr('class').attr('class', 'user_btn colors1').text('paasta');
+            $('#tagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1').text('pay');
 
 
             // 파라미터 추가 영역 삭제
