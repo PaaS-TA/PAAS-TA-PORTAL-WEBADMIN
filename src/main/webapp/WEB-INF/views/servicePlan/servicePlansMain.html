@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head></head>
+<body>
+<div>
+    <header></header>
+    <aside>/</aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div layout:fragment="content" class="content-wrapper" >
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                서비스 제어
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div id="loadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                        <div class="box-body">
+                            <table class="table table-striped text-center"> <!-- table-responsive -->
+                                <thead>
+                                <tr>
+                                    <th width="30%">이름</th>
+                                    <th width="30%">플랜</th>
+                                    <th width="30%">접근</th>
+                                    <th width="30%">조직</th>
+                                </tr>
+                                </thead>
+                                <tbody id="servicePlanList" th:remove="body">
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+
+            </div>
+
+            <!-- Modal Layer-->
+            <div class="modal fade" id="serviceAccessFormModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+
+                            <h4 class="modal-title">
+                                <div id="titleDetail">서비스 제어</div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                                <form id="serviceAccessForm" class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group required">
+                                            <label for="servicebrokername" class="col-sm-3 control-label">서비스 브로커 이름</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="servicebrokername" name="servicebrokername"/>
+                                                <input type="hidden" id="label"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="servicename" class="col-sm-3 control-label">서비스 이름</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="servicename" name="servicename"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="serviceAccessList" class="col-sm-3 control-label">서비스 접근</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control checkServiceForm" id="serviceAccessList" name="serviceAccessList" style="width:auto;">
+                                                    <option value="true">ALL</option>
+                                                    <option value="false">NONE</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="serviceOrgList" class="col-sm-3 control-label">서비스 조직</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control checkServiceForm" id="serviceOrgList" name="serviceOrgList" style="width:auto;">
+                                                    <option value="true">ALL</option>
+                                                    <option value="false">NONE</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="disableBtn" class="btn btn-sm btn-danger pull-left" onClick="disableServiceAccess();">접근해제</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="enableBtn" class="btn btn-sm btn-primary pull-right" onClick="enableServiceAccess();">접근허용</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="serviceBrokerConfirmModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
+                                    onclick="procClosePopup('serviceBrokerConfirmModal');"> 취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Layer-->
+        </section>
+        <!-- /.Content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer></footer>
+
+</div>
+<!-- ./wrapper -->
+
+<script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+    /*<![CDATA[*/
+    var serviceBrokerGuid = /*[[${guid}]]*/ 'empty';
+
+    var init = function(){
+        getServicePlanList();
+        $('#serviceAccessFormModal').modal('hide');
+    }
+
+    $(document).ready(function () {
+
+        init();
+
+        $('#register').click(function(){
+
+            $('#titleDetail').hide();
+            $('#deleteBtn').hide();
+            $('#saveBtn').hide();
+
+            $('#regBtn').show();
+            $('#closeBtn').show();
+
+            $("#servicebrokername").val("");
+            $("#servicename").val("");
+            $("#serviceAccessList").val("ALL");
+            $("#url").val("");
+            $("#label").val("");
+        });
+
+        $('#serviceBrokerList').click(function(){
+
+            $('#titleDetail').show();
+            $('#deleteBtn').show();
+            $('#saveBtn').show();
+
+            $('#regBtn').hide();
+            //$('#closeBtn').hide();
+        });
+    });
+
+    function getServicePlanList(){
+        procCallAjax("/v2/services", "GET", null, procCallbackGetServicePlanList, $('#loadingBar') );
+    };
+
+
+    var procCallbackGetServicePlanList = function(data){
+        printData(data.resources);
+    }
+
+    // 서비스 제어 리스트 출력
+    function printData(dataList) {
+
+        var objTable = $("#servicePlanList");
+
+        objTable.html('');
+
+        $.each(dataList, function (id, data) {
+//            console.log(data);
+            objTable.append(" <tr align='center' style='cursor:pointer;'" +
+                " onclick='javascript:getServicePlandetail(\""+data.entity.label+"\");'>" +
+                "<td>" + data.entity.label + "</td>"+
+                "<td>" + data.entity.tags + "</td>"+
+                "<td>" + data.entity.active + "</td>"+
+                "<td>" + data.entity.orgs + "</td>"
+            );
+        });
+    };
+
+    // 서비스 제어 상세
+    function getServicePlandetail(label) {
+        $('#serviceAccessForm')[0].reset();
+        $('#serviceAccessFormModal').modal('toggle');
+        procCallAjax("/v2/catalogs/serviceplan/"+label, "GET", null, procCallbackGetPlandetail, $('#modalLoadingBar'));
+    }
+
+    var procCallbackGetPlandetail = function(data){
+        console.log(data);
+        if (data) {
+//            $("#servicebrokername").val(data.entity.name);
+        }
+    }
+
+    // 서비스 제어 접근허용[update]
+    function enableServiceAccess() {
+
+        var guid = $('#guid').val();
+
+        if (!procCheckValidStringSpace()){
+            return false;
+        };
+
+        var param = {
+            guid: guid,
+            name: $("#name").val()
+        }
+        procCallAjax("/v2/serviceplans/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
+    }
+
+    // 서비스 제어 삭제 (confirm layer)
+    function deleteServiceBrokerModal() {
+
+        $("#popupTitle").html("서비스 브로커 삭제");
+        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{delete.confirm.message('서비스 브로커')}]]*/ "");
+        $("#popupButtonText").text("삭제");
+        $("#popupButtonText").addClass('pull-left');
+        $('#popupButtonText').attr('onclick', "deleteServiceBroker();");
+        $("#popupButtonText").show();
+
+        $('#serviceBrokerConfirmModal').modal('toggle');
+    }
+
+    // 서비스 브로커 삭제 처리
+    function deleteServiceBroker() {
+        var guid = $('#guid').val();
+        procCallAjax("/v2/servicebrokers/"+guid, "DELETE", null, init, $('#modalLoadingBar'));
+    }
+
+
+
+    /*]]>*/
+</script>
+</body>
+</html>
