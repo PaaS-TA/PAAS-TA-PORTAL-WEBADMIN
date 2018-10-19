@@ -160,7 +160,7 @@
         </div>
     </div>
 
-    <%--<input type="hidden" id="resInsertFlag" name="resInsertFlag" value="<c:out value='${INSERT_FLAG}' default='' />" />--%>
+    <%--<input type="hidden" id="resInsertFlag" name="resInsertFlag" value="<CatalogController:out value='${INSERT_FLAG}' default='' />" />--%>
     <input type="hidden" id="resCudU" name="resCudU" value="<c:out value='${CONSTANT_CUD}' default='' />" />
 
     <input type="hidden" id="oldFilePath" name="oldFilePath" value="" />
