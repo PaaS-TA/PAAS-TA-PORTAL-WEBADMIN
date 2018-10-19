@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head></head>
+<body>
+<div>
+    <header></header>
+    <aside>/</aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div layout:fragment="content" class="content-wrapper" >
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                분할 관리
+            </h1>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div id="isolationTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
+                        <div class="box-header">
+                            <h3 class="box-title"></h3>
+
+                            <div class="box-tools">
+                                <div class="input-group input-group-sm" style="width: 450px;">
+                                    <input type="text" name="table_create" class="form-control pull-right" placeholder="Segment Name" id="createSegmentName" style="margin-right: 10px;"/>
+                                    <div class="input-group-btn" >
+                                        <button type="submit"  class="btn btn-primary btn-sm" onclick="btnCreateIsolationSegments()">Segment 등록</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="height: 10px">
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-12" style="width: 49%">
+                                <table class="table table-bordered table-striped dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Del</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="isolationList" name="dataList">
+                                    </tbody>
+                                </table>
+                                <div id="noIsolationMessage" class='box-header with-border' style="display: none">생성된 Isolation Segments가 없습니다.</div>
+                            </div>
+                            <div class="box-body table-responsive no-padding" style="width: 49%">
+                                <table class="table table-bordered table-striped dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Org Name</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="selectOrgList" name="dataList">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.box-header -->
+
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal Layer-->
+        <div class="modal fade" id="segmentsOrgModal" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="segmentsOrgModalTitle">조직 Isolation Segments 정보</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <table class="table table-bordered table-striped dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Isolation Segments Name</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="segmentsInfo" name="dataList">
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered table-striped dataTable">
+                            <thead>
+                            <tr>
+                                <th>Space Name</th>
+                                <th>Isolation Segments Name</th>
+                            </tr>
+                            </thead>
+                            <tbody id="selectSpaceList" name="dataList">
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!--<div class="modal-footer">-->
+                        <!--<button type="button" id="clientDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteClientModal();">삭제</button>-->
+                        <!--&lt;!&ndash;<button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateClient();">저장</button>&ndash;&gt;-->
+                        <!--<button type="button" id="clientRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createClient();">등록</button>-->
+                        <!--<button type="button" id="clientCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>-->
+                    <!--</div>-->
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+        <!-- /.Content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer></footer>
+
+</div>
+<!-- ./wrapper -->
+
+<script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+    /*<![CDATA[*/
+
+    var ISOLATION_SEGMENT_LIST;
+    var SELECT_ISOLATION_SEGMENT_GUID;
+    var SELECT_ISOLATION_SEGMENT_ID;
+    var SELECT_ORG_LIST;
+    var SELECT_SPACE_LIST;
+    var SELECT_ORGANIZATIONS_GUID;
+    var SELECT_ORGANIZATIONS_NAME;
+    var SELECT_ORGANIZATIONS_ISOLATION_SEGMENT_LIST;
+    var SELECT_DEFAULT_ISOLATION_SEGMENT_GUID;
+
+    $(document).ready(function () {
+        init();
+    });
+
+    function init() {
+        $("#isolationList").empty();
+        $("#selectOrgList").empty();
+
+        getIsolationSegments();
+    };
+
+    function getIsolationSegments() {
+        procCallAjax("/v3/isolationSegments", "GET", null, procCallbackGetIsolationSegments, $('#isolationTabLoadingBar'));
+    };
+
+    var procCallbackGetIsolationSegments = function(data){
+        ISOLATION_SEGMENT_LIST = data.resources;
+
+        var objTable = $('#isolationList');
+
+        objTable.html('');
+
+        $.each(ISOLATION_SEGMENT_LIST, function (index, data) {
+            objTable.append('' +
+                '<tr id="isolation_'+(index+1)+'">' +
+                '   <td onclick="getIsolationSegmentsOrgs(\''+data.guid+'\', \'isolation_'+(index+1)+'\');" style="cursor:pointer;">' + data.name  + '</td>' +
+                '   <td><span class="fa fa-trash" onclick="btnDeleteIsolationSegments(\''+data.guid+'\');" style="cursor:pointer;"></span></td>' +
+                '</tr>'
+            );
+        });
+
+        if(SELECT_ISOLATION_SEGMENT_GUID != "" && SELECT_ISOLATION_SEGMENT_GUID != undefined && SELECT_ISOLATION_SEGMENT_ID != "" && SELECT_ISOLATION_SEGMENT_ID != undefined) {
+            getIsolationSegmentsOrgs(SELECT_ISOLATION_SEGMENT_GUID, SELECT_ISOLATION_SEGMENT_ID);
+        } else {
+            getIsolationSegmentsOrgs(ISOLATION_SEGMENT_LIST[0].guid, 'isolation_1');
+        }
+    };
+
+    function getIsolationSegmentsOrgs (isolationSegmentId, selectId) {
+        SELECT_ISOLATION_SEGMENT_GUID = isolationSegmentId;
+        SELECT_ISOLATION_SEGMENT_ID = selectId;
+
+        $("[id^='isolation_']").removeClass("bg-aqua disabled color-palette");
+        $("#"+selectId).addClass("bg-aqua disabled color-palette");
+
+        procCallAjax("/v3/isolationSegments/"+isolationSegmentId+"/organizations", "GET", null, procCallbackGetIsolationSegmentsOrgs, $('#isolationTabLoadingBar'));
+    };
+
+    var procCallbackGetIsolationSegmentsOrgs = function(data){
+        SELECT_ORG_LIST = data.resources;
+
+        var objTable = $('#selectOrgList');
+
+        objTable.html('');
+
+        $.each(SELECT_ORG_LIST, function (index, data) {
+            objTable.append('' +
+                '<tr id="org_'+(index+1)+'" onclick="showLayerPopSegmentsOrgs(\''+data.guid+'\', \''+data.name+'\');" style="cursor:pointer;">' +
+                '   <td id="'+data.guid+'">' + data.name + '</td>' +
+                '</tr>'
+            );
+        });
+
+        getOrgs();
+    };
+
+    function getOrgs() {
+        procCallAjax("/v2/orgs", "GET", null, procCallbackGetOrgs, null);
+    };
+
+    var procCallbackGetOrgs = function(data){
+        var selectBox = '';
+
+        selectBox += '<select class="form-control toCheckStringSpace" id="selectSegmentOrgs" onchange="changeSelectOrgs()">';
+        selectBox += '  <option value="">Add Organization</option>';
+
+        var orgObj = new Object();
+
+        $.each(data.resources, function (index, data) {
+            orgObj[data.metadata.guid] = data.entity.name;
+        });
+
+        $.each(SELECT_ORG_LIST, function (index2, data2) {
+            delete orgObj[data2.guid];
+        });
+
+        for( var key in orgObj ) {
+            selectBox += '  <option value="'+key+'">'+orgObj[key]+'</option>';
+        }
+
+        selectBox += '</select>';
+
+        var objTable = $('#selectOrgList');
+
+        objTable.append('' +
+            '<tr>' +
+            '   <td>'+selectBox+'</td>' +
+            '</tr>'
+        );
+    };
+
+    function changeSelectOrgs() {
+        procCallAjax("/v3/isolationSegments/"+SELECT_ISOLATION_SEGMENT_GUID+"/organizations/"+$("#selectSegmentOrgs").val(), "POST", null, procCallbackEnableIsolationSegments, $('#isolationTabLoadingBar'));
+    };
+
+    var procCallbackEnableIsolationSegments = function(data){
+        init();
+    };
+
+    function btnCreateIsolationSegments() {
+        //TODO validation
+
+        var createSegmentName = $("#createSegmentName").val();
+
+        procCallAjax("/v3/isolationSegments/"+createSegmentName, "POST", null, procCallbackCreateIsolationSegments, $('#isolationTabLoadingBar'));
+    };
+
+    var procCallbackCreateIsolationSegments = function(data){
+        if(data.guid != null) {
+            console.log("success");
+            init();
+        } else {
+            console.log("fail");
+        }
+    };
+
+    function btnDeleteIsolationSegments(isolationSegmentId) {
+        procCallAjax("/v3/isolationSegments/"+isolationSegmentId, "DELETE", null, procCallbackDeleteIsolationSegments, $('#isolationTabLoadingBar'));
+    };
+
+    var procCallbackDeleteIsolationSegments = function(data){
+        if(data.result) {
+            console.log("success");
+            init();
+        } else {
+            console.log("fail");
+        }
+    };
+
+    function showLayerPopSegmentsOrgs(organizationsId, organizationsName) {
+        SELECT_ORGANIZATIONS_GUID = organizationsId;
+        SELECT_ORGANIZATIONS_NAME = organizationsName;
+
+        procCallAjax("/v3/isolationSegments/organizations/"+organizationsId, "GET", null, procCallbackShowLayerPopSegmentsOrgs, $('#isolationTabLoadingBar'));
+    };
+
+    var procCallbackShowLayerPopSegmentsOrgs = function(data){
+        SELECT_ORGANIZATIONS_ISOLATION_SEGMENT_LIST = data.resources;
+
+        $("#segmentsOrgModalTitle").text(SELECT_ORGANIZATIONS_NAME + " - Isolation Segments 정보");
+
+        var objTable = $('#segmentsInfo');
+
+        objTable.html('');
+
+        $.each(SELECT_ORGANIZATIONS_ISOLATION_SEGMENT_LIST, function (index, data) {
+            objTable.append('' +
+                '<tr id="segments_'+(index+1)+'">' +
+                '   <td id="segments_'+data.guid+'"  onclick="btnSetOrResetOrgDefaultIsolationSegments(\''+data.guid+'\');" style="cursor:pointer;">'+data.name+'</td>' +
+                // '   <td><a style="color: black; cursor:pointer;" href="#none" onclick="btnDisableIsolationSegments(\''+data.guid+'\');"> ㅇ </a></td>' +
+                '   <td><span class="fa fa-trash" onclick="btnDisableIsolationSegments(\''+data.guid+'\');" style="color: black; cursor:pointer;"></span></td>' +
+                '</tr>'
+            );
+        });
+
+        getOrg();
+    };
+
+    function getOrg() {
+        procCallAjax("/v2/orgs/"+SELECT_ORGANIZATIONS_GUID+"", "GET", null, procCallbackGetOrg, $('#isolationTabLoadingBar'));
+    };
+
+    var procCallbackGetOrg = function(data){
+        SELECT_DEFAULT_ISOLATION_SEGMENT_GUID = data.entity.default_isolation_segment_guid;
+
+        $("#segments_"+SELECT_DEFAULT_ISOLATION_SEGMENT_GUID).append(" (default)");
+        $("#segments_"+SELECT_DEFAULT_ISOLATION_SEGMENT_GUID).next().text("");
+
+        getSpaces();
+    };
+
+    function getSpaces() {
+        procCallAjax("/v2/orgs/"+SELECT_ORGANIZATIONS_GUID+"/spaces", "GET", null, procCallbackGetSpaces, $('#isolationTabLoadingBar'));
+    }
+
+    var procCallbackGetSpaces = function(data){
+        SELECT_SPACE_LIST = data.spaceList.resources;
+
+        var objTable = $('#selectSpaceList');
+
+        objTable.html('');
+
+        $.each(SELECT_SPACE_LIST, function (index, data) {
+            var selectBox = '';
+
+            selectBox += '<select class="form-control toCheckStringSpace" id="selectSpaceSegment_'+(index+1)+'" onchange="changeSelectSpaceSegment(\'selectSpaceSegment_'+(index+1)+'\', \''+data.metadata.guid+'\')">';
+            selectBox += '  <option value="">Select Isolation Segments</option>';
+
+            $.each(SELECT_ORGANIZATIONS_ISOLATION_SEGMENT_LIST, function (index2, data2) {
+                if(data.entity.isolation_segment_guid == data2.guid) {
+                    selectBox += '   <option value="'+data2.guid+'" selected="selected">' + data2.name + '</option>';
+                } else {
+                    selectBox += '   <option value="'+data2.guid+'">' + data2.name + '</option>';
+                }
+            });
+
+            selectBox += '</select>';
+
+            objTable.append('' +
+                '<tr id="space_'+(index+1)+'">' +
+                '   <td>' + data.entity.name  + '</td>' +
+                '   <td>' + selectBox + '</td>' +
+                '</tr>'
+            );
+        });
+
+        $("#segmentsOrgModal").modal("show");
+    };
+
+    function changeSelectSpaceSegment (selectSpaceSegmentId, spaceGuid) {
+        if($("#"+selectSpaceSegmentId).val() != "") {
+            //enable
+            procCallAjax("/v3/spaces/"+spaceGuid+"/isolationSegments/"+$("#"+selectSpaceSegmentId).val(), "PUT", null, procCallbackChangeSelectSpaceSegment, $('#isolationTabLoadingBar'));
+        } else {
+            //disable
+            procCallAjax("/v3/spaces/"+spaceGuid+"/isolationSegments/reset", "PUT", null, procCallbackChangeSelectSpaceSegment, $('#isolationTabLoadingBar'));
+        }
+    };
+
+    var procCallbackChangeSelectSpaceSegment = function(data) {
+        console.log(data);
+    };
+
+    function btnSetOrResetOrgDefaultIsolationSegments(isolationSegmentId) {
+        if(SELECT_DEFAULT_ISOLATION_SEGMENT_GUID == isolationSegmentId) {
+            // reset
+            procCallAjax("/v3/orgs/"+SELECT_ORGANIZATIONS_GUID+"/isolationSegments/reset", "PUT", null, procCallbackSetOrResetOrgDefaultIsolationSegments, $('#isolationTabLoadingBar'));
+        } else {
+            // set
+            procCallAjax("/v3/orgs/"+SELECT_ORGANIZATIONS_GUID+"/isolationSegments/"+isolationSegmentId, "PUT", null, procCallbackSetOrResetOrgDefaultIsolationSegments, $('#isolationTabLoadingBar'));
+        }
+    };
+
+    var procCallbackSetOrResetOrgDefaultIsolationSegments = function(data) {
+        showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID, SELECT_ORGANIZATIONS_NAME);
+        init();
+    };
+
+    function btnDisableIsolationSegments(isolationSegmentId) {
+        procCallAjax("/v3/isolationSegments/"+isolationSegmentId+"/organizations/"+SELECT_ORGANIZATIONS_GUID, "DELETE", null, procCallbackDisableIsolationSegments, $('#isolationTabLoadingBar'));
+    };
+
+    var procCallbackDisableIsolationSegments = function(data) {
+        if(data.result) {
+            showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID, SELECT_ORGANIZATIONS_NAME);
+            init();
+        } else {
+            console.log("fail");
+        }
+    };
+
+    /*]]>*/
+</script>
+</body>
+</html>

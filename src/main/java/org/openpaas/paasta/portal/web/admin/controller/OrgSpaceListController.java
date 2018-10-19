@@ -1,6 +1,7 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.model.Org;
 import org.openpaas.paasta.portal.web.admin.model.Space;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
@@ -39,6 +40,17 @@ public class OrgSpaceListController extends Common {
 
 
     //----------------------------------------------------------------------------------------------------------//
+
+    /**
+     * 조직 정보를 조회한다.
+     *
+     * @return Map
+     */
+    @GetMapping(value = {Constants.V2_URL + "/orgs/{orgId}"})
+    @ResponseBody
+    public Map<String, Object> getOrg(@PathVariable String orgId) {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/orgs/"+orgId, HttpMethod.GET, null, this.getToken());
+    }
 
     /**
      * admin 유저로 접근 가능한 조직 목록(모든 조직 목록)을 조회한다.
