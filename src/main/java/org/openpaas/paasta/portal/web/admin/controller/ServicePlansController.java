@@ -31,17 +31,6 @@ public class ServicePlansController extends Common {
         return mv;
     }
 
-    /**
-     * 서비스 전체 목록을 가져온다.
-     *
-     * @return ListServicesResponse
-     * @throws Exception Exception(자바클래스)
-     */
-//    @GetMapping(Constants.V2_URL+"/services")
-//    @ResponseBody
-//    public  Map<String, Object> getService(@ModelAttribute Service service) throws Exception {
-//        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/services", HttpMethod.GET, service, this.getToken());
-//    }
 
     /**
      * 카탈로그 서비스 이용사양 목록을 조회한다.

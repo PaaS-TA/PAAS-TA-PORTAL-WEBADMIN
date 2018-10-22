@@ -78,7 +78,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group required">
+                                        <div class="form-group required" name="serviceAccessListForm">
                                             <label for="serviceAccessList" class="col-sm-3 control-label">서비스 접근</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkServiceForm" id="serviceAccessList" name="serviceAccessList" style="width:auto;">
@@ -148,6 +148,13 @@
     /*<![CDATA[*/
     var serviceBrokerGuid = /*[[${guid}]]*/ 'empty';
 
+    var SERVICE_PLANS_PROC_URL = "/v2/serviceplans";
+
+    var SERVICE_ACCESS_LIST;                 //서비스 제어 전체 리스트
+    var SERVICE_ACCESS_DETAIL_LIST;         //서비스 특정 리스트
+    var SERVICE_PLANS_LIST;                  //서비스 제어 접근 리스트
+
+
     var init = function(){
         getServicePlanList();
         $('#serviceAccessFormModal').modal('hide');
@@ -168,7 +175,7 @@
 
             $("#servicebrokername").val("");
             $("#servicename").val("");
-            $("#serviceAccessList").val("ALL");
+//            $('select[id=serviceAccessList]').val("ALL");
             $("#url").val("");
             $("#label").val("");
         });
@@ -184,16 +191,47 @@
         });
     });
 
+
+    // [서비스제어] [] 목록 리스트
     function getServicePlanList(){
-        procCallAjax("/v2/services", "GET", null, procCallbackGetServicePlanList, $('#loadingBar') );
+        procCallAjax("/v2/services", "GET", null, procCallbackGetServiceList, $('#loadingBar') );
+    };
+
+/*
+    // [서비스제어][상세] 셀렉트 리스트
+    $(document).on("change keyup","select[id=serviceAccessList]",function(e){
+        var value = $('#serviceAccessList').val();
+        $('#serviceAccessList').removeAttr('class').val(value);
+    })
+
+    // [서비스제어][접근] 셀렉트 리스트
+    var procCallbackStarterCategoryList = function(data){
+        STARTER_CATEGORY_LIST = data.list;
+        defaultServiceAccessOptionList();
+    }
+
+    // [서비스제어][접근] - 셀렉트 박스 초기값
+    function defaultServiceAccessOptionList(){
+        var objSelectBox = $('#serviceAccessList');
+        objSelectBox.html('');
+        $.each(STARTER_CATEGORY_LIST, function (index, data) {
+            objSelectBox.append("<option value='" + data.key + "'> " + data.value + " </option>");
+        });
+    }
+    */
+
+    // [서비스제어] 전체 목록 리스트
+    function getServicePlanList(){
+        procCallAjax("/v2/services", "GET", null, procCallbackGetServiceList, $('#loadingBar') );
     };
 
 
-    var procCallbackGetServicePlanList = function(data){
-        printData(data.resources);
+    var procCallbackGetServiceList = function(data){
+        SERVICE_ACCESS_LIST= data.resources;
+        printData(SERVICE_ACCESS_LIST);
     }
 
-    // 서비스 제어 리스트 출력
+    // [서비스제어 리스트 출력
     function printData(dataList) {
 
         var objTable = $("#servicePlanList");
@@ -201,7 +239,7 @@
         objTable.html('');
 
         $.each(dataList, function (id, data) {
-//            console.log(data);
+            console.log(data);
             objTable.append(" <tr align='center' style='cursor:pointer;'" +
                 " onclick='javascript:getServicePlandetail(\""+data.entity.label+"\");'>" +
                 "<td>" + data.entity.label + "</td>"+
@@ -212,19 +250,42 @@
         });
     };
 
-    // 서비스 제어 상세
+    // 서비스 상세
     function getServicePlandetail(label) {
         $('#serviceAccessForm')[0].reset();
         $('#serviceAccessFormModal').modal('toggle');
-        procCallAjax("/v2/catalogs/serviceplan/"+label, "GET", null, procCallbackGetPlandetail, $('#modalLoadingBar'));
+        procCallAjax("/v2/catalogs/serviceplan/"+label, "GET", null, procCallbackGetPlandetailList, $('#modalLoadingBar'));
     }
 
-    var procCallbackGetPlandetail = function(data){
-        console.log(data);
-        if (data) {
-//            $("#servicebrokername").val(data.entity.name);
-        }
+    var procCallbackGetPlandetailList = function(data){
+        SERVICE_ACCESS_DETAIL_LIST= data.resources;
+        printAccessData(SERVICE_ACCESS_DETAIL_LIST);
     }
+
+    function printAccessData(dataList) {
+        console.debug(":::printAccessData DATA:::");
+        console.debug(dataList[0]);
+        console.debug(":::SERVICE_ACCESS_LIST DATA:::");
+        console.debug(SERVICE_ACCESS_LIST[0]);
+
+        var entity = dataList[0].entity;
+        var service = SERVICE_ACCESS_LIST[0].entity;
+
+
+        //서비스 브로커 이름
+        $("#servicebrokername").val(service.label);
+
+        if(entity){
+            //서비스 플랜 이름
+            $("#servicename").val(entity.name);
+        }
+
+        //서비스 허용 이름 : buildPackDevEnvList NONE:[false]orgs , ALL[true]
+        $("#serviceAccessList").val(entity.public);
+    }
+
+
+
 
     // 서비스 제어 접근허용[update]
     function enableServiceAccess() {
@@ -241,27 +302,6 @@
         }
         procCallAjax("/v2/serviceplans/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
-
-    // 서비스 제어 삭제 (confirm layer)
-    function deleteServiceBrokerModal() {
-
-        $("#popupTitle").html("서비스 브로커 삭제");
-        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{delete.confirm.message('서비스 브로커')}]]*/ "");
-        $("#popupButtonText").text("삭제");
-        $("#popupButtonText").addClass('pull-left');
-        $('#popupButtonText').attr('onclick', "deleteServiceBroker();");
-        $("#popupButtonText").show();
-
-        $('#serviceBrokerConfirmModal').modal('toggle');
-    }
-
-    // 서비스 브로커 삭제 처리
-    function deleteServiceBroker() {
-        var guid = $('#guid').val();
-        procCallAjax("/v2/servicebrokers/"+guid, "DELETE", null, init, $('#modalLoadingBar'));
-    }
-
-
 
     /*]]>*/
 </script>
