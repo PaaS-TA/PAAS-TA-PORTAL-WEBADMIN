@@ -109,13 +109,6 @@
 
                     </div>
 
-                    <!--<div class="modal-footer">-->
-                        <!--<button type="button" id="clientDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteClientModal();">삭제</button>-->
-                        <!--&lt;!&ndash;<button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateClient();">저장</button>&ndash;&gt;-->
-                        <!--<button type="button" id="clientRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createClient();">등록</button>-->
-                        <!--<button type="button" id="clientCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>-->
-                    <!--</div>-->
-
                 </div>
                 <!-- /.modal-content -->
             </div>
@@ -249,17 +242,24 @@
         procCallAjax("/v3/isolationSegments/"+SELECT_ISOLATION_SEGMENT_GUID+"/organizations/"+$("#selectSegmentOrgs").val(), "POST", null, procCallbackEnableIsolationSegments, $('#isolationTabLoadingBar'));
     };
 
-    var procCallbackEnableIsolationSegments = function(data){
+    var procCallbackEnableIsolationSegments = function(data) {
         init();
     };
 
     function btnCreateIsolationSegments() {
-        //TODO validation
-        // $("#isolationList > tr > td:first-child").each(function(index) {
-        //     console.log($(this).text());
-        // }) ;
-
         var createSegmentName = $("#createSegmentName").val();
+
+        $("#isolationList > tr > td:first-child").each(function(index) {
+            // console.log($(this).text());
+            if(createSegmentName == "") {
+                notifyAlert('warning','', 'Isolation Segments Name이 올바르지 않습니다.');
+                return false;
+            } else if($(this).text() == createSegmentName) {
+                notifyAlert('warning','', 'Isolation Segments Name이 이미 존재합니다.');
+                return false;
+            }
+        }) ;
+        return false;
 
         procCallAjax("/v3/isolationSegments/"+createSegmentName, "POST", null, procCallbackCreateIsolationSegments, $('#isolationTabLoadingBar'));
     };
@@ -306,7 +306,6 @@
             objTable.append('' +
                 '<tr id="segments_'+(index+1)+'">' +
                 '   <td id="segments_'+data.guid+'"  onclick="btnSetOrResetOrgDefaultIsolationSegments(\''+data.guid+'\');" style="cursor:pointer;">'+data.name+'</td>' +
-                // '   <td><a style="color: black; cursor:pointer;" href="#none" onclick="btnDisableIsolationSegments(\''+data.guid+'\');"> ㅇ </a></td>' +
                 '   <td><span class="fa fa-trash" onclick="btnDisableIsolationSegments(\''+data.guid+'\');" style="color: black; cursor:pointer;"></span></td>' +
                 '</tr>'
             );
