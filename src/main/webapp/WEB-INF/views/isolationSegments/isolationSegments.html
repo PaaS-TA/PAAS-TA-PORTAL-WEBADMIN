@@ -80,6 +80,9 @@
                             <span aria-hidden="true">×</span></button>
                         <h4 class="modal-title" id="segmentsOrgModalTitle">조직 Isolation Segments 정보</h4>
                     </div>
+
+                    <div style="text-align: right;padding-right: 15px;padding-top: 10px;font-weight: bold;color: #e04f4f;">* 조직 default 초기화는 CLI에서 하시기 바랍니다.</div>
+
                     <div class="modal-body">
 
                         <table class="table table-bordered table-striped dataTable">
@@ -252,13 +255,16 @@
 
     function btnCreateIsolationSegments() {
         //TODO validation
+        // $("#isolationList > tr > td:first-child").each(function(index) {
+        //     console.log($(this).text());
+        // }) ;
 
         var createSegmentName = $("#createSegmentName").val();
 
         procCallAjax("/v3/isolationSegments/"+createSegmentName, "POST", null, procCallbackCreateIsolationSegments, $('#isolationTabLoadingBar'));
     };
 
-    var procCallbackCreateIsolationSegments = function(data){
+    var procCallbackCreateIsolationSegments = function(data) {
         if(data.guid != null) {
             console.log("success");
             init();
