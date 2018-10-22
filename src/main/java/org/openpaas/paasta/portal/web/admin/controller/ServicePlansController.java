@@ -47,13 +47,12 @@ public class ServicePlansController extends Common {
     /**
      * 서비스 제어 리스트를 조회한다.
      *
-     * @param serviceBroker serviceBroker
      * @return ModelAndView model
      */
     @GetMapping(value = {Constants.V2_URL + "/serviceplans"})
     @ResponseBody
-    public Map<String, Object> getServicePlans(@ModelAttribute ServiceBroker serviceBroker) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans", HttpMethod.GET, serviceBroker, this.getToken());
+    public Map<String, Object> getServicePlans() {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans", HttpMethod.GET, null, this.getToken());
     }
 
     /**
