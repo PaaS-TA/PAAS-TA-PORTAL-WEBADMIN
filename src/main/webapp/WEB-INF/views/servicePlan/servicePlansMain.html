@@ -27,7 +27,7 @@
                             <table class="table table-striped text-center"> <!-- table-responsive -->
                                 <thead>
                                 <tr>
-                                    <th width="30%">이름</th>
+                                    <th width="30%">서비스</th>
                                     <th width="30%">플랜</th>
                                     <th width="30%">접근</th>
                                     <th width="30%">조직</th>
@@ -64,27 +64,26 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="servicebrokername" class="col-sm-3 control-label">서비스 브로커 이름</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="servicebrokername" name="servicebrokername"/>
-                                                <input type="hidden" id="label"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group required">
                                             <label for="servicename" class="col-sm-3 control-label">서비스 이름</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="servicename" name="servicename"/>
                                             </div>
                                         </div>
 
+                                        <div class="form-group required">
+                                            <label for="serviceplan" class="col-sm-3 control-label">서비스 플랜</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="serviceplan" name="serviceplan"/>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group required" name="serviceAccessListForm">
                                             <label for="serviceAccessList" class="col-sm-3 control-label">서비스 접근</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control checkServiceForm" id="serviceAccessList" name="serviceAccessList" style="width:auto;">
-                                                    <option value="true">ALL</option>
-                                                    <option value="false">NONE</option>
-                                                </select>
+                                                <!--<select class="form-control checkServiceForm" id="serviceAccessList" name="serviceAccessList" style="width:auto;">-->
+                                                    <!--<option value=""></option>-->
+                                                <!--</select>-->
+                                                <input type="text" class="form-control toCheckString" id="serviceAccessList" name="serviceAccessList"/>
                                             </div>
                                         </div>
 
@@ -92,8 +91,7 @@
                                             <label for="serviceOrgList" class="col-sm-3 control-label">서비스 조직</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkServiceForm" id="serviceOrgList" name="serviceOrgList" style="width:auto;">
-                                                    <option value="true">ALL</option>
-                                                    <option value="false">NONE</option>
+                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -147,9 +145,9 @@
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
 
-    var orgObj = new Object();
+    var orgObj = new Object();                // 조직 전체 리스트
 
-    var SELECT_SERVICE_PACK_NAME;
+    var SELECT_SERVICE_PACK_NAME;           //서비스팩 이름
 
     var SERVICE_LIST;                         //서비스팩 전체 리스트
     var SERVICE_ACCESS_LIST;                 //서비스 제어 전체 리스트
@@ -173,9 +171,10 @@
             $('#regBtn').show();
             $('#closeBtn').show();
 
-            $("#servicebrokername").val("");
             $("#servicename").val("");
-            $("#label").val("");
+            $("#serviceplan").val("");
+
+
         });
 
         $('#serviceBrokerList').click(function(){
@@ -189,7 +188,7 @@
         });
     });
 
-    // 조직 전체 목록 리스트
+    // 조직 전체 목록 리스트:[동기화]
     function getOrgs() {
         procCallAjaxAsyncFalse("/v2/orgs", "GET", null, procCallbackGetOrgs, null);
     };
@@ -204,7 +203,7 @@
     }
 
 
-    // [서비스제어] 전체 목록 리스트 [동기화]
+    // 서비스 제어전체 목록 리스트:[동기화]
     function getServicePlanList(){
         procCallAjaxAsyncFalse("/v2/servicepacks", "GET", null, procCallbackGetServiceList, $('#loadingBar') );
     };
@@ -217,7 +216,7 @@
         printData(SERVICE_LIST);
     }
 
-    //[서비스제어] 리스트 출력 [동기화]
+    // 서비스제어 리스트 출력: [동기화]
     function printData(dataList) {
 
         console.log(":::SERVICE_LIST DATA:::");
@@ -236,18 +235,19 @@
 
     };
 
+
     var procCallbackGetServicePlan = function(data){
         SERVICE_ACCESS_LIST = "";
 
         $.each(data.resources, function (id, data2) {
-            var accessText = "None";
+            var accessText = "None";     //false
             if(data2.entity.public) {
                 accessText= "All";
             }
+            //onchange="changeSelectSpaceSegment(\'selectSpaceSegment_'+(index+1)+'\', \''+data.metadata.guid+'\')"
 
             SERVICE_ACCESS_LIST += "<tr>";
-//            SERVICE_ACCESS_LIST += "<td onclick='javascript:getServicePlanDetail(\""+data.servicePackName+"\")'>"+SELECT_SERVICE_PACK_NAME+"</td> ";
-            SERVICE_ACCESS_LIST += "<td>"+SELECT_SERVICE_PACK_NAME+"</td> ";
+            SERVICE_ACCESS_LIST += "<td onclick='javascript:getServicePlanDetail(\""+SELECT_SERVICE_PACK_NAME+"\" , \""+data2.entity.name+"\" , \""+accessText+"\")'>"+SELECT_SERVICE_PACK_NAME+"</td> ";
             SERVICE_ACCESS_LIST += "<td>"+data2.entity.name+"</td> ";
             SERVICE_ACCESS_LIST += "<td id='service_access_"+data2.metadata.guid+"'>"+accessText+"</td> ";
             SERVICE_ACCESS_LIST += "<td id='service_plan_"+data2.metadata.guid+"'></td>";
@@ -273,16 +273,25 @@
         }
     };
 
+    function getServicePlanDetail(serviceName, planName, accessText){
+        $('#serviceAccessForm')[0].reset();
+        $('#serviceAccessFormModal').modal('toggle');
+
+        $("#servicename").val(serviceName);
+        $("#serviceplan").val(planName);
+        $("#serviceAccessList").val(accessText);
+    };
+
 
     /*
     // 서비스 상세
-    function getServicePlanDetail(label) {
+    function getServicePlanDetail(data) {
         $('#serviceAccessForm')[0].reset();
         $('#serviceAccessFormModal').modal('toggle');
-        procCallAjax("/v2/catalogs/serviceplan/"+label, "GET", null, procCallbackGetPlandDtailList, $('#modalLoadingBar'));
+        procCallAjax("/v2/catalogs/serviceplan/"+data.label, "GET", null, procCallbackGetPlandDtailList, $('#modalLoadingBar'));
     }
 
-    var procCallbackGetPlanDetailList = function(data){
+    var procCallbackGetPlandDtailList = function(data){
         SERVICE_ACCESS_DETAIL_LIST= data.resources;
         printAccessData(SERVICE_ACCESS_DETAIL_LIST);
     }
@@ -309,24 +318,7 @@
 //            var value = $('#serviceAccessList').val(entity.public);
 //        })
     }
-
-*/
-
-    // 서비스 제어 접근허용[update]
-    function enableServiceAccess() {
-
-        var guid = $('#guid').val();
-
-        if (!procCheckValidStringSpace()){
-            return false;
-        };
-
-        var param = {
-            guid: guid,
-            name: $("#name").val()
-        }
-        procCallAjax("/v2/serviceplans/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
-    }
+    */
 
     /*]]>*/
 </script>
