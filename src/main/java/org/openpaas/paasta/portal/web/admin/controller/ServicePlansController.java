@@ -68,4 +68,17 @@ public class ServicePlansController extends Common {
     }
 
 
+    /**
+     *  서비스 Plan에 Access 등록 되어있는 조직을 조회한다.
+     *
+     * @param serviceplanId serviceplanId
+     * @return ModelAndView model
+     */
+    @GetMapping(value = {Constants.V2_URL + "/serviceplans/{serviceplanId}/visibilites"})
+    @ResponseBody
+    public Map<String, Object> getServicePlanVisibilites(@PathVariable String serviceplanId) {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans/"+serviceplanId+"/visibilites", HttpMethod.GET, null, this.getToken());
+    }
+
+
 }

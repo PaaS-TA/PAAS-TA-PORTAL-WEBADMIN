@@ -146,15 +146,13 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var serviceBrokerGuid = /*[[${guid}]]*/ 'empty';
 
-    var SERVICE_PLANS_PROC_URL = "/v2/serviceplans";
+    var orgObj = new Object();
 
-    var SERVICE_LIST;                         //서비스 제어 전체 리스트
-    var SERVICE_ACCESS_DETAIL_LIST;         //서비스 특정 리스트
-    var SERVICE_PLANS_LIST;                  //서비스 제어 접근 리스트
     var SELECT_SERVICE_PACK_NAME;
-    var SERVICE_ACCESS_LIST;
+
+    var SERVICE_LIST;                         //서비스팩 전체 리스트
+    var SERVICE_ACCESS_LIST;                 //서비스 제어 전체 리스트
 
 
     var init = function(){
@@ -191,20 +189,35 @@
         });
     });
 
+    // 조직 전체 목록 리스트
+    function getOrgs() {
+        procCallAjaxAsyncFalse("/v2/orgs", "GET", null, procCallbackGetOrgs, null);
+    };
+
+    var procCallbackGetOrgs = function(data) {
+        console.log("data Org   "+data);
+
+        $.each(data.resources, function (index, data) {
+            orgObj[data.metadata.guid] = data.entity.name;
+        });
+        console.log(orgObj);
+    }
 
 
-    // [서비스제어] 전체 목록 리스트 : 서비스 브로커 이름/ 접근
+    // [서비스제어] 전체 목록 리스트 [동기화]
     function getServicePlanList(){
         procCallAjaxAsyncFalse("/v2/servicepacks", "GET", null, procCallbackGetServiceList, $('#loadingBar') );
     };
 
 
     var procCallbackGetServiceList = function(data){
+        getOrgs();
+
         SERVICE_LIST= data;
         printData(SERVICE_LIST);
     }
 
-    // [서비스제어] 리스트 출력
+    //[서비스제어] 리스트 출력 [동기화]
     function printData(dataList) {
 
         console.log(":::SERVICE_LIST DATA:::");
@@ -217,40 +230,59 @@
             if(data.servicePackName != "NONE") {
                 console.log(data.servicePackName);
                 SELECT_SERVICE_PACK_NAME = data.servicePackName;
-                //[]
-                procCallAjaxAsyncFalse("/v2/catalogs/serviceplan/"+data.servicePackName, "GET", null, procCallbackGetServiceplan, $('#modalLoadingBar'));
+                procCallAjaxAsyncFalse("/v2/catalogs/serviceplan/"+data.servicePackName, "GET", null, procCallbackGetServicePlan, $('#modalLoadingBar'));
             }
         });
 
     };
 
-    var procCallbackGetServiceplan = function(data){
-        var objTable = $("#servicePlanList");
-
+    var procCallbackGetServicePlan = function(data){
         SERVICE_ACCESS_LIST = "";
 
         $.each(data.resources, function (id, data2) {
-            SERVICE_ACCESS_LIST += "<tr> ";
+            var accessText = "None";
+            if(data2.entity.public) {
+                accessText= "All";
+            }
+
+            SERVICE_ACCESS_LIST += "<tr>";
+//            SERVICE_ACCESS_LIST += "<td onclick='javascript:getServicePlanDetail(\""+data.servicePackName+"\")'>"+SELECT_SERVICE_PACK_NAME+"</td> ";
             SERVICE_ACCESS_LIST += "<td>"+SELECT_SERVICE_PACK_NAME+"</td> ";
             SERVICE_ACCESS_LIST += "<td>"+data2.entity.name+"</td> ";
-            SERVICE_ACCESS_LIST += "<td></td> ";
-            SERVICE_ACCESS_LIST += "<td></td> ";
+            SERVICE_ACCESS_LIST += "<td id='service_access_"+data2.metadata.guid+"'>"+accessText+"</td> ";
+            SERVICE_ACCESS_LIST += "<td id='service_plan_"+data2.metadata.guid+"'></td>";
             SERVICE_ACCESS_LIST += "</tr> ";
         });
 
-console.log(SERVICE_ACCESS_LIST);
         $("#servicePlanList").append(SERVICE_ACCESS_LIST);
+
+        $.each(data.resources, function (id, data0rg) {
+            procCallAjaxAsyncFalse("/v2/serviceplans/"+data0rg.metadata.guid+"/visibilites", "GET", null, procCallbackGetServicePlanVisibilites, $('#modalLoadingBar'));
+        });
     };
 
 
+    var procCallbackGetServicePlanVisibilites = function(data){
+        if(data.resources.length > 0) {
+            $.each(data.resources, function (id, data3) {
+                $("#service_plan_"+data3.entity.service_plan_guid).append(orgObj[data3.entity.organization_guid]+" ");
+
+                //접근 리스트
+                $("#service_access_"+data3.entity.service_plan_guid).text('limited');
+            });
+        }
+    };
+
+
+    /*
     // 서비스 상세
-    function getServicePlandetail(label) {
+    function getServicePlanDetail(label) {
         $('#serviceAccessForm')[0].reset();
         $('#serviceAccessFormModal').modal('toggle');
-        procCallAjax("/v2/catalogs/serviceplan/"+label, "GET", null, procCallbackGetPlandetailList, $('#modalLoadingBar'));
+        procCallAjax("/v2/catalogs/serviceplan/"+label, "GET", null, procCallbackGetPlandDtailList, $('#modalLoadingBar'));
     }
 
-    var procCallbackGetPlandetailList = function(data){
+    var procCallbackGetPlanDetailList = function(data){
         SERVICE_ACCESS_DETAIL_LIST= data.resources;
         printAccessData(SERVICE_ACCESS_DETAIL_LIST);
     }
@@ -278,6 +310,7 @@ console.log(SERVICE_ACCESS_LIST);
 //        })
     }
 
+*/
 
     // 서비스 제어 접근허용[update]
     function enableServiceAccess() {
