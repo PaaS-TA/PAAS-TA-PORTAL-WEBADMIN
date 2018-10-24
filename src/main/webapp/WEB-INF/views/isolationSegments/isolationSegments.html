@@ -41,7 +41,7 @@
                                     <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Del</th>
+                                        <th>Delete</th>
                                     </tr>
                                     </thead>
                                     <tbody id="isolationList" name="dataList">
@@ -144,6 +144,7 @@
     function init() {
         $("#isolationList").empty();
         $("#selectOrgList").empty();
+        $("#createSegmentName").val("");
 
         getIsolationSegments();
     };
