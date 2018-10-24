@@ -101,6 +101,72 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
     });
 };
 
+var procCallAjaxAsyncFalse = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {
+    var reqData = "";
+
+    if (param != null) {
+        reqData = param;
+    }
+    $.ajax({
+        url: reqUrl,
+        method: reqMethod,
+        data: reqData,
+        async: false,
+        dataType: 'json',
+        contentType: "application/json",
+        beforeSend: function(){
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.removeClass("hide");
+            }
+        },
+        success: function(data) {
+
+            if(data.message){
+                notifyAlert('info','',data.message);
+                return false;
+            }
+
+            if (data) {
+                callback(data, param);
+
+                if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
+                    switch (reqMethod) {
+                        case "PUT" :
+                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            break;
+                        case "POST" :
+                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            break;
+                        case "DELETE" :
+                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            break;
+                        default :
+                            break;
+                    }
+                }
+            } else {
+                var resData = {RESULT : RESULT_STATUS_SUCCESS,
+                    RESULT_MESSAGE : RESULT_STATUS_SUCCESS_MESSAGE};
+
+                callback(resData, param);
+            }
+        },
+        error: function(xhr, status, error) {
+            //var resData = {RESULT : RESULT_STATUS_FAIL,
+            //    RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
+            //callback(resData, param);
+            console.log("ERROR :: error :: ", error);
+            notifyAlert('danger','',JSON.parse(xhr.responseText).message);
+        },
+        complete : function(data) {
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.addClass('hide');
+            }
+            console.log("COMPLETE :: data :: ", data);
+        }
+    });
+};
+
 // CALL AJAX  reqMethod PUT, DELETE 추가
 var procCallAjax2 = function(reqUrl, reqMethod, param, callback) {
     var reqData = "";

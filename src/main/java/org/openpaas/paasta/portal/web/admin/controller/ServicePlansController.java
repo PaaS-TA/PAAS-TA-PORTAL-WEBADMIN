@@ -47,13 +47,12 @@ public class ServicePlansController extends Common {
     /**
      * 서비스 제어 리스트를 조회한다.
      *
-     * @param serviceBroker serviceBroker
      * @return ModelAndView model
      */
     @GetMapping(value = {Constants.V2_URL + "/serviceplans"})
     @ResponseBody
-    public Map<String, Object> getServicePlans(@ModelAttribute ServiceBroker serviceBroker) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans", HttpMethod.GET, serviceBroker, this.getToken());
+    public Map<String, Object> getServicePlans() {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans", HttpMethod.GET, null, this.getToken());
     }
 
     /**
@@ -66,6 +65,19 @@ public class ServicePlansController extends Common {
     @ResponseBody
     public Map<String, Object> getServicePlan(@ModelAttribute ServiceBroker serviceBroker, @PathVariable String guid) {
         return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans/"+guid, HttpMethod.GET, serviceBroker, this.getToken());
+    }
+
+
+    /**
+     *  서비스 Plan에 Access 등록 되어있는 조직을 조회한다.
+     *
+     * @param serviceplanId serviceplanId
+     * @return ModelAndView model
+     */
+    @GetMapping(value = {Constants.V2_URL + "/serviceplans/{serviceplanId}/visibilites"})
+    @ResponseBody
+    public Map<String, Object> getServicePlanVisibilites(@PathVariable String serviceplanId) {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans/"+serviceplanId+"/visibilites", HttpMethod.GET, null, this.getToken());
     }
 
 

@@ -41,7 +41,7 @@
                                     <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Del</th>
+                                        <th>Delete</th>
                                     </tr>
                                     </thead>
                                     <tbody id="isolationList" name="dataList">
@@ -144,6 +144,7 @@
     function init() {
         $("#isolationList").empty();
         $("#selectOrgList").empty();
+        $("#createSegmentName").val("");
 
         getIsolationSegments();
     };
@@ -259,7 +260,6 @@
                 return false;
             }
         }) ;
-        return false;
 
         procCallAjax("/v3/isolationSegments/"+createSegmentName, "POST", null, procCallbackCreateIsolationSegments, $('#isolationTabLoadingBar'));
     };
@@ -400,8 +400,13 @@
 
     var procCallbackDisableIsolationSegments = function(data) {
         if(data.result) {
-            showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID, SELECT_ORGANIZATIONS_NAME);
-            init();
+            if($("#segmentsInfo > tr").length == 1) {
+                init();
+                $("#segmentsOrgModal").modal("hide");
+            } else {
+                showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID, SELECT_ORGANIZATIONS_NAME);
+                init();
+            }
         } else {
             console.log("fail");
         }

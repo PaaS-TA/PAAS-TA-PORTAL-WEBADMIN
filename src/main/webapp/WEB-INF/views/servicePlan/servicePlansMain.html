@@ -27,7 +27,7 @@
                             <table class="table table-striped text-center"> <!-- table-responsive -->
                                 <thead>
                                 <tr>
-                                    <th width="30%">이름</th>
+                                    <th width="30%">서비스</th>
                                     <th width="30%">플랜</th>
                                     <th width="30%">접근</th>
                                     <th width="30%">조직</th>
@@ -64,27 +64,26 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="servicebrokername" class="col-sm-3 control-label">서비스 브로커 이름</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="servicebrokername" name="servicebrokername"/>
-                                                <input type="hidden" id="label"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group required">
                                             <label for="servicename" class="col-sm-3 control-label">서비스 이름</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="servicename" name="servicename"/>
                                             </div>
                                         </div>
 
+                                        <div class="form-group required">
+                                            <label for="serviceplan" class="col-sm-3 control-label">서비스 플랜</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="serviceplan" name="serviceplan"/>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group required" name="serviceAccessListForm">
                                             <label for="serviceAccessList" class="col-sm-3 control-label">서비스 접근</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control checkServiceForm" id="serviceAccessList" name="serviceAccessList" style="width:auto;">
-                                                    <option value="true">ALL</option>
-                                                    <option value="false">NONE</option>
-                                                </select>
+                                                <!--<select class="form-control checkServiceForm" id="serviceAccessList" name="serviceAccessList" style="width:auto;">-->
+                                                    <!--<option value=""></option>-->
+                                                <!--</select>-->
+                                                <input type="text" class="form-control toCheckString" id="serviceAccessList" name="serviceAccessList"/>
                                             </div>
                                         </div>
 
@@ -92,8 +91,7 @@
                                             <label for="serviceOrgList" class="col-sm-3 control-label">서비스 조직</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkServiceForm" id="serviceOrgList" name="serviceOrgList" style="width:auto;">
-                                                    <option value="true">ALL</option>
-                                                    <option value="false">NONE</option>
+                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -146,13 +144,13 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     /*<![CDATA[*/
-    var serviceBrokerGuid = /*[[${guid}]]*/ 'empty';
 
-    var SERVICE_PLANS_PROC_URL = "/v2/serviceplans";
+    var orgObj = new Object();                // 조직 전체 리스트
 
+    var SELECT_SERVICE_PACK_NAME;           //서비스팩 이름
+
+    var SERVICE_LIST;                         //서비스팩 전체 리스트
     var SERVICE_ACCESS_LIST;                 //서비스 제어 전체 리스트
-    var SERVICE_ACCESS_DETAIL_LIST;         //서비스 특정 리스트
-    var SERVICE_PLANS_LIST;                  //서비스 제어 접근 리스트
 
 
     var init = function(){
@@ -167,17 +165,16 @@
         $('#register').click(function(){
 
             $('#titleDetail').hide();
-            $('#deleteBtn').hide();
-            $('#saveBtn').hide();
+            $('#disableBtn').hide();
+            $('#enableBtn').hide();
 
             $('#regBtn').show();
             $('#closeBtn').show();
 
-            $("#servicebrokername").val("");
             $("#servicename").val("");
-//            $('select[id=serviceAccessList]').val("ALL");
-            $("#url").val("");
-            $("#label").val("");
+            $("#serviceplan").val("");
+
+
         });
 
         $('#serviceBrokerList').click(function(){
@@ -191,117 +188,137 @@
         });
     });
 
-
-    // [서비스제어] [] 목록 리스트
-    function getServicePlanList(){
-        procCallAjax("/v2/services", "GET", null, procCallbackGetServiceList, $('#loadingBar') );
+    // 조직 전체 목록 리스트:[동기화]
+    function getOrgs() {
+        procCallAjaxAsyncFalse("/v2/orgs", "GET", null, procCallbackGetOrgs, null);
     };
 
-/*
-    // [서비스제어][상세] 셀렉트 리스트
-    $(document).on("change keyup","select[id=serviceAccessList]",function(e){
-        var value = $('#serviceAccessList').val();
-        $('#serviceAccessList').removeAttr('class').val(value);
-    })
+    var procCallbackGetOrgs = function(data) {
+        console.log("data Org   "+data);
 
-    // [서비스제어][접근] 셀렉트 리스트
-    var procCallbackStarterCategoryList = function(data){
-        STARTER_CATEGORY_LIST = data.list;
-        defaultServiceAccessOptionList();
-    }
-
-    // [서비스제어][접근] - 셀렉트 박스 초기값
-    function defaultServiceAccessOptionList(){
-        var objSelectBox = $('#serviceAccessList');
-        objSelectBox.html('');
-        $.each(STARTER_CATEGORY_LIST, function (index, data) {
-            objSelectBox.append("<option value='" + data.key + "'> " + data.value + " </option>");
+        $.each(data.resources, function (index, data) {
+            orgObj[data.metadata.guid] = data.entity.name;
         });
+        console.log(orgObj);
     }
-    */
 
-    // [서비스제어] 전체 목록 리스트
+
+    // 서비스 제어전체 목록 리스트:[동기화]
     function getServicePlanList(){
-        procCallAjax("/v2/services", "GET", null, procCallbackGetServiceList, $('#loadingBar') );
+        procCallAjaxAsyncFalse("/v2/servicepacks", "GET", null, procCallbackGetServiceList, $('#loadingBar') );
     };
 
 
     var procCallbackGetServiceList = function(data){
-        SERVICE_ACCESS_LIST= data.resources;
-        printData(SERVICE_ACCESS_LIST);
+        getOrgs();
+
+        SERVICE_LIST= data;
+        printData(SERVICE_LIST);
     }
 
-    // [서비스제어 리스트 출력
+    // 서비스제어 리스트 출력: [동기화]
     function printData(dataList) {
 
-        var objTable = $("#servicePlanList");
+        console.log(":::SERVICE_LIST DATA:::");
+        console.log(dataList);
 
-        objTable.html('');
+        var entity = dataList.list;
+        console.log(entity);
 
-        $.each(dataList, function (id, data) {
-            console.log(data);
-            objTable.append(" <tr align='center' style='cursor:pointer;'" +
-                " onclick='javascript:getServicePlandetail(\""+data.entity.label+"\");'>" +
-                "<td>" + data.entity.label + "</td>"+
-                "<td>" + data.entity.tags + "</td>"+
-                "<td>" + data.entity.active + "</td>"+
-                "<td>" + data.entity.orgs + "</td>"
-            );
+        $.each(entity, function (id, data) {
+            if(data.servicePackName != "NONE") {
+                console.log(data.servicePackName);
+                SELECT_SERVICE_PACK_NAME = data.servicePackName;
+                procCallAjaxAsyncFalse("/v2/catalogs/serviceplan/"+data.servicePackName, "GET", null, procCallbackGetServicePlan, $('#modalLoadingBar'));
+            }
+        });
+
+    };
+
+
+    var procCallbackGetServicePlan = function(data){
+        SERVICE_ACCESS_LIST = "";
+
+        $.each(data.resources, function (id, data2) {
+            var accessText = "None";     //false
+            if(data2.entity.public) {
+                accessText= "All";
+            }
+            //onchange="changeSelectSpaceSegment(\'selectSpaceSegment_'+(index+1)+'\', \''+data.metadata.guid+'\')"
+
+            SERVICE_ACCESS_LIST += "<tr>";
+            SERVICE_ACCESS_LIST += "<td onclick='javascript:getServicePlanDetail(\""+SELECT_SERVICE_PACK_NAME+"\" , \""+data2.entity.name+"\" , \""+accessText+"\")'>"+SELECT_SERVICE_PACK_NAME+"</td> ";
+            SERVICE_ACCESS_LIST += "<td>"+data2.entity.name+"</td> ";
+            SERVICE_ACCESS_LIST += "<td id='service_access_"+data2.metadata.guid+"'>"+accessText+"</td> ";
+            SERVICE_ACCESS_LIST += "<td id='service_plan_"+data2.metadata.guid+"'></td>";
+            SERVICE_ACCESS_LIST += "</tr> ";
+        });
+
+        $("#servicePlanList").append(SERVICE_ACCESS_LIST);
+
+        $.each(data.resources, function (id, data0rg) {
+            procCallAjaxAsyncFalse("/v2/serviceplans/"+data0rg.metadata.guid+"/visibilites", "GET", null, procCallbackGetServicePlanVisibilites, $('#modalLoadingBar'));
         });
     };
 
-    // 서비스 상세
-    function getServicePlandetail(label) {
+
+    var procCallbackGetServicePlanVisibilites = function(data){
+        if(data.resources.length > 0) {
+            $.each(data.resources, function (id, data3) {
+                $("#service_plan_"+data3.entity.service_plan_guid).append(orgObj[data3.entity.organization_guid]+" ");
+
+                //접근 리스트
+                $("#service_access_"+data3.entity.service_plan_guid).text('limited');
+            });
+        }
+    };
+
+    function getServicePlanDetail(serviceName, planName, accessText){
         $('#serviceAccessForm')[0].reset();
         $('#serviceAccessFormModal').modal('toggle');
-        procCallAjax("/v2/catalogs/serviceplan/"+label, "GET", null, procCallbackGetPlandetailList, $('#modalLoadingBar'));
+
+        $("#servicename").val(serviceName);
+        $("#serviceplan").val(planName);
+        $("#serviceAccessList").val(accessText);
+    };
+
+
+    /*
+    // 서비스 상세
+    function getServicePlanDetail(data) {
+        $('#serviceAccessForm')[0].reset();
+        $('#serviceAccessFormModal').modal('toggle');
+        procCallAjax("/v2/catalogs/serviceplan/"+data.label, "GET", null, procCallbackGetPlandDtailList, $('#modalLoadingBar'));
     }
 
-    var procCallbackGetPlandetailList = function(data){
+    var procCallbackGetPlandDtailList = function(data){
         SERVICE_ACCESS_DETAIL_LIST= data.resources;
         printAccessData(SERVICE_ACCESS_DETAIL_LIST);
     }
 
     function printAccessData(dataList) {
-        console.debug(":::printAccessData DATA:::");
+        console.debug(":::SERVICE_ACCESS_DETAIL_LIST DATA:::");
         console.debug(dataList[0]);
-        console.debug(":::SERVICE_ACCESS_LIST DATA:::");
-        console.debug(SERVICE_ACCESS_LIST[0]);
+        console.debug(":::SERVICE_LIST DATA:::");
+        console.debug(SERVICE_LIST[0]);
 
         var entity = dataList[0].entity;
-        var service = SERVICE_ACCESS_LIST[0].entity;
+        var service = SERVICE_LIST[0].entity;
 
 
         //서비스 브로커 이름
         $("#servicebrokername").val(service.label);
 
-        if(entity){
-            //서비스 플랜 이름
-            $("#servicename").val(entity.name);
-        }
+        //서비스 플랜 이름
+        $("#servicename").val(entity.name);
 
-        //서비스 허용 이름 : buildPackDevEnvList NONE:[false]orgs , ALL[true]
+        //서비스 접근
         $("#serviceAccessList").val(entity.public);
+//        $(document).on("change keyup"," select[id=serviceAccessList]",function(e){
+//            var value = $('#serviceAccessList').val(entity.public);
+//        })
     }
-
-
-
-
-    // 서비스 제어 접근허용[update]
-    function enableServiceAccess() {
-
-        var guid = $('#guid').val();
-
-        if (!procCheckValidStringSpace()){
-            return false;
-        };
-
-        var param = {
-            guid: guid,
-            name: $("#name").val()
-        }
-        procCallAjax("/v2/serviceplans/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
-    }
+    */
 
     /*]]>*/
 </script>
