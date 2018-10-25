@@ -40,7 +40,7 @@
                                 <table class="table table-bordered table-striped dataTable">
                                     <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Isolation Segments Name</th>
                                         <th>Delete</th>
                                     </tr>
                                     </thead>
@@ -261,6 +261,9 @@
                 return false;
             }
         }) ;
+        if(createSegmentName == "") {
+            return false;
+        }
 
         procCallAjax("/v3/isolationSegments/"+createSegmentName, "POST", null, procCallbackCreateIsolationSegments, $('#isolationTabLoadingBar'));
     };
