@@ -2,6 +2,7 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.model.UserManagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,6 +97,19 @@ public class UserManagementController extends Common {
     @ResponseBody
     public Map<String, Object> deleteUserAccount(@PathVariable String guid) {
         return userManagementService.deleteUserAccount( guid , HttpMethod.DELETE, null, this.getToken());
+    }
+
+
+    /**
+     * 사용자 계정을 등록한다.
+     *
+     * @param param Info
+     * @return Map(자바클래스)
+     */
+    @PostMapping(V2_URL + "/usermgnts/user")
+    @ResponseBody
+    public Map<String, Object> addUser(@RequestBody Map param) {
+        return userManagementService.addUser(HttpMethod.POST, param, this.getToken());
     }
 
 
