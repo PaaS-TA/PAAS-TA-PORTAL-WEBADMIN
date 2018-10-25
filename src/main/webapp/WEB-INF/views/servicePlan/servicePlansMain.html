@@ -66,21 +66,21 @@
                                         <div class="form-group required">
                                             <label for="servicename" class="col-sm-3 control-label">서비스 이름</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="servicename" name="servicename"/>
+                                                <input type="text" class="form-control toCheckString" id="servicename" name="servicename" disabled="disabled"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
                                             <label for="serviceplan" class="col-sm-3 control-label">서비스 플랜</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="serviceplan" name="serviceplan"/>
+                                                <input type="text" class="form-control toCheckString" id="serviceplan" name="serviceplan" disabled="disabled"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group required" name="serviceAccessListForm">
                                             <label for="serviceAccessList" class="col-sm-3 control-label">서비스 접근</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control checkServiceForm" onchange="selectServiceAccess()" id="serviceAccessList" name="serviceAccessList" style="width:auto;">
+                                                <select class="form-control checkServiceForm" onchange="selectServiceAccess()" id="serviceAccessList" name="serviceAccessList" style="width:630px;">
                                                     <option value="none">NONE</option>
                                                     <option value="all">ALL</option>
                                                     <option value="limited">LIMITED</option>
@@ -88,22 +88,23 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group required" style="display: none" id="serviceOrgListDivSecond">
-                                            <label for="serviceOrgListText" class="col-sm-3 control-label">서비스 조직</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="serviceOrgListText" name="serviceOrgListText"/>
-                                            </div>
-                                        </div>
-
-
                                         <div class="form-group required" style="display: none" id="serviceOrgListDiv">
-                                            <label for="serviceOrgList" class="col-sm-3"></label>
+                                            <label for="serviceOrgList" class="col-sm-3 control-label">서비스 조직</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control checkServiceForm" id="serviceOrgList" name="serviceOrgList" style="width:auto;">
-                                                    <option value="">서비스 조직을 선택하세요</option>
+                                                <select class="form-control checkServiceForm" id="serviceOrgList" name="serviceOrgList" style="width:630px;">
+                                                    <option value="">추가 할 서비스 조직을 선택하세요</option>
                                                 </select>
+                                                <p></p>
                                             </div>
                                         </div>
+
+                                        <div class="form-group required" style="display: none" id="serviceOrgListDivSecond">
+                                            <label for="serviceOrgListText" class="col-sm-3"></label>
+                                            <div class="col-sm-9">
+                                                <label id="serviceOrgListText" name="serviceOrgListText"></label>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -159,6 +160,7 @@
 
     var SERVICE_LIST;                         //서비스팩 전체 리스트
     var SERVICE_ACCESS_LIST;                 //서비스 제어 전체 리스트
+    var SERVICE_PLAN_GUID;
 
 
     var init = function(){
@@ -181,6 +183,7 @@
 
             $("#servicename").val("");
             $("#serviceplan").val("");
+            $("#serviceOrgListText").val("");
 
         });
 
@@ -279,9 +282,13 @@
         }
     };
 
-    function getServicePlanDetail(serviceName, planName, planTdId,orgs){
+    function getServicePlanDetail(serviceName, planName, planTdId, orgs){
         $('#serviceAccessForm')[0].reset();
         $('#serviceAccessFormModal').modal('toggle');
+
+        SERVICE_PLAN_GUID = planTdId.replace("service_access_", "");
+
+//        var selectPlanGuid = planTdId.replace("service_access_", "");
 
         //서비스 이름
         $("#servicename").val(serviceName);
@@ -294,14 +301,14 @@
 
         $('#serviceAccessList').val($("#"+planTdId).text().toLowerCase());
 
+        //서비스 조직
+        $("#serviceOrgListText").text($("#"+orgs).text());
+
+        //서비스 전체 조직
         if( $("#serviceAccessList").val() =="limited"){
             $("#serviceOrgListDiv").show();
             $("#serviceOrgListDivSecond").show();
 
-            //서비스 조직
-            $("#serviceOrgListText").val($("#"+orgs).text());
-
-            //서비스 전체 조직
             var selectBox = '';
             var objTable = $('#serviceOrgList');
 
@@ -317,7 +324,7 @@
     };
 
     function selectServiceAccess(){
-        console.debug($("#serviceAccessList").val());
+//        console.debug($("#serviceAccessList").val());
 
         //limited 일 때, 조직 확인 : display : none
         $("#serviceAccessList").val();
@@ -330,6 +337,42 @@
             $("#serviceOrgListDivSecond").hide();
         }
     };
+
+    // 서비스 접근 허용
+    function enableServiceAccess() {
+        console.log("enableServiceAccess start");
+        console.log(SERVICE_PLAN_GUID);
+        console.log($("#serviceAccessList").val());
+
+        var guid = SERVICE_PLAN_GUID;
+        var publiclyVisible;
+
+        if( $("#serviceAccessList").val() == "none"){
+            publiclyVisible = false;
+            console.log("false");
+        }else if($("#serviceAccessList").val() == "all"){
+            publiclyVisible = true;
+            console.log("true");
+        }else{
+            /*limited*/
+        }
+
+        var param = {
+            guid: guid,
+            publiclyVisible : publiclyVisible
+        }
+        console.log(param);
+        procCallAjax("/v2/serviceplans/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
+    }
+
+    // CHECK VALID STRING SPACE
+    var procCheckValidStringSpace = function(reqString) {
+        if (undefined != reqString && null != reqString) {
+            return (0 != reqString.replace(/ /g, "").length);
+        }
+    }
+
+
 
     /*]]>*/
 </script>
