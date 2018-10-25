@@ -58,6 +58,9 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
             if(data.message){
                 notifyAlert('info','',data.message);
                 return false;
+            } else if(data.msg) {
+                notifyAlert('info','',data.msg);
+                return false;
             }
 
             if (data) {

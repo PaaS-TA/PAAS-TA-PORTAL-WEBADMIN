@@ -129,6 +129,7 @@
 
     var ISOLATION_SEGMENT_LIST;
     var SELECT_ISOLATION_SEGMENT_GUID;
+    var DELETE_ISOLATION_SEGMENT_GUID;
     var SELECT_ISOLATION_SEGMENT_ID;
     var SELECT_ORG_LIST;
     var SELECT_SPACE_LIST;
@@ -274,12 +275,18 @@
     };
 
     function btnDeleteIsolationSegments(isolationSegmentId) {
+        DELETE_ISOLATION_SEGMENT_GUID = isolationSegmentId;
         procCallAjax("/v3/isolationSegments/"+isolationSegmentId, "DELETE", null, procCallbackDeleteIsolationSegments, $('#isolationTabLoadingBar'));
     };
 
     var procCallbackDeleteIsolationSegments = function(data){
         if(data.result) {
             console.log("success");
+
+            if(DELETE_ISOLATION_SEGMENT_GUID == SELECT_ISOLATION_SEGMENT_GUID) {
+                SELECT_ISOLATION_SEGMENT_GUID = "";
+                SELECT_ISOLATION_SEGMENT_ID = "";
+            }
             init();
         } else {
             console.log("fail");
