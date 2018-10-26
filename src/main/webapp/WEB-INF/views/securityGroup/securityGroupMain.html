@@ -212,11 +212,6 @@
                                             </tr>
                                             </thead>
                                             <tbody id="securityGroup_1List" name="securityGroup_1List">
-                                            <tr>
-                                                <td>org</td>
-                                                <td>space</td>
-                                                <td>delete</td>
-                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -300,12 +295,15 @@
     $(document).on("click", 'button[id=starterRegistBtn]', function (e) {
         sltBindSpaceData = [];
         sltUnBindSpaceData = [];
+        sltSecuritySpaces = [];
         $('#securityGroupFormModal').html(INIT_SECURITY_RULE_HTML);
+        settingOrgListSpaceList();
         $('#clientSaveBtn').show();
         $('.modal-title').text("시큐리티 그룹 등록");
         $('#securityGroupDeleteBtn').hide();
         $('#securityGroupSaveBtn').hide();
         $('#securityGroupRegBtn').hide();
+
     });
 
     $(document).on("mouseup", 'tbody[name=dataList]', function (e) {
@@ -314,7 +312,6 @@
         $('#securityGroupFormModal').html(INIT_SECURITY_RULE_HTML);
         initModal();
         sltSecurityGuid = $(e.target).parent().data('id');
-        console.log(sltSecurityGuid);
         getSecurityGroups(sltSecurityGuid);
     });
 
@@ -413,14 +410,12 @@
             '</div>';
         }
     var prochtml = $('#securityAllList');
-        console.log(prochtml);
         prochtml.append(result);
     }
 
     function getSecurityGroupList() {
 
         var filter = $("#access").val();
-        console.log(filter);
         if(filter == 'All') {
             sltGroupUrl = "/v2/securitygroups/"
         } else if(filter == 'Staging'){
@@ -489,7 +484,6 @@
         $('#securityGroupName').val(data.entity.name);
         data.entity.staging_default ? $('#securityStagingDefault').prop('checked', true) : $('#securityStagingDefault').prop('checked', false);
         data.entity.running_default ? $('#securityRunningDefault').prop('checked', true) : $('#securityRunningDefault').prop('checked', false);
-        console.log(data.entity.rules.length);
 
         var idx = $('#securityplus').parent().parent()[0].childElementCount - 1;
         var security_plus = $('#securityplus').parent().parent().children()[idx].outerHTML;
@@ -592,6 +586,7 @@
         var objTable = $('#securityGroup_1List');
 
         objTable.html('');
+        console.log(objTable);
         var orgValue = '';
         $.each(sltSecuritySpaces, function (index, data) {
             var bind = true;
@@ -624,7 +619,6 @@
         $.each(sltBindSpaceData, function (index, data) {
             var tdOrgText;
             var tdOrgId;
-            console.log(data);
             $.each(sltSecurityOrgs, function (index1, data1) {
                 if (data.entity.organization_guid == data1.metadata.guid) {
                     tdOrgText = data1.entity.name;
@@ -661,7 +655,6 @@
 
     function selectSpace(){
         var orgId = $("#selectOrg").val();
-        console.log(orgId);
         if(orgId != ""){
         procCallAjax('/v2/orgs/'+orgId+'/spaces', "GET", "", callbackSelectSpace, $('#modalLoadingBar'));
         }
@@ -726,7 +719,6 @@
 
     function AddUnBindSpace(data) {
         sltUnBindSpaceData.push(data);
-        console.log(sltUnBindSpaceData);
         $.each(sltBindSpaceData, function (index, bind){
             $.each(sltUnBindSpaceData, function (index2, unbind){
                 if(bind.metadata.guid == unbind){
@@ -747,23 +739,30 @@
     var setCreateDefaultStagingSetting = function (data) {
         sltSecurityGuid = data.metadata.guid;
         if($('input:checkbox[id="securityStagingDefault"]').is(":checked")){
-            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/staging', "PUT", "", setRunningDefaultSetting, $('#modalLoadingBar'));
+            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/staging', "PUT", "", bindResult, $('#modalLoadingBar'));
+        }if($('input:checkbox[id="securityRunningDefault"]').is(":checked")){
+            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/running', "PUT", "", bindResult, $('#modalLoadingBar'));
         }
+        $.each(sltBindSpaceData, function (index, data1) {
+            procCallAjax2('/v2/securitygroup/'+data.metadata.guid+'/spaces/'+data1.metadata.guid, "PUT", data, bindResult);
+        });
+        sltPage = 1;
+        getSecurityGroupList();
     };
 
     var setUpdateDefaultStagingSetting = function (data) {
         if($('input:checkbox[id="securityStagingDefault"]').is(":checked")){
-            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/staging', "PUT", "", setRunningDefaultSetting, $('#modalLoadingBar'));
+            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/staging', "PUT", "", setRunningDefaultSetting);
         } else {
-            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/staging', "DELETE", "", setRunningDefaultSetting, $('#modalLoadingBar'));
+            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/staging', "DELETE", "", setRunningDefaultSetting);
         }
     };
 
     var setRunningDefaultSetting = function (data) {
         if($('input:checkbox[id="securityRunningDefault"]').is(":checked")){
-            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/running', "PUT", "", getInitGroupList, $('#modalLoadingBar'));
+            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/running', "PUT", "", getInitGroupList);
         } else {
-            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/running', "DELETE", "", getInitGroupList, $('#modalLoadingBar'));
+            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/running', "DELETE", "", getInitGroupList);
         }
     };
 
