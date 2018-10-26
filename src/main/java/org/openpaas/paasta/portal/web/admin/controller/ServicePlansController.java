@@ -4,6 +4,8 @@ import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.model.ServiceBroker;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.Map;
 @RestController
 public class ServicePlansController extends Common {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServicePlansController.class);
     @Autowired
     private CommonService commonService;
 
@@ -67,6 +70,18 @@ public class ServicePlansController extends Common {
         return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans/"+guid, HttpMethod.GET, serviceBroker, this.getToken());
     }
 
+    /**
+     *  해당 서비스 제어 상세내용을 조회한다.
+     *
+     * @param serviceBroker serviceBroker
+     * @return ModelAndView model
+     */
+    @PutMapping(value = {Constants.V2_URL + "/serviceplans/{guid}"})
+    @ResponseBody
+    public Map<String, Object> updateServicePlan(@RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
+        LOGGER.info("updateServicePlan Start : " + serviceBroker.getGuid() +"   " + serviceBroker.getPubliclyVisible());
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans/"+guid, HttpMethod.PUT, serviceBroker, this.getToken());
+    }
 
     /**
      *  서비스 Plan에 Access 등록 되어있는 조직을 조회한다.

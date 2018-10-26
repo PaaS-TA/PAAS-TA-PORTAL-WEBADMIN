@@ -270,7 +270,7 @@ var notifyAlert = function(alertType, alertTitle ,alertMessage){
         type: alertType,
         z_index: 9999
     });
-}
+};
 
 // ALARM
 var timeoutHandler = null;

@@ -40,7 +40,7 @@
                                 <table class="table table-bordered table-striped dataTable">
                                     <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Isolation Segments Name</th>
                                         <th>Delete</th>
                                     </tr>
                                     </thead>
@@ -129,6 +129,7 @@
 
     var ISOLATION_SEGMENT_LIST;
     var SELECT_ISOLATION_SEGMENT_GUID;
+    var DELETE_ISOLATION_SEGMENT_GUID;
     var SELECT_ISOLATION_SEGMENT_ID;
     var SELECT_ORG_LIST;
     var SELECT_SPACE_LIST;
@@ -260,6 +261,9 @@
                 return false;
             }
         }) ;
+        if(createSegmentName == "") {
+            return false;
+        }
 
         procCallAjax("/v3/isolationSegments/"+createSegmentName, "POST", null, procCallbackCreateIsolationSegments, $('#isolationTabLoadingBar'));
     };
@@ -274,15 +278,22 @@
     };
 
     function btnDeleteIsolationSegments(isolationSegmentId) {
-        procCallAjax("/v3/isolationSegments/"+isolationSegmentId, "DELETE", null, procCallbackDeleteIsolationSegments, $('#isolationTabLoadingBar'));
+        DELETE_ISOLATION_SEGMENT_GUID = isolationSegmentId;
+        procCallAjax("/v3/isolationSegments/"+isolationSegmentId, "DELETE", null, procCallbackDeleteIsolationSegments, null);
     };
 
     var procCallbackDeleteIsolationSegments = function(data){
         if(data.result) {
             console.log("success");
+
+            if(DELETE_ISOLATION_SEGMENT_GUID == SELECT_ISOLATION_SEGMENT_GUID) {
+                SELECT_ISOLATION_SEGMENT_GUID = "";
+                SELECT_ISOLATION_SEGMENT_ID = "";
+            }
             init();
         } else {
             console.log("fail");
+            notifyAlert('warning','', 'CF-UnprocessableEntity(10008): Revoke the Organization entitlements for your Isolation Segment.');
         }
     };
 

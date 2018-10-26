@@ -20,12 +20,12 @@
                 <div id="serviceModalLoadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
 
                 <div class="box-header">
-                    <select class="form-control toCheckString" id="access" style="width:150px; margin-left: 355px;margin-top: -5px;" onchange="selectChange()">
+                    <select class="form-control toCheckString" id="access" style="width:150px; margin-left: 255px;margin-top: -5px;" onchange="selectChange()">
                         <option value="All" selected="true">전체보기</option>
                         <option value="t">승인</option>
                         <option value="f">비승인</option>
                     </select>
-                    <div class="box-tools">
+                    <div class="box-tools" style="margin-right: 100px;">
                         <div class="input-group input-group-sm" style="width: 450px; height: 34px" >
                             <input type="text" name="table_search" class="form-control pull-right" placeholder="Search"
                                    id="searchKeyword" onkeypress="procCheckSearchFormKeyEvent(event);" style="height: 34px;"/>
@@ -34,6 +34,11 @@
                                         onclick="procButtonClick()"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
+                    </div>
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-block btn-primary btn-sm" id="addUserBtn" name="addUserBtn" onclick="btnAddUser()">
+                            사용자 등록
+                        </button>
                     </div>
                     <div style="height: 30px">
                     </div>
@@ -79,6 +84,68 @@
                 <!-- /.modal-dialog -->
             </div>
         </section>
+
+        <!-- Modal Layer-->
+        <div class="modal fade" id="addUserModal" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="segmentsOrgModalTitle">사용자 등록</h4>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="box" style="margin-bottom: 10px; border-top: 0px; box-shadow: 0 0px 0px">
+                            <div id="layerModalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i>
+                            </div>
+                            <form id="securityGroupForm" class="form-horizontal">
+                                <div class="box-body">
+
+                                    <div class="form-group required">
+                                        <label for="addUserId" class="col-sm-3 control-label">아이디</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="addUserId"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
+                                        <label for="addUserPassword" class="col-sm-3 control-label">비밀번호</label>
+                                        <div class="col-sm-9">
+                                            <input type="password" class="form-control" id="addUserPassword" autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addUserActive" class="col-sm-3 control-label">Active 설정 (승인 여부)</label>
+                                        <div class="col-sm-9" style="margin-top : 5px">
+                                            <input type="checkbox" checked="" id="addUserActive"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <!--<button type="button" id="securityGroupDeleteBtn" name="modalDeleteBtn"-->
+                                <!--class="btn btn-sm btn-danger pull-left" onClick="deleteSecurityGroup();" data-dismiss="modal">삭제-->
+                        <!--</button>-->
+                        <button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="addUserInsert();" data-dismiss="modal">등록</button>
+                        <!--<button type="button" id="securityGroupRegBtn" name="modalRegBtn"-->
+                                <!--class="btn btn-sm btn-primary pull-right" onClick="updateSecurityGroup();" data-dismiss="modal" hidden="hidden">수정-->
+                        <!--</button>-->
+                        <!--<button type="button" id="securityGroupCloseBtn" class="btn btn-sm btn-default pull-left"-->
+                                <!--data-dismiss="modal">취소-->
+                        <!--</button>-->
+                    </div>
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
     </div>
 
     <footer></footer>
@@ -94,6 +161,8 @@
     var REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY = "UPDATE_OPERATING_AUTHORITY";
     var REQUEST_TYPE_UPDATE_LOGIN_ACTIVE = "UPDATE_LOGIN_ACTIVE";
     var REQUEST_TYPE_DELETE_USER_ACCOUNT = "DELETE_USER_ACCOUNT";
+
+    var usersObj = new Object();
 
 
     // GET LIST
@@ -209,6 +278,7 @@
 
                 htmlString.push('</td></tr>');
 
+                usersObj[resultList[i].userId] = resultList[i].userName;
             }
             LOADED_LIST_COUNT += listLength;
 
@@ -365,6 +435,45 @@
         procAlert("info", WELCOME_MESSAGE);
         $('#userInfoViewArea').hide();
         getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "");
+    };
+
+    function btnAddUser() {
+        $("#addUserId").val("");
+        $("#addUserPassword").val("");
+        showLayerPopAddUser();
+    };
+
+    function showLayerPopAddUser() {
+        $("#addUserModal").modal("show");
+    };
+
+    function addUserInsert() {
+        if(usersObj[$("#addUserId").val()] != undefined) {
+            notifyAlert("warning", "", $("#addUserId").val()+" 은(는) 이미 사용중인 ID 입니다.");
+            return false;
+        }
+
+        var active2 = "N";
+        if($("#addUserActive").is(":checked")) {
+            active2 = "Y";
+        }
+
+        var param = {
+            userId: $("#addUserId").val(),
+            password: $("#addUserPassword").val(),
+            active: $("#addUserActive").is(":checked"),
+            active2: active2,
+            status: 1,
+            adminYn: "N"
+        };
+
+        procCallAjax(REST_URL + "/user", 'POST', JSON.stringify(param), procCallbackAddUserInsert, $('#layerModalLoadingBar'));
+    };
+
+    var procCallbackAddUserInsert = function(data) {
+        if(data.result) {
+            procInitPage();
+        }
     };
 
 

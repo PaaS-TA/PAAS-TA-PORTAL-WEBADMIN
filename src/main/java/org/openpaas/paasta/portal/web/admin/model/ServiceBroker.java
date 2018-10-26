@@ -17,6 +17,8 @@ public class ServiceBroker {
     private String password;
     private UUID guid;
 
+    private boolean publiclyVisible;
+
     public String getName() {
         return name;
     }
@@ -64,4 +66,14 @@ public class ServiceBroker {
     public void setGuid(UUID guid) {
         this.guid = guid;
     }
+
+    public boolean getPubliclyVisible() {
+        return publiclyVisible;
+    }
+
+    public void setPubliclyVisible(boolean publiclyVisible) {
+        this.publiclyVisible = publiclyVisible;
+    }
+
+
 }

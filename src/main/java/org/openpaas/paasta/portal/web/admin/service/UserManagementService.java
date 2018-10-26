@@ -1,12 +1,14 @@
 package org.openpaas.paasta.portal.web.admin.service;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.model.UserManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -65,6 +67,22 @@ public class UserManagementService extends Common {
      */
     public Map<String, Object> deleteUserAccount(String guid, HttpMethod httpMethod, Object param, String reqToken) {
         return commonService.procCommonApiRestTemplate(V2_URL+"/user/" + guid + "/all", httpMethod, param, reqToken);
+    }
+
+    /**
+     * 사용자 계정을 등록한다.
+     *
+     * @param param Info
+     * @return Map(자바클래스)
+     */
+    public Map<String, Object> addUser(HttpMethod httpMethod, Map param, String reqToken) {
+        Map<String, Object> result = commonService.procCfApiRestTemplate(Constants.V2_URL + "/users", HttpMethod.POST, param, this.getToken());
+        if((boolean) result.get("result")) {
+            param.remove("active");
+            param.put("active", param.get("active2").toString());
+            commonService.procCommonApiRestTemplate(V2_URL+"/user", httpMethod, param, reqToken);
+        }
+        return result;
     }
 
     /**

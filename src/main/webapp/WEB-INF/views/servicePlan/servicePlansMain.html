@@ -66,33 +66,42 @@
                                         <div class="form-group required">
                                             <label for="servicename" class="col-sm-3 control-label">서비스 이름</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="servicename" name="servicename"/>
+                                                <input type="text" class="form-control toCheckString" id="servicename" name="servicename" disabled="disabled"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
                                             <label for="serviceplan" class="col-sm-3 control-label">서비스 플랜</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString" id="serviceplan" name="serviceplan"/>
+                                                <input type="text" class="form-control toCheckString" id="serviceplan" name="serviceplan" disabled="disabled"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group required" name="serviceAccessListForm">
                                             <label for="serviceAccessList" class="col-sm-3 control-label">서비스 접근</label>
                                             <div class="col-sm-9">
-                                                <!--<select class="form-control checkServiceForm" id="serviceAccessList" name="serviceAccessList" style="width:auto;">-->
-                                                    <!--<option value=""></option>-->
-                                                <!--</select>-->
-                                                <input type="text" class="form-control toCheckString" id="serviceAccessList" name="serviceAccessList"/>
+                                                <select class="form-control checkServiceForm" onchange="selectServiceAccess()" id="serviceAccessList" name="serviceAccessList" style="width:630px;">
+                                                    <option value="none">NONE</option>
+                                                    <option value="all">ALL</option>
+                                                    <option value="limited">LIMITED</option>
+                                                </select>
                                             </div>
                                         </div>
 
-                                        <div class="form-group required">
+                                        <div class="form-group required" style="display: none" id="serviceOrgListDiv">
                                             <label for="serviceOrgList" class="col-sm-3 control-label">서비스 조직</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control checkServiceForm" id="serviceOrgList" name="serviceOrgList" style="width:auto;">
-                                                    <option value=""></option>
+                                                <select class="form-control checkServiceForm" id="serviceOrgList" name="serviceOrgList" style="width:630px;">
+                                                    <option value="">추가 할 서비스 조직을 선택하세요</option>
                                                 </select>
+                                                <p></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required" style="display: none" id="serviceOrgListDivSecond">
+                                            <label for="serviceOrgListText" class="col-sm-3"></label>
+                                            <div class="col-sm-9">
+                                                <label id="serviceOrgListText" name="serviceOrgListText"></label>
                                             </div>
                                         </div>
 
@@ -151,6 +160,7 @@
 
     var SERVICE_LIST;                         //서비스팩 전체 리스트
     var SERVICE_ACCESS_LIST;                 //서비스 제어 전체 리스트
+    var SERVICE_PLAN_GUID;
 
 
     var init = function(){
@@ -173,7 +183,7 @@
 
             $("#servicename").val("");
             $("#serviceplan").val("");
-
+            $("#serviceOrgListText").val("");
 
         });
 
@@ -184,7 +194,6 @@
             $('#saveBtn').show();
 
             $('#regBtn').hide();
-            //$('#closeBtn').hide();
         });
     });
 
@@ -219,8 +228,8 @@
     // 서비스제어 리스트 출력: [동기화]
     function printData(dataList) {
 
-        console.log(":::SERVICE_LIST DATA:::");
-        console.log(dataList);
+        console.debug(":::SERVICE_LIST DATA:::");
+        console.debug(dataList);
 
         var entity = dataList.list;
         console.log(entity);
@@ -240,20 +249,20 @@
         SERVICE_ACCESS_LIST = "";
 
         $.each(data.resources, function (id, data2) {
-            var accessText = "None";     //false
+            var accessText = "NONE";     //false
             if(data2.entity.public) {
                 accessText= "All";
             }
-            //onchange="changeSelectSpaceSegment(\'selectSpaceSegment_'+(index+1)+'\', \''+data.metadata.guid+'\')"
 
             SERVICE_ACCESS_LIST += "<tr>";
-            SERVICE_ACCESS_LIST += "<td onclick='javascript:getServicePlanDetail(\""+SELECT_SERVICE_PACK_NAME+"\" , \""+data2.entity.name+"\" , \""+accessText+"\")'>"+SELECT_SERVICE_PACK_NAME+"</td> ";
+            SERVICE_ACCESS_LIST += "<td onclick='javascript:getServicePlanDetail(\""+SELECT_SERVICE_PACK_NAME+"\" ,\""+data2.entity.name+"\" ,\"service_access_"+data2.metadata.guid+"\", \"service_plan_"+data2.metadata.guid+"\")'>"+SELECT_SERVICE_PACK_NAME+"</td> ";
             SERVICE_ACCESS_LIST += "<td>"+data2.entity.name+"</td> ";
             SERVICE_ACCESS_LIST += "<td id='service_access_"+data2.metadata.guid+"'>"+accessText+"</td> ";
             SERVICE_ACCESS_LIST += "<td id='service_plan_"+data2.metadata.guid+"'></td>";
             SERVICE_ACCESS_LIST += "</tr> ";
         });
 
+        $("#serviceOrgList").append(SERVICE_ACCESS_LIST);
         $("#servicePlanList").append(SERVICE_ACCESS_LIST);
 
         $.each(data.resources, function (id, data0rg) {
@@ -273,52 +282,97 @@
         }
     };
 
-    function getServicePlanDetail(serviceName, planName, accessText){
+    function getServicePlanDetail(serviceName, planName, planTdId, orgs){
         $('#serviceAccessForm')[0].reset();
         $('#serviceAccessFormModal').modal('toggle');
 
+        SERVICE_PLAN_GUID = planTdId.replace("service_access_", "");
+
+//        var selectPlanGuid = planTdId.replace("service_access_", "");
+
+        //서비스 이름
         $("#servicename").val(serviceName);
+
+        //서비스 플랜
         $("#serviceplan").val(planName);
-        $("#serviceAccessList").val(accessText);
-    };
-
-
-    /*
-    // 서비스 상세
-    function getServicePlanDetail(data) {
-        $('#serviceAccessForm')[0].reset();
-        $('#serviceAccessFormModal').modal('toggle');
-        procCallAjax("/v2/catalogs/serviceplan/"+data.label, "GET", null, procCallbackGetPlandDtailList, $('#modalLoadingBar'));
-    }
-
-    var procCallbackGetPlandDtailList = function(data){
-        SERVICE_ACCESS_DETAIL_LIST= data.resources;
-        printAccessData(SERVICE_ACCESS_DETAIL_LIST);
-    }
-
-    function printAccessData(dataList) {
-        console.debug(":::SERVICE_ACCESS_DETAIL_LIST DATA:::");
-        console.debug(dataList[0]);
-        console.debug(":::SERVICE_LIST DATA:::");
-        console.debug(SERVICE_LIST[0]);
-
-        var entity = dataList[0].entity;
-        var service = SERVICE_LIST[0].entity;
-
-
-        //서비스 브로커 이름
-        $("#servicebrokername").val(service.label);
-
-        //서비스 플랜 이름
-        $("#servicename").val(entity.name);
 
         //서비스 접근
-        $("#serviceAccessList").val(entity.public);
-//        $(document).on("change keyup"," select[id=serviceAccessList]",function(e){
-//            var value = $('#serviceAccessList').val(entity.public);
-//        })
+        $('#serviceAccessList option[value=limited]').attr('selected','selected');
+
+        $('#serviceAccessList').val($("#"+planTdId).text().toLowerCase());
+
+        //서비스 조직
+        $("#serviceOrgListText").text($("#"+orgs).text());
+
+        //서비스 전체 조직
+        if( $("#serviceAccessList").val() =="limited"){
+            $("#serviceOrgListDiv").show();
+            $("#serviceOrgListDivSecond").show();
+
+            var selectBox = '';
+            var objTable = $('#serviceOrgList');
+
+            for( var key in orgObj ) {
+                selectBox += '<option value="'+key+'">'+orgObj[key]+'</option>';
+            }
+            objTable.append(selectBox);
+        } else {
+            $("#serviceOrgListDiv").hide();
+            $("#serviceOrgListDivSecond").hide();
+        }
+
+    };
+
+    function selectServiceAccess(){
+//        console.debug($("#serviceAccessList").val());
+
+        //limited 일 때, 조직 확인 : display : none
+        $("#serviceAccessList").val();
+
+        if($("#serviceAccessList").val() == "limited"){
+            $("#serviceOrgListDiv").show();
+            $("#serviceOrgListDivSecond").show();
+        } else{
+            $("#serviceOrgListDiv").hide();
+            $("#serviceOrgListDivSecond").hide();
+        }
+    };
+
+    // 서비스 접근 허용
+    function enableServiceAccess() {
+        console.log("enableServiceAccess start");
+        console.log(SERVICE_PLAN_GUID);
+        console.log($("#serviceAccessList").val());
+
+        var guid = SERVICE_PLAN_GUID;
+        var publiclyVisible;
+
+        if( $("#serviceAccessList").val() == "none"){
+            publiclyVisible = false;
+            console.log("false");
+        }else if($("#serviceAccessList").val() == "all"){
+            publiclyVisible = true;
+            console.log("true");
+        }else{
+            /*limited*/
+        }
+
+        var param = {
+            guid: guid,
+            publiclyVisible : publiclyVisible
+        }
+        console.log(param);
+        procCallAjax("/v2/serviceplans/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
-    */
+
+    // CHECK VALID STRING SPACE
+    var procCheckValidStringSpace = function(reqString) {
+        if (undefined != reqString && null != reqString) {
+            return (0 != reqString.replace(/ /g, "").length);
+        }
+    }
+
+
 
     /*]]>*/
 </script>
