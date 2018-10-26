@@ -298,6 +298,8 @@
     });
 
     $(document).on("click", 'button[id=starterRegistBtn]', function (e) {
+        sltBindSpaceData = [];
+        sltUnBindSpaceData = [];
         $('#securityGroupFormModal').html(INIT_SECURITY_RULE_HTML);
         $('#clientSaveBtn').show();
         $('.modal-title').text("시큐리티 그룹 등록");
@@ -307,6 +309,8 @@
     });
 
     $(document).on("mouseup", 'tbody[name=dataList]', function (e) {
+        sltBindSpaceData = [];
+        sltUnBindSpaceData = [];
         $('#securityGroupFormModal').html(INIT_SECURITY_RULE_HTML);
         initModal();
         sltSecurityGuid = $(e.target).parent().data('id');
@@ -315,8 +319,7 @@
     });
 
     $(document).on("mouseup", 'a[id=securityplus]', function (e) {
-        sltBindSpaceData = [];
-        sltUnBindSpaceData = [];
+
         var idx = $(e.target).parent().parent()[0].childElementCount - 1;
         var security_plus = $(e.target).parent().parent().children()[idx].outerHTML;
         var result = '';
