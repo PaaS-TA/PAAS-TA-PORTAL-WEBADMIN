@@ -117,7 +117,7 @@ public class SecurityGroupService extends Common {
      * @throws Exception the exception
      * @author 박철한
      */
-    public Map<String, Object>  listSecurityGroupStagingDefaultsResponse(String page) throws Exception {
+    public Map<String, Object>  listSecurityGroupStagingDefaultsResponse(int page) throws Exception {
         return commonService.procCfApiRestTemplate(Constants.V2_URL+"/securitygroup/"+page+"/staging", HttpMethod.GET, null , this.getToken());
     }
 
@@ -172,5 +172,41 @@ public class SecurityGroupService extends Common {
      */
     public Map<String, Object> removeSecurityGroupRunning(@PathVariable String securityid) throws Exception {
         return commonService.procCfApiRestTemplate(Constants.V2_URL+"/securitygroup/"+securityid+"/running", HttpMethod.DELETE, null , this.getToken());
+    }
+
+    /**
+     * 공간 시큐리티그룹을 조회한다.
+     *
+     * @param page  ListSecurityGroups page
+     * @param securityid the security guid
+     * @return ListSecurityGroupSpacesResponse
+     * @throws Exception the exception
+     */
+    public Map<String, Object> listSecurityGroupSpacesResponse(@PathVariable String securityid, @PathVariable int page) throws Exception {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL+"/securitygroup/"+securityid+"/" + page, HttpMethod.GET, null , this.getToken());
+    }
+
+    /**
+     * 시큐리티그룹과 공간을 연결한다.
+     *
+     * @param securityid  the security guid
+     * @param spaceid the space guid
+     * @return AssociateSecurityGroupSpaceResponse
+     * @throws Exception the exception
+     */
+    public Map<String, Object> associateSecurityGroupSpaceResponse(@PathVariable String securityid, @PathVariable String spaceid) throws Exception {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL+"/securitygroup/"+securityid+"/spaces/" + spaceid, HttpMethod.PUT, null , this.getToken());
+    }
+
+    /**
+     * 공간 시큐리티 그룹을 언바인드 한다.
+     *
+     * @param securityid  the security guid
+     * @param spaceid the space guid
+     * @return Map
+     * @throws Exception the exception
+     */
+    public Map<String, Object> removeSecurityGroupSpace(@PathVariable String securityid, @PathVariable String spaceid) throws Exception {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL+"/securitygroup/"+securityid+"/spaces/" + spaceid, HttpMethod.DELETE, null , this.getToken());
     }
 }

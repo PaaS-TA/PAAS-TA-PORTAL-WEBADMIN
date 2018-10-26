@@ -40,11 +40,15 @@
                                  style="position:static;padding-left: 0px;">
                                 <div class="has-feedback">
                                     <input type="text" class="form-control input-sm" id="searchKeyword"
-                                           onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
+                                           onkeyup="viewSearchKeyWord();" placeholder="이름으로 검색"/>
                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
                             </div>
-
+                            <select class="form-control toCheckString" id="access" style="width:150px;margin-top: -5px; display: unset;" onchange="selectGroupChange()" >
+                                <option value="All" selected="true">전체보기</option>
+                                <option value="Staging">Staging default</option>
+                                <option value="Running">Running default</option>
+                            </select>
                             <div class="pull-right" style="padding-right: 0px;">
                                 <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn"
                                         name="registBtn" data-toggle="modal" data-backdrop="static"
@@ -204,12 +208,14 @@
                                             <tr>
                                                 <th>org</th>
                                                 <th>space</th>
+                                                <th>delete</th>
                                             </tr>
                                             </thead>
                                             <tbody id="securityGroup_1List" name="securityGroup_1List">
                                             <tr>
                                                 <td>org</td>
                                                 <td>space</td>
+                                                <td>delete</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -278,8 +284,14 @@
     var sltPage = 1;
     var CLIENT_LIST;
     var INIT_SECURITY_RULE_HTML;
-    var sltServiceGuid;
-
+    var sltSecurityGuid;
+    var sltSecuritySpaces = [];
+    var sltSecurityOrgs = [];
+    var sltGroupUrl = "/v2/securitygroups/";
+    var sltBindSpaceData = [];
+    var sltUnBindSpaceData = [];
+    var sltADDSpaceData;
+    var sltAllSpaceGuid=[];
     $(document).ready(function () {
         getInitSecurityRuleHtml();
         getSecurityGroupList();
@@ -297,13 +309,14 @@
     $(document).on("mouseup", 'tbody[name=dataList]', function (e) {
         $('#securityGroupFormModal').html(INIT_SECURITY_RULE_HTML);
         initModal();
-        sltServiceGuid = $(e.target).parent().data('id');
-        console.log(sltServiceGuid);
-        getSecurityGroups(sltServiceGuid);
+        sltSecurityGuid = $(e.target).parent().data('id');
+        console.log(sltSecurityGuid);
+        getSecurityGroups(sltSecurityGuid);
     });
 
     $(document).on("mouseup", 'a[id=securityplus]', function (e) {
-
+        sltBindSpaceData = [];
+        sltUnBindSpaceData = [];
         var idx = $(e.target).parent().parent()[0].childElementCount - 1;
         var security_plus = $(e.target).parent().parent().children()[idx].outerHTML;
         var result = '';
@@ -316,6 +329,11 @@
         getsecurityListTapHtml((idx+1), (idx+2));
         $(e.target).parent().parent().html(result);
     });
+
+    var selectGroupChange = function(){
+        sltPage = 1;
+        getSecurityGroupList();
+    }
 
     function getInitSecurityRuleHtml() {
         INIT_SECURITY_RULE_HTML = $('#securityGroupFormModal').html();
@@ -397,7 +415,22 @@
     }
 
     function getSecurityGroupList() {
-        procCallAjax("/v2/securitygroups/" + sltPage, "GET", null, procCallbackSecurityGroupList, $('#loadingBar'));
+
+        var filter = $("#access").val();
+        console.log(filter);
+        if(filter == 'All') {
+            sltGroupUrl = "/v2/securitygroups/"
+        } else if(filter == 'Staging'){
+            sltGroupUrl = "/v2/securitygroups/staging/"
+        } else if(filter == 'Running'){
+            sltGroupUrl = "/v2/securitygroups/running/"
+        }
+        procCallAjax(sltGroupUrl + sltPage, "GET", null, procCallbackSecurityGroupList, $('#loadingBar'));
+        getOrgs();
+    }
+
+    function viewSearchKeyWord(){
+        printData(securityGroupList);
     }
 
     var procCallbackSecurityGroupList = function (data) {
@@ -418,9 +451,12 @@
         $.each(dataList, function (id, data1) {
             $.each(data1, function (id1, data) {
                 //var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
-                objTable.append('<tr style="cursor:pointer;" data-id=' + data.metadata.guid + '>'
-                    + '<td>' + data.entity.name + '</td>'
-                    + '</tr>');
+                if (data.entity.name.toLowerCase().includes($('#searchKeyword').val().toLowerCase())) {
+                    objTable.append('<tr style="cursor:pointer;" data-id=' + data.metadata.guid + '>'
+                        + '<td>' + data.entity.name + '</td>'
+                        + '</tr>');
+                }
+
             });
         });
         if (dataList[0].length == 0) {
@@ -467,7 +503,7 @@
         getsecurityListTapHtml(2, (data.entity.rules.length + 1));
         $('#securityplus').parent().parent().html(result);
         securityRules(data.entity.rules);
-
+        getSecuritySpace(1);
     }
 
     function securityRules(data){
@@ -492,11 +528,22 @@
     function updateSecurityGroup() {
         var param = getRules();
         var servicename = $('#securityGroupName').val();
-        procCallAjax('/v2/securitygroup/'+sltServiceGuid+'/'+ servicename, "PUT", param, setUpdateDefaultStagingSetting, $('#modalLoadingBar'));
+        procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/'+ servicename, "PUT", param, setUpdateDefaultStagingSetting, $('#modalLoadingBar'));
+        $.each(sltBindSpaceData, function (index, data) {
+            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/spaces/'+data.metadata.guid, "PUT", data, bindResult);
+        });
+        $.each(sltUnBindSpaceData, function (index, data) {
+            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/spaces/'+data, "DELETE", data, bindResult);
+        });
     };
 
+    function bindResult(data) {
+        sltUnBindSpaceData = [];
+        sltBindSpaceData = [];
+    }
+
     function deleteSecurityGroup() {
-        procCallAjax('/v2/securitygroup/'+sltServiceGuid, "DELETE", null, getInitGroupList, $('#modalLoadingBar'));
+        procCallAjax('/v2/securitygroup/'+sltSecurityGuid, "DELETE", null, getInitGroupList, $('#modalLoadingBar'));
     };
 
     function getRules() {
@@ -529,37 +576,202 @@
         return param;
     };
 
+    function getOrgs() {
+        procCallAjax('/v2/orgs', "GET", null, serSecurityOrgsList, $('#modalLoadingBar'));
+    }
+
+    function getSecuritySpace(page) {
+        procCallAjax('/v2/securitygroup/'+sltSecurityGuid + '/' + page, "GET", null, setSecuritySpaceList, $('#modalLoadingBar'));
+    }
+
+    function settingOrgListSpaceList() {
+        sltAllSpaceGuid = [];
+        var objTable = $('#securityGroup_1List');
+
+        objTable.html('');
+        var orgValue = '';
+        $.each(sltSecuritySpaces, function (index, data) {
+            var bind = true;
+            $.each(sltUnBindSpaceData, function (index, data2) {
+                if(data.metadata.guid == data2){
+                    bind = false;
+                }
+            });
+            if(bind) {
+                var tdOrgText;
+                var tdOrgId;
+                $.each(sltSecurityOrgs, function (index1, data1) {
+                    if (data.entity.organization_guid == data1.metadata.guid) {
+                        tdOrgText = data1.entity.name;
+                        tdOrgId = data1.metadata.guid
+                        return;
+                    }
+
+                });
+                sltAllSpaceGuid.push(data.metadata.guid)
+                objTable.append('' +
+                    '<tr id="Orgs_' + (index + 1) + '">' +
+                    '   <td data-id="' + tdOrgId + '">' + tdOrgText + '</td>' +
+                    '   <td data-id="' + data.metadata.guid + '">' + data.entity.name + '</td>' +
+                    '   <td><span class="fa fa-trash" onclick="AddUnBindSpace(\'' + data.metadata.guid + '\')" style="cursor:pointer;"></span></td>' +
+                    '</tr>'
+                );
+            }
+        });
+        $.each(sltBindSpaceData, function (index, data) {
+            var tdOrgText;
+            var tdOrgId;
+            console.log(data);
+            $.each(sltSecurityOrgs, function (index1, data1) {
+                if (data.entity.organization_guid == data1.metadata.guid) {
+                    tdOrgText = data1.entity.name;
+                    tdOrgId = data1.metadata.guid
+                    return;
+                }
+            });
+            sltAllSpaceGuid.push(data.metadata.guid);
+            objTable.append('' +
+                '<tr id="Orgs_' + (index + 1) + '">' +
+                '   <td data-id="' + tdOrgId + '">' + tdOrgText + '</td>' +
+                '   <td data-id="' + data.metadata.guid + '">' + data.entity.name + '</td>' +
+                '   <td><span class="fa fa-trash" onclick="AddUnBindSpace(\'' + data.metadata.guid + '\')" style="cursor:pointer;"></span></td>' +
+                '</tr>'
+            );
+        });
+        var selectBox = '';
+        selectBox += '<select class="form-control toCheckStringSpace" id="selectOrg" onchange="selectSpace()">';
+        selectBox += '<option value="" selected="selected">Select Org</option>';
+        $.each(sltSecurityOrgs, function (index, data) {
+            selectBox += '   <option value="' + data.metadata.guid + '">' + data.entity.name + '</option>';
+        });
+        selectBox += '</select>';
+        objTable.append('' +
+            '<tr id="selectBody" style="text-align-last: center">' +
+            '   <td >' + selectBox  + '</td>' +
+            '</tr>'
+        );
+        $.each($("select[id*='selectSpaces']"), function (idx, data2) {
+            var table = $("#selectSpaces_"+(idx+1));
+            table.append("<option value='keyboard'>키보드</option>");
+        });
+    };
+
+    function selectSpace(){
+        var orgId = $("#selectOrg").val();
+        console.log(orgId);
+        if(orgId != ""){
+        procCallAjax('/v2/orgs/'+orgId+'/spaces', "GET", "", callbackSelectSpace, $('#modalLoadingBar'));
+        }
+    };
+
+    var callbackSelectSpace = function (data) {
+        var spaces = data.spaceList.resources;
+        sltADDSpaceData = spaces;
+        var selectBox = '';
+        if($('#tdSpace') != null){
+            $('#tdSpace').remove();
+        }
+        if($('#tdAdd') != null){
+            $('#tdAdd').remove();
+        }
+        selectBox += '<select class="form-control toCheckStringSpace" id="selSpace" onchange="addSpaceSecurity()">';
+        selectBox += '<option disabled selected value>select Space</option>';
+        $.each(spaces, function (index, data) {
+            var result = true;
+            $.each(sltAllSpaceGuid, function (index, s_guid) {
+                if (data.metadata.guid == s_guid) {
+                    result = false;
+                    return;
+                };
+            });
+            if(result){
+            selectBox += '   <option value="' + data.metadata.guid + '">' + data.entity.name + '</option>';
+            }
+        });
+        selectBox += '</select>';
+        var objTable = $("#selectBody");
+        objTable.append('<td id="tdSpace">' + selectBox  + '</td>');
+    };
+
+    function addSpaceSecurity(){
+
+        if($('#tdAdd') != null){
+            $('#tdAdd').remove();
+        }
+        var addButton = '';
+        addButton += '<button type="button" class="btn btn-sm btn-primary pull-center" onClick="AddBindSpace()">등록</button>'
+        var objTable = $("#selectBody");
+        objTable.append('<td id="tdAdd">' + addButton  + '</td>');
+    }
+
+    function AddBindSpace() {
+        $.each(sltADDSpaceData, function (index, data1) {
+            if($("#selSpace").val() == data1.metadata.guid){
+                sltBindSpaceData.push(data1);
+            }
+        });
+        $.each(sltBindSpaceData, function (index, bind){
+            $.each(sltUnBindSpaceData, function (index2, unbind){
+                if(bind.metadata.guid == unbind){
+                    sltBindSpaceData.splice(index,1);
+                    sltUnBindSpaceData.splice(index2,1);
+                }
+            });
+        });
+        settingOrgListSpaceList();
+    }
+
+    function AddUnBindSpace(data) {
+        sltUnBindSpaceData.push(data);
+        console.log(sltUnBindSpaceData);
+        $.each(sltBindSpaceData, function (index, bind){
+            $.each(sltUnBindSpaceData, function (index2, unbind){
+                if(bind.metadata.guid == unbind){
+                    sltBindSpaceData.splice(index,1);
+                    sltUnBindSpaceData.splice(index2,1);
+                }
+            });
+        });
+        settingOrgListSpaceList();
+    }
+
+
     var getInitGroupList = function (data) {
+        sltPage = 1;
         getSecurityGroupList();
     };
 
-
-
-
-
     var setCreateDefaultStagingSetting = function (data) {
-        sltServiceGuid = data.metadata.guid;
+        sltSecurityGuid = data.metadata.guid;
         if($('input:checkbox[id="securityStagingDefault"]').is(":checked")){
-            procCallAjax('/v2/securitygroup/'+sltServiceGuid+'/staging', "PUT", "", setRunningDefaultSetting, $('#modalLoadingBar'));
+            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/staging', "PUT", "", setRunningDefaultSetting, $('#modalLoadingBar'));
         }
     };
 
     var setUpdateDefaultStagingSetting = function (data) {
         if($('input:checkbox[id="securityStagingDefault"]').is(":checked")){
-            procCallAjax('/v2/securitygroup/'+sltServiceGuid+'/staging', "PUT", "", setRunningDefaultSetting, $('#modalLoadingBar'));
+            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/staging', "PUT", "", setRunningDefaultSetting, $('#modalLoadingBar'));
         } else {
-            procCallAjax('/v2/securitygroup/'+sltServiceGuid+'/staging', "DELETE", "", setRunningDefaultSetting, $('#modalLoadingBar'));
+            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/staging', "DELETE", "", setRunningDefaultSetting, $('#modalLoadingBar'));
         }
     };
 
     var setRunningDefaultSetting = function (data) {
         if($('input:checkbox[id="securityRunningDefault"]').is(":checked")){
-            procCallAjax('/v2/securitygroup/'+sltServiceGuid+'/running', "PUT", "", getInitGroupList, $('#modalLoadingBar'));
+            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/running', "PUT", "", getInitGroupList, $('#modalLoadingBar'));
         } else {
-            procCallAjax('/v2/securitygroup/'+sltServiceGuid+'/running', "DELETE", "", getInitGroupList, $('#modalLoadingBar'));
+            procCallAjax('/v2/securitygroup/'+sltSecurityGuid+'/running', "DELETE", "", getInitGroupList, $('#modalLoadingBar'));
         }
     };
 
+    var setSecuritySpaceList = function (data) {
+        sltSecuritySpaces = data.resources;
+        settingOrgListSpaceList();
+    }
+
+    var serSecurityOrgsList= function (data) {
+        sltSecurityOrgs = data.resources;
+    }
     /*]]>*/
 </script>
 </body>

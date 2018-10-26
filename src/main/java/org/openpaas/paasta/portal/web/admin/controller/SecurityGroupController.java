@@ -121,8 +121,8 @@ public class SecurityGroupController extends Common {
      * @throws Exception the exception
      * @author 박철한
      */
-    @GetMapping(Constants.V2_URL+"/securitygroup/{page}/staging")
-    public Map<String, Object>  listSecurityGroupStagingDefaultsResponse(String page) throws Exception {
+    @GetMapping(Constants.V2_URL+"/securitygroups/staging/{page}")
+    public Map<String, Object>  listSecurityGroupStagingDefaultsResponse(@PathVariable int page) throws Exception {
         return securityGroupService.listSecurityGroupStagingDefaultsResponse(page);
     }
 
@@ -164,7 +164,7 @@ public class SecurityGroupController extends Common {
      * @throws Exception the exception
      * @author 박철한
      */
-    @GetMapping(Constants.V2_URL+"/securitygroup/{page}/running")
+    @GetMapping(Constants.V2_URL+"/securitygroups/running/{page}")
     public Map<String, Object> listSecurityGroupRunningDefaultsResponse(@PathVariable int page) throws Exception {
         return securityGroupService.listSecurityGroupRunningDefaultsResponse(page);
     }
@@ -181,5 +181,46 @@ public class SecurityGroupController extends Common {
     @DeleteMapping(Constants.V2_URL+"/securitygroup/{securityid}/running")
     public Map<String, Object> removeSecurityGroupRunning(@PathVariable String securityid) throws Exception {
         return securityGroupService.removeSecurityGroupRunning(securityid);
+    }
+
+
+    /**
+     * 공간 시큐리티그룹을 조회한다.
+     *
+     * @param page  ListSecurityGroups page
+     * @param securityid the security guid
+     * @return ListSecurityGroupSpacesResponse
+     * @throws Exception the exception
+     */
+    @GetMapping(Constants.V2_URL+"/securitygroup/{securityid}/{page}")
+    public Map<String, Object> listSecurityGroupSpacesResponse(@PathVariable String securityid, @PathVariable int page) throws Exception {
+        return securityGroupService.listSecurityGroupSpacesResponse(securityid, page);
+    }
+
+    /**
+     * 시큐리티그룹과 공간을 연결한다.
+     *
+     * @param securityid  the security guid
+     * @param spaceid the space guid
+     * @return AssociateSecurityGroupSpaceResponse
+     * @throws Exception the exception
+     */
+    @PutMapping(Constants.V2_URL+"/securitygroup/{securityid}/spaces/{spaceid}")
+    public Map<String, Object> associateSecurityGroupSpaceResponse(@PathVariable String securityid, @PathVariable String spaceid) throws Exception {
+        System.out.println("*****************************");
+        return securityGroupService.associateSecurityGroupSpaceResponse(securityid, spaceid);
+    }
+
+    /**
+     * 공간 시큐리티 그룹을 언바인드 한다.
+     *
+     * @param securityid  the security guid
+     * @param spaceid the space guid
+     * @return Map
+     * @throws Exception the exception
+     */
+    @DeleteMapping(Constants.V2_URL+"/securitygroup/{securityid}/spaces/{spaceid}")
+    public Map<String, Object> removeSecurityGroupSpace(@PathVariable String securityid, @PathVariable String spaceid) throws Exception {
+        return securityGroupService.removeSecurityGroupSpace(securityid, spaceid);
     }
 }
