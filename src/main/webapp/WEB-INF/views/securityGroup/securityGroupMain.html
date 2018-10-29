@@ -834,8 +834,10 @@
             $('#securityProtocol_'+idx).val($('#securityProtocol_'+(idx+1)).val());
             $('#securityType_'+idx).val($('#securityType_'+(idx+1)).val());
         }
+        if(tapLenght != 1){
         $('#securityList_'+tapLenght).remove();
         $('#securityplus_'+tapLenght).remove();
+        }
 
         if(index == tapLenght && tapLenght != 1){
             $("#securityList_"+(idx-1) + " > a").trigger("click");
