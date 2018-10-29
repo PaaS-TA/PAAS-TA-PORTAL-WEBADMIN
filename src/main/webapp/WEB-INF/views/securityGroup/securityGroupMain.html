@@ -837,6 +837,14 @@
         if(tapLenght != 1){
         $('#securityList_'+tapLenght).remove();
         $('#securityplus_'+tapLenght).remove();
+        } else {
+            $('#securityGroupCode_1').val('');
+            $('#securityDescription_1').val('');
+            $('#securityDestination_1').val('');
+            $('#securityLog_1').prop('checked', false);
+            $('#securityPorts_1').val('');
+            $('#securityProtocol_1').val('');
+            $('#securityType_1').val('');
         }
 
         if(index == tapLenght && tapLenght != 1){
