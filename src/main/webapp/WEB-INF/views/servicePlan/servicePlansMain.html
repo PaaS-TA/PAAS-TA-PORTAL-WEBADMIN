@@ -111,9 +111,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="disableBtn" class="btn btn-sm btn-danger pull-left" onClick="disableServiceAccess();">접근해제</button>
                             <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
-                            <button type="button" id="enableBtn" class="btn btn-sm btn-primary pull-right" onClick="enableServiceAccess();">접근허용</button>
+                            <button type="button" id="enableBtn" class="btn btn-sm btn-primary pull-right" onClick="enableServiceAccess();">수정</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -203,12 +202,12 @@
     };
 
     var procCallbackGetOrgs = function(data) {
-        console.log("data Org   "+data);
+        console.debug("data Org   "+data);
 
         $.each(data.resources, function (index, data) {
             orgObj[data.metadata.guid] = data.entity.name;
         });
-        console.log(orgObj);
+        console.debug(orgObj);
     }
 
 
@@ -233,6 +232,8 @@
 
         var entity = dataList.list;
         console.log(entity);
+
+        $("#servicePlanList").html("");
 
         $.each(entity, function (id, data) {
             if(data.servicePackName != "NONE") {
@@ -288,8 +289,6 @@
 
         SERVICE_PLAN_GUID = planTdId.replace("service_access_", "");
 
-//        var selectPlanGuid = planTdId.replace("service_access_", "");
-
         //서비스 이름
         $("#servicename").val(serviceName);
 
@@ -302,8 +301,7 @@
         $('#serviceAccessList').val($("#"+planTdId).text().toLowerCase());
 
         //서비스 조직
-        $("#serviceOrgListText").text($("#"+orgs).text());
-
+//        $("#serviceOrgListText").text($("#"+orgs).text());
         //서비스 전체 조직
         if( $("#serviceAccessList").val() =="limited"){
             $("#serviceOrgListDiv").show();
@@ -316,6 +314,11 @@
                 selectBox += '<option value="'+key+'">'+orgObj[key]+'</option>';
             }
             objTable.append(selectBox);
+
+            var serviceOrgListText = $("#serviceOrgListText").text($("#"+orgs).text());
+            var splitServiceOrgListText = serviceOrgListText.split(' ');
+            $("#serviceOrgListText").text(splitServiceOrgListText);
+            $("#serviceOrgListText").show();
         } else {
             $("#serviceOrgListDiv").hide();
             $("#serviceOrgListDivSecond").hide();
@@ -324,7 +327,6 @@
     };
 
     function selectServiceAccess(){
-//        console.debug($("#serviceAccessList").val());
 
         //limited 일 때, 조직 확인 : display : none
         $("#serviceAccessList").val();
@@ -332,6 +334,14 @@
         if($("#serviceAccessList").val() == "limited"){
             $("#serviceOrgListDiv").show();
             $("#serviceOrgListDivSecond").show();
+
+            var selectBox = '';
+            var objTable = $('#serviceOrgList');
+
+            for( var key in orgObj ) {
+                selectBox += '<option value="'+key+'">'+orgObj[key]+'</option>';
+            }
+            objTable.append(selectBox);
         } else{
             $("#serviceOrgListDiv").hide();
             $("#serviceOrgListDivSecond").hide();
@@ -341,8 +351,10 @@
     // 서비스 접근 허용
     function enableServiceAccess() {
         console.log("enableServiceAccess start");
-        console.log(SERVICE_PLAN_GUID);
-        console.log($("#serviceAccessList").val());
+        console.debug(SERVICE_PLAN_GUID);
+        console.debug($("#serviceAccessList").val());
+
+        console.log(orgObj);
 
         var guid = SERVICE_PLAN_GUID;
         var publiclyVisible;
@@ -371,7 +383,6 @@
             return (0 != reqString.replace(/ /g, "").length);
         }
     }
-
 
 
     /*]]>*/
