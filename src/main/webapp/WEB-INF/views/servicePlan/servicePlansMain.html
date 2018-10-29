@@ -172,28 +172,17 @@
         init();
 
         $('#register').click(function(){
-
             $('#titleDetail').hide();
             $('#disableBtn').hide();
             $('#enableBtn').hide();
-
-            $('#regBtn').show();
             $('#closeBtn').show();
 
             $("#servicename").val("");
             $("#serviceplan").val("");
             $("#serviceOrgListText").val("");
-
+            $("#serviceOrgList").val("");
         });
 
-        $('#serviceBrokerList').click(function(){
-
-            $('#titleDetail').show();
-            $('#deleteBtn').show();
-            $('#saveBtn').show();
-
-            $('#regBtn').hide();
-        });
     });
 
     // 조직 전체 목록 리스트:[동기화]
@@ -260,10 +249,10 @@
             SERVICE_ACCESS_LIST += "<td>"+data2.entity.name+"</td> ";
             SERVICE_ACCESS_LIST += "<td id='service_access_"+data2.metadata.guid+"'>"+accessText+"</td> ";
             SERVICE_ACCESS_LIST += "<td id='service_plan_"+data2.metadata.guid+"'></td>";
+            SERVICE_ACCESS_LIST += "<input type='hidden' id='hidden_org_guid_"+data2.metadata.guid+"'/>";
             SERVICE_ACCESS_LIST += "</tr> ";
         });
 
-        $("#serviceOrgList").append(SERVICE_ACCESS_LIST);
         $("#servicePlanList").append(SERVICE_ACCESS_LIST);
 
         $.each(data.resources, function (id, data0rg) {
@@ -275,15 +264,27 @@
     var procCallbackGetServicePlanVisibilites = function(data){
         if(data.resources.length > 0) {
             $.each(data.resources, function (id, data3) {
+
                 $("#service_plan_"+data3.entity.service_plan_guid).append(orgObj[data3.entity.organization_guid]+" ");
+
+                if($("#hidden_org_guid_"+ data3.entity.service_plan_guid).val() == "") {
+                    $("#hidden_org_guid_"+ data3.entity.service_plan_guid).val(data3.entity.organization_guid);
+                } else {
+                    $("#hidden_org_guid_"+ data3.entity.service_plan_guid).val($("#hidden_org_guid_"+ data3.entity.service_plan_guid).val()+","+data3.entity.organization_guid);
+                }
 
                 //접근 리스트
                 $("#service_access_"+data3.entity.service_plan_guid).text('limited');
             });
+
         }
     };
 
     function getServicePlanDetail(serviceName, planName, planTdId, orgs){
+        //초기화
+        $('#serviceOrgList').empty();
+        $("#serviceOrgListText").empty();
+
         $('#serviceAccessForm')[0].reset();
         $('#serviceAccessFormModal').modal('toggle');
 
@@ -300,25 +301,34 @@
 
         $('#serviceAccessList').val($("#"+planTdId).text().toLowerCase());
 
-        //서비스 조직
-//        $("#serviceOrgListText").text($("#"+orgs).text());
         //서비스 전체 조직
         if( $("#serviceAccessList").val() =="limited"){
             $("#serviceOrgListDiv").show();
             $("#serviceOrgListDivSecond").show();
 
+            //서비스 조직
+            var serviceOrgListText = $("#serviceOrgListText").text($("#"+orgs).text());
+
+            $("#serviceOrgListText").show();
+
             var selectBox = '';
             var objTable = $('#serviceOrgList');
 
-            for( var key in orgObj ) {
-                selectBox += '<option value="'+key+'">'+orgObj[key]+'</option>';
+            console.log($("#hidden_org_guid_"+SERVICE_PLAN_GUID).val());
+
+            var splitSelectOrgGuid = $("#hidden_org_guid_"+SERVICE_PLAN_GUID).val().split(",");
+
+            var orgObj2 = orgObj;
+
+            for(var i=0; i<splitSelectOrgGuid.length; i++) {
+                delete orgObj2[splitSelectOrgGuid[i]];
+            }
+
+            for( var key in orgObj2 ) {
+                selectBox += '<option value="'+key+'">'+orgObj2[key]+'</option>';
             }
             objTable.append(selectBox);
 
-            var serviceOrgListText = $("#serviceOrgListText").text($("#"+orgs).text());
-            var splitServiceOrgListText = serviceOrgListText.split(' ');
-            $("#serviceOrgListText").text(splitServiceOrgListText);
-            $("#serviceOrgListText").show();
         } else {
             $("#serviceOrgListDiv").hide();
             $("#serviceOrgListDivSecond").hide();
@@ -340,12 +350,14 @@
 
             for( var key in orgObj ) {
                 selectBox += '<option value="'+key+'">'+orgObj[key]+'</option>';
+                console.log(key);
             }
             objTable.append(selectBox);
         } else{
             $("#serviceOrgListDiv").hide();
             $("#serviceOrgListDivSecond").hide();
         }
+
     };
 
     // 서비스 접근 허용
@@ -367,6 +379,8 @@
             console.log("true");
         }else{
             /*limited*/
+            //서비스 조직에서 선택한 값을 추가한다.
+//            $("#serviceOrgList option:selected").val();
         }
 
         var param = {
