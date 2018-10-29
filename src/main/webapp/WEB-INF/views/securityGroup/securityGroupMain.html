@@ -207,8 +207,9 @@
                                         </div>
                                         <div style="border: 1px solid;border-color: red;"></div>
                                         <div class="form-group">
-                                            <button type="button" id="securityGroupReadFile" class="btn btn-sm btn-primary pull-right" style="margin-right: 15px; margin-top :10px;">파일 불러오기</button>
+                                            <button type="button" id="securityGroupReadFile" class="btn btn-sm btn-primary pull-right" style="margin-right: 15px; margin-top :10px;" onclick="ruleLoader();">파일 불러오기</button>
                                             <button type="button" id="securityGroupWriteFile" class="btn btn-sm btn-primary pull-right" style="margin-right: 15px; margin-top :10px;" onclick="ruleWrite();">파일 내보내기</button>
+                                            <input type="file" id="fileLoader" onchange="loadFile();" style="display: none;"/>
                                         </div>
                                         <table class="table table-striped text-center"> <!-- table-responsive -->
                                             <thead>
@@ -758,6 +759,32 @@
         pp.click();
 
         //window.open('data:text/csv;charset=utf-8,' + param);
+    }
+
+    function ruleLoader() {
+        $("#fileLoader").click();
+    }
+
+    function loadFile() {
+        var fileReader = new FileReader();
+        fileReader.onload = function () {
+            var str = '{"hello":"world"}';
+            var obj = JSON.parse(str);
+            console.log(obj);
+            var data = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+            try{
+                var text = JSON.stringify(data);
+                var llet = JSON.parse(text);
+                console.log(llet);
+                //var tapLenght = ($('input[id^=securityDescription_]').length);
+                //getsecurityListTapHtml(tapLenght, (data.entity.rules.length + 1));
+            }catch (e) {
+                notifyAlert('danger',"",e.toString());
+            }
+
+        };
+        fileReader.readAsDataURL($('#fileLoader').prop('files')[0]);
+
     }
 
     function tapDelete(idx) {
