@@ -121,7 +121,7 @@
                                         </div>
                                         <div class="nav-tabs-custom" style="margin-bottom:0px;">
                                             <ul class="nav nav-tabs">
-                                                <li class="tab-pane active" id="securityList_0"><a
+                                                <li class="tab-pane active" id="securityList_1"><a
                                                         href="#securityplus_1" data-toggle="tab" aria-expanded="true"
                                                         data-tab-type="org">1</a></li>
                                                 <li class="tab-pane" id="securityListPlus"><a href="#spaceTab"
@@ -657,6 +657,8 @@
         objTable.append('' +
             '<tr id="selectBody" style="text-align-last: center">' +
             '   <td >' + selectBox  + '</td>' +
+            '   <td id="tdSpace"></td>' +
+            '   <td id="tdAdd"></td>' +
             '</tr>'
         );
         $.each($("select[id*='selectSpaces']"), function (idx, data2) {
@@ -698,7 +700,7 @@
         });
         selectBox += '</select>';
         var objTable = $("#selectBody");
-        objTable.append('<td id="tdSpace">' + selectBox  + '</td>');
+        objTable.append('<td id="tdSpace">' + selectBox  + '</td>'+'<td id="tdAdd"></td>');
     };
 
     function addSpaceSecurity(){
@@ -760,6 +762,7 @@
 
     function tapDelete(idx) {
         var tapLenght = ($('input[id^=securityDescription_]').length);
+        var index = idx;
         for(idx; tapLenght > idx ; idx++){
             $('#securityGroupCode_'+idx).val($('#securityGroupCode_'+(idx+1)).val());
             $('#securityDescription_'+idx).val($('#securityDescription_'+(idx+1)).val());
@@ -771,8 +774,9 @@
         }
         $('#securityList_'+tapLenght).remove();
         $('#securityplus_'+tapLenght).remove();
-        if(idx == tapLenght){
-            $("#securityList_"+ (idx - 1) + " > a").trigger("click");
+
+        if(index == tapLenght && tapLenght != 1){
+            $("#securityList_"+(idx-1) + " > a").trigger("click");
         }
     }
 
