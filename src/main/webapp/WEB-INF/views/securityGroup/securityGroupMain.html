@@ -120,7 +120,7 @@
                                             </div>
                                         </div>
                                         <div class="nav-tabs-custom" style="margin-bottom:0px;">
-                                            <ul class="nav nav-tabs">
+                                            <ul class="nav nav-tabs" id ="secucrityListUI">
                                                 <li class="tab-pane active" id="securityList_1"><a
                                                         href="#securityplus_1" data-toggle="tab" aria-expanded="true"
                                                         data-tab-type="org">1</a></li>
@@ -768,15 +768,41 @@
     function loadFile() {
         var fileReader = new FileReader();
         fileReader.onload = function () {
-            var str = '{"hello":"world"}';
-            var obj = JSON.parse(str);
-            console.log(obj);
-            var data = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+            var data1 = fileReader.result;  // data <-- in this var you have the file data in Base64 format
             try{
-                var text = JSON.stringify(data);
-                var llet = JSON.parse(text);
-                console.log(llet);
-                //var tapLenght = ($('input[id^=securityDescription_]').length);
+                $.getJSON(data1, function(data) {
+                    var tapLenght = (($('input[id^=securityDescription_]').length+1));
+                    var tapResultLength = (data.length + tapLenght);
+                    securityTapUI(tapLenght,tapResultLength);
+                    getsecurityListTapHtml(tapLenght,tapResultLength);
+                    $.each(data, function (index, jsonData) {
+                        if(jsonData.code !== undefined){
+                            $('#securityGroupCode_'+(index+tapLenght)).val(jsonData.code);
+                        }
+                        if(jsonData.description !== undefined){
+                            $('#securityDescription_'+(index+tapLenght)).val(jsonData.description);
+                        }
+                        if(jsonData.ports !== undefined){
+                            $('#securityPorts_'+(index+tapLenght)).val(jsonData.ports);
+                        }
+                        if(jsonData.type !== undefined){
+                            $('#securityType_'+(index+tapLenght)).val(jsonData.type);
+                        }
+                        if(jsonData.destination !== undefined){
+                            $('#securityDestination_'+(index+tapLenght)).val(jsonData.destination);
+                        }
+                        if(jsonData.log !== undefined){
+                            jsonData.log ?  $('#securityLog_'+(index+tapLenght)).prop('checked', true) : $('#securityLog_'+(index+tapLenght)).prop('checked', false);
+                        }
+                        if(jsonData.protocol !== undefined){
+                            $('#securityProtocol_'+(index+tapLenght)).val(jsonData.protocol);
+                        }
+                    });
+                }).done(function () {
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    notifyAlert('danger',"","JSON 형식 오류 : " + textStatus);
+                });
+
                 //getsecurityListTapHtml(tapLenght, (data.entity.rules.length + 1));
             }catch (e) {
                 notifyAlert('danger',"",e.toString());
@@ -784,7 +810,16 @@
 
         };
         fileReader.readAsDataURL($('#fileLoader').prop('files')[0]);
+    }
 
+    function securityTapUI(s_idx, l_idx) {
+        var texts ='';
+        for(s_idx; s_idx < l_idx; s_idx++){
+            texts += '<li class="tab-pane" id="securityList_' + s_idx + '"><a href="#securityplus_' + s_idx + '" data-toggle="tab" aria-expanded="true" data-tab-type="org">' + s_idx + '</a></li>';
+        }
+        texts +='<li class="tab-pane" id="securityListPlus"><a href="#spaceTab" data-toggle="tab" aria-expanded="false" data-tab-type="plus" id="securityplus">+</a></li>';
+        $("#securityListPlus").remove();
+        $("#secucrityListUI").append(texts);
     }
 
     function tapDelete(idx) {
