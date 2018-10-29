@@ -194,6 +194,9 @@
                                                                    placeholder="icmp에 대한 유형 제어 신호"></input>
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <button type="button" id="securityGroupTapDelete_1" class="btn btn-sm btn-danger pull-right" style="margin-right: 15px;" onclick="tapDelete(1)">탭 삭제</button>
+                                                    </div>
 
                                                 </div>
 
@@ -201,14 +204,18 @@
                                             <div class="tab-pane" id="spaceTab">
                                                 <input type="text"/>
                                             </div>
-
+                                        </div>
+                                        <div style="border: 1px solid;border-color: red;"></div>
+                                        <div class="form-group">
+                                            <button type="button" id="securityGroupReadFile" class="btn btn-sm btn-primary pull-right" style="margin-right: 15px; margin-top :10px;">파일 불러오기</button>
+                                            <button type="button" id="securityGroupWriteFile" class="btn btn-sm btn-primary pull-right" style="margin-right: 15px; margin-top :10px;" onclick="ruleWrite();">파일 내보내기</button>
                                         </div>
                                         <table class="table table-striped text-center"> <!-- table-responsive -->
                                             <thead>
                                             <tr>
-                                                <th>org</th>
-                                                <th>space</th>
-                                                <th>delete</th>
+                                                <th style="width: 45%">org</th>
+                                                <th style="width: 45%">space</th>
+                                                <th style="width: 10%">delete</th>
                                             </tr>
                                             </thead>
                                             <tbody id="securityGroup_1List" name="securityGroup_1List">
@@ -328,6 +335,7 @@
         result += security_plus;
         getsecurityListTapHtml((idx+1), (idx+2));
         $(e.target).parent().parent().html(result);
+        $("#securityList_"+ (idx + 1) + " > a").trigger("click");
     });
 
     var selectGroupChange = function(){
@@ -403,6 +411,10 @@
             '<input type="number" class="form-control" id="securityType_' + idx + '"'+
         'placeholder="icmp에 대한 유형 제어 신호"></input>'+
             '</div>'+
+            '</div>'+
+
+                '<div class="form-group">'+
+                '<button type="button" id="securityGroupTapDelete_'+ idx +'"'+ 'class="btn btn-sm btn-danger pull-right" style="margin-right: 15px;" onclick="tapDelete(' + idx + ');">탭 삭제</button>'+
             '</div>'+
 
             '</div>'+
@@ -519,7 +531,7 @@
     function createSecurityGroup() {
         var param = getRules();
         var servicename = $('#securityGroupName').val();
-        procCallAjax('/v2/securitygroup/'+ servicename, "POST", param, setCreateDefaultStagingSetting, $('#modalLoadingBar'));
+        procCallAjax2('/v2/securitygroup/'+ servicename, "POST", param, setCreateDefaultStagingSetting, $('#modalLoadingBar'));
     };
 
     function updateSecurityGroup() {
@@ -730,6 +742,39 @@
         settingOrgListSpaceList();
     }
 
+    function ruleWrite() {
+        var param = getRules();
+        // var file = new Blob([param], {type: 'text/plain'});
+        // console.log(file);
+        var fileName= $('#securityGroupName').val()+".txt";
+        if($('#securityGroupName').val() == ''){
+            var fileName= "empty.txt";
+        }
+        var pp = document.createElement('a');
+        pp.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(param));
+        pp.setAttribute('download', fileName);
+        pp.click();
+
+        //window.open('data:text/csv;charset=utf-8,' + param);
+    }
+
+    function tapDelete(idx) {
+        var tapLenght = ($('input[id^=securityDescription_]').length);
+        for(idx; tapLenght > idx ; idx++){
+            $('#securityGroupCode_'+idx).val($('#securityGroupCode_'+(idx+1)).val());
+            $('#securityDescription_'+idx).val($('#securityDescription_'+(idx+1)).val());
+            $('#securityDestination_'+idx).val($('#securityDestination_'+(idx+1)).val());
+            $('#securityLog_'+(idx+1)).is(":checked") ?  $('#securityLog_'+idx).prop('checked', true) : $('#securityLog_'+idx).prop('checked', false);
+            $('#securityPorts_'+idx).val($('#securityPorts_'+(idx+1)).val());
+            $('#securityProtocol_'+idx).val($('#securityProtocol_'+(idx+1)).val());
+            $('#securityType_'+idx).val($('#securityType_'+(idx+1)).val());
+        }
+        $('#securityList_'+tapLenght).remove();
+        $('#securityplus_'+tapLenght).remove();
+        if(idx == tapLenght){
+            $("#securityList_"+ (idx - 1) + " > a").trigger("click");
+        }
+    }
 
     var getInitGroupList = function (data) {
         sltPage = 1;
@@ -737,17 +782,24 @@
     };
 
     var setCreateDefaultStagingSetting = function (data) {
-        sltSecurityGuid = data.metadata.guid;
-        if($('input:checkbox[id="securityStagingDefault"]').is(":checked")){
-            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/staging', "PUT", "", bindResult, $('#modalLoadingBar'));
-        }if($('input:checkbox[id="securityRunningDefault"]').is(":checked")){
-            procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/running', "PUT", "", bindResult, $('#modalLoadingBar'));
+        console.log(data.RESULT);
+        if(data.RESULT == "SUCCESS")
+        {
+            notifyAlert('success',"",'생성 완료 되었습니다.');
+            sltSecurityGuid = data.DATA.metadata.guid;
+            if($('input:checkbox[id="securityStagingDefault"]').is(":checked")){
+                procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/staging', "PUT", "", bindResult, $('#modalLoadingBar'));
+            }if($('input:checkbox[id="securityRunningDefault"]').is(":checked")){
+                procCallAjax2('/v2/securitygroup/'+sltSecurityGuid+'/running', "PUT", "", bindResult, $('#modalLoadingBar'));
+            }
+            $.each(sltBindSpaceData, function (index, data1) {
+                procCallAjax2('/v2/securitygroup/'+data.DATA.metadata.guid+'/spaces/'+sltSecurityGuid, "PUT", data.DATA, bindResult);
+            });
+            sltPage = 1;
+            getSecurityGroupList();
+        } else if(data.RESULT == "FALE"){
+            notifyAlert("danger", "",data.MSG);
         }
-        $.each(sltBindSpaceData, function (index, data1) {
-            procCallAjax2('/v2/securitygroup/'+data.metadata.guid+'/spaces/'+data1.metadata.guid, "PUT", data, bindResult);
-        });
-        sltPage = 1;
-        getSecurityGroupList();
     };
 
     var setUpdateDefaultStagingSetting = function (data) {
