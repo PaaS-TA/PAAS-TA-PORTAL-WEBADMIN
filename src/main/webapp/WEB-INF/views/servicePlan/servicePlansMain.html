@@ -91,7 +91,7 @@
                                         <div class="form-group required" style="display: none" id="serviceOrgListDiv">
                                             <label for="serviceOrgList" class="col-sm-3 control-label">서비스 조직</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control checkServiceForm" id="serviceOrgList" name="serviceOrgList" style="width:630px;">
+                                                <select class="form-control checkServiceForm" onchange="changeSelectOrgs()" id="serviceOrgList" name="serviceOrgList" style="width:630px;">
                                                     <option value="">추가 할 서비스 조직을 선택하세요</option>
                                                 </select>
                                                 <p></p>
@@ -156,6 +156,7 @@
     var orgObj = new Object();                // 조직 전체 리스트
 
     var SELECT_SERVICE_PACK_NAME;           //서비스팩 이름
+    var UNIQUE_ID;                            //[data2].entity.unique_id
 
     var SERVICE_LIST;                         //서비스팩 전체 리스트
     var SERVICE_ACCESS_LIST;                 //서비스 제어 전체 리스트
@@ -231,14 +232,17 @@
                 procCallAjaxAsyncFalse("/v2/catalogs/serviceplan/"+data.servicePackName, "GET", null, procCallbackGetServicePlan, $('#modalLoadingBar'));
             }
         });
-
     };
 
 
     var procCallbackGetServicePlan = function(data){
+
         SERVICE_ACCESS_LIST = "";
 
         $.each(data.resources, function (id, data2) {
+
+            UNIQUE_ID = data2.entity.unique_id;
+
             var accessText = "NONE";     //false
             if(data2.entity.public) {
                 accessText= "All";
@@ -289,6 +293,7 @@
         $('#serviceAccessFormModal').modal('toggle');
 
         SERVICE_PLAN_GUID = planTdId.replace("service_access_", "");
+        ORG_GUID = orgs;
 
         //서비스 이름
         $("#servicename").val(serviceName);
@@ -360,6 +365,21 @@
 
     };
 
+    function changeSelectOrgs() {
+        var uniqueId =UNIQUE_ID;
+        var servicePlanGuid = SERVICE_PLAN_GUID;
+        var orgGuid = $("#serviceOrgList").val();
+
+        var param = {
+            servicePlanGuid: servicePlanGuid,
+            orgGuid : orgGuid
+        }
+
+        console.log(param);
+        procCallAjax("/v2/serviceplanvisibilities/"+ uniqueId, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
+
+    }
+
     // 서비스 접근 허용
     function enableServiceAccess() {
         console.log("enableServiceAccess start");
@@ -379,8 +399,7 @@
             console.log("true");
         }else{
             /*limited*/
-            //서비스 조직에서 선택한 값을 추가한다.
-//            $("#serviceOrgList option:selected").val();
+            changeSelectOrgs();
         }
 
         var param = {
@@ -397,7 +416,6 @@
             return (0 != reqString.replace(/ /g, "").length);
         }
     }
-
 
     /*]]>*/
 </script>

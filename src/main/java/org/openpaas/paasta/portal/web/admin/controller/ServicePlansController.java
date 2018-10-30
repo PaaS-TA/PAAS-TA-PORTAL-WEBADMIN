@@ -71,7 +71,7 @@ public class ServicePlansController extends Common {
     }
 
     /**
-     *  해당 서비스 제어 상세내용을 조회한다.
+     *  해당 서비스 제어 상세내용을 수정한다.
      *
      * @param serviceBroker serviceBroker
      * @return ModelAndView model
@@ -95,5 +95,19 @@ public class ServicePlansController extends Common {
         return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans/"+serviceplanId+"/visibilites", HttpMethod.GET, null, this.getToken());
     }
 
+
+    /**
+     * 서비스 Plan에 Access 등록 되어있는 조직을 추가한다.
+     *
+     * @param param the param
+     * @param guid guid
+     * @return boolean boolean
+     * @throws Exception the exception
+     */
+    @PutMapping(value = {Constants.V2_URL + "/serviceplanvisibilities/{guid}"})
+    public Map<String, Object> updateServicePlanVisibility(@RequestBody Map param, @PathVariable String guid) throws Exception {
+        LOGGER.info("::::serviceplanvisibilities Start::: " + guid +"   " + param.get("servicePlanGuid").toString()+"   " +param.get("orgGuid").toString());
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplanvisibilities/"+guid, HttpMethod.PUT, param, this.getToken());
+    }
 
 }
