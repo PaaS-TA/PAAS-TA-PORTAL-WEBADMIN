@@ -227,6 +227,9 @@
             var boldClass = '';
             var menuText = '';
             var activeText = '';
+
+            usersObj = new Object();
+
             for (var i = 0; i < listLength; i++) {
                 boldClass = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "" == resultList[i].adminYn ? 'fwb' : '';
                 menuText = '운영권한 부여';
