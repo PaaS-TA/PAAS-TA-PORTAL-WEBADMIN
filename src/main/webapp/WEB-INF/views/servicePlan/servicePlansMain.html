@@ -169,7 +169,6 @@
     }
 
     $(document).ready(function () {
-
         init();
 
         $('#register').click(function(){
@@ -266,9 +265,17 @@
     var procCallbackGetServicePlanVisibilites = function(data){
 
         if(data.resources.length > 0) {
+
             $.each(data.resources, function (id, data3) {
 
-                $("#service_plan_"+data3.entity.service_plan_guid).append(orgObj[data3.entity.organization_guid]+",");
+                console.log(data.resources.length);
+                console.log(id+1);
+
+                if(data.resources.length != (id+1)) {
+                    $("#service_plan_"+data3.entity.service_plan_guid).append(orgObj[data3.entity.organization_guid]+",");
+                } else {
+                    $("#service_plan_"+data3.entity.service_plan_guid).append(orgObj[data3.entity.organization_guid]);
+                }
 
                 if($("#hidden_org_guid_"+ data3.entity.service_plan_guid).val() == "") {
                     $("#hidden_org_guid_"+ data3.entity.service_plan_guid).val(data3.entity.organization_guid);
@@ -281,7 +288,6 @@
                 //접근 리스트
                 $("#service_access_"+data3.entity.service_plan_guid).text('limited');
             });
-
         }
     };
 
@@ -318,12 +324,12 @@
             var selectBox = '';
             var objTable = $('#serviceOrgList');
 
-            var splitSelectOrgName = $("#"+orgs).text().substr(0, $("#"+orgs).text().length-1).split(",");
+            var splitSelectOrgName = $("#"+orgs).text().substr(0, $("#"+orgs).text().length-0).split(",");
             var splitSelectOrgGuid = $("#hidden_org_guid_"+SERVICE_PLAN_GUID).val().split(",");
             var splitSelectMetaGuid = $("#hidden_meta_guid_"+SERVICE_PLAN_GUID).val().split(",");
 
             for(var j=0; j<splitSelectOrgName.length; j++) {
-                var html = '<a href="javascript:deleteServicePlanVisibility(\''+splitSelectMetaGuid[j]+'\')">[삭제]&nbsp;&nbsp;&nbsp;</a>';
+                var html = '<a href="javascript:deleteServicePlanVisibility(\''+splitSelectMetaGuid[j]+'\')">[X]&nbsp;&nbsp;&nbsp;</a>';
                 $("#serviceOrgListText").append(splitSelectOrgName[j]+html);
             }
 
@@ -342,7 +348,6 @@
             $("#serviceOrgListDiv").hide();
             $("#serviceOrgListDivSecond").hide();
         }
-
     };
 
     function selectServiceAccess(){
@@ -366,7 +371,6 @@
             $("#serviceOrgListDiv").hide();
             $("#serviceOrgListDivSecond").hide();
         }
-
     };
 
     // 서비스 조직 추가
@@ -380,7 +384,6 @@
             servicePlanGuid: servicePlanGuid,
             orgGuid : orgGuid
         }
-
         console.debug(param);
         procCallAjax("/v2/serviceplanvisibilities/"+ uniqueId, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
@@ -414,6 +417,8 @@
 
     //서비스 조직 삭제
     function deleteServicePlanVisibility(splitSelectMetaGuid) {
+        //초기화
+        $("#serviceOrgListText").val();
 
         var guid = splitSelectMetaGuid;
         var publiclyVisible;
@@ -427,9 +432,7 @@
             publiclyVisible : publiclyVisible
         }
         procCallAjax("/v2/serviceplanvisibilities/"+guid, "DELETE", JSON.stringify(param), init, $('#modalLoadingBar'));
-
     }
-
 
     /*]]>*/
 </script>
