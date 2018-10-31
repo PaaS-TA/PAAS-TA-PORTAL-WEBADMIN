@@ -91,7 +91,7 @@
                                         <div class="form-group required" style="display: none" id="serviceOrgListDiv">
                                             <label for="serviceOrgList" class="col-sm-3 control-label">서비스 조직</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control checkServiceForm" id="serviceOrgList" name="serviceOrgList" style="width:630px;">
+                                                <select class="form-control checkServiceForm" onchange="changeSelectOrgs()" id="serviceOrgList" name="serviceOrgList" style="width:630px;">
                                                     <option value="">추가 할 서비스 조직을 선택하세요</option>
                                                 </select>
                                                 <p></p>
@@ -102,6 +102,7 @@
                                             <label for="serviceOrgListText" class="col-sm-3"></label>
                                             <div class="col-sm-9">
                                                 <label id="serviceOrgListText" name="serviceOrgListText"></label>
+                                                <td id="ServicePlanVisibilityDeleteText"></td>
                                             </div>
                                         </div>
 
@@ -155,11 +156,12 @@
 
     var orgObj = new Object();                // 조직 전체 리스트
 
+    var UNIQUE_ID;                            //[data2] 생성된 GUID
+    var SERVICE_PLAN_GUID;                   //서비스 플랜 GUID
     var SELECT_SERVICE_PACK_NAME;           //서비스팩 이름
 
     var SERVICE_LIST;                         //서비스팩 전체 리스트
     var SERVICE_ACCESS_LIST;                 //서비스 제어 전체 리스트
-    var SERVICE_PLAN_GUID;
 
 
     var init = function(){
@@ -231,14 +233,16 @@
                 procCallAjaxAsyncFalse("/v2/catalogs/serviceplan/"+data.servicePackName, "GET", null, procCallbackGetServicePlan, $('#modalLoadingBar'));
             }
         });
-
     };
 
-
     var procCallbackGetServicePlan = function(data){
+
         SERVICE_ACCESS_LIST = "";
 
         $.each(data.resources, function (id, data2) {
+
+            UNIQUE_ID = data2.entity.unique_id;
+
             var accessText = "NONE";     //false
             if(data2.entity.public) {
                 accessText= "All";
@@ -250,27 +254,32 @@
             SERVICE_ACCESS_LIST += "<td id='service_access_"+data2.metadata.guid+"'>"+accessText+"</td> ";
             SERVICE_ACCESS_LIST += "<td id='service_plan_"+data2.metadata.guid+"'></td>";
             SERVICE_ACCESS_LIST += "<input type='hidden' id='hidden_org_guid_"+data2.metadata.guid+"'/>";
+            SERVICE_ACCESS_LIST += "<input type='hidden' id='hidden_meta_guid_"+data2.metadata.guid+"'/>";
             SERVICE_ACCESS_LIST += "</tr> ";
         });
 
         $("#servicePlanList").append(SERVICE_ACCESS_LIST);
 
-        $.each(data.resources, function (id, data0rg) {
-            procCallAjaxAsyncFalse("/v2/serviceplans/"+data0rg.metadata.guid+"/visibilites", "GET", null, procCallbackGetServicePlanVisibilites, $('#modalLoadingBar'));
+        $.each(data.resources, function (id, servicePlan) {
+            procCallAjaxAsyncFalse("/v2/serviceplans/"+servicePlan.metadata.guid+"/visibilites", "GET", null, procCallbackGetServicePlanVisibilites, $('#modalLoadingBar'));
         });
     };
 
-
     var procCallbackGetServicePlanVisibilites = function(data){
+
         if(data.resources.length > 0) {
             $.each(data.resources, function (id, data3) {
 
+                console.log("***3data3");
+                console.log(data3);
                 $("#service_plan_"+data3.entity.service_plan_guid).append(orgObj[data3.entity.organization_guid]+" ");
 
                 if($("#hidden_org_guid_"+ data3.entity.service_plan_guid).val() == "") {
                     $("#hidden_org_guid_"+ data3.entity.service_plan_guid).val(data3.entity.organization_guid);
+                    $("#hidden_meta_guid_"+ data3.entity.service_plan_guid).val(data3.metadata.guid);
                 } else {
                     $("#hidden_org_guid_"+ data3.entity.service_plan_guid).val($("#hidden_org_guid_"+ data3.entity.service_plan_guid).val()+","+data3.entity.organization_guid);
+                    $("#hidden_meta_guid_"+ data3.entity.service_plan_guid).val($("#hidden_meta_guid_"+ data3.entity.service_plan_guid).val()+","+data3.metadata.guid);
                 }
 
                 //접근 리스트
@@ -289,6 +298,7 @@
         $('#serviceAccessFormModal').modal('toggle');
 
         SERVICE_PLAN_GUID = planTdId.replace("service_access_", "");
+        ORG_GUID = orgs;
 
         //서비스 이름
         $("#servicename").val(serviceName);
@@ -307,16 +317,20 @@
             $("#serviceOrgListDivSecond").show();
 
             //서비스 조직
-            var serviceOrgListText = $("#serviceOrgListText").text($("#"+orgs).text());
 
             $("#serviceOrgListText").show();
 
             var selectBox = '';
             var objTable = $('#serviceOrgList');
 
-            console.log($("#hidden_org_guid_"+SERVICE_PLAN_GUID).val());
-
+            var splitSelectOrgName = $("#"+orgs).text().substr(0, $("#"+orgs).text().length-1).split(" ");
             var splitSelectOrgGuid = $("#hidden_org_guid_"+SERVICE_PLAN_GUID).val().split(",");
+            var splitSelectMetaGuid = $("#hidden_meta_guid_"+SERVICE_PLAN_GUID).val().split(",");
+
+            for(var j=0; j<splitSelectOrgName.length; j++) {
+                var html = '<a href="javascript:deleteServicePlanVisibility(\''+splitSelectMetaGuid[j]+'\')">[삭제]</a>';
+                $("#serviceOrgListText").append(splitSelectOrgName[j]+html);
+            }
 
             var orgObj2 = orgObj;
 
@@ -360,9 +374,25 @@
 
     };
 
+    // 서비스 조직 추가
+    function changeSelectOrgs() {
+        var uniqueId =UNIQUE_ID;
+        var servicePlanGuid = SERVICE_PLAN_GUID;
+        var orgGuid = $("#serviceOrgList").val();
+
+        var param = {
+            servicePlanGuid: servicePlanGuid,
+            orgGuid : orgGuid
+        }
+
+        console.log(param);
+        procCallAjax("/v2/serviceplanvisibilities/"+ uniqueId, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
+
+    }
+
     // 서비스 접근 허용
     function enableServiceAccess() {
-        console.log("enableServiceAccess start");
+        console.debug("enableServiceAccess start");
         console.debug(SERVICE_PLAN_GUID);
         console.debug($("#serviceAccessList").val());
 
@@ -379,8 +409,7 @@
             console.log("true");
         }else{
             /*limited*/
-            //서비스 조직에서 선택한 값을 추가한다.
-//            $("#serviceOrgList option:selected").val();
+            changeSelectOrgs();
         }
 
         var param = {
@@ -388,14 +417,28 @@
             publiclyVisible : publiclyVisible
         }
         console.log(param);
-        procCallAjax("/v2/serviceplans/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
+        procCallAjaxAsyncFalse("/v2/serviceplans/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
 
-    // CHECK VALID STRING SPACE
-    var procCheckValidStringSpace = function(reqString) {
-        if (undefined != reqString && null != reqString) {
-            return (0 != reqString.replace(/ /g, "").length);
+    //서비스 조직 삭제
+    function deleteServicePlanVisibility(splitSelectMetaGuid) {
+        var guid = splitSelectMetaGuid;
+        var publiclyVisible;
+
+        console.log("[DELETE] SERVICE_PLAN_VISIBILITIES_GUID " +guid);
+
+        if( $("#hidden_meta_guid_"+SERVICE_PLAN_GUID).val() !="") {
+            publiclyVisible = true;
+            console.log("true");
         }
+
+        var param = {
+            publiclyVisible : publiclyVisible
+        }
+
+        console.log(param);
+        procCallAjax("/v2/serviceplanvisibilities/"+guid, "DELETE", JSON.stringify(param), init, $('#modalLoadingBar'));
+
     }
 
 
