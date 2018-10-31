@@ -27,15 +27,6 @@
                         <div id="loadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
                         <div class="box-header">
 
-                            <!--<div class="col-xs-7 col-sm-5">-->
-                            <!--<div class="input-group input-group-sm">-->
-                            <!--<div class="input-group-btn">-->
-                            <!--<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>-->
-                            <!--</div>-->
-                            <!--<input type="text" name="table_search" id="searchKeyword" class="form-control" style="margin-left:-1px;"  placeholder="클라이언트 ID로 조회" onkeyup="procSearchByKeyword(event);"/>-->
-                            <!--</div>-->
-                            <!--</div>-->
-
                             <div class="box-tools col-xs-6 col-sm-5 pull-left"
                                  style="position:static;padding-left: 0px;">
                                 <div class="has-feedback">
@@ -69,15 +60,11 @@
                                 <tbody id="securityGroupList" name="dataList">
                                 </tbody>
                             </table>
-                            <!--<div id="buttonGetMoreList" style="text-align:center;">-->
-                            <!--<button type="button" class="btn btn-primary btn-sm" onclick="procGetMoreList();">-->
-                            <!--<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>-->
-                            <!--</button>-->
-                            <!--</div>-->
+
                         </div>
-                        <!-- /.box-body -->
+
                     </div>
-                    <!-- /.box -->
+
                 </div>
             </div>
 
@@ -563,26 +550,26 @@
                 if (idx != 0 && param != '[') {
                     param += ',';
                 }
-                param += '{';
+                param += '\r\n\t{';
                 if ($('#securityGroupCode_' + (idx + 1)).val() != '') {
-                    param += '"code" :' + $('#securityGroupCode_' + (idx + 1)).val() + ',';
+                    param += '\r\n\t\t"code" :' + $('#securityGroupCode_' + (idx + 1)).val() + ',';
                 }
                 if ($('#securityDescription_' + (idx + 1)).val() != '') {
-                    param += '"description" :' + '"' + $('#securityDescription_' + (idx + 1)).val() + '"' + ',';
+                    param += '\r\n\t\t"description" :' + '"' + $('#securityDescription_' + (idx + 1)).val() + '"' + ',';
                 }
                 if ($('#securityPorts_' + (idx + 1)).val() != '') {
-                    param += '"ports" :' + '"' + $('#securityPorts_' + (idx + 1)).val() + '"' + ',';
+                    param += '\r\n\t\t"ports" :' + '"' + $('#securityPorts_' + (idx + 1)).val() + '"' + ',';
                 }
                 if ($('#securityType_' + (idx + 1)).val() != '') {
-                    param += '"type" :' + $('#securityType_' + (idx + 1)).val() + ',';
+                    param += '\r\n\t\t"type" :' + $('#securityType_' + (idx + 1)).val() + ',';
                 }
-                param += '"destination" :' + '"' + $('#securityDestination_' + (idx + 1)).val() + '"' + ',';
-                param += '"log" : ' + $('#securityLog_' + (idx + 1)).is(":checked") + ',';
-                param += '"protocol" :' + '"' + $('#securityProtocol_' + (idx + 1)).val() + '"';
-                param += '}';
+                param += '\r\n\t\t"destination" :' + '"' + $('#securityDestination_' + (idx + 1)).val() + '"' + ',';
+                param += '\r\n\t\t"log" : ' + $('#securityLog_' + (idx + 1)).is(":checked") + ',';
+                param += '\r\n\t\t"protocol" :' + '"' + $('#securityProtocol_' + (idx + 1)).val() + '"';
+                param += '\r\n\t}';
             }
         });
-        param += ']';
+        param += '\r\n]';
         return param;
     };
 
