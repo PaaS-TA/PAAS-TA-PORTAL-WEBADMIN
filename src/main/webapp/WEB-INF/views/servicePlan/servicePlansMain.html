@@ -222,45 +222,43 @@
         console.log(entity);
 
         $("#servicePlanList").html("");
-
-        $.each(entity, function (id, data) {
-            if(data.servicePackName != "NONE") {
-                console.log(data.servicePackName);
-                SELECT_SERVICE_PACK_NAME = data.servicePackName;
-                procCallAjaxAsyncFalse("/v2/catalogs/serviceplan/"+data.servicePackName, "GET", null, procCallbackGetServicePlan, $('#modalLoadingBar'));
-            }
-        });
+        procCallAjaxAsyncFalse("/v2/catalogs/serviceplan-admin", "GET", null, procCallbackGetServicePlan, $('#modalLoadingBar'));
     };
 
     var procCallbackGetServicePlan = function(data){
-
         SERVICE_ACCESS_LIST = "";
-
-        $.each(data.resources, function (id, data2) {
-
-            UNIQUE_ID = data2.entity.unique_id;
-
-            var accessText = "NONE";     //false
-            if(data2.entity.public) {
-                accessText= "All";
-            }
-
-            SERVICE_ACCESS_LIST += "<tr style='cursor:pointer;' onclick='javascript:getServicePlanDetail(\""+SELECT_SERVICE_PACK_NAME+"\" ,\""+data2.entity.name+"\" ,\"service_access_"+data2.metadata.guid+"\", \"service_plan_"+data2.metadata.guid+"\")'>";
-            SERVICE_ACCESS_LIST += "<td>"+SELECT_SERVICE_PACK_NAME+"</td> ";
-            SERVICE_ACCESS_LIST += "<td>"+data2.entity.name+"</td> ";
-            SERVICE_ACCESS_LIST += "<td id='service_access_"+data2.metadata.guid+"'>"+accessText+"</td> ";
-            SERVICE_ACCESS_LIST += "<td id='service_plan_"+data2.metadata.guid+"'></td>";
-            SERVICE_ACCESS_LIST += "<input type='hidden' id='hidden_org_guid_"+data2.metadata.guid+"'/>";
-            SERVICE_ACCESS_LIST += "<input type='hidden' id='hidden_meta_guid_"+data2.metadata.guid+"'/>";
-            SERVICE_ACCESS_LIST += "</tr> ";
+        $.each(data.RESULT, function (id, data2) {
+            $.each(data2.Plan.resources, function (id, resource) {
+                var orgId = '';
+                var accessText = "NONE";     //false
+                if(resource.entity.public) accessText= "All";
+                SERVICE_ACCESS_LIST += "<tr style='cursor:pointer;' onclick='javascript:getServicePlanDetail(\""+data2.Service.entity.label+"\" ,\""+resource.entity.name+"\" ,\"service_access_"+resource.metadata.guid+"\", \"service_plan_"+resource.metadata.guid+"\")'>";
+                SERVICE_ACCESS_LIST += "<td>"+data2.Service.entity.label+"</td> ";
+                SERVICE_ACCESS_LIST += "<td>"+resource.entity.name+"</td> ";
+                SERVICE_ACCESS_LIST += "<td id='service_access_"+resource.metadata.guid+"'>"+accessText+"</td> ";
+                SERVICE_ACCESS_LIST += "<td id='service_plan_"+resource.metadata.guid+"'></td>";
+                SERVICE_ACCESS_LIST += "<input type='hidden' id='hidden_org_guid_"+resource.metadata.guid+"'/>";
+                SERVICE_ACCESS_LIST += "</tr> ";
+            });
         });
-
         $("#servicePlanList").append(SERVICE_ACCESS_LIST);
-
-        $.each(data.resources, function (id, servicePlan) {
-            procCallAjaxAsyncFalse("/v2/serviceplans/"+servicePlan.metadata.guid+"/visibilites", "GET", null, procCallbackGetServicePlanVisibilites, $('#modalLoadingBar'));
+        $.each(data.RESULT, function (id, data2) {
+            $.each(data2.Plan.resources, function (id, resource) {
+                $.each(data.Visibilities.resources, function (id, vis_resource) {
+                    if(vis_resource.entity.service_plan_guid == resource.metadata.guid){
+                        $("#service_plan_"+vis_resource.entity.service_plan_guid).append(orgObj[vis_resource.entity.organization_guid]+" ");
+                        if($("#hidden_org_guid_"+ vis_resource.entity.service_plan_guid).val() == "") {
+                            $("#hidden_org_guid_"+ vis_resource.entity.service_plan_guid).val(vis_resource.entity.organization_guid);
+                        } else {
+                            $("#hidden_org_guid_"+ vis_resource.entity.service_plan_guid).val($("#hidden_org_guid_"+ vis_resource.entity.service_plan_guid).val()+","+vis_resource.entity.organization_guid);
+                        }
+                        $("#service_access_"+vis_resource.entity.service_plan_guid).text('limited');
+                    }
+                });
+            });
         });
     };
+
 
     var procCallbackGetServicePlanVisibilites = function(data){
 
