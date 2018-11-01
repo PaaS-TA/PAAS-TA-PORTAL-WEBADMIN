@@ -38,13 +38,11 @@ public class ServicePlansController extends Common {
     /**
      * 카탈로그 서비스 이용사양 목록을 조회한다.
      *
-     * @param servicename String(자바클래스)
      * @return ModelAndView model
      */
-    @GetMapping(value = {Constants.V2_URL + "/catalogs/serviceplan/{servicename}"})
-    @ResponseBody
-    public Map<String, Object> getCatalogService(@PathVariable String servicename) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/catalogs/serviceplan/" + servicename, HttpMethod.GET, null, this.getToken());
+    @GetMapping(value = {Constants.V2_URL + "/catalogs/serviceplan-admin"})
+    public Map<String, Object> getCatalogService() throws Exception {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/catalogs/serviceplan-admin", HttpMethod.GET, null, this.getToken());
     }
 
     /**
