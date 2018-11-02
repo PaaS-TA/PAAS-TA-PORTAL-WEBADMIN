@@ -109,15 +109,13 @@ public class ServicePlansController extends Common {
     /**
      * 서비스 Plan에 Access 등록 되어있는 조직을 삭제한다.
      *
-     * @param param the param
      * @param guid  guid
      * @return boolean boolean
      * @throws Exception the exception
      */
     @DeleteMapping(value = {Constants.V2_URL + "/serviceplanvisibilities/{guid}"})
-    public Map<String, Object> deleteServicePlanVisibility(@RequestBody Map param, @PathVariable String guid) throws Exception {
-        LOGGER.info("deleteServicePlanVisibility Start");
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplanvisibilities/" + guid, HttpMethod.DELETE, param, this.getToken());
+    public Map<String, Object> deleteServicePlanVisibility( @PathVariable String guid) throws Exception {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplanvisibilities/" + guid, HttpMethod.DELETE, null, this.getToken());
     }
 
 

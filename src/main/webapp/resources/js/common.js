@@ -167,6 +167,42 @@ var procCallAjaxAsyncFalse = function(reqUrl, reqMethod, param, callback, $targe
     });
 };
 
+var procCallAjaxForSyncDelete = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {
+    var reqData = "";
+
+    if (param != null) {
+        reqData = param;
+    }
+    $.ajax({
+        url: reqUrl,
+        method: reqMethod,
+        data: reqData,
+        dataType: 'json',
+        //async: false,
+        contentType: "application/json",
+        beforeSend: function(){
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.removeClass("hide");
+            }
+        },
+        success: function(data) {
+
+        },
+        error: function(xhr, status, error) {
+
+        },
+        complete : function(data) {
+
+            callback();
+
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
+                $targetLoadingBarElement.addClass('hide');
+            }
+            notifyAlert('success',"",'삭제 완료 되었습니다.');
+        }
+    });
+};
+
 // CALL AJAX  reqMethod PUT, DELETE 추가
 var procCallAjax2 = function(reqUrl, reqMethod, param, callback) {
     var reqData = "";
