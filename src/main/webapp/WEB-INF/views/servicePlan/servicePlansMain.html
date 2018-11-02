@@ -191,7 +191,7 @@
 
                 serviceAccessList += "<tr id='servicePlan_"+(cnt+1)+"\'>";
                 serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\");'  style='cursor:pointer;'>"+data2.Service.entity.label+"</td> ";
-                serviceAccessList += "    <td>"+resource.entity.name+"</td> ";
+                serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\");'  style='cursor:pointer;'>"+resource.entity.name+"</td> ";
                 serviceAccessList += "    <td>"+accessSelectBoxHtml+"</td> ";
                 // serviceAccessList += "    <input type='hidden' id='hidden_org_guid_"+resource.metadata.guid+"'/>";
                 serviceAccessList += "    <input type='hidden' id='service_access_type_"+resource.metadata.guid+"' value='"+serviceAccessType+"'/>";
@@ -339,13 +339,13 @@
             enableServiceAccess(true);
         } else if(serviceAccessOriginal == "none" && serviceAccessSelectBox =="limited") {
         } else if(serviceAccessOriginal == "limited" && (serviceAccessSelectBox =="all" || serviceAccessSelectBox =="none")) {
-            showServicePlanDeleteModal(serviceAccessSelectBox + "변경",serviceAccessMetaGuid, serviceAccessSelectBox, "변경");
+            showServicePlanDeleteModal("Access 변경",serviceAccessMetaGuid, serviceAccessSelectBox, "변경");
         }
     };
 
     function showServicePlanDeleteModal(title, guid, serviceAccess, buttonText) {
         $("#popupTitle").html(title);
-        $("#popupMessage").html("연결된 모든 조직에 대한 권한이 삭제됩니다. 삭제하시겠습니까?");
+        $("#popupMessage").html("연결된 모든 조직에 대한 접근이 해제됩니다. 실행하시겠습니까?");
         $("#popupButtonText").text(buttonText);
         $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "ServicePlanDelete('"+guid+"','"+serviceAccess+"');");
