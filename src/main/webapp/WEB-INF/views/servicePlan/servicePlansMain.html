@@ -65,35 +65,28 @@
 
                 </div>
             </div>
+            <div class="modal fade" tabindex="-1" role="dialog" id="servicePlanDeleteModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
+                                    onclick="procClosePopup('clientConfirmModal');"> 취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <!--<section class="content">-->
-            <!--<div class="row">-->
-                <!--<div class="col-xs-12">-->
-                    <!--<div class="box">-->
-                        <!--<div id="loadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>-->
-                        <!--<div class="box-body">-->
-                            <!--<table class="table table-bordered table-striped dataTable">-->
-                                <!--<thead>-->
-                                <!--<tr>-->
-                                    <!--<th width="25%">서비스</th>-->
-                                    <!--<th width="30%">플랜</th>-->
-                                    <!--<th width="15%">접근</th>-->
-                                    <!--<th width="30%">조직</th>-->
-                                <!--</tr>-->
-                                <!--</thead>-->
-                                <!--<tbody id="servicePlanList" th:remove="body">-->
-                                <!--</tbody>-->
-                            <!--</table>-->
-                        <!--</div>-->
-                        <!--&lt;!&ndash; /.box-body &ndash;&gt;-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash; /.box &ndash;&gt;-->
-                <!--</div>-->
 
-            <!--</div>-->
-        <!--</section>-->
-        <!-- /.Content -->
     </div>
     <!-- /.content-wrapper -->
 
@@ -345,28 +338,29 @@
         } else if(serviceAccessOriginal == "none" && serviceAccessSelectBox =="all") {
             enableServiceAccess(true);
         } else if(serviceAccessOriginal == "none" && serviceAccessSelectBox =="limited") {
-        } else if(serviceAccessOriginal == "limited" && serviceAccessSelectBox =="all") {
-            for(var i=0; i<$("#selectOrgList> tr[id^='org_'] > td > span").length; i++) {
-                var delFun = $("#selectOrgList> tr[id^='org_'] > td > span:eq("+i+")");
-                var delFunIds = delFun.attr("onclick").replace("deleteServicePlanVisibility('", "").replace("');", "").split("', '");
-
-                SELECT_DELETE_ORG_GUID = delFunIds[1];
-
-                procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/"+delFunIds[0], "DELETE", null, procCallbackDeleteServicePlanVisibilityAll, $('#servicePlansLoadingBar'));
-            }
-            enableServiceAccess(true);
-        } else if(serviceAccessOriginal == "limited" && serviceAccessSelectBox =="none") {
-            for(var i=0; i<$("#selectOrgList> tr[id^='org_'] > td > span").length; i++) {
-                var delFun = $("#selectOrgList> tr[id^='org_'] > td > span:eq("+i+")");
-                var delFunIds = delFun.attr("onclick").replace("deleteServicePlanVisibility('", "").replace("');", "").split("', '");
-
-                SELECT_DELETE_ORG_GUID = delFunIds[1];
-
-                procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/"+delFunIds[0], "DELETE", null, procCallbackDeleteServicePlanVisibilityAll, $('#servicePlansLoadingBar'));
-            }
-            enableServiceAccess(false);
+        } else if(serviceAccessOriginal == "limited" && (serviceAccessSelectBox =="all" || serviceAccessSelectBox =="none")) {
+            showServicePlanDeleteModal(serviceAccessSelectBox + "변경",serviceAccessMetaGuid, serviceAccessSelectBox, "변경");
         }
     };
+
+    function showServicePlanDeleteModal(title, guid, serviceAccess, buttonText) {
+        $("#popupTitle").html(title);
+        $("#popupMessage").html("연결된 모든 조직에 대한 권한이 삭제됩니다. 삭제하시겠습니까?");
+        $("#popupButtonText").text(buttonText);
+        $("#popupButtonText").addClass('pull-left');
+        $('#popupButtonText').attr('onclick', "ServicePlanDelete('"+guid+"','"+serviceAccess+"');");
+        $("#popupButtonText").show();
+        $('#servicePlanDeleteModal').modal('toggle');
+    }
+
+    function ServicePlanDelete(guid, serviceAccess) {
+        procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/all/"+guid, "DELETE", null, procCallbackDeleteServicePlanVisibilityAll, $('#servicePlansLoadingBar'));
+        if(serviceAccess  =="none"){
+            enableServiceAccess(false);
+        }else if(serviceAccess  =="all"){
+            enableServiceAccess(true);
+        }
+    }
 
     // 서비스 접근 허용
     function enableServiceAccess(publiclyVisible) {
