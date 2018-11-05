@@ -126,17 +126,17 @@
                                         <div class="tab-content" id="securityAllList">
                                             <div class="tab-pane fade in active" id="securityplus_1">
                                                 <div id="tab-1" class="">
-                                                    <div class="form-group" style="margin-top: 10px;">
+                                                    <div class="form-group" style="margin-top: 10px;" id="securityGroupCodeDiv_1">
                                                         <label for="securityGroupCode_1"
                                                                class="col-sm-3 control-label">코드</label>
                                                         <div class="col-sm-9">
                                                             <input type="number" class="form-control"
                                                                    id="securityGroupCode_1"
-                                                                   placeholder="icmp에 대한 코드 제어 신호"/>
+                                                                   placeholder="icmp에 대한 코드 제어 신호" onkeyup="limtenumber(1, 'Code')"/>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group">
+                                                    <div class="form-group" style="margin-top: 10px;" id="securityDescriptionDiv_1">
                                                         <label for="securityDescription_1"
                                                                class="col-sm-3 control-label">설명</label>
                                                         <div class="col-sm-9">
@@ -146,7 +146,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group required">
+                                                    <div class="form-group required" id="securityDestinationDiv_1">
                                                         <label for="securityDestination_1"
                                                                class="col-sm-3 control-label">규칙</label>
                                                         <div class="col-sm-9">
@@ -155,15 +155,20 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group">
+                                                    <div class="form-group" id="securityLogDiv_1">
                                                         <label for="securityLog_1"
-                                                               class="col-sm-3 control-label">로그</label>
+                                                               class="col-sm-3 control-label" >로그</label>
                                                         <div class="col-sm-9">
-                                                            <input type="checkbox" id="securityLog_1"></input>
+                                                            <select class="form-control toCheckString"
+                                                            id="securityLog_1">
+                                                            <option value="none" selected="selected">none</option>
+                                                            <option value="true">true</option>
+                                                            <option value="false">false</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group">
+                                                    <div class="form-group" id="securityPortsDiv_1">
                                                         <label for="securityPorts_1"
                                                                class="col-sm-3 control-label">포트</label>
                                                         <div class="col-sm-9">
@@ -172,21 +177,26 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group required">
+                                                    <div class="form-group required" id="securityProtocolDiv_1">
                                                         <label for="securityProtocol_1" class="col-sm-3 control-label">프로토콜</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control toCheckString"
-                                                                   id="securityProtocol_1" placeholder="프로토콜"></input>
+                                                            <select class="form-control toCheckString"
+                                                            id="securityProtocol_1" placeholder="프로토콜" onchange="protocolChange(1);">
+                                                            <option value="all" selected="selected">all</option>
+                                                            <option value="tcp">tcp</option>
+                                                            <option value="icmp">icmp</option>
+                                                            <option value="udp">udp</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group">
+                                                    <div class="form-group" id="securityTypeDiv_1">
                                                         <label for="securityType_1"
                                                                class="col-sm-3 control-label">타입</label>
                                                         <div class="col-sm-9">
                                                             <input type="number" class="form-control"
                                                                    id="securityType_1"
-                                                                   placeholder="icmp에 대한 유형 제어 신호"></input>
+                                                                   placeholder="icmp에 대한 유형 제어 신호" onkeyup="limtenumber(1, 'Type')"></input>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -323,7 +333,7 @@
         $('#securityGroupDeleteBtn').hide();
         $('#securityGroupSaveBtn').hide();
         $('#securityGroupRegBtn').hide();
-
+        protocolChange(1);
     });
 
     $(document).on("mouseup", 'tbody[name=dataList]', function (e) {
@@ -356,6 +366,20 @@
         getSecurityGroupList();
     }
 
+    function limtenumber(idx, type) {
+        console.log($("#securityGroup"+type+"_" + idx).val());
+        if($("#securityGroup"+type+"_" + idx).val() !==''){
+            if($.isNumeric($("#securityGroup"+type+"_" + idx).val())){
+                if ($("#securityGroup" + type + "_" + idx).val() < -1) {
+                    $("#securityGroup" + type + "_" + idx).val(-1)
+                }
+            }else{
+                console.log(" 탄다");
+                $("#securityGroup" + type + "_" + idx).val(0);
+            }
+        }
+    }
+
     function getInitSecurityRuleHtml() {
         INIT_SECURITY_RULE_HTML = $('#securityGroupFormModal').html();
     }
@@ -365,17 +389,17 @@
         for (idx = _idx; idx < length; idx++) {
             result += '<div class="tab-pane fade" id="securityplus_' + idx + '">' +
                 '<div id="tab-' + idx + '" class="">' +
-                '<div class="form-group" style="margin-top: 10px;">' +
+                '<div class="form-group" style="margin-top: 10px;" id="securityGroupCodeDiv_' + idx + '">' +
                 '<label for="securityGroupCode_' + idx + '"' +
                 'class="col-sm-3 control-label">코드</label>' +
                 '<div class="col-sm-9">' +
                 '<input type="number" class="form-control"' +
                 'id="securityGroupCode_' + idx + '"' +
-                'placeholder="icmp에 대한 코드 제어 신호"/>' +
+                'placeholder="icmp에 대한 코드 제어 신호" onkeyup="limtenumber('+ idx + ' , '+"'Code'"+')"/>' +
                 '</div>' +
                 '</div>' +
 
-                '<div class="form-group">' +
+                '<div class="form-group" style="margin-top: 10px;" id="securityDescriptionDiv_' + idx + '">' +
                 '<label for="securityDescription_' + idx + '" class="col-sm-3 control-label">설명</label>' +
                 '<div class="col-sm-9">' +
                 '<input type="text" class="form-control"' +
@@ -383,7 +407,7 @@
                 '</div>' +
                 '</div>' +
 
-                '<div class="form-group required">' +
+                '<div class="form-group required" id="securityDestinationDiv_' + idx + '">' +
                 '<label for="securityDestination_' + idx + '" class="col-sm-3 control-label">규칙</label>' +
                 '<div class="col-sm-9">' +
                 '<input type="text" class="form-control toCheckString"' +
@@ -391,16 +415,20 @@
                 '</div>' +
                 '</div>' +
 
-                '<div class="form-group">' +
+                '<div class="form-group" id="securityLogDiv_' + idx + '">' +
                 '<label for="securityLog_' + idx + '"' +
                 'class="col-sm-3 control-label">로그</label>' +
                 '<div class="col-sm-9">' +
-                '<input type="checkbox" id="securityLog_' + idx + '"' +
-                'placeholder="출력 규칙에 대한 로깅을 사용합니다."></input>' +
+                '<select class="form-control toCheckString"' +
+                'id="securityLog_' + idx + '">' +
+                '<option value="none" selected="selected">none</option>'+
+                '<option value="true">true</option>'+
+                '<option value="false">false</option>'+
+                '</select>'+
                 '</div>' +
                 '</div>' +
 
-                '<div class="form-group">' +
+                '<div class="form-group" id="securityPortsDiv_' + idx + '">' +
                 '<label for="securityPorts_' + idx + '"' +
                 'class="col-sm-3 control-label">포트</label>' +
                 '<div class="col-sm-9">' +
@@ -409,20 +437,25 @@
                 '</div>' +
                 '</div>' +
 
-                '<div class="form-group required">' +
+                '<div class="form-group required" id="securityProtocolDiv_' + idx + '">' +
                 '<label for="securityProtocol_' + idx + '" class="col-sm-3 control-label">프로토콜</label>' +
                 '<div class="col-sm-9">' +
-                '<input type="text" class="form-control toCheckString"' +
-                'id="securityProtocol_' + idx + '" placeholder="프로토콜"></input>' +
+                '<select class="form-control toCheckString"' +
+                'id="securityProtocol_' + idx + '" placeholder="프로토콜" onchange="protocolChange('+ idx + ');">' +
+                '<option value="all" selected="selected">all</option>'+
+                '<option value="tcp">tcp</option>'+
+                '<option value="icmp">icmp</option>'+
+                '<option value="udp">udp</option>'+
+                '</select>'+
                 '</div>' +
                 '</div>' +
 
-                '<div class="form-group">' +
+                '<div class="form-group" id="securityTypeDiv_' + idx + '">' +
                 '<label for="securityType_' + idx + '"' +
                 'class="col-sm-3 control-label">타입</label>' +
                 '<div class="col-sm-9">' +
                 '<input type="number" class="form-control" id="securityType_' + idx + '"' +
-                'placeholder="icmp에 대한 유형 제어 신호"></input>' +
+                'placeholder="icmp에 대한 유형 제어 신호" onkeyup="limtenumber('+ idx + ' , '+"'Type'"+')"/>' +
                 '</div>' +
                 '</div>' +
 
@@ -436,6 +469,9 @@
         }
         var prochtml = $('#securityAllList');
         prochtml.append(result);
+        for (idx = _idx; idx < length; idx++) {
+            protocolChange(_idx);
+        }
     }
 
     function getSecurityGroupList() {
@@ -450,6 +486,23 @@
         }
         procCallAjax(sltGroupUrl + sltPage, "GET", null, procCallbackSecurityGroupList, $('#loadingBar'));
         getOrgs();
+    }
+
+    function protocolChange(idx){
+        console.log(idx);
+        if($('#securityProtocol_' + idx).val() != 'icmp'){
+            // $('#securityType_' + idx).prop('disabled', true);
+            // $('#securityGroupCode_' + idx).prop('disabled', true);
+            // $('#securityDestination_' + idx).prop('disabled', false);
+            // $('#securityPorts_' + idx).prop('disabled', false);
+            $('#securityTypeDiv_' + idx).hide();
+            $('#securityGroupCodeDiv_' + idx).hide();
+            $('#securityPortsDiv_' + idx).show();
+        } else{
+            $('#securityTypeDiv_' + idx).show();
+            $('#securityGroupCodeDiv_' + idx).show();
+            $('#securityPortsDiv_' + idx).hide();
+        }
     }
 
     function viewSearchKeyWord() {
@@ -534,10 +587,25 @@
             $('#securityGroupCode_' + idx).val(data1.code);
             $('#securityDescription_' + idx).val(data1.description);
             $('#securityDestination_' + idx).val(data1.destination);
-            (data1.log != null && data1.log != false) ? $('#securityLog_' + idx).prop('checked', true) : $('#securityLog_' + idx).prop('checked', false);
+            if(data1.log !== undefined){
+                if(data1.log){
+                    $('#securityLog_' + idx).val("true");
+                }else {
+                    $('#securityLog_' + idx).val("false");
+                }
+            }
             $('#securityPorts_' + idx).val(data1.ports);
             $('#securityProtocol_' + idx).val(data1.protocol);
             $('#securityType_' + idx).val(data1.type);
+            if(data1.protocol != 'icmp'){
+                $('#securityTypeDiv_' + idx).hide();
+                $('#securityGroupCodeDiv_' + idx).hide();
+                $('#securityPortsDiv_' + idx).show();
+            } else{
+                $('#securityTypeDiv_' + idx).show();
+                $('#securityGroupCodeDiv_' + idx).show();
+                $('#securityPortsDiv_' + idx).hide();
+            }
         });
     }
 
@@ -576,20 +644,27 @@
                     param += ',';
                 }
                 param += '\r\n\t{';
-                if ($('#securityGroupCode_' + (idx + 1)).val() != '') {
+                if ($('#securityGroupCode_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() == 'icmp') {
                     param += '\r\n\t\t"code" :' + $('#securityGroupCode_' + (idx + 1)).val() + ',';
                 }
                 if ($('#securityDescription_' + (idx + 1)).val() != '') {
                     param += '\r\n\t\t"description" :' + '"' + $('#securityDescription_' + (idx + 1)).val() + '"' + ',';
                 }
-                if ($('#securityPorts_' + (idx + 1)).val() != '') {
+                if ($('#securityPorts_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() != 'icmp') {
                     param += '\r\n\t\t"ports" :' + '"' + $('#securityPorts_' + (idx + 1)).val() + '"' + ',';
                 }
-                if ($('#securityType_' + (idx + 1)).val() != '') {
+                if ($('#securityType_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() == 'icmp') {
                     param += '\r\n\t\t"type" :' + $('#securityType_' + (idx + 1)).val() + ',';
                 }
                 param += '\r\n\t\t"destination" :' + '"' + $('#securityDestination_' + (idx + 1)).val() + '"' + ',';
-                param += '\r\n\t\t"log" : ' + $('#securityLog_' + (idx + 1)).is(":checked") + ',';
+                if($('#securityLog_' + (idx + 1)).val() !== 'none'){
+                    param += '\r\n\t\t"log" : ';
+                    if($('#securityLog_' + (idx + 1)).val() == 'true'){
+                        param += true + ',';
+                    }else {
+                        param += false + ',';
+                    }
+                }
                 param += '\r\n\t\t"protocol" :' + '"' + $('#securityProtocol_' + (idx + 1)).val() + '"';
                 param += '\r\n\t}';
             }
@@ -674,10 +749,6 @@
             '   <td id="tdAdd"></td>' +
             '</tr>'
         );
-        $.each($("select[id*='selectSpaces']"), function (idx, data2) {
-            var table = $("#selectSpaces_" + (idx + 1));
-            table.append("<option value='keyboard'>키보드</option>");
-        });
     };
 
     function selectSpace() {
@@ -805,7 +876,7 @@
                             $('#securityDestination_' + (index + tapLenght)).val(jsonData.destination);
                         }
                         if (jsonData.log !== undefined) {
-                            jsonData.log ? $('#securityLog_' + (index + tapLenght)).prop('checked', true) : $('#securityLog_' + (index + tapLenght)).prop('checked', false);
+                            jsonData.log ? $('#securityLog_' + (index + tapLenght)).val('true') : $('#securityLog_' + (index + tapLenght)).val('false');
                         }
                         if (jsonData.protocol !== undefined) {
                             $('#securityProtocol_' + (index + tapLenght)).val(jsonData.protocol);
@@ -842,10 +913,11 @@
             $('#securityGroupCode_' + idx).val($('#securityGroupCode_' + (idx + 1)).val());
             $('#securityDescription_' + idx).val($('#securityDescription_' + (idx + 1)).val());
             $('#securityDestination_' + idx).val($('#securityDestination_' + (idx + 1)).val());
-            $('#securityLog_' + (idx + 1)).is(":checked") ? $('#securityLog_' + idx).prop('checked', true) : $('#securityLog_' + idx).prop('checked', false);
+            $('#securityLog_' + idx).val($('#securityLog_' + (idx + 1)).val());
             $('#securityPorts_' + idx).val($('#securityPorts_' + (idx + 1)).val());
             $('#securityProtocol_' + idx).val($('#securityProtocol_' + (idx + 1)).val());
             $('#securityType_' + idx).val($('#securityType_' + (idx + 1)).val());
+            protocolChange(idx);
         }
         if (tapLenght != 1) {
             $('#securityList_' + tapLenght).remove();
@@ -854,12 +926,11 @@
             $('#securityGroupCode_1').val('');
             $('#securityDescription_1').val('');
             $('#securityDestination_1').val('');
-            $('#securityLog_1').prop('checked', false);
+            $('#securityLog_1').val('none');
             $('#securityPorts_1').val('');
-            $('#securityProtocol_1').val('');
+            $('#securityProtocol_1').val('all');
             $('#securityType_1').val('');
         }
-
         if (index == tapLenght && tapLenght != 1) {
             $("#securityList_" + (idx - 1) + " > a").trigger("click");
         }
