@@ -367,14 +367,12 @@
     }
 
     function limtenumber(idx, type) {
-        console.log($("#securityGroup"+type+"_" + idx).val());
         if($("#securityGroup"+type+"_" + idx).val() !==''){
             if($.isNumeric($("#securityGroup"+type+"_" + idx).val())){
                 if ($("#securityGroup" + type + "_" + idx).val() < -1) {
                     $("#securityGroup" + type + "_" + idx).val(-1)
                 }
             }else{
-                console.log(" 탄다");
                 $("#securityGroup" + type + "_" + idx).val(0);
             }
         }
@@ -489,12 +487,7 @@
     }
 
     function protocolChange(idx){
-        console.log(idx);
         if($('#securityProtocol_' + idx).val() != 'icmp'){
-            // $('#securityType_' + idx).prop('disabled', true);
-            // $('#securityGroupCode_' + idx).prop('disabled', true);
-            // $('#securityDestination_' + idx).prop('disabled', false);
-            // $('#securityPorts_' + idx).prop('disabled', false);
             $('#securityTypeDiv_' + idx).hide();
             $('#securityGroupCodeDiv_' + idx).hide();
             $('#securityPortsDiv_' + idx).show();
@@ -587,11 +580,11 @@
             $('#securityGroupCode_' + idx).val(data1.code);
             $('#securityDescription_' + idx).val(data1.description);
             $('#securityDestination_' + idx).val(data1.destination);
-            if(data1.log !== undefined){
+            if(data1.log !== null){
                 if(data1.log){
-                    $('#securityLog_' + idx).val("true");
+                    $('#securityLog_' + idx).val('true');
                 }else {
-                    $('#securityLog_' + idx).val("false");
+                    $('#securityLog_' + idx).val('false');
                 }
             }
             $('#securityPorts_' + idx).val(data1.ports);
@@ -657,14 +650,16 @@
                     param += '\r\n\t\t"type" :' + $('#securityType_' + (idx + 1)).val() + ',';
                 }
                 param += '\r\n\t\t"destination" :' + '"' + $('#securityDestination_' + (idx + 1)).val() + '"' + ',';
-                if($('#securityLog_' + (idx + 1)).val() !== 'none'){
-                    param += '\r\n\t\t"log" : ';
+                param += '\r\n\t\t"log" : ';
+
                     if($('#securityLog_' + (idx + 1)).val() == 'true'){
                         param += true + ',';
-                    }else {
+                    }else if($('#securityLog_' + (idx + 1)).val() == 'false'){
                         param += false + ',';
+                    }else {
+                        param += null + ',';
                     }
-                }
+
                 param += '\r\n\t\t"protocol" :' + '"' + $('#securityProtocol_' + (idx + 1)).val() + '"';
                 param += '\r\n\t}';
             }
@@ -875,7 +870,7 @@
                         if (jsonData.destination !== undefined) {
                             $('#securityDestination_' + (index + tapLenght)).val(jsonData.destination);
                         }
-                        if (jsonData.log !== undefined) {
+                        if (jsonData.log !== null) {
                             jsonData.log ? $('#securityLog_' + (index + tapLenght)).val('true') : $('#securityLog_' + (index + tapLenght)).val('false');
                         }
                         if (jsonData.protocol !== undefined) {
