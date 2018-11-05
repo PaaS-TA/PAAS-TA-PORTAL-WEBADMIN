@@ -191,11 +191,11 @@
                                                     </div>
 
                                                     <div class="form-group" id="securityTypeDiv_1">
-                                                        <label for="securityType_1"
+                                                        <label for="securityGroupType_1"
                                                                class="col-sm-3 control-label">타입</label>
                                                         <div class="col-sm-9">
                                                             <input type="number" class="form-control"
-                                                                   id="securityType_1"
+                                                                   id="securityGroupType_1"
                                                                    placeholder="icmp에 대한 유형 제어 신호" onkeyup="limtenumber(1, 'Type')"></input>
                                                         </div>
                                                     </div>
@@ -449,10 +449,10 @@
                 '</div>' +
 
                 '<div class="form-group" id="securityTypeDiv_' + idx + '">' +
-                '<label for="securityType_' + idx + '"' +
+                '<label for="securityGroupType_' + idx + '"' +
                 'class="col-sm-3 control-label">타입</label>' +
                 '<div class="col-sm-9">' +
-                '<input type="number" class="form-control" id="securityType_' + idx + '"' +
+                '<input type="number" class="form-control" id="securityGroupType_' + idx + '"' +
                 'placeholder="icmp에 대한 유형 제어 신호" onkeyup="limtenumber('+ idx + ' , '+"'Type'"+')"/>' +
                 '</div>' +
                 '</div>' +
@@ -589,7 +589,7 @@
             }
             $('#securityPorts_' + idx).val(data1.ports);
             $('#securityProtocol_' + idx).val(data1.protocol);
-            $('#securityType_' + idx).val(data1.type);
+            $('#securityGroupType_' + idx).val(data1.type);
             if(data1.protocol != 'icmp'){
                 $('#securityTypeDiv_' + idx).hide();
                 $('#securityGroupCodeDiv_' + idx).hide();
@@ -646,8 +646,8 @@
                 if ($('#securityPorts_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() != 'icmp') {
                     param += '\r\n\t\t"ports" :' + '"' + $('#securityPorts_' + (idx + 1)).val() + '"' + ',';
                 }
-                if ($('#securityType_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() == 'icmp') {
-                    param += '\r\n\t\t"type" :' + $('#securityType_' + (idx + 1)).val() + ',';
+                if ($('#securityGroupType_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() == 'icmp') {
+                    param += '\r\n\t\t"type" :' + $('#securityGroupType_' + (idx + 1)).val() + ',';
                 }
                 param += '\r\n\t\t"destination" :' + '"' + $('#securityDestination_' + (idx + 1)).val() + '"' + ',';
                 param += '\r\n\t\t"log" : ';
@@ -865,7 +865,7 @@
                             $('#securityPorts_' + (index + tapLenght)).val(jsonData.ports);
                         }
                         if (jsonData.type !== undefined) {
-                            $('#securityType_' + (index + tapLenght)).val(jsonData.type);
+                            $('#securityGroupType_' + (index + tapLenght)).val(jsonData.type);
                         }
                         if (jsonData.destination !== undefined) {
                             $('#securityDestination_' + (index + tapLenght)).val(jsonData.destination);
@@ -911,7 +911,7 @@
             $('#securityLog_' + idx).val($('#securityLog_' + (idx + 1)).val());
             $('#securityPorts_' + idx).val($('#securityPorts_' + (idx + 1)).val());
             $('#securityProtocol_' + idx).val($('#securityProtocol_' + (idx + 1)).val());
-            $('#securityType_' + idx).val($('#securityType_' + (idx + 1)).val());
+            $('#securityGroupType_' + idx).val($('#securityGroupType_' + (idx + 1)).val());
             protocolChange(idx);
         }
         if (tapLenght != 1) {
@@ -924,7 +924,7 @@
             $('#securityLog_1').val('none');
             $('#securityPorts_1').val('');
             $('#securityProtocol_1').val('all');
-            $('#securityType_1').val('');
+            $('#securityGroupType_1').val('');
         }
         if (index == tapLenght && tapLenght != 1) {
             $("#securityList_" + (idx - 1) + " > a").trigger("click");
