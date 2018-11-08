@@ -77,7 +77,7 @@ public class CommonCodeController extends Common {
 
 
     /**
-     * Group Table을 생성 한다.
+     * Group Table을 생성(등록)한다.
      *
      * @param param CodeGroup (모델클래스)
      * @return Map(자바클래스)
@@ -144,7 +144,7 @@ public class CommonCodeController extends Common {
 
 
     /**
-     * Detail Table을 생성한다.
+     * Detail Table을 생성(등록)한다.
      *
      * @param param CodeDetail (모델클래스)
      * @return Map(자바클래스)
