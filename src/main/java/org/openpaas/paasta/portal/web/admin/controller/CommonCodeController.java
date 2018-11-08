@@ -35,59 +35,6 @@ public class CommonCodeController extends Common {
         }};
     }
 
-    /**
-     * 공통코드 목록을 조회한다.
-     *
-     * @param param CodeDetail
-     * @return Map(자바클래스)
-     */
-    @GetMapping(V2_URL+"/codedetail")
-    @ResponseBody
-    public Map<String, Object> getCodeDetailList(@ModelAttribute CommonCode param) {
-        return commonCodeService.getCodeDetailList(param);
-    }
-
-
-    /**
-     * 공통코드 목록을 조회한다.
-     *
-     * @param no CodeDetail
-     * @return Map(자바클래스)
-     */
-    @GetMapping(V2_URL + "/codedetail/{no}")
-    @ResponseBody
-    public Map<String, Object> getCodeDetail(@PathVariable("no") int no) {
-        LOGGER.info("NO :: " + no);
-        return commonCodeService.getCodeDetail(no);
-    }
-
-
-    /**
-     * 공통그룹 목록을 조회한다.
-     *
-     * @param param CodeGroup(아이디)
-     * @return Map(자바클래스)
-     */
-    @GetMapping(V2_URL +"/codegroup")
-    @ResponseBody
-    public Map<String, Object> getGroupDetailList(@ModelAttribute CommonCode param) {
-         LOGGER.info(param.toString());
-        return commonCodeService.getGroupDetailList(param);
-    }
-
-
-    /**
-     * 공통그룹 목록을 조회한다.
-     *
-     * @param param CodeGroup(아이디)
-     * @return Map(자바클래스)
-     */
-    @GetMapping(V2_URL +"/codegroup/{id}")
-    @ResponseBody
-    public Map<String, Object> getGroupDetail(@PathVariable("id") String  id, @ModelAttribute CommonCode param) {
-        return commonCodeService.getGroupDetail(id,param);
-    }
-
 
     /**
      * 공통코드 및 그룹 목록을 조회한다.
@@ -103,7 +50,34 @@ public class CommonCodeController extends Common {
 
 
     /**
-     * 공통 코드 그룹을 등록한다.
+     * Group Table 목록을 조회한다.
+     *
+     * @param param CodeGroup(아이디)
+     * @return Map(자바클래스)
+     */
+    @GetMapping(V2_URL +"/codegroup")
+    @ResponseBody
+    public Map<String, Object> getGroupDetailList(@ModelAttribute CommonCode param) {
+        LOGGER.info(param.toString());
+        return commonCodeService.getGroupDetailList(param);
+    }
+
+
+    /**
+     * Group Table 상세 조회한다.
+     *
+     * @param param CodeGroup(아이디)
+     * @return Map(자바클래스)
+     */
+    @GetMapping(V2_URL +"/codegroup/{id}")
+    @ResponseBody
+    public Map<String, Object> getGroupDetail(@PathVariable("id") String  id, @ModelAttribute CommonCode param) {
+        return commonCodeService.getGroupDetail(id,param);
+    }
+
+
+    /**
+     * Group Table을 생성 한다.
      *
      * @param param CodeGroup (모델클래스)
      * @return Map(자바클래스)
@@ -116,20 +90,7 @@ public class CommonCodeController extends Common {
 
 
     /**
-     * 공통 코드을 등록한다.
-     *
-     * @param param CodeDetail (모델클래스)
-     * @return Map(자바클래스)
-     */
-    @PostMapping(V2_URL +"/codedetail")
-    @ResponseBody
-    public Map<String, Object> insertDetail(@RequestBody CommonCode param) {
-        return commonCodeService.insertDetail(param);
-    }
-
-
-    /**
-     * 공통 코드 그룹을 수정한다.
+     * Group Table을 수정한다.
      *
      * @param param CodeGroup (모델클래스)
      * @return Map(자바클래스)
@@ -142,20 +103,7 @@ public class CommonCodeController extends Common {
 
 
     /**
-     * 공통 코드을 수정한다.
-     *
-     * @param param CodeDetail (모델클래스)
-     * @return Map(자바클래스)
-     */
-    @PutMapping(V2_URL +"/codedetail/{no}")
-    @ResponseBody
-    public Map<String, Object> updateCommonDetail(@PathVariable int no, @RequestBody CommonCode param) {
-        return commonCodeService.updateCommonDetail(no,param);
-    }
-
-
-    /**
-     * 공통 코드 그룹을 삭제한다.
+     * Group Table을 삭제한다.
      *
      * @param id
      * * @return Map(자바클래스)
@@ -169,7 +117,60 @@ public class CommonCodeController extends Common {
 
 
     /**
-     * 공통 코드을 삭제한다.
+     * Detail Table 전체목록 조회한다.
+     *
+     * @param param CodeDetail
+     * @return Map(자바클래스)
+     */
+    @GetMapping(V2_URL+"/codedetail")
+    @ResponseBody
+    public Map<String, Object> getCodeDetailList(@ModelAttribute CommonCode param) {
+        return commonCodeService.getCodeDetailList(param);
+    }
+
+
+    /**
+     * Detail Table 상세 목록을 조회한다.
+     *
+     * @param no CodeDetail
+     * @return Map(자바클래스)
+     */
+    @GetMapping(V2_URL + "/codedetail/{no}")
+    @ResponseBody
+    public Map<String, Object> getCodeDetail(@PathVariable("no") int no) {
+        LOGGER.info("NO :: " + no);
+        return commonCodeService.getCodeDetail(no);
+    }
+
+
+    /**
+     * Detail Table을 생성한다.
+     *
+     * @param param CodeDetail (모델클래스)
+     * @return Map(자바클래스)
+     */
+    @PostMapping(V2_URL +"/codedetail")
+    @ResponseBody
+    public Map<String, Object> insertDetail(@RequestBody CommonCode param) {
+        return commonCodeService.insertDetail(param);
+    }
+
+
+    /**
+     * Detail Table을 수정한다.
+     *
+     * @param param CodeDetail (모델클래스)
+     * @return Map(자바클래스)
+     */
+    @PutMapping(V2_URL +"/codedetail/{no}")
+    @ResponseBody
+    public Map<String, Object> updateCommonDetail(@PathVariable int no, @RequestBody CommonCode param) {
+        return commonCodeService.updateCommonDetail(no,param);
+    }
+
+
+    /**
+     * Detail Table을 삭제한다.
      *
      * @param no
      * @return Map(자바클래스)
