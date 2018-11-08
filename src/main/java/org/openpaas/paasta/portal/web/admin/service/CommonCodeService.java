@@ -104,7 +104,8 @@ public class CommonCodeService {
      *
      * @param param CodeGroup (모델클래스)
      * @return Map(자바클래스)
-     */  public Map<String,Object> insertDetailGroup(CommonCode param) {
+     */
+    public Map<String,Object> insertDetailGroup(CommonCode param) {
         param.setUserId(commonService.getUserId());
         return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup", HttpMethod.POST, param, null);
     }
