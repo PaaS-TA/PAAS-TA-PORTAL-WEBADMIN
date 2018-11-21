@@ -99,7 +99,7 @@
                     <div class="form-group required">
                       <label for="clientPwd" class="col-sm-3 control-label">클라이언트 패스워드</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control toCheckString" id="clientPwd" placeholder=""/>
+                        <input type="password" class="form-control toCheckString" id="clientPwd" placeholder=""/>
                       </div>
                     </div>
 
@@ -140,11 +140,10 @@
    --access_token_validity &lt;seconds&gt;
    --refresh_token_validity &lt;&lt;seconds&gt;
    --redirect_uri &lt;list&gt;
-   --autoapprove &lt;&lt;list&gt;
-   --signup_redirect_url &lt;url&gt;
-   --clone &lt;other&gt;, get default settings from other
-   -s | --secret &lt;secret&gt;, client secret
-   -i | --[no-]interactive, interactively verify all values
+   --token_salt &lt;token salt&gt;
+   --autoapprove &lt;list&gt;
+   --allowedproviders &lt;list&gt;
+   --client_secret &lt;client secret&gt;
 
 ---------------------------------------------------------------------------------------------------------------------------
 
@@ -153,8 +152,9 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
                         </textarea>
                       </div>
                     </div>
-
-
+                    <div id="modifyGuide" class="hide">
+                      <h5><i class="fa fa-warning text-yellow"></i> 수정은 삭제 후, 재등록 하시기 바랍니다.</h5>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -163,7 +163,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
 
             <div class="modal-footer">
               <button type="button" id="clientDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteClientModal();">삭제</button>
-              <button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateClient();">저장</button>
+              <!--<button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateClient();">저장</button>-->
               <button type="button" id="clientRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createClient();">등록</button>
               <button type="button" id="clientCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
             </div>
@@ -225,6 +225,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
       $('#clientDeleteBtn').hide();
       $('#clientSaveBtn').hide();
       $('#clientRegBtn').show();
+      $('#modifyGuide').addClass('hide');
 
       initModal();
     });
@@ -264,7 +265,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     objTable.html('');
 
     $.each(dataList, function (id, data) {
-      var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
+      //var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
       objTable.append('<tr style="cursor:pointer;" data-id='+data.client_id+'>'
               + '<td>' + data.client_id + '</td>'
               + '</tr>');
@@ -285,6 +286,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     $('#clientSaveBtn').show();
     $('#clientRegBtn').hide();
     $('#clientFormModal').modal('toggle');
+    $('#modifyGuide').removeClass('hide');
 
     // 클라리언트 상세조회
     procCallAjax(CLIENT_PROC_URL + "/" + clientId, "GET", null, procCallbackGetClient, $('#modalLoadingBar'));
@@ -440,19 +442,9 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     }
 
     // 등록
-      $.extend(param, {client_secret : $("#clientPwd").val()});
+      //$.extend(param, {client_secret : $("#clientPwd").val()}); // client_credentials 등록시 client_secret 필수
       procCallAjax(CLIENT_PROC_URL, "POST", JSON.stringify(param), getClientList, $('#modalLoadingBar'));
-
-//    if(INSERT_FLAG != "" && INSERT_FLAG == CUD_U) { // update
-//      procCallAjax(CLIENT_PROC_URL, "PUT", JSON.stringify(param), procCallbackUpdateClient, $('#modalLoadingBar'));
-//    } else {
-//
-//    }
-
-
   }
-
-
 
   //  [클라이언트] 생성
   function createClient() {
@@ -463,10 +455,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     parsingClientOptions();
   }
 
-
-
-
-  // [클라리언트] 삭제 (confirm layer)
+  // [클라이언트] 삭제 (confirm layer)
   function deleteClientModal() {
 
     $("#popupTitle").html("클라이언트 삭제");
@@ -485,7 +474,6 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     procCallAjax(CLIENT_PROC_URL +"/"+clientId, "DELETE", null, getClientList, $('#modalLoadingBar'));
   }
 
-
   // 검색 조회
   function procSearchByKeyword(event) {
     //$('#buttonGetMoreList').hide();
@@ -500,12 +488,10 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     var newIdx = 0;
     for (var i=0; i < CLIENT_LIST.length; i++ ){
 
-      if (CLIENT_LIST[i].includes(document.getElementById('searchKeyword').value)) {
+      if (CLIENT_LIST[i].client_id.toLowerCase().includes(document.getElementById('searchKeyword').value.toLowerCase())) {
         searchResult[newIdx++] = CLIENT_LIST[i];
       }
     }
-
-    CLIENT_LIST = searchResult;
     printData(searchResult);
 
   }

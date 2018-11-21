@@ -2,6 +2,7 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.model.UserManagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,11 +48,10 @@ public class UserManagementController extends Common {
      *
      * @return Map(자바클래스)
      */
-    @GetMapping(V2_URL + "/usermgnts")
+    @GetMapping(V2_URL + "/usermgnts/{filter}/user")
     @ResponseBody
-    public Map<String, Object> getUserInfoList(@ModelAttribute UserManagement param) {
-        LOGGER.info("UserManagement :::: " + param.toString());
-        return userManagementService.getUserInfoList("/usermgnts", HttpMethod.GET, param, null);
+    public Map<String, Object> getUserInfoList(@PathVariable String filter, @ModelAttribute UserManagement param) {
+        return userManagementService.getUserInfoList("/usermgnts/"+filter+"/user?searchKeyword="+param.getSearchKeyword(), HttpMethod.GET, param, null);
     }
 
     @GetMapping(V2_URL + "/usermgnts/{userid}")
@@ -70,8 +70,6 @@ public class UserManagementController extends Common {
     @PostMapping(V2_URL + "/usermgnts/password/email")
     @ResponseBody
     public Map<String, Object> setResetPassword(@RequestBody Map map) {
-
-        LOGGER.info("############### " + map.toString());
         return userManagementService.setResetPassword("/users/password/email", HttpMethod.POST, map, null);
     }
 
@@ -92,13 +90,38 @@ public class UserManagementController extends Common {
     /**
      * 사용자 계정을 삭제한다.
      *
-     * @param userid user id
-     * @param param  model UserManagement
+     * @param guid user Guid
      * @return Map(자바클래스)
      */
-    @DeleteMapping(V2_URL + "/usermgnts/{userid}")
+    @DeleteMapping(V2_URL + "/usermgnts/{guid}")
     @ResponseBody
-    public Map<String, Object> deleteUserAccount(@PathVariable String userid, @RequestBody UserManagement param) {
-        return userManagementService.deleteUserAccount("/usermgnts/" + userid, HttpMethod.DELETE, param, null);
+    public Map<String, Object> deleteUserAccount(@PathVariable String guid) {
+        return userManagementService.deleteUserAccount( guid , HttpMethod.DELETE, null, this.getToken());
+    }
+
+
+    /**
+     * 사용자 계정을 등록한다.
+     *
+     * @param param Info
+     * @return Map(자바클래스)
+     */
+    @PostMapping(V2_URL + "/usermgnts/user")
+    @ResponseBody
+    public Map<String, Object> addUser(@RequestBody Map param) {
+        return userManagementService.addUser(HttpMethod.POST, param, this.getToken());
+    }
+
+
+    /**
+     * 사용자가 로그인 가능 유무 수정
+     *
+     * @param guid user Guid
+     * @return Map(자바클래스)
+     */
+    @PutMapping(V2_URL + "/usermgnts/{guid}/active")
+    @ResponseBody
+    public Map<String, Object> updateUserActive(@PathVariable String guid, @RequestBody UserManagement param) {
+        return userManagementService.updateUserActive("/usermgnts/" + guid + "/active", HttpMethod.PUT, param, this.getToken());
     }
 }

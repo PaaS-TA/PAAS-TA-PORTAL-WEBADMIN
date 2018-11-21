@@ -69,7 +69,7 @@ public class Common {
         final Object authPrincipal = auth.getPrincipal();
         if ( authPrincipal instanceof String )
             return ( (String) authPrincipal );
-        
+
         User user = (User) authPrincipal;
 
         //token 만료 시간 비교
@@ -82,16 +82,6 @@ public class Common {
 
                 Map result;
 
-                /*
-                HttpEntity requestEntity = new HttpEntity(resBody);
-                ResponseEntity rssResponse = restTemplate.exchange(
-                        apiUrl + "/login",
-                        HttpMethod.POST,
-                        requestEntity,
-                        Map.class);
-
-                result = (Map)rssResponse.getBody();
-*/
                 result = commonService.procCfApiRestTemplate("/login", HttpMethod.POST, resBody, null);
 
                 user.setToken((String) result.get("token"));

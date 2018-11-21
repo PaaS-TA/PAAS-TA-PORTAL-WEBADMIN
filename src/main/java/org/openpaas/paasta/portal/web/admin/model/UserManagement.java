@@ -26,6 +26,7 @@ public class UserManagement {
     private int pageSize;
     private String searchKeyword;
     private int totalCount;
+    private String active;
 
 
     /**
@@ -298,6 +299,24 @@ public class UserManagement {
         this.totalCount = totalCount;
     }
 
+    /**
+     * GETTER 로그인 가능 유무
+     *
+     * @return 로그인 가능 유무
+     */
+    public String getActive() {
+        return active;
+    }
+
+    /**
+     * SETTER 로그인 가능 유무
+     *
+     * @param active 로그인 가능 유무
+     */
+    public void setActive(String active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return "UserManagement{" +
@@ -316,6 +335,7 @@ public class UserManagement {
                 ", pageSize=" + pageSize +
                 ", searchKeyword='" + searchKeyword + '\'' +
                 ", totalCount=" + totalCount +
+                ", active=" + active +
                 '}';
     }
 }

@@ -323,19 +323,19 @@
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-10 " align="right">
             <div class="divButtons">
-                <c:set var="insertFlag" value="${INSERT_FLAG}" />
-                <c:set var="checkCudU" value="<%= Constants.CUD_U %>" />
-                <c:choose>
-                    <c:when test="${insertFlag eq checkCudU}">
+                <CatalogController:set var="insertFlag" value="${INSERT_FLAG}" />
+                <CatalogController:set var="checkCudU" value="<%= Constants.CUD_U %>" />
+                <CatalogController:choose>
+                    <CatalogController:when test="${insertFlag eq checkCudU}">
                         <button type="button" class="btn btn-danger fl" id="btnDelete">삭제</button>
                         <button type="button" class="btn btn-default" id="btnCancel">취소</button>
                         <button type="button" class="btn btn-success" id="btnRegist">저장</button>
-                    </c:when>
-                    <c:otherwise>
+                    </CatalogController:when>
+                    <CatalogController:otherwise>
                         <button type="button" class="btn btn-default" id="btnCancel">취소</button>
                         <button type="button" class="btn btn-success" id="btnRegist">등록</button>
-                    </c:otherwise>
-                </c:choose>
+                    </CatalogController:otherwise>
+                </CatalogController:choose>
             </div>
         </div>
     </div>
@@ -343,15 +343,15 @@
 
     &lt;%&ndash; Hidden values &ndash;%&gt;
 
-    <input type="hidden" id="resInsertFlag" name="resInsertFlag" value="<c:out value='${INSERT_FLAG}' default='' />" />
-    <input type="hidden" id="resCudU" name="resCudU" value="<c:out value='${CONSTANT_CUD}' default='' />" />
+    <input type="hidden" id="resInsertFlag" name="resInsertFlag" value="<CatalogController:out value='${INSERT_FLAG}' default='' />" />
+    <input type="hidden" id="resCudU" name="resCudU" value="<CatalogController:out value='${CONSTANT_CUD}' default='' />" />
 
     <input type="hidden" id="oldFilePath" name="oldFilePath" value="" />
     <input type="hidden" id="filePath" name="filePath" value="" />
     <input type="hidden" id="fileName" name="fileName" value="" />
     <input type="hidden" id="fileSize" name="fileSize" value="" />
 
-    <input type="hidden" id="no" name="no" value="<c:out value='${REQUEST_NO}' default='' />" />
+    <input type="hidden" id="no" name="no" value="<CatalogController:out value='${REQUEST_NO}' default='' />" />
 
     <input type="hidden" id="classificationValue" name="classificationValue" value="" />
 

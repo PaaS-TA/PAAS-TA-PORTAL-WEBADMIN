@@ -208,7 +208,8 @@
         $("#modalbody").html("데이터를 불러오고 있습니다.");
         OrgId = orgid;
         //procCallAjax2(V2_URL + "/orgs/"+quotaid+"/quota","GET", null, procCallbackGetOrgQuota);
-        procCallAjax2(V2_URL + "/orgs/"+orgid+"/quota","GET", null, procCallbackGetOrgQuota);
+        //procCallAjax2(V2_URL + "/orgs/"+orgid+"/quota","GET", null, procCallbackGetOrgQuota);
+        procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary", "GET",null, procCallbackGetOrgSummary);
     };
 
     // GET ORG SUMMARY CALLBACK
@@ -227,13 +228,14 @@
 
     // GET ORG SUMMARY CALLBACK
     var procCallbackGetOrgSummary = function(data, param) {
+
         spaces = "없음";
-        for (var i = 0; i < data.spaces.length; i++) {
-            if (i != 0) spaces += " , " + data.spaces[i].name;
-            else spaces = data.spaces[i].name;
+        for (var i = 0; i < data.resource.length; i++) {
+            if (i != 0) spaces += " , " + data.resource[i].name;
+            else spaces = data.resource[i].name;
         }
         $("#modalbody").html("<b>Domains</b> : " + domainNames +
-                "<br><b>Quota</b> : " + quotaName + " (" + MemoryLimit + "M memory limit, " + totalRoutes + " routes, " + totalServices + " services, " + paidServices + ")" +
+                "<br><b>Quota</b> : " + data.quota.name + " (" + data.quota.memoryLimit + "M memory limit, " + data.quota.totalRoutes + " routes, " + data.all_serviceTotal + "/" + data.quota.totalServices + " services)" +
                 "<br><b>Spaces</b> : " + spaces);
     }
 
@@ -292,7 +294,7 @@
         }
 
         $("#modalbody").html(
-                "<br><b>Org</b> : " + currentOrg +
+                "<b>Org</b> : " + currentOrg +
                 "<br><b>Space</b> : " + data.name +
                 "<br><b>Apps</b> : " + apps +
                 "<br><b>Domains</b> : " + domainNames +

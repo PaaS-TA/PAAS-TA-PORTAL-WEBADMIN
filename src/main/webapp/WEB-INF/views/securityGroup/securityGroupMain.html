@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="../layout/default">
+<head></head>
+<body>
+<div>
+    <header></header>
+    <aside>/</aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div layout:fragment="content" class="content-wrapper">
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                시큐리티 그룹
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+
+                        <div id="loadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                        <div class="box-header">
+
+                            <div class="box-tools col-xs-6 col-sm-5 pull-left"
+                                 style="position:static;padding-left: 0px;">
+                                <div class="has-feedback">
+                                    <input type="text" class="form-control input-sm" id="searchKeyword"
+                                           onkeyup="viewSearchKeyWord();" placeholder="이름으로 검색"/>
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <select class="form-control toCheckString" id="access"
+                                    style="width:150px;margin-top: -5px; display: unset;"
+                                    onchange="selectGroupChange()">
+                                <option value="All" selected="true">전체보기</option>
+                                <option value="Staging">Staging default</option>
+                                <option value="Running">Running default</option>
+                            </select>
+                            <div class="pull-right" style="padding-right: 0px;">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn"
+                                        name="registBtn" data-toggle="modal" data-backdrop="static"
+                                        data-keyboard="false" data-target="#securityGroupFormModal">
+                                    시큐리티 그룹 등록
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="box-body">
+                            <table class="table table-striped text-center"> <!-- table-responsive -->
+                                <thead>
+                                <tr>
+                                    <th>시큐리티 그룹</th>
+                                </tr>
+                                </thead>
+                                <tbody id="securityGroupList" name="dataList">
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal Layer-->
+            <div class="modal fade" id="securityGroupFormModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title">시큐리티 그룹 생성</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box" style="margin-bottom: 10px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i>
+                                </div>
+                                <form id="securityGroupForm" class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group required">
+                                            <label for="securityGroupName" class="col-sm-3 control-label">이름</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString"
+                                                       id="securityGroupName" placeholder=""/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="securityGroupName" class="col-sm-3 control-label">staging
+                                                default 설정</label>
+                                            <div class="col-sm-9" style="margin-top : 5px">
+                                                <input name="isEnabled" type="checkbox" checked=""
+                                                       id="securityStagingDefault"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="securityGroupName" class="col-sm-3 control-label">running
+                                                default 설정</label>
+                                            <div class="col-sm-9" style="margin-top : 5px">
+                                                <input name="isEnabled" type="checkbox" checked=""
+                                                       id="securityRunningDefault"/>
+                                            </div>
+                                        </div>
+                                        <div class="nav-tabs-custom" style="margin-bottom:0px;">
+                                            <ul class="nav nav-tabs" id="secucrityListUI">
+                                                <li class="tab-pane active" id="securityList_1"><a
+                                                        href="#securityplus_1" data-toggle="tab" aria-expanded="true"
+                                                        data-tab-type="org">1</a></li>
+                                                <li class="tab-pane" id="securityListPlus"><a href="#spaceTab"
+                                                                                              data-toggle="tab"
+                                                                                              aria-expanded="false"
+                                                                                              data-tab-type="plus"
+                                                                                              id="securityplus">+</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="tab-content" id="securityAllList">
+                                            <div class="tab-pane fade in active" id="securityplus_1">
+                                                <div id="tab-1" class="">
+                                                    <div class="form-group" style="margin-top: 10px;" id="securityGroupCodeDiv_1">
+                                                        <label for="securityGroupCode_1"
+                                                               class="col-sm-3 control-label">코드</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="number" class="form-control"
+                                                                   id="securityGroupCode_1"
+                                                                   placeholder="icmp에 대한 코드 제어 신호" onkeyup="limtenumber(1, 'Code')"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group" style="margin-top: 10px;" id="securityDescriptionDiv_1">
+                                                        <label for="securityDescription_1"
+                                                               class="col-sm-3 control-label">설명</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control"
+                                                                   id="securityDescription_1"
+                                                                   placeholder="규칙 설명"></input>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group required" id="securityDestinationDiv_1">
+                                                        <label for="securityDestination_1"
+                                                               class="col-sm-3 control-label">규칙</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control toCheckString"
+                                                                   id="securityDestination_1" placeholder="규칙"></input>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group" id="securityLogDiv_1">
+                                                        <label for="securityLog_1"
+                                                               class="col-sm-3 control-label" >로그</label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control toCheckString"
+                                                            id="securityLog_1">
+                                                            <option value="none" selected="selected">none</option>
+                                                            <option value="true">true</option>
+                                                            <option value="false">false</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group" id="securityPortsDiv_1">
+                                                        <label for="securityPorts_1"
+                                                               class="col-sm-3 control-label">포트</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="securityPorts_1"
+                                                                   placeholder="포트"></input>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group required" id="securityProtocolDiv_1">
+                                                        <label for="securityProtocol_1" class="col-sm-3 control-label">프로토콜</label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control toCheckString"
+                                                            id="securityProtocol_1" placeholder="프로토콜" onchange="protocolChange(1);">
+                                                            <option value="all" selected="selected">all</option>
+                                                            <option value="tcp">tcp</option>
+                                                            <option value="icmp">icmp</option>
+                                                            <option value="udp">udp</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group" id="securityTypeDiv_1">
+                                                        <label for="securityGroupType_1"
+                                                               class="col-sm-3 control-label">타입</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="number" class="form-control"
+                                                                   id="securityGroupType_1"
+                                                                   placeholder="icmp에 대한 유형 제어 신호" onkeyup="limtenumber(1, 'Type')"></input>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="button" id="securityGroupTapDelete_1"
+                                                                class="btn btn-sm btn-danger pull-right"
+                                                                style="margin-right: 15px;" onclick="tapDelete(1)">탭 삭제
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="tab-pane" id="spaceTab">
+                                                <input type="text"/>
+                                            </div>
+                                        </div>
+                                        <div style="border-bottom: 3px solid; border-color: #3c8dbc;"></div>
+                                        <div class="form-group">
+                                            <button type="button" id="securityGroupReadFile"
+                                                    class="btn btn-sm btn-primary pull-right"
+                                                    style="margin-right: 15px; margin-top :10px;"
+                                                    onclick="ruleLoader();">파일 불러오기
+                                            </button>
+                                            <button type="button" id="securityGroupWriteFile"
+                                                    class="btn btn-sm btn-primary pull-right"
+                                                    style="margin-right: 15px; margin-top :10px;"
+                                                    onclick="ruleWrite();">파일 내보내기
+                                            </button>
+                                            <input type="file" id="fileLoader" onchange="loadFile();"
+                                                   style="display: none;"/>
+                                        </div>
+                                        <table class="table table-striped text-center"> <!-- table-responsive -->
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 45%">org</th>
+                                                <th style="width: 45%">space</th>
+                                                <th style="width: 10%">delete</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="securityGroup_1List" name="securityGroup_1List">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" id="securityGroupDeleteBtn" name="modalDeleteBtn"
+                                    class="btn btn-sm btn-danger pull-left" onClick="deleteSecurityGroup();"
+                                    data-dismiss="modal">삭제
+                            </button>
+                            <button type="button" id="clientSaveBtn" name="modalSaveBtn"
+                                    class="btn btn-sm btn-primary pull-right" onClick="createSecurityGroup();"
+                                    data-dismiss="modal">등록
+                            </button>
+                            <button type="button" id="securityGroupRegBtn" name="modalRegBtn"
+                                    class="btn btn-sm btn-primary pull-right" onClick="updateSecurityGroup();"
+                                    data-dismiss="modal" hidden="hidden">수정
+                            </button>
+                            <button type="button" id="securityGroupCloseBtn" class="btn btn-sm btn-default pull-left"
+                                    data-dismiss="modal">취소
+                            </button>
+                        </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="clientConfirmModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"
+                                    id="popupButtonText"> SAVE CHANGES
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"
+                                    id="popupCancelButtonText"
+                                    onclick="procClosePopup('clientConfirmModal');"> 취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Layer-->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer></footer>
+
+</div>
+<!-- ./wrapper -->
+
+<script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+    /*<![CDATA[*/
+    var securityGroupList = [];
+    var sltPage = 1;
+    var CLIENT_LIST;
+    var INIT_SECURITY_RULE_HTML;
+    var sltSecurityGuid;
+    var sltSecuritySpaces = [];
+    var sltSecurityOrgs = [];
+    var sltGroupUrl = "/v2/securitygroups/";
+    var sltBindSpaceData = [];
+    var sltUnBindSpaceData = [];
+    var sltADDSpaceData;
+    var sltAllSpaceGuid = [];
+    $(document).ready(function () {
+        getInitSecurityRuleHtml();
+        getSecurityGroupList();
+    });
+
+    $(document).on("click", 'button[id=starterRegistBtn]', function (e) {
+        sltBindSpaceData = [];
+        sltUnBindSpaceData = [];
+        sltSecuritySpaces = [];
+        $('#securityGroupFormModal').html(INIT_SECURITY_RULE_HTML);
+        settingOrgListSpaceList();
+        $('#clientSaveBtn').show();
+        $('.modal-title').text("시큐리티 그룹 등록");
+        $('#securityGroupDeleteBtn').hide();
+        $('#securityGroupSaveBtn').hide();
+        $('#securityGroupRegBtn').hide();
+        protocolChange(1);
+    });
+
+    $(document).on("mouseup", 'tbody[name=dataList]', function (e) {
+        sltBindSpaceData = [];
+        sltUnBindSpaceData = [];
+        $('#securityGroupFormModal').html(INIT_SECURITY_RULE_HTML);
+        initModal();
+        sltSecurityGuid = $(e.target).parent().data('id');
+        getSecurityGroups(sltSecurityGuid);
+    });
+
+    $(document).on("mouseup", 'a[id=securityplus]', function (e) {
+
+        var idx = $(e.target).parent().parent()[0].childElementCount - 1;
+        var security_plus = $(e.target).parent().parent().children()[idx].outerHTML;
+        var result = '';
+        for (_idx = 0; _idx < idx; _idx++) {
+            result += $(e.target).parent().parent().children()[_idx].outerHTML;
+        }
+        var securitylist_plus = '<li class="tab-pane" id="securityList_' + (idx + 1) + '"><a href="#securityplus_' + (idx + 1) + '" data-toggle="tab" aria-expanded="false" data-tab-type="org">' + (idx + 1) + '</a></li>'
+        result += securitylist_plus;
+        result += security_plus;
+        getsecurityListTapHtml((idx + 1), (idx + 2));
+        $(e.target).parent().parent().html(result);
+        $("#securityList_" + (idx + 1) + " > a").trigger("click");
+    });
+
+    var selectGroupChange = function () {
+        sltPage = 1;
+        getSecurityGroupList();
+    }
+
+    function limtenumber(idx, type) {
+        if($("#securityGroup"+type+"_" + idx).val() !==''){
+            if($.isNumeric($("#securityGroup"+type+"_" + idx).val())){
+                if ($("#securityGroup" + type + "_" + idx).val() < -1) {
+                    $("#securityGroup" + type + "_" + idx).val(-1)
+                }
+            }else{
+                $("#securityGroup" + type + "_" + idx).val(0);
+            }
+        }
+    }
+
+    function getInitSecurityRuleHtml() {
+        INIT_SECURITY_RULE_HTML = $('#securityGroupFormModal').html();
+    }
+
+    function getsecurityListTapHtml(_idx, length) {
+        var result = '';
+        for (idx = _idx; idx < length; idx++) {
+            result += '<div class="tab-pane fade" id="securityplus_' + idx + '">' +
+                '<div id="tab-' + idx + '" class="">' +
+                '<div class="form-group" style="margin-top: 10px;" id="securityGroupCodeDiv_' + idx + '">' +
+                '<label for="securityGroupCode_' + idx + '"' +
+                'class="col-sm-3 control-label">코드</label>' +
+                '<div class="col-sm-9">' +
+                '<input type="number" class="form-control"' +
+                'id="securityGroupCode_' + idx + '"' +
+                'placeholder="icmp에 대한 코드 제어 신호" onkeyup="limtenumber('+ idx + ' , '+"'Code'"+')"/>' +
+                '</div>' +
+                '</div>' +
+
+                '<div class="form-group" style="margin-top: 10px;" id="securityDescriptionDiv_' + idx + '">' +
+                '<label for="securityDescription_' + idx + '" class="col-sm-3 control-label">설명</label>' +
+                '<div class="col-sm-9">' +
+                '<input type="text" class="form-control"' +
+                'id="securityDescription_' + idx + '" placeholder="규칙 설명"></input>' +
+                '</div>' +
+                '</div>' +
+
+                '<div class="form-group required" id="securityDestinationDiv_' + idx + '">' +
+                '<label for="securityDestination_' + idx + '" class="col-sm-3 control-label">규칙</label>' +
+                '<div class="col-sm-9">' +
+                '<input type="text" class="form-control toCheckString"' +
+                'id="securityDestination_' + idx + '" placeholder="규칙"></input>' +
+                '</div>' +
+                '</div>' +
+
+                '<div class="form-group" id="securityLogDiv_' + idx + '">' +
+                '<label for="securityLog_' + idx + '"' +
+                'class="col-sm-3 control-label">로그</label>' +
+                '<div class="col-sm-9">' +
+                '<select class="form-control toCheckString"' +
+                'id="securityLog_' + idx + '">' +
+                '<option value="none" selected="selected">none</option>'+
+                '<option value="true">true</option>'+
+                '<option value="false">false</option>'+
+                '</select>'+
+                '</div>' +
+                '</div>' +
+
+                '<div class="form-group" id="securityPortsDiv_' + idx + '">' +
+                '<label for="securityPorts_' + idx + '"' +
+                'class="col-sm-3 control-label">포트</label>' +
+                '<div class="col-sm-9">' +
+                '<input type="text" class="form-control" id="securityPorts_' + idx + '"' +
+                'placeholder="포트"></input>' +
+                '</div>' +
+                '</div>' +
+
+                '<div class="form-group required" id="securityProtocolDiv_' + idx + '">' +
+                '<label for="securityProtocol_' + idx + '" class="col-sm-3 control-label">프로토콜</label>' +
+                '<div class="col-sm-9">' +
+                '<select class="form-control toCheckString"' +
+                'id="securityProtocol_' + idx + '" placeholder="프로토콜" onchange="protocolChange('+ idx + ');">' +
+                '<option value="all" selected="selected">all</option>'+
+                '<option value="tcp">tcp</option>'+
+                '<option value="icmp">icmp</option>'+
+                '<option value="udp">udp</option>'+
+                '</select>'+
+                '</div>' +
+                '</div>' +
+
+                '<div class="form-group" id="securityTypeDiv_' + idx + '">' +
+                '<label for="securityGroupType_' + idx + '"' +
+                'class="col-sm-3 control-label">타입</label>' +
+                '<div class="col-sm-9">' +
+                '<input type="number" class="form-control" id="securityGroupType_' + idx + '"' +
+                'placeholder="icmp에 대한 유형 제어 신호" onkeyup="limtenumber('+ idx + ' , '+"'Type'"+')"/>' +
+                '</div>' +
+                '</div>' +
+
+                '<div class="form-group">' +
+                '<button type="button" id="securityGroupTapDelete_' + idx + '"' + 'class="btn btn-sm btn-danger pull-right" style="margin-right: 15px;" onclick="tapDelete(' + idx + ');">탭 삭제</button>' +
+                '</div>' +
+
+                '</div>' +
+
+                '</div>';
+        }
+        var prochtml = $('#securityAllList');
+        prochtml.append(result);
+        for (idx = _idx; idx < length; idx++) {
+            protocolChange(_idx);
+        }
+    }
+
+    function getSecurityGroupList() {
+
+        var filter = $("#access").val();
+        if (filter == 'All') {
+            sltGroupUrl = "/v2/securitygroups/"
+        } else if (filter == 'Staging') {
+            sltGroupUrl = "/v2/securitygroups/staging/"
+        } else if (filter == 'Running') {
+            sltGroupUrl = "/v2/securitygroups/running/"
+        }
+        procCallAjax(sltGroupUrl + sltPage, "GET", null, procCallbackSecurityGroupList, $('#loadingBar'));
+        getOrgs();
+    }
+
+    function protocolChange(idx){
+        if($('#securityProtocol_' + idx).val() != 'icmp'){
+            $('#securityTypeDiv_' + idx).hide();
+            $('#securityGroupCodeDiv_' + idx).hide();
+            $('#securityPortsDiv_' + idx).show();
+        } else{
+            $('#securityTypeDiv_' + idx).show();
+            $('#securityGroupCodeDiv_' + idx).show();
+            $('#securityPortsDiv_' + idx).hide();
+        }
+    }
+
+    function viewSearchKeyWord() {
+        printData(securityGroupList);
+    }
+
+    var procCallbackSecurityGroupList = function (data) {
+        securityGroupList = [];
+        securityGroupList.push(data.resources);
+        printData(securityGroupList);
+    };
+
+    var initModal = function () {
+        CLIENT_LIST = "";
+        $('#securityGroupForm')[0].reset();
+    }
+
+    // 시큐리티 그룹 리스트 출력
+    function printData(dataList) {
+        var objTable = $("#securityGroupList");
+        objTable.html('');
+        $.each(dataList, function (id, data1) {
+            $.each(data1, function (id1, data) {
+                //var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
+                if (data.entity.name.toLowerCase().includes($('#searchKeyword').val().toLowerCase())) {
+                    objTable.append('<tr style="cursor:pointer;" data-id=' + data.metadata.guid + '>'
+                        + '<td>' + data.entity.name + '</td>'
+                        + '</tr>');
+                }
+
+            });
+        });
+        if (dataList[0].length == 0) {
+            objTable.append('<tr><td>' + /*[[#{common.info.empty.data}]]*/ "" + '</td></tr>');
+        }
+        else if (dataList[sltPage - 1].length == 50 * sltPage) {
+            sltPage += 1;
+            getSecurityGroupList();
+        }
+    };
+
+    function getSecurityGroups(clientId) {
+
+        $('.modal-title').text("시큐리티 그룹 상세");
+        $('#securityGroupDeleteBtn').show();
+        $('#securityGroupSaveBtn').show();
+        $('#clientSaveBtn').hide();
+        $('#securityGroupRegBtn').show();
+        $('#securityGroupFormModal').modal('toggle');
+        $('#modifyGuide').removeClass('hide');
+
+        // 클라리언트 상세조회
+        procCallAjax("/v2/securitygroup/" + clientId, "GET", null, procCallbackGetSecurityGruop, $('#modalLoadingBar'));
+    }
+
+    var procCallbackGetSecurityGruop = function (data) {
+        $('#securityGroupName').val(data.entity.name);
+        data.entity.staging_default ? $('#securityStagingDefault').prop('checked', true) : $('#securityStagingDefault').prop('checked', false);
+        data.entity.running_default ? $('#securityRunningDefault').prop('checked', true) : $('#securityRunningDefault').prop('checked', false);
+
+        var idx = $('#securityplus').parent().parent()[0].childElementCount - 1;
+        var security_plus = $('#securityplus').parent().parent().children()[idx].outerHTML;
+        var result = '';
+        var securitylist_plus = '';
+        for (_idx = 0; _idx < idx; _idx++) {
+            result += $('#securityplus').parent().parent().children()[_idx].outerHTML;
+        }
+        for (_idx = 1; _idx < data.entity.rules.length; _idx++) {
+            securitylist_plus += '<li class="tab-pane" id="securityList_' + (_idx + 1) + '"><a href="#securityplus_' + (_idx + 1) + '" data-toggle="tab" aria-expanded="false" data-tab-type="org">' + (_idx + 1) + '</a></li>'
+        }
+        result += securitylist_plus;
+        result += security_plus;
+        getsecurityListTapHtml(2, (data.entity.rules.length + 1));
+        $('#securityplus').parent().parent().html(result);
+        securityRules(data.entity.rules);
+        getSecuritySpace(1);
+    }
+
+    function securityRules(data) {
+        $.each(data, function (_idx, data1) {
+            var idx = (_idx + 1);
+            $('#securityGroupCode_' + idx).val(data1.code);
+            $('#securityDescription_' + idx).val(data1.description);
+            $('#securityDestination_' + idx).val(data1.destination);
+            if(data1.log !== null){
+                if(data1.log){
+                    $('#securityLog_' + idx).val('true');
+                }else {
+                    $('#securityLog_' + idx).val('false');
+                }
+            }
+            $('#securityPorts_' + idx).val(data1.ports);
+            $('#securityProtocol_' + idx).val(data1.protocol);
+            $('#securityGroupType_' + idx).val(data1.type);
+            if(data1.protocol != 'icmp'){
+                $('#securityTypeDiv_' + idx).hide();
+                $('#securityGroupCodeDiv_' + idx).hide();
+                $('#securityPortsDiv_' + idx).show();
+            } else{
+                $('#securityTypeDiv_' + idx).show();
+                $('#securityGroupCodeDiv_' + idx).show();
+                $('#securityPortsDiv_' + idx).hide();
+            }
+        });
+    }
+
+    function createSecurityGroup() {
+        var param = getRules();
+        var servicename = $('#securityGroupName').val();
+        procCallAjax2('/v2/securitygroup/' + servicename, "POST", param, setCreateDefaultStagingSetting, $('#modalLoadingBar'));
+    };
+
+    function updateSecurityGroup() {
+        var param = getRules();
+        var servicename = $('#securityGroupName').val();
+        procCallAjax('/v2/securitygroup/' + sltSecurityGuid + '/' + servicename, "PUT", param, setUpdateDefaultStagingSetting, $('#modalLoadingBar'));
+        $.each(sltBindSpaceData, function (index, data) {
+            procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/spaces/' + data.metadata.guid, "PUT", data, bindResult);
+        });
+        $.each(sltUnBindSpaceData, function (index, data) {
+            procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/spaces/' + data, "DELETE", data, bindResult);
+        });
+    };
+
+    function bindResult(data) {
+        sltUnBindSpaceData = [];
+        sltBindSpaceData = [];
+    }
+
+    function deleteSecurityGroup() {
+        procCallAjax('/v2/securitygroup/' + sltSecurityGuid, "DELETE", null, getInitGroupList, $('#modalLoadingBar'));
+    };
+
+    function getRules() {
+        var param = '['
+        $("input[id^='securityGroupCode_']").each(function (idx, id) {
+            if ($('#securityDestination_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() != '') {
+                if (idx != 0 && param != '[') {
+                    param += ',';
+                }
+                param += '\r\n\t{';
+                if ($('#securityGroupCode_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() == 'icmp') {
+                    param += '\r\n\t\t"code" :' + $('#securityGroupCode_' + (idx + 1)).val() + ',';
+                }
+                if ($('#securityDescription_' + (idx + 1)).val() != '') {
+                    param += '\r\n\t\t"description" :' + '"' + $('#securityDescription_' + (idx + 1)).val() + '"' + ',';
+                }
+                if ($('#securityPorts_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() != 'icmp') {
+                    param += '\r\n\t\t"ports" :' + '"' + $('#securityPorts_' + (idx + 1)).val() + '"' + ',';
+                }
+                if ($('#securityGroupType_' + (idx + 1)).val() != '' && $('#securityProtocol_' + (idx + 1)).val() == 'icmp') {
+                    param += '\r\n\t\t"type" :' + $('#securityGroupType_' + (idx + 1)).val() + ',';
+                }
+                param += '\r\n\t\t"destination" :' + '"' + $('#securityDestination_' + (idx + 1)).val() + '"' + ',';
+                param += '\r\n\t\t"log" : ';
+
+                    if($('#securityLog_' + (idx + 1)).val() == 'true'){
+                        param += true + ',';
+                    }else if($('#securityLog_' + (idx + 1)).val() == 'false'){
+                        param += false + ',';
+                    }else {
+                        param += null + ',';
+                    }
+
+                param += '\r\n\t\t"protocol" :' + '"' + $('#securityProtocol_' + (idx + 1)).val() + '"';
+                param += '\r\n\t}';
+            }
+        });
+        param += '\r\n]';
+        return param;
+    };
+
+    function getOrgs() {
+        procCallAjax('/v2/orgs', "GET", null, serSecurityOrgsList, $('#modalLoadingBar'));
+    }
+
+    function getSecuritySpace(page) {
+        procCallAjax('/v2/securitygroup/' + sltSecurityGuid + '/' + page, "GET", null, setSecuritySpaceList, $('#modalLoadingBar'));
+    }
+
+    function settingOrgListSpaceList() {
+        sltAllSpaceGuid = [];
+        var objTable = $('#securityGroup_1List');
+
+        objTable.html('');
+        console.log(objTable);
+        var orgValue = '';
+        $.each(sltSecuritySpaces, function (index, data) {
+            var bind = true;
+            $.each(sltUnBindSpaceData, function (index, data2) {
+                if (data.metadata.guid == data2) {
+                    bind = false;
+                }
+            });
+            if (bind) {
+                var tdOrgText;
+                var tdOrgId;
+                $.each(sltSecurityOrgs, function (index1, data1) {
+                    if (data.entity.organization_guid == data1.metadata.guid) {
+                        tdOrgText = data1.entity.name;
+                        tdOrgId = data1.metadata.guid
+                        return;
+                    }
+
+                });
+                sltAllSpaceGuid.push(data.metadata.guid)
+                objTable.append('' +
+                    '<tr id="Orgs_' + (index + 1) + '">' +
+                    '   <td data-id="' + tdOrgId + '">' + tdOrgText + '</td>' +
+                    '   <td data-id="' + data.metadata.guid + '">' + data.entity.name + '</td>' +
+                    '   <td><span class="fa fa-trash" onclick="AddUnBindSpace(\'' + data.metadata.guid + '\')" style="cursor:pointer;"></span></td>' +
+                    '</tr>'
+                );
+            }
+        });
+        $.each(sltBindSpaceData, function (index, data) {
+            var tdOrgText;
+            var tdOrgId;
+            $.each(sltSecurityOrgs, function (index1, data1) {
+                if (data.entity.organization_guid == data1.metadata.guid) {
+                    tdOrgText = data1.entity.name;
+                    tdOrgId = data1.metadata.guid
+                    return;
+                }
+            });
+            sltAllSpaceGuid.push(data.metadata.guid);
+            objTable.append('' +
+                '<tr id="Orgs_' + (index + 1) + '">' +
+                '   <td data-id="' + tdOrgId + '">' + tdOrgText + '</td>' +
+                '   <td data-id="' + data.metadata.guid + '">' + data.entity.name + '</td>' +
+                '   <td><span class="fa fa-trash" onclick="AddUnBindSpace(\'' + data.metadata.guid + '\')" style="cursor:pointer;"></span></td>' +
+                '</tr>'
+            );
+        });
+        var selectBox = '';
+        selectBox += '<select class="form-control toCheckStringSpace" id="selectOrg" onchange="selectSpace()">';
+        selectBox += '<option value="" selected="selected">Select Org</option>';
+        $.each(sltSecurityOrgs, function (index, data) {
+            selectBox += '   <option value="' + data.metadata.guid + '">' + data.entity.name + '</option>';
+        });
+        selectBox += '</select>';
+        objTable.append('' +
+            '<tr id="selectBody" style="text-align-last: center">' +
+            '   <td >' + selectBox + '</td>' +
+            '   <td id="tdSpace"></td>' +
+            '   <td id="tdAdd"></td>' +
+            '</tr>'
+        );
+    };
+
+    function selectSpace() {
+        var orgId = $("#selectOrg").val();
+        if (orgId != "") {
+            procCallAjax('/v2/orgs/' + orgId + '/spaces', "GET", "", callbackSelectSpace, $('#modalLoadingBar'));
+        }
+    };
+
+    var callbackSelectSpace = function (data) {
+        var spaces = data.spaceList.resources;
+        sltADDSpaceData = spaces;
+        var selectBox = '';
+        if ($('#tdSpace') != null) {
+            $('#tdSpace').remove();
+        }
+        if ($('#tdAdd') != null) {
+            $('#tdAdd').remove();
+        }
+        selectBox += '<select class="form-control toCheckStringSpace" id="selSpace" onchange="addSpaceSecurity()">';
+        selectBox += '<option disabled selected value>select Space</option>';
+        $.each(spaces, function (index, data) {
+            var result = true;
+            $.each(sltAllSpaceGuid, function (index, s_guid) {
+                if (data.metadata.guid == s_guid) {
+                    result = false;
+                    return;
+                }
+                ;
+            });
+            if (result) {
+                selectBox += '   <option value="' + data.metadata.guid + '">' + data.entity.name + '</option>';
+            }
+        });
+        selectBox += '</select>';
+        var objTable = $("#selectBody");
+        objTable.append('<td id="tdSpace">' + selectBox + '</td>' + '<td id="tdAdd"></td>');
+    };
+
+    function addSpaceSecurity() {
+
+        if ($('#tdAdd') != null) {
+            $('#tdAdd').remove();
+        }
+        var addButton = '';
+        addButton += '<button type="button" class="btn btn-sm btn-primary pull-center" onClick="AddBindSpace()">등록</button>'
+        var objTable = $("#selectBody");
+        objTable.append('<td id="tdAdd">' + addButton + '</td>');
+    }
+
+    function AddBindSpace() {
+        $.each(sltADDSpaceData, function (index, data1) {
+            if ($("#selSpace").val() == data1.metadata.guid) {
+                sltBindSpaceData.push(data1);
+            }
+        });
+        $.each(sltBindSpaceData, function (index, bind) {
+            $.each(sltUnBindSpaceData, function (index2, unbind) {
+                if (bind.metadata.guid == unbind) {
+                    sltBindSpaceData.splice(index, 1);
+                    sltUnBindSpaceData.splice(index2, 1);
+                }
+            });
+        });
+        settingOrgListSpaceList();
+    }
+
+    function AddUnBindSpace(data) {
+        sltUnBindSpaceData.push(data);
+        $.each(sltBindSpaceData, function (index, bind) {
+            $.each(sltUnBindSpaceData, function (index2, unbind) {
+                if (bind.metadata.guid == unbind) {
+                    sltBindSpaceData.splice(index, 1);
+                    sltUnBindSpaceData.splice(index2, 1);
+                }
+            });
+        });
+        settingOrgListSpaceList();
+    }
+
+    function ruleWrite() {
+        var param = getRules();
+        // var file = new Blob([param], {type: 'text/plain'});
+        // console.log(file);
+        var fileName = $('#securityGroupName').val() + ".txt";
+        if ($('#securityGroupName').val() == '') {
+            var fileName = "empty.txt";
+        }
+        var pp = document.createElement('a');
+        pp.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(param));
+        pp.setAttribute('download', fileName);
+        pp.click();
+
+        //window.open('data:text/csv;charset=utf-8,' + param);
+    }
+
+    function ruleLoader() {
+        $("#fileLoader").click();
+    }
+
+    function loadFile() {
+        var fileReader = new FileReader();
+        fileReader.onload = function () {
+            var data1 = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+            try {
+                $.getJSON(data1, function (data) {
+                    var tapLenght = (($('input[id^=securityDescription_]').length + 1));
+                    var tapResultLength = (data.length + tapLenght);
+                    securityTapUI(tapLenght, tapResultLength);
+                    getsecurityListTapHtml(tapLenght, tapResultLength);
+                    $.each(data, function (index, jsonData) {
+                        if (jsonData.code !== undefined) {
+                            $('#securityGroupCode_' + (index + tapLenght)).val(jsonData.code);
+                        }
+                        if (jsonData.description !== undefined) {
+                            $('#securityDescription_' + (index + tapLenght)).val(jsonData.description);
+                        }
+                        if (jsonData.ports !== undefined) {
+                            $('#securityPorts_' + (index + tapLenght)).val(jsonData.ports);
+                        }
+                        if (jsonData.type !== undefined) {
+                            $('#securityGroupType_' + (index + tapLenght)).val(jsonData.type);
+                        }
+                        if (jsonData.destination !== undefined) {
+                            $('#securityDestination_' + (index + tapLenght)).val(jsonData.destination);
+                        }
+                        if (jsonData.log !== null) {
+                            jsonData.log ? $('#securityLog_' + (index + tapLenght)).val('true') : $('#securityLog_' + (index + tapLenght)).val('false');
+                        }
+                        if (jsonData.protocol !== undefined) {
+                            $('#securityProtocol_' + (index + tapLenght)).val(jsonData.protocol);
+                        }
+                    });
+                }).done(function () {
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    notifyAlert('danger', "", "JSON 형식 오류 : " + textStatus);
+                });
+
+                //getsecurityListTapHtml(tapLenght, (data.entity.rules.length + 1));
+            } catch (e) {
+                notifyAlert('danger', "", e.toString());
+            }
+
+        };
+        fileReader.readAsDataURL($('#fileLoader').prop('files')[0]);
+    }
+
+    function securityTapUI(s_idx, l_idx) {
+        var texts = '';
+        for (s_idx; s_idx < l_idx; s_idx++) {
+            texts += '<li class="tab-pane" id="securityList_' + s_idx + '"><a href="#securityplus_' + s_idx + '" data-toggle="tab" aria-expanded="true" data-tab-type="org">' + s_idx + '</a></li>';
+        }
+        texts += '<li class="tab-pane" id="securityListPlus"><a href="#spaceTab" data-toggle="tab" aria-expanded="false" data-tab-type="plus" id="securityplus">+</a></li>';
+        $("#securityListPlus").remove();
+        $("#secucrityListUI").append(texts);
+    }
+
+    function tapDelete(idx) {
+        var tapLenght = ($('input[id^=securityDescription_]').length);
+        var index = idx;
+        for (idx; tapLenght > idx; idx++) {
+            $('#securityGroupCode_' + idx).val($('#securityGroupCode_' + (idx + 1)).val());
+            $('#securityDescription_' + idx).val($('#securityDescription_' + (idx + 1)).val());
+            $('#securityDestination_' + idx).val($('#securityDestination_' + (idx + 1)).val());
+            $('#securityLog_' + idx).val($('#securityLog_' + (idx + 1)).val());
+            $('#securityPorts_' + idx).val($('#securityPorts_' + (idx + 1)).val());
+            $('#securityProtocol_' + idx).val($('#securityProtocol_' + (idx + 1)).val());
+            $('#securityGroupType_' + idx).val($('#securityGroupType_' + (idx + 1)).val());
+            protocolChange(idx);
+        }
+        if (tapLenght != 1) {
+            $('#securityList_' + tapLenght).remove();
+            $('#securityplus_' + tapLenght).remove();
+        } else {
+            $('#securityGroupCode_1').val('');
+            $('#securityDescription_1').val('');
+            $('#securityDestination_1').val('');
+            $('#securityLog_1').val('none');
+            $('#securityPorts_1').val('');
+            $('#securityProtocol_1').val('all');
+            $('#securityGroupType_1').val('');
+        }
+        if (index == tapLenght && tapLenght != 1) {
+            $("#securityList_" + (idx - 1) + " > a").trigger("click");
+        }
+    }
+
+    var getInitGroupList = function (data) {
+        sltPage = 1;
+        getSecurityGroupList();
+    };
+
+    var setCreateDefaultStagingSetting = function (data) {
+        console.log(data.RESULT);
+        if (data.RESULT == "SUCCESS") {
+            notifyAlert('success', "", '생성 완료 되었습니다.');
+            sltSecurityGuid = data.DATA.metadata.guid;
+            if ($('input:checkbox[id="securityStagingDefault"]').is(":checked")) {
+                procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/staging', "PUT", "", bindResult, $('#modalLoadingBar'));
+            }
+            if ($('input:checkbox[id="securityRunningDefault"]').is(":checked")) {
+                procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/running', "PUT", "", bindResult, $('#modalLoadingBar'));
+            }
+            $.each(sltBindSpaceData, function (index, data1) {
+                procCallAjax2('/v2/securitygroup/' + data.DATA.metadata.guid + '/spaces/' + sltSecurityGuid, "PUT", data.DATA, bindResult);
+            });
+            sltPage = 1;
+            getSecurityGroupList();
+        } else if (data.RESULT == "FALE") {
+            notifyAlert("danger", "", data.MSG);
+        }
+    };
+
+    var setUpdateDefaultStagingSetting = function (data) {
+        if ($('input:checkbox[id="securityStagingDefault"]').is(":checked")) {
+            procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/staging', "PUT", "", setRunningDefaultSetting);
+        } else {
+            procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/staging', "DELETE", "", setRunningDefaultSetting);
+        }
+    };
+
+    var setRunningDefaultSetting = function (data) {
+        if ($('input:checkbox[id="securityRunningDefault"]').is(":checked")) {
+            procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/running', "PUT", "", getInitGroupList);
+        } else {
+            procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/running', "DELETE", "", getInitGroupList);
+        }
+    };
+
+    var setSecuritySpaceList = function (data) {
+        sltSecuritySpaces = data.resources;
+        settingOrgListSpaceList();
+    }
+
+    var serSecurityOrgsList = function (data) {
+        sltSecurityOrgs = data.resources;
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

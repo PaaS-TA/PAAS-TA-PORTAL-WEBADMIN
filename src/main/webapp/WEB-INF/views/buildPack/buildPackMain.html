@@ -100,7 +100,7 @@
   };
 
   var procCallbackGetBuildPackList = function(datalist){
-
+     console.log(datalist);
     if(datalist.resources){ //
 
       var dataLength = datalist.resources.length;
@@ -129,13 +129,9 @@
         }
 
         $("#buildPackList").append(
-                "<tr align='center' data-guid='"+data.metadata.guid+"' >" +
+                "<tr align='center' data-guid='"+data.metadata.id+"' >" +
                 "<td> " + data.entity.name + "</td>" +
                 "<td> " + data.entity.filename + "</td>" +
-//                "<td class='col-md-1' align='center'><select id='position"+ index +"' style='width:50px;' onChange=updateBuildPack('"+ data.metadata.guid +"'," + index + ",true); >" + positionOption + "</select></td>" +
-//                "<td class='col-md-1' align='center'><input type='checkbox' id='enabled"+ index +"' "+ enabled + " onChange=updateBuildPack('"+ data.metadata.guid +"'," + index + ",false); ></td>" +
-//                "<td class='col-md-1' align='center'><input type='checkbox' id='locked"+ index +"' "+ locked + " onChange=updateBuildPack('"+ data.metadata.guid +"'," + index + ",false); ></td>"
-
                 "<td class='col-md-1' align='center'><select name='positionNo' style='width:50px;'>" + positionOption + "</select></td>" +
                 "<td class='col-md-1' align='center'><input  name='isEnabled' type='checkbox' "+enabled+"></td>" +
                 "<td class='col-md-1' align='center'><input  name='isLocked' type='checkbox' "+locked+"></td>"
@@ -159,6 +155,7 @@
       lock : lock
     }
 
+    console.log(param);
     procCallAjax("/v2/buildpacks/"+guid, "PUT", JSON.stringify(param), procCallbackUpdateBuildPack, $('#loadingBar'));
   }
 

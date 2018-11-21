@@ -138,3 +138,22 @@
     /*top: 8px;*/
     font-size: 15px;
 }
+
+/* 카탈로그 태그 관련 */
+.user_btn{padding:4px 8px; text-align: center; border-radius: 13px; font-size: 14px; line-height:1; border: none;}
+
+.colors1{background:#00aacc; color:#fff;}
+.colors2{background:#e66b6b; color:#fff;}
+.colors3{background:#909090; color:#fff;}
+
+.colors4{background:#008fa1; color:#fff;}
+.colors4:hover{ background: #00a4ba; color: #fff;}
+.colors4:active{ background: #007787; color: #fff;}
+
+.colors5{background:#434a5f; color: #fff;}
+.colors5:hover{ background: #555e78; color: #fff;}
+.colors5:active{ background: #313645; color: #fff;}
+
+.colors6{background:#f0a141; color:#fff;}
+.colors7{background:#478fa2; color:#fff;}
+.colors8{background:#77ae33; color:#fff;}

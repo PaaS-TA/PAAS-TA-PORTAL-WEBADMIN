@@ -15,7 +15,7 @@
       <div class="user-panel" style="min-height: 80px;">
         <div class="pull-left image">
           <img src="./resources/images/userpic.png"
-               th:src="@{/resources/images/userpic.png}" class="img-circle" alt="User Image"/>
+               th:src="@{/resources/images/worker-512.png}" class="img-circle" style="background: white" alt="User Image"/>
         </div>
         <div class="pull-left info">
           <p><span th:text="${#httpServletRequest.getUserPrincipal().getName()}"></span> 님</p>
@@ -67,7 +67,7 @@
             <li><a href="/code"><i class="fa fa-circle-o"></i> 코드 관리</a></li>
             <li><a href="/configInfos"><i class="fa fa-circle-o"></i> 설정 정보</a></li>
             <li><a href="/quotadefinitions"><i class="fa fa-circle-o"></i> 할당량 관리</a></li>
-            <li><a href="/isolationSegments"><i class="fa fa-circle-o"></i> Segments 할당 관리</a></li>
+            <li><a href="/isolationSegments"><i class="fa fa-circle-o"></i> 분할 관리</a></li>
           </ul>
         </li>
 
@@ -82,6 +82,20 @@
           <ul class="treeview-menu">
             <li><a href="/buildpacks"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
             <li><a href="/servicebrokers"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
+            <li><a href="/serviceplans"><i class="fa fa-circle-o"></i> 서비스 제어</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-lock"></i>
+            <span>보안</span>
+            <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/securitygroups"><i class="fa fa-circle-o"></i> 시큐리티 그룹</a></li>
           </ul>
         </li>
 
