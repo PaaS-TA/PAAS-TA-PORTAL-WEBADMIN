@@ -591,7 +591,6 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-
                 if (data) {
                     $("#detailNo").val(data.list[0].no);
                     $("#key").val(data.list[0].key);
@@ -606,7 +605,6 @@
                         $("#useYn2").prop("checked", true);
                     }
                 }
-
                 $('#codeDetailModal').modal('toggle');
             }
         });
@@ -618,13 +616,10 @@
         if (isGroupValidation == false) {
             return false;
         }
-
         var param = {
             id: $("#id").val(),
             name: $("#name").val(),
         }
-
-        console.log(param);
         $.ajax({
             url: "/v2/codegroup",
             method: "POST",
