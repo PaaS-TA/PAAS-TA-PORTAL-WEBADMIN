@@ -597,7 +597,14 @@
                     $("#key").val(data.list[0].key);
                     $("#value").val(data.list[0].value);
                     $("#summary").val(data.list[0].summary);
-                    $("#useYn").val(data.list[0].useYn);
+                    if(data.list[0].useYn === 'Y'){
+                    $("#useYn").prop("checked", true);
+                    $("#useYn2").prop("checked", false);
+                    }
+                    else if(data.list[0].useYn === 'N'){
+                        $("#useYn").prop("checked", false);
+                        $("#useYn2").prop("checked", true);
+                    }
                 }
 
                 $('#codeDetailModal').modal('toggle');
@@ -728,7 +735,7 @@
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: $("#useYn").val(),
+            useYn: $("#useYn").is(":checked") ? 'Y' : 'N',
         }
 
         console.log(param);
