@@ -3,7 +3,6 @@ package org.openpaas.paasta.portal.web.admin.model;
 /**
  * 관리자 메인(모델클래스)
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.09.08 최초작성
  */

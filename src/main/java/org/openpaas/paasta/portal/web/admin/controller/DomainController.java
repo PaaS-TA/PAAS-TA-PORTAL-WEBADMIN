@@ -14,7 +14,6 @@ import java.util.Map;
 /**
  * 도메인 컨트롤러 - 도메인 정보를 조회, 수정, 삭제한다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.09.19 최초작성
  */

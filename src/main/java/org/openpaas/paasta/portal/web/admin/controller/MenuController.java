@@ -15,7 +15,6 @@ import java.util.Map;
 /**
  * 메뉴 목록 조회, 등록, 삭제 등 메뉴 관리의 API 를 호출 하는 컨트롤러이다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.09.29 최초작성
  */

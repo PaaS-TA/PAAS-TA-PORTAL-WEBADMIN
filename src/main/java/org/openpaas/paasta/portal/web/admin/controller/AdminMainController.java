@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * 운영자 포탈 관리자 대시보드 관련 API 를 호출 하는 컨트롤러이다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.09.08 최초작성
  */

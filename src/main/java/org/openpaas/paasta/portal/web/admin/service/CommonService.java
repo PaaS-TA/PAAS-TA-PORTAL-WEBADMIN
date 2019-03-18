@@ -22,7 +22,6 @@ import java.util.Map;
 /**
  * 공통 기능을 구현한 서비스 클래스이다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.07.07 최초작성
  */

@@ -17,7 +17,6 @@ import java.util.Map;
 /**
  * 도메인 정보 조회, 추가, 삭제 등 도메인 관리의 API 를 호출 받는 컨트롤러이다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016 -09-06
  */
@@ -57,7 +56,6 @@ public class OrgSpaceListController extends Common {
      *
      * @return Map (자바 Map 클래스)
      * @throws Exception the exception
-     * @author 김도준
      * @thorws Exception
      */
     @GetMapping(V2_URL + "/orgs")
@@ -71,7 +69,6 @@ public class OrgSpaceListController extends Common {
      * @param orgid org id
      * @return Map (자바 Map 클래스)
      * @throws Exception the exception
-     * @author 김도준
      */
     @GetMapping(V2_URL + "/orgs/{orgid}/spaces")
     public Map<String, Object> getSpacesForAdmin(@PathVariable String orgid) throws Exception {

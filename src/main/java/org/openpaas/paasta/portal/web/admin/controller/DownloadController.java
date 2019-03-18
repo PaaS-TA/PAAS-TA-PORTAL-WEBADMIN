@@ -31,7 +31,6 @@ import java.util.Map;
 /**
  * 다운로드 컨트롤러
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.09.12
  */

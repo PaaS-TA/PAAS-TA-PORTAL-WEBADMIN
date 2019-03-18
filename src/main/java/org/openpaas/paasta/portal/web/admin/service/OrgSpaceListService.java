@@ -44,7 +44,6 @@ public class OrgSpaceListService extends Common {
      * @param reqToken Token
      * @return Map (자바 Map 클래스)
      * @throws Exception the exception
-     * @author 김도준
      */
     public Map<String, Object> getOrgsForAdmin(String reqUrl, HttpMethod httpMethod, String param, String reqToken) throws Exception {
         return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);
@@ -59,7 +58,6 @@ public class OrgSpaceListService extends Common {
      * @param reqToken Token
      * @return Map (자바 Map 클래스)
      * @throws Exception the exception
-     * @author 김도준
      */
     public Map<String, Object> getSpacesForAdmin(String reqUrl, HttpMethod httpMethod, String param, String reqToken) throws Exception {
         return commonService.procCfApiRestTemplate(V2_URL + reqUrl, httpMethod, param, reqToken);

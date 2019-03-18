@@ -20,7 +20,6 @@ import java.util.Map;
 /**
  * 사용자 목록, 사용자 삭제 및 운영자 권한 부여 등의 API 를 호출 하는 컨트롤러이다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.08.31 최초작성
  */
