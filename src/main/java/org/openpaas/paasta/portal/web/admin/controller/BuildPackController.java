@@ -1,6 +1,7 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.model.BuildPack;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,7 @@ public class BuildPackController extends Common {
     @RequestMapping(value = {V2_URL + "/buildpacks"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
-        return commonService.procCfApiRestTemplate(V2_URL+"/buildpacks", HttpMethod.GET, buildPack, getToken());
+        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/buildpacks", HttpMethod.GET, buildPack, getToken());
 
     }
 
@@ -58,10 +59,10 @@ public class BuildPackController extends Common {
      */
     @RequestMapping(value = {V2_URL + "/buildpacks/{guid}"}, method = RequestMethod.PUT)
     @ResponseBody
-        public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack , @PathVariable String guid) {
+    public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack, @PathVariable String guid) {
 
         buildPack.setGuid(UUID.fromString(guid));
-        return commonService.procCfApiRestTemplate(V2_URL+"/buildpacks/"+buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
+        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/buildpacks/" + buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
     }
 
 

@@ -18,12 +18,13 @@ import java.util.logging.Logger;
 @Service
 public class UserManagementService extends Common {
 
-    private final String V2_URL = "/v2";
     @Autowired
     CommonService commonService;
 
     public ModelAndView getUserInfoMain() {
-        return new ModelAndView(){{setViewName("/userManagement/userManagementMain");}};
+        return new ModelAndView() {{
+            setViewName("/userManagement/userManagementMain");
+        }};
     }
 
 
@@ -33,7 +34,7 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> getUserInfoList(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(Constants.V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
 
@@ -44,7 +45,7 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> setResetPassword(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(Constants.V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
 
@@ -55,7 +56,7 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> updateOperatingAuthority(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(Constants.V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
 
@@ -66,7 +67,7 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> deleteUserAccount(String guid, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(V2_URL+"/user/" + guid + "/all", httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(Constants.V2_URL + "/user/" + guid + "/all", httpMethod, param, reqToken);
     }
 
     /**
@@ -76,11 +77,11 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> addUser(HttpMethod httpMethod, Map param, String reqToken) {
-        Map<String, Object> result = commonService.procCfApiRestTemplate(Constants.V2_URL + "/users", HttpMethod.POST, param, this.getToken());
-        if((boolean) result.get("result")) {
+        Map<String, Object> result = commonService.procCfApiRestTemplate(Constants.V3_URL + "/users", HttpMethod.POST, param, this.getToken());
+        if ((boolean) result.get("result")) {
             param.remove("active");
             param.put("active", param.get("active2").toString());
-            commonService.procCommonApiRestTemplate(V2_URL+"/user", httpMethod, param, reqToken);
+            commonService.procCommonApiRestTemplate(Constants.V2_URL + "/user", httpMethod, param, reqToken);
         }
         return result;
     }
@@ -92,9 +93,9 @@ public class UserManagementService extends Common {
      * @return Map(자바클래스)
      */
     public Map<String, Object> updateUserActive(String reqUrl, HttpMethod httpMethod, UserManagement param, String reqToken) {
-       Map<String, Object> result = commonService.procCfApiRestTemplate(V2_URL+"/user/" + param.getUserGuid() + "/active", httpMethod, param, reqToken);
-       param.setActive(result.get("active").toString().equals("true")?"Y":"N");
-        return commonService.procCommonApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        Map<String, Object> result = commonService.procCfApiRestTemplate(Constants.V3_URL + "/user/" + param.getUserGuid() + "/active", httpMethod, param, reqToken);
+        param.setActive(result.get("active").toString().equals("true") ? "Y" : "N");
+        return commonService.procCommonApiRestTemplate(Constants.V2_URL + reqUrl, httpMethod, param, reqToken);
     }
 
 

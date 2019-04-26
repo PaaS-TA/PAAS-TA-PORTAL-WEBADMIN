@@ -18,14 +18,12 @@ import java.util.Map;
 public class DomainService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DomainController.class);
     private final String V2_URL = "/v2";
+    private final String V3_URL = "/v3";
 
     @Autowired
     CommonService commonService;
 
     /**
-     *
-     *
-     * 
      * 도메인 가져오기
      *
      * @return domains
@@ -35,7 +33,7 @@ public class DomainService {
      * @since 2016.7.26 최초작성
      */
     public Map<String, Object> getDomains(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCfApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V3_URL + reqUrl, httpMethod, param, reqToken);
     }
 
     /**
@@ -47,10 +45,10 @@ public class DomainService {
      * @version 1.0
      * @since 2016.7.27 최초작성
      */
-    @PostMapping(V2_URL+"/domains")
+    @PostMapping(V2_URL + "/domains")
     @ResponseBody
     public Map<String, Object> addDomain(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCfApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V3_URL + reqUrl, httpMethod, param, reqToken);
     }
 
     /**
@@ -62,9 +60,9 @@ public class DomainService {
      * @version 1.0
      * @since 2016.7.27 최초작성
      */
-    @DeleteMapping(V2_URL+"/domains")
+    @DeleteMapping(V2_URL + "/domains")
     @ResponseBody
     public Map<String, Object> deleteDomain(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCfApiRestTemplate(V2_URL+reqUrl, httpMethod, param, reqToken);
+        return commonService.procCfApiRestTemplate(V3_URL + reqUrl, httpMethod, param, reqToken);
     }
 }

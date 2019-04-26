@@ -49,7 +49,7 @@ public class ServiceBrokerController extends Common {
     @GetMapping(value = {Constants.V2_URL + "/servicebrokers"})
     @ResponseBody
     public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers", HttpMethod.GET, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/servicebrokers", HttpMethod.GET, serviceBroker, this.getToken());
     }
 
 
@@ -62,7 +62,7 @@ public class ServiceBrokerController extends Common {
     @GetMapping(value = {Constants.V2_URL + "/servicebrokers/{guid}"})
     @ResponseBody
     public Map<String, Object> getServiceBroker(@ModelAttribute ServiceBroker serviceBroker, @PathVariable String guid) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers/"+guid, HttpMethod.GET, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/servicebrokers/" + guid, HttpMethod.GET, serviceBroker, this.getToken());
     }
 
     /**
@@ -74,7 +74,7 @@ public class ServiceBrokerController extends Common {
     @PostMapping(value = {Constants.V2_URL + "/servicebrokers"})
     @ResponseBody
     public Map<String, Object> createServiceBroker(@RequestBody ServiceBroker serviceBroker) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers", HttpMethod.POST, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/servicebrokers", HttpMethod.POST, serviceBroker, this.getToken());
     }
 
 
@@ -87,7 +87,7 @@ public class ServiceBrokerController extends Common {
     @PutMapping(value = {Constants.V2_URL + "/servicebrokers/{guid}"})
     @ResponseBody
     public Map<String, Object> updateServiceBroker(@RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers/"+guid, HttpMethod.PUT, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/servicebrokers/" + guid, HttpMethod.PUT, serviceBroker, this.getToken());
     }
 
 
@@ -99,8 +99,8 @@ public class ServiceBrokerController extends Common {
      */
     @DeleteMapping(value = {Constants.V2_URL + "/servicebrokers/{guid}"})
     @ResponseBody
-    public Map<String, Object> deleteServiceBroker(@PathVariable String guid ) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers/"+guid, HttpMethod.DELETE, null, this.getToken());
+    public Map<String, Object> deleteServiceBroker(@PathVariable String guid) {
+        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/servicebrokers/" + guid, HttpMethod.DELETE, null, this.getToken());
     }
 
 }

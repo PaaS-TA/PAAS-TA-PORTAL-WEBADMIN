@@ -26,7 +26,6 @@ public class OrgSpaceListController extends Common {
     private final String V2_URL = "/v2";
 
 
-
     /**
      * Gets org space list main.
      *
@@ -48,7 +47,7 @@ public class OrgSpaceListController extends Common {
     @GetMapping(value = {Constants.V2_URL + "/orgs/{orgId}"})
     @ResponseBody
     public Map<String, Object> getOrg(@PathVariable String orgId) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/orgs/"+orgId, HttpMethod.GET, null, this.getToken());
+        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/orgs/" + orgId, HttpMethod.GET, null, this.getToken());
     }
 
     /**
@@ -72,7 +71,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/orgs/{orgid}/spaces")
     public Map<String, Object> getSpacesForAdmin(@PathVariable String orgid) throws Exception {
-        return orgSpaceListService.getSpacesForAdmin("/orgs/"+orgid+"/spaces-admin", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpacesForAdmin("/orgs/" + orgid + "/spaces-admin", HttpMethod.GET, null, getToken());
     }
 
     /**
@@ -82,8 +81,8 @@ public class OrgSpaceListController extends Common {
      * @return Org 조직 객체
      */
     @GetMapping(V2_URL + "/orgs/{orgid}/summary")
-    public  Map<String, Object> getOrgSummary(@PathVariable String orgid) {
-        return orgSpaceListService.getOrgSummary("/orgs/"+orgid+"/summary-admin", HttpMethod.GET, null, getToken());
+    public Map<String, Object> getOrgSummary(@PathVariable String orgid) {
+        return orgSpaceListService.getOrgSummary("/orgs/" + orgid + "/summary-admin", HttpMethod.GET, null, getToken());
     }
 
 
@@ -95,7 +94,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/orgs/{orgid}/quota")
     public Map<String, Object> getOrgQuota(@PathVariable String orgid) {
-        return orgSpaceListService.getOrgQuota("/orgs/"+orgid+"/quota-admin", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getOrgQuota("/orgs/" + orgid + "/quota-admin", HttpMethod.GET, null, getToken());
     }
 
 
@@ -107,7 +106,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/spaces/{spaceid}/summary")
     public Map<String, Object> getSpaceSummary(@PathVariable String spaceid) {
-        return orgSpaceListService.getSpaceSummary("/spaces/"+ spaceid+ "/summary-admin", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpaceSummary("/spaces/" + spaceid + "/summary-admin", HttpMethod.GET, null, getToken());
     }
 
     /**
@@ -118,7 +117,7 @@ public class OrgSpaceListController extends Common {
      */
     @GetMapping(V2_URL + "/spaces/{spacequtaid}/quota")
     public Map<String, Object> getSpaceQuota(@PathVariable String spacequtaid) {
-        return orgSpaceListService.getSpaceQuota("/spaces/"+ spacequtaid+"/quota-admin", HttpMethod.GET, null, getToken());
+        return orgSpaceListService.getSpaceQuota("/spaces/" + spacequtaid + "/quota-admin", HttpMethod.GET, null, getToken());
     }
 
     /**
