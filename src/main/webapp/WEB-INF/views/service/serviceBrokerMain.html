@@ -102,6 +102,13 @@
                                                 <input type="text" class="form-control toCheckString" id="url" name="url" placeholder="ex) http://10.30.40.81:4567"/>
                                             </div>
                                         </div>
+
+                                        <div class="form-group required">
+                                            <label for="url" class="col-sm-3 control-label">강제 삭제</label>
+                                            <div class="col-sm-9">
+                                                <input type="checkbox" id="purge"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -284,7 +291,8 @@
     // 서비스 브로커 삭제 처리
     function deleteServiceBroker() {
         var guid = $('#guid').val();
-        procCallAjax("/v2/servicebrokers/"+guid, "DELETE", null, init, $('#modalLoadingBar'));
+        var purge = $('#purge').is(":checked");
+        procCallAjax("/v2/servicebrokers/"+guid+"?purge="+purge, "DELETE", null, init, $('#modalLoadingBar'));
     }
 
 

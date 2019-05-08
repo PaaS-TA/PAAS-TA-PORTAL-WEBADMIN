@@ -99,8 +99,8 @@ public class ServiceBrokerController extends Common {
      */
     @DeleteMapping(value = {Constants.V2_URL + "/servicebrokers/{guid}"})
     @ResponseBody
-    public Map<String, Object> deleteServiceBroker(@PathVariable String guid) {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/servicebrokers/" + guid, HttpMethod.DELETE, null, this.getToken());
+    public Map<String, Object> deleteServiceBroker(@PathVariable String guid, @RequestParam boolean purge) {
+        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers/"+guid+"?purge="+purge, HttpMethod.DELETE, null, this.getToken());
     }
 
 }
