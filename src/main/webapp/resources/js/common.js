@@ -101,6 +101,72 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
     });
 };
 
+
+// Http Method , loadingBar Element Argument 추가
+var procCallAjax4 = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {
+    var reqData = "";
+
+    if (param != null) {
+        reqData = param;
+    }
+    $.ajax({
+        url: reqUrl,
+        method: reqMethod,
+        data: reqData,
+        dataType: 'json',
+        contentType: "application/json",
+        beforeSend: function(){
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.removeClass("hide");
+            }
+        },
+        success: function(data) {
+            console.log("DATA :: " + data);
+            console.log("DATA2 :: " + data.result);
+
+
+            if (data.result == true) {
+                callback(data, param);
+
+                if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
+                    switch (reqMethod) {
+                        case "PUT" :
+                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            break;
+                        case "POST" :
+                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            break;
+                        case "DELETE" :
+                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            break;
+                        default :
+                            break;
+                    }
+                }
+            } else {
+                if(data.msg){
+                    notifyAlert('danger','',data.msg);
+                    return false;
+                }
+                callback(resData, param);
+            }
+        },
+        error: function(xhr, status, error) {
+            //var resData = {RESULT : RESULT_STATUS_FAIL,
+            //    RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
+            //callback(resData, param);
+            console.log("ERROR :: error :: ", error);
+            notifyAlert('danger','',JSON.parse(xhr.responseText).message);
+        },
+        complete : function(data) {
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.addClass('hide');
+            }
+            console.log("COMPLETE :: data :: ", data);
+        }
+    });
+};
+
 var procCallAjaxAsyncFalse = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {
     var reqData = "";
 
