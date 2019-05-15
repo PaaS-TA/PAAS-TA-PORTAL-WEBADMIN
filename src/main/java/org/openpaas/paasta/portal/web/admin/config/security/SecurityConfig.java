@@ -48,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/index").permitAll()
                 .antMatchers("/external/**").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/**").access("hasRole('ROLE_ADMIN')")
@@ -64,8 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 }
 //Spring boot Admin 정보 접근 URL -  시작
-//                .antMatchers("/").permitAll()
-//                        .antMatchers("/index").permitAll()
+
 //                        .antMatchers("/info**").permitAll()
 //                        .antMatchers("/env**").permitAll()
 //                        .antMatchers("/metrics**").permitAll()
