@@ -43,21 +43,21 @@ public class LoginController {
 
         ModelAndView mv = new ModelAndView();
 
-//        if (error != null) {
-//            mv.addObject("error", "아이디 또는 비밀번호가 맞지 않습니다.");
-//        }
-//
-//        if (logout != null) {
-//            mv.addObject("message", "성공적으로 로그아웃 되었습니다.");
-//        }
-//
-//        LOGGER.info("ROLE_ADMIN : " + request.isUserInRole("ROLE_ADMIN"));
-//        if(!request.isUserInRole("ROLE_ADMIN")){
-//            mv.setViewName("/index");
-//        }else {
-////            mv.setViewName("redirect:/main");
-//            mv.setViewName("redirect:/dashboard");
-//        }
+        if (error != null) {
+            mv.addObject("error", "아이디 또는 비밀번호가 맞지 않습니다.");
+        }
+
+        if (logout != null) {
+            mv.addObject("message", "성공적으로 로그아웃 되었습니다.");
+        }
+
+        LOGGER.info("ROLE_ADMIN : " + request.isUserInRole("ROLE_ADMIN"));
+        if(!request.isUserInRole("ROLE_ADMIN")){
+            mv.setViewName("/index");
+        }else {
+//            mv.setViewName("redirect:/main");
+            mv.setViewName("redirect:/dashboard");
+        }
         return mv;
     }
 
