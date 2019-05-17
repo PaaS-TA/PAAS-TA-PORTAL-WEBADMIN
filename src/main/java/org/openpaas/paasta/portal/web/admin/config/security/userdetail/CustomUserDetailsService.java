@@ -1,7 +1,12 @@
 package org.openpaas.paasta.portal.web.admin.config.security.userdetail;
 
 import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
+import org.openpaas.paasta.portal.web.admin.respository.ConfigRepository;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
+import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,10 +27,16 @@ import java.util.Map;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     @Autowired
     private CommonService commonService;
 
+    @Autowired
+    private RootService rootService;
+
+    @Autowired
+    ConfigRepository configRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -44,11 +55,19 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         resBody.put("id", username);
         resBody.put("password", password);
-        Map result;
 
+        Map result = null;
 
         try {
-            result = commonService.procCfApiRestTemplate("/login", HttpMethod.POST, resBody, "");
+            for (ConfigEntity configEntity: rootService.getConfigs()) {
+                LOGGER.info("> configEntity Name: "+ configEntity.getName());
+                LOGGER.info("> configEntity ApiUri: "+ configEntity.getApiUri());
+                LOGGER.info("> configEntity UaaUri: "+ configEntity.getUaaUri());
+                /*getApiUri,resBody(username/password)*/
+                result = commonService.procCfApiRestTemplateTest(configEntity.getApiUri(),"/login", HttpMethod.POST, resBody, "");
+            }
+//            result = commonService.procCfApiRestTemplate("/login", HttpMethod.POST, resBody, "");
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new BadCredentialsException(e.getMessage());
@@ -68,6 +87,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         } else {
             role.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
+
+        List userList = new ArrayList();
         User user = new User((String) result.get("id"), (String) result.get("password"), role);
 
         user.setToken((String) result.get("token"));
@@ -75,6 +96,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setName((String) userInfo.get("name"));
         user.setImgPath((String) userInfo.get("imgPath"));
 
+        userList.add(user);
         return user;
     }
 }

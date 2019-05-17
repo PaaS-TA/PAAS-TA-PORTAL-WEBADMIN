@@ -246,6 +246,35 @@ public class CommonService {
     }
 
     /**
+     * REST TEMPLATE 처리 - CfApi(PortalApi)
+     *
+     *
+     * @param apiUri
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
+     * @param reqToken   the req token
+     * @return map map
+     */
+    public Map<String, Object> procCfApiRestTemplateTest(String apiUri, String reqUrl, HttpMethod httpMethod, Object obj, String reqToken) {
+        restTemplate = new RestTemplate();
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
+        LOGGER.info(base64Authorization);
+
+        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        LOGGER.info("> cfApiUrl : " + apiUri + "/portalapi" +reqUrl); //http://+apiUri+"/portalapi"+reqUrl
+
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" +reqUrl, httpMethod, reqEntity, Map.class);
+        Map<String, Object> resultMap = resEntity.getBody();
+        if(resultMap != null){
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        }
+        return resultMap;
+    }
+
+    /**
      * REST TEMPLATE 처리 - CommonApi
      *
      * @param reqUrl     the req url

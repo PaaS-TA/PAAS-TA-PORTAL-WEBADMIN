@@ -16,9 +16,6 @@ import java.util.*;
 @RestController
 public class RootController {
 
-    @Value("${paasta.webuser}")
-    String allowAccess;
-
 
     @Autowired
     RootService rootService;

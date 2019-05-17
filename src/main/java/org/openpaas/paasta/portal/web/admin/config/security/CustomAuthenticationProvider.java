@@ -3,7 +3,11 @@ package org.openpaas.paasta.portal.web.admin.config.security;
 /**
  * Created by mg on 2016-05-12.
  */
+
 import org.openpaas.paasta.portal.web.admin.config.security.userdetail.CustomUserDetailsService;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
+import org.openpaas.paasta.portal.web.admin.respository.ConfigRepository;
+import org.openpaas.paasta.portal.web.admin.service.RootService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +32,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     CustomUserDetailsService customUserDetailsService;
-/*
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-*/
+    /*
+        @Autowired
+        private BCryptPasswordEncoder bCryptPasswordEncoder;
+    */
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -50,23 +54,23 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             LOGGER.info("username : " + username + " / password : " + password );
             LOGGER.info("username : " + user.getUsername() + " / password : " + user.getPassword());
 
+
             // matches 를 이용하여 암호를 비교한다.
-            if ( !password.equals(user.getPassword()) ) {
-                throw new BadCredentialsException( "암호가 일치하지 않습니다." );
+            if (!password.equals(user.getPassword())) {
+                throw new BadCredentialsException("암호가 일치하지 않습니다.");
             }
 
             authorities = user.getAuthorities();
 
-        } catch(UsernameNotFoundException e) {
+        } catch (UsernameNotFoundException e) {
             LOGGER.info(e.toString());
             throw new UsernameNotFoundException(e.getMessage());
-        } catch(BadCredentialsException e) {
+        } catch (BadCredentialsException e) {
             LOGGER.info(e.toString());
             throw new BadCredentialsException(e.getMessage());
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOGGER.info(e.toString());
         }
-
 
 
         List role = new ArrayList();

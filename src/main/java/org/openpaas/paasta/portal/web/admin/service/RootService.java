@@ -22,11 +22,11 @@ public class RootService {
     ConfigRepository configRepository;
 
     /**
-     * 기본 설정 정보 ㅊ출
+     * 기본 설정 정보 추출
      *
      * @return model and view
      */
-    public List<ConfigEntity> configs() {
+      public List<ConfigEntity> configs() {
 
         List<ConfigEntity> configEntities = new ArrayList<>();
         for (ConfigEntity configEntity :  configRepository.findAll()) {
@@ -34,6 +34,10 @@ public class RootService {
             configEntities.add(configEntity);
         }
         return configEntities;
+    }
+
+    public List<ConfigEntity> getConfigs() {
+        return configRepository.findAll();
     }
 
 
