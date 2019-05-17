@@ -3,34 +3,75 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head></head>
 <body class="hold-transition skin-blue sidebar-mini">
-  <div class="wrapper">
+<div class="wrapper">
     <!-- -->
     <header layout:fragment="header" class="main-header">
-      <!-- Logo -->
-      <a href="/" class="logo"><!-- link home -->
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini">
+        <!-- Logo -->
+        <a href="/" class="logo"><!-- link home -->
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini">
         <b>P</b>
-                  <!-- 파스타 이미지로 대체 -->
-                  <!--<img src="http://portal-web-admin.115.68.46.187.xip.io./resources/images/logo.png" width="50" height="50"> -->
+                <!-- 파스타 이미지로 대체 -->
+                <!--<img src="http://portal-web-admin.115.68.46.187.xip.io./resources/images/logo.png" width="50" height="50"> -->
       </span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>PaaS-TA</b></span>
-      </a>
-      <!-- Header Navbar: style can be found in header.less -->
-      <nav class="navbar navbar-static-top" >
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
-        <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;color: white;" id="notice">
-          <div style="display: block;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;">
-            <i class="fa fa-fw fa-volume-up"></i>
-            <span><b>알림사항</b></span>
-            <span id="alertMsg" th:text="#{common.system.welcome.message}"></span>
-          </div>
-        </h4>
-      </nav>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>PaaS-TA</b></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
+            <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;color: white;" id="notice">
+                <div style="display: block;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;border: 1px 1px solid;">
+                    <i class="fa fa-fw fa-volume-up"></i>
+                    <span><b>알림사항</b></span>
+                    <span id="alertMsg" th:text="#{common.system.welcome.message}"></span>
+                </div>
+
+            </h4>
+
+        </nav>
+        <div class="box-header" style="text-align: right;">
+            <select class="form-control toCheckString" id="apiUrls"
+                    style="width:200px;margin-top: -3px; display: unset;text-align: right;"
+                    onchange="selectApiUrlChange()">
+
+            </select>
+        </div>
+
     </header>
     <!-- -->
-  </div>
+
+    <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+        /*<![CDATA[*/
+
+
+        // ON LOAD
+        $(document.body).ready(function() {
+            alert("aaaa");
+            procInitPage();
+        }); // End ready()
+
+        // Init
+        var procInitPage = function() {
+            apiUriList();  //Api 주소 리스트를 초기화한다.
+        };
+
+        function apiUriList() {
+            var str = "";
+            var data = "API_URL";
+            str += "<option value='" + data + "'>" + data + "</option>";
+            console.log(str);
+            $("#apiUrls").append(str);
+
+        }
+
+        function selectApiUrlChange() {
+
+        }
+
+        /*]]>*/
+    </script>
+</div>
 </body>
 </html>
