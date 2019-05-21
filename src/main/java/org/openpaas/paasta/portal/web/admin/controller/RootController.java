@@ -39,6 +39,19 @@ public class RootController {
      * @return model and view
      */
     @CrossOrigin
+    @GetMapping(value = {"/v3/external/configs"})
+    public List<ConfigEntity> getConfigs() {
+        return rootService.getConfigs();
+    }
+
+
+
+    /**
+     * 기본 설정 정보 추출
+     *
+     * @return model and view
+     */
+    @CrossOrigin
     @GetMapping(value = {"/external/configs/{guid}/auth"})
     public ConfigEntity configAuth(@PathVariable int guid) {
         return rootService.configAuth(guid);

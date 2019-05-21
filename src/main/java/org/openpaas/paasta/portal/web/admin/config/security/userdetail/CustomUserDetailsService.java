@@ -49,54 +49,53 @@ public class CustomUserDetailsService implements UserDetailsService {
         return user;
     }
 
-    public UserDetails loginByUsernameAndPassword(String username, String password) throws UsernameNotFoundException {
+    public List loginByUsernameAndPassword(String username, String password) throws UsernameNotFoundException {
 
         Map<String, Object> resBody = new HashMap();
 
         resBody.put("id", username);
         resBody.put("password", password);
 
-        Map result = null;
-
-        try {
-            for (ConfigEntity configEntity: rootService.getConfigs()) {
-                LOGGER.info("> configEntity Name: "+ configEntity.getName());
-                LOGGER.info("> configEntity ApiUri: "+ configEntity.getApiUri());
-                LOGGER.info("> configEntity UaaUri: "+ configEntity.getUaaUri());
-                /*getApiUri,resBody(username/password)*/
-                result = commonService.procCfApiRestTemplateTest(configEntity.getApiUri(),"/login", HttpMethod.POST, resBody, "");
-            }
-//            result = commonService.procCfApiRestTemplate("/login", HttpMethod.POST, resBody, "");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BadCredentialsException(e.getMessage());
-        }
-        Map info = new HashMap();
-        try {
-            info = commonService.procCommonApiRestTemplate("/v2/user/" + username, HttpMethod.GET, null, "");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Map userInfo = (Map) info.get("User");
-
-        List role = new ArrayList();
-        if (userInfo.get("adminYn").toString().equals("Y")) {
-            role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } else {
-            role.add(new SimpleGrantedAuthority("ROLE_USER"));
-        }
-
         List userList = new ArrayList();
-        User user = new User((String) result.get("id"), (String) result.get("password"), role);
 
-        user.setToken((String) result.get("token"));
-        user.setExpireDate((Long) result.get("expireDate"));
-        user.setName((String) userInfo.get("name"));
-        user.setImgPath((String) userInfo.get("imgPath"));
+        for (ConfigEntity configEntity : rootService.getConfigs()) {
+            Map result = null;
+            try {
 
-        userList.add(user);
-        return user;
+                LOGGER.info("> configEntity Name: " + configEntity.getName());
+                LOGGER.info("> configEntity ApiUri: " + configEntity.getApiUri());
+                LOGGER.info("> configEntity UaaUri: " + configEntity.getUaaUri());
+                result = commonService.procCfApiRestTemplate(configEntity.getApiUri(), "/login", HttpMethod.POST, resBody, "");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new BadCredentialsException(e.getMessage());
+            }
+            Map info = new HashMap();
+            try {
+                info = commonService.procCommonApiRestTemplate("/v2/user/" + username, HttpMethod.GET, null, "");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Map userInfo = (Map) info.get("User");
+
+            List role = new ArrayList();
+            if (userInfo.get("adminYn").toString().equals("Y")) {
+                role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            } else {
+                role.add(new SimpleGrantedAuthority("ROLE_USER"));
+            }
+
+            User user = new User((String) result.get("id"), (String) result.get("password"), role);
+
+            user.setToken((String) result.get("token"));
+            user.setExpireDate((Long) result.get("expireDate"));
+            user.setName((String) userInfo.get("name"));
+            user.setImgPath((String) userInfo.get("imgPath"));
+
+            userList.add(user);
+        }
+        return userList;
     }
 }

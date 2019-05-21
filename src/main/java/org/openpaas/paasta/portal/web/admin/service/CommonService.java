@@ -256,7 +256,7 @@ public class CommonService {
      * @param reqToken   the req token
      * @return map map
      */
-    public Map<String, Object> procCfApiRestTemplateTest(String apiUri, String reqUrl, HttpMethod httpMethod, Object obj, String reqToken) {
+    public Map<String, Object> procCfApiRestTemplate(String apiUri, String reqUrl, HttpMethod httpMethod, Object obj, String reqToken) {
         restTemplate = new RestTemplate();
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);

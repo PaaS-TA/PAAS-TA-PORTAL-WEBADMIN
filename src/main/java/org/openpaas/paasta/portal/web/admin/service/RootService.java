@@ -36,6 +36,11 @@ public class RootService {
         return configEntities;
     }
 
+    /**
+     * 기본 설정 정보 추출
+     *
+     * @return model and view
+     */
     public List<ConfigEntity> getConfigs() {
         return configRepository.findAll();
     }

@@ -45,22 +45,23 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         Collection<? extends GrantedAuthority> authorities = null;
 
-        UserDetails user = null;
+        List<UserDetails> users = null;
 
         try {
 
-            user = customUserDetailsService.loginByUsernameAndPassword(username, password);
+            users = customUserDetailsService.loginByUsernameAndPassword(username, password);
 
-            LOGGER.info("username : " + username + " / password : " + password );
-            LOGGER.info("username : " + user.getUsername() + " / password : " + user.getPassword());
-
-
-            // matches 를 이용하여 암호를 비교한다.
-            if (!password.equals(user.getPassword())) {
-                throw new BadCredentialsException("암호가 일치하지 않습니다.");
+            for (UserDetails user : users) {
+                LOGGER.info("username : " + username + " / password : " + password);
+                LOGGER.info("username : " + user.getUsername() + " / password : " + user.getPassword());
+                // matches 를 이용하여 암호를 비교한다.
+                if (!password.equals(user.getPassword())) {
+                    throw new BadCredentialsException("암호가 일치하지 않습니다.");
+                }
             }
 
-            authorities = user.getAuthorities();
+
+
 
         } catch (UsernameNotFoundException e) {
             LOGGER.info(e.toString());
@@ -76,7 +77,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         List role = new ArrayList();
         role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         authorities = role;
-        return new UsernamePasswordAuthenticationToken(user, password, authorities);
+        return new UsernamePasswordAuthenticationToken(users, password, authorities);
     }
 
     @Override
