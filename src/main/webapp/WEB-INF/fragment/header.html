@@ -27,51 +27,11 @@
                     <span><b>알림사항</b></span>
                     <span id="alertMsg" th:text="#{common.system.welcome.message}"></span>
                 </div>
-
             </h4>
-
         </nav>
-        <div class="box-header" style="text-align: right;">
-            <select class="form-control toCheckString" id="apiUrls"
-                    style="width:200px;margin-top: -3px; display: unset;text-align: right;"
-                    onchange="selectApiUrlChange()">
-
-            </select>
-        </div>
-
     </header>
     <!-- -->
 
-    <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
-        /*<![CDATA[*/
-
-
-        // ON LOAD
-        $(document.body).ready(function() {
-            alert("aaaa");
-            procInitPage();
-        }); // End ready()
-
-        // Init
-        var procInitPage = function() {
-            apiUriList();  //Api 주소 리스트를 초기화한다.
-        };
-
-        function apiUriList() {
-            var str = "";
-            var data = "API_URL";
-            str += "<option value='" + data + "'>" + data + "</option>";
-            console.log(str);
-            $("#apiUrls").append(str);
-
-        }
-
-        function selectApiUrlChange() {
-
-        }
-
-        /*]]>*/
-    </script>
 </div>
 </body>
 </html>

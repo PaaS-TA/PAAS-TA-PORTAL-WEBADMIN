@@ -25,6 +25,34 @@
     function noticeAnimation() {
         $("#notice")
     }
+
+    $(document).ready(function () {
+        init();
+    });
+
+    var init = function(){
+        getApiUrlList();
+    }
+
+    function getApiUrlList() {
+        procCallAjax("/external/configs", "GET", null, procCallbackGetApiUrlList, $('#loadingBar') );
+    };
+
+    var procCallbackGetApiUrlList = function(data){
+        var listLength = data.length;
+
+        console.log(data);
+        /*필요한 형태 data[0].apiUri + "/portal/login*/
+
+        $.each(data, function (_idx, data1) {
+            var idx = (_idx + 1);
+            var apiUri = data1.apiUri;
+            console.log(">> index " + idx +": "+ "apiUri: "+apiUri);
+        });
+
+    }
+
+
 </script>
 <div class="wrapper">
 
@@ -52,6 +80,12 @@
             </h4>
         </nav>
     </header>
+
+    <div class="box-header" style="text-align: right;">
+        <select class="form-control toCheckString" id="apiUrls" style="width:200px;margin-top: -3px; display: unset;text-align: right;"
+                onchange="getApiUrlList()">
+        </select>
+    </div>
 
     <!-- Left side column. contains the logo and sidebar -->
     <aside th:replace="../fragment/left::aside"></aside>
