@@ -93,7 +93,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.setExpireDate((Long) result.get("expireDate"));
             user.setName((String) userInfo.get("name"));
             user.setImgPath((String) userInfo.get("imgPath"));
-
+            user.setAuthorization(configEntity.getAuthorization());
+            user.setApiUri(configEntity.getApiUri());
+            user.setUaaUri(configEntity.getUaaUri());
             userList.add(user);
         }
         return userList;

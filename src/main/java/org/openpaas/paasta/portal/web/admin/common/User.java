@@ -40,6 +40,10 @@ public class User implements UserDetails, CredentialsContainer {
     private String password;
     private String token;
     private String name;
+    private String apiUri;
+    private String uaaUri;
+    private String authorization;
+
     private Long expireDate;
     private String imgPath;
     private final String username;
@@ -175,6 +179,30 @@ public class User implements UserDetails, CredentialsContainer {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public String getApiUri() {
+        return apiUri;
+    }
+
+    public void setApiUri(String apiUri) {
+        this.apiUri = apiUri;
+    }
+
+    public String getUaaUri() {
+        return uaaUri;
+    }
+
+    public void setUaaUri(String uaaUri) {
+        this.uaaUri = uaaUri;
+    }
+
+    public String getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(String authorization) {
+        this.authorization = authorization;
     }
 
     private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {

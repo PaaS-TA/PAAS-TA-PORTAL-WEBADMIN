@@ -4,6 +4,7 @@ package org.openpaas.paasta.portal.web.admin.config.security;
  * Created by mg on 2016-05-12.
  */
 
+import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.config.security.userdetail.CustomUserDetailsService;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.respository.ConfigRepository;
@@ -45,7 +46,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         Collection<? extends GrantedAuthority> authorities = null;
 
-        List<UserDetails> users = null;
+        List<User> users = null;
 
         try {
 
