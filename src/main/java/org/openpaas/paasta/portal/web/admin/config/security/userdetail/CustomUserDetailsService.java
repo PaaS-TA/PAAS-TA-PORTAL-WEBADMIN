@@ -88,7 +88,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             }
 
             User user = new User((String) result.get("id"), (String) result.get("password"), role);
-
+            user.setKey(configEntity.getKey());
             user.setToken((String) result.get("token"));
             user.setExpireDate((Long) result.get("expireDate"));
             user.setName((String) userInfo.get("name"));

@@ -37,6 +37,7 @@ public class User implements UserDetails, CredentialsContainer {
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
     //~ Instance fields ================================================================================================
+    private int key;
     private String password;
     private String token;
     private String name;
@@ -102,6 +103,15 @@ public class User implements UserDetails, CredentialsContainer {
     }
 
     //~ Methods ========================================================================================================
+
+
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
 
     public Collection<GrantedAuthority> getAuthorities() {
         return authorities;

@@ -70,7 +70,7 @@ public class LoginController extends Common {
     public ModelAndView homePage(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
 
-        Map map = getServerInfos("http://localhost:2225");
+        Map map = getServerInfos(1);
 
         LOGGER.info("API URI " + map.get("apiuri").toString());
         LOGGER.info("TOKEN  " + map.get("token").toString());

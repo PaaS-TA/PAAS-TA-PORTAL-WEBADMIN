@@ -132,7 +132,7 @@ public class Common {
      * 3. Token 만료되지 않은 경우, 업데이트는 하지 않는다.
      */
 
-    public Map getServerInfos(String apiUri) {
+    public Map getServerInfos(int key) {
         Map map = new HashMap();
         try {
             String password = "";
@@ -149,7 +149,7 @@ public class Common {
                     tokenExpired++;
                 }
 
-                if (user.getApiUri().equals(apiUri)) {
+                if (user.getKey() == key) {
                     map.put("token", user.getToken());
                     map.put("apiuri", user.getApiUri());
                     map.put("uaauri", user.getUaaUri());
