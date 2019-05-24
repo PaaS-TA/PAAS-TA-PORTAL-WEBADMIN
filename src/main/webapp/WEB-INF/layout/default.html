@@ -22,6 +22,7 @@
     var INFO_EMPTY_REQUEST_DATA = /*[[#{common.info.empty.req.data}]]*/ "";
     var IMAGE_PATH_PREFIX = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).IMAGE_PATH_PREFIX}]]*/ "";
 
+    var API_PROC_URL = "/external/configs";
     var REST_URL = "/portalapi/login";
 
     function noticeAnimation() {
@@ -38,26 +39,23 @@
     }
 
     function getApiUrlList() {
-        procCallAjax("/external/configs", "GET", null, viewApiUrls, $('#loadingBar') );
+        procCallAjax(API_PROC_URL, "GET", null, viewApiUrls, $('#loadingBar') );
     };
+
 
     // GET LIST
     var viewApiUrls = function (data) {
         console.log(data);
         var html = '';
         $.each(data, function (_idx, data) {
-             html += '<option value="'+data.apiUri+'">'+data.apiUri+'</option>';
+            var idx = (_idx + 1);
+            var apiUri = data.apiUri;
+            var key = data.key;
+            console.log(">> index " + idx +", "+ "apiUri: "+apiUri +", "+"key: "+key);
+             html += '<option value="'+key+'">'+data.apiUri+'</option>';
         });
         $("#apiUrls").append(html);
-    }
-
-    //procCallbackGetUserInfoList
-    function selectChange(){
-        apiUri =  $("#apiUrls").val();
-        alert(apiUri);
-
-    }
-
+    };
 
 </script>
 <div class="wrapper">
