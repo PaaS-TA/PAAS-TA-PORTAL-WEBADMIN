@@ -22,6 +22,8 @@
     var INFO_EMPTY_REQUEST_DATA = /*[[#{common.info.empty.req.data}]]*/ "";
     var IMAGE_PATH_PREFIX = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).IMAGE_PATH_PREFIX}]]*/ "";
 
+    var REST_URL = "/portalapi/login";
+
     function noticeAnimation() {
         $("#notice")
     }
@@ -32,23 +34,27 @@
 
     var init = function(){
         getApiUrlList();
+        $("#apiUrls").val("");
     }
 
     function getApiUrlList() {
-        procCallAjax("/external/configs", "GET", null, procCallbackGetApiUrlList, $('#loadingBar') );
+        procCallAjax("/external/configs", "GET", null, viewApiUrls, $('#loadingBar') );
     };
 
-    var procCallbackGetApiUrlList = function(data){
-        var listLength = data.length;
-
+    // GET LIST
+    var viewApiUrls = function (data) {
         console.log(data);
-        /*필요한 형태 data[0].apiUri + "/portal/login*/
-
-        $.each(data, function (_idx, data1) {
-            var idx = (_idx + 1);
-            var apiUri = data1.apiUri;
-            console.log(">> index " + idx +": "+ "apiUri: "+apiUri);
+        var html = '';
+        $.each(data, function (_idx, data) {
+             html += '<option value="'+data.apiUri+'">'+data.apiUri+'</option>';
         });
+        $("#apiUrls").append(html);
+    }
+
+    //procCallbackGetUserInfoList
+    function selectChange(){
+        apiUri =  $("#apiUrls").val();
+        alert(apiUri);
 
     }
 
@@ -82,8 +88,7 @@
     </header>
 
     <div class="box-header" style="text-align: right;">
-        <select class="form-control toCheckString" id="apiUrls" style="width:200px;margin-top: -3px; display: unset;text-align: right;"
-                onchange="getApiUrlList()">
+        <select class="form-control toCheckString" id="apiUrls" style="width:200px;margin-top: -3px; display: unset;text-align: right;" onchange="selectChange()">
         </select>
     </div>
 
