@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -34,10 +35,13 @@ public class DomainController extends Common {
      */
     @GetMapping(V2_URL+"/domains/{status}")
     @ResponseBody
-    public Map<String, Object> getDomains(@PathVariable String status) {
+    public Map<String, Object> getDomains(@PathVariable String status, HttpServletRequest request) {
+        String key = request.getParameter("key");
+        LOGGER.info(">>index : key : getDomains----> "  +key);
         LOGGER.info("Start getDomains" + status);
-        return domainService.getDomains("/domains-admin/" + status, HttpMethod.GET, null, getToken());
+        return domainService.getDomains(Integer.parseInt(key),"/domains-admin/" + status, HttpMethod.GET, null);
     }
+
 
     /**
      * 도메인 추가

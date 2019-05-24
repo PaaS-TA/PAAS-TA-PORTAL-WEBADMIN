@@ -303,9 +303,9 @@ public class CommonService extends Common {
 
         if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        LOGGER.info("> cfApiUrl2 : " + apiUri + "/portalapi" + reqUrl); //http://+apiUri+"/portalapi"+reqUrl
+        LOGGER.info("> cfApiUrl2 : " + apiUri + "/portalapi"+ reqUrl);
 
-        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri+ "/portalapi" + reqUrl, httpMethod, reqEntity, Map.class);
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri+ "/portalapi"+ reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
         if (resultMap != null) {
             LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());

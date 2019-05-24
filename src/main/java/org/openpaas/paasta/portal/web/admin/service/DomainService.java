@@ -32,9 +32,10 @@ public class DomainService {
      * @version 1.0
      * @since 2016.7.26 최초작성
      */
-    public Map<String, Object> getDomains(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCfApiRestTemplate(V3_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> getDomains(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+        return commonService.procCfApiRestTemplate(key,V3_URL + reqUrl, httpMethod, obj);
     }
+
 
     /**
      * 도메인 추가

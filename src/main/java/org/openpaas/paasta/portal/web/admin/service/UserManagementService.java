@@ -33,9 +33,10 @@ public class UserManagementService extends Common {
      *
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getUserInfoList(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(Constants.V2_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> getUserInfoList(String reqUrl, HttpMethod httpMethod, Object param, String key) {
+        return commonService.procCommonApiRestTemplate(Integer.parseInt(key),Constants.V2_URL + reqUrl, httpMethod, param);
     }
+
 
 
     /**

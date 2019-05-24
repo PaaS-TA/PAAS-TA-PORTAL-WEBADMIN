@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -41,13 +42,15 @@ public class OrgSpaceListService extends Common {
      *
      * @param reqUrl     RestUrl
      * @param httpMethod httpMethod
-     * @param param      param
-     * @param reqToken   Token
      * @return Map (자바 Map 클래스)
      * @throws Exception the exception
      */
-    public Map<String, Object> getOrgsForAdmin(String reqUrl, HttpMethod httpMethod, String param, String reqToken) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + reqUrl, httpMethod, param, reqToken);
+//    public Map<String, Object> getOrgsForAdmin(String reqUrl, HttpMethod httpMethod, String param, String reqToken) throws Exception {
+//        return commonService.procCfApiRestTemplate(Constants.V3_URL + reqUrl, httpMethod, param, reqToken);
+//    }
+
+    public Map<String, Object> getOrgsForAdmin(int key, String reqUrl, HttpMethod httpMethod, Object obj) throws Exception {
+        return commonService.procCfApiRestTemplate(key,Constants.V3_URL + reqUrl, httpMethod, obj);
     }
 
     /**
@@ -55,13 +58,11 @@ public class OrgSpaceListService extends Common {
      *
      * @param reqUrl     RestUrl
      * @param httpMethod httpMethod
-     * @param param      param
-     * @param reqToken   Token
      * @return Map (자바 Map 클래스)
      * @throws Exception the exception
      */
-    public Map<String, Object> getSpacesForAdmin(String reqUrl, HttpMethod httpMethod, String param, String reqToken) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> getSpacesForAdmin(int key, String reqUrl, HttpMethod httpMethod, Object obj) throws Exception {
+        return commonService.procCfApiRestTemplate(key,Constants.V3_URL + reqUrl, httpMethod, obj);
     }
 
     /**
@@ -69,12 +70,10 @@ public class OrgSpaceListService extends Common {
      *
      * @param reqUrl     RestUrl
      * @param httpMethod httpMethod
-     * @param param      param
-     * @param reqToken   Token
      * @return Map (자바 Map 클래스)
      */
-    public Map<String, Object> getOrgSummary(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> getOrgSummary(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+        return commonService.procCfApiRestTemplate(key,Constants.V3_URL + reqUrl, httpMethod, obj);
     }
 
 
@@ -83,12 +82,10 @@ public class OrgSpaceListService extends Common {
      *
      * @param reqUrl     RestUrl
      * @param httpMethod httpMethod
-     * @param param      param
-     * @param reqToken   Token
      * @return Map (자바 Map 클래스)
      */
-    public Map<String, Object> getOrgQuota(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> getOrgQuota(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+        return commonService.procCfApiRestTemplate(key,Constants.V3_URL + reqUrl, httpMethod, obj);
     }
 
 
@@ -97,12 +94,10 @@ public class OrgSpaceListService extends Common {
      *
      * @param reqUrl     RestUrl
      * @param httpMethod httpMethod
-     * @param param      param
-     * @param reqToken   Token
      * @return Map (자바 Map 클래스)
      */
-    public Map<String, Object> getSpaceSummary(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> getSpaceSummary(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+        return commonService.procCfApiRestTemplate(key,Constants.V3_URL + reqUrl, httpMethod, obj);
     }
 
     /**
@@ -110,12 +105,10 @@ public class OrgSpaceListService extends Common {
      *
      * @param reqUrl     RestUrl
      * @param httpMethod httpMethod
-     * @param param      param
-     * @param reqToken   Token
      * @return Map (자바 Map 클래스)
      */
-    public Map<String, Object> getSpaceQuota(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> getSpaceQuota(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+        return commonService.procCfApiRestTemplate(key,Constants.V3_URL + reqUrl, httpMethod, obj);
     }
 
     /**
@@ -123,11 +116,9 @@ public class OrgSpaceListService extends Common {
      *
      * @param reqUrl     RestUrl
      * @param httpMethod httpMethod
-     * @param param      param
-     * @param reqToken   Token
      * @return Map (자바 Map 클래스)
      */
-    public Map<String, Object> getSpace(String reqUrl, HttpMethod httpMethod, String param, String reqToken) {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> getSpace(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+        return commonService.procCfApiRestTemplate(key,Constants.V3_URL + reqUrl, httpMethod, obj);
     }
 }

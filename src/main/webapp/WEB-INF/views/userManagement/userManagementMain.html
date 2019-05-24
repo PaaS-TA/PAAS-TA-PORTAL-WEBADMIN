@@ -143,6 +143,9 @@
     <footer></footer>
 </div>
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+
+
+
     /*<![CDATA[*/
     var V2_URL = "/v2";
     var REST_URL = V2_URL + "/usermgnts";
@@ -158,16 +161,16 @@
 
 
     // GET LIST
-    var getUserInfoList = function (reqPageNo) {
+    var getUserInfoList = function (reqPageNo,key) {
         $('#buttonGetMoreList').hide();
         var filter = $("#access").val();
         var param = {
             searchKeyword: document.getElementById('searchKeyword').value.toLowerCase(),
-            pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "",
+            key: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "",
             pageNo: reqPageNo
         };
 
-        procCallAjax(REST_URL+"/" +filter +"/user", "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL+"/" +filter +"/user/", "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
 
     };
 
@@ -428,8 +431,10 @@
     // INIT PAGE
     var procInitPage = function () {
         procAlert("info", WELCOME_MESSAGE);
+        key =  $("#apiUrls").val();
+
         $('#userInfoViewArea').hide();
-        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "");
+        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "",key);
     };
 
     function btnAddUser() {

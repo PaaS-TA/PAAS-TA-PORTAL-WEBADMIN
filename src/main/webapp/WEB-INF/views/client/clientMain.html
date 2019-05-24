@@ -359,9 +359,10 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
 
     // 클라리언트 리스트 조회
     var getClientList = function () {
+        key =  $("#apiUrls").val();
         $('.modal').modal('hide');
         var param = {};
-        procCallAjax(CLIENT_PROC_URL, "GET", param, procCallbackGetClientList, $('#loadingBar'));
+        procCallAjax(CLIENT_PROC_URL+"?key="+key, "GET", param, procCallbackGetClientList, $('#loadingBar'));
     };
 
     // 클라리언트 리스트 조회 Callback

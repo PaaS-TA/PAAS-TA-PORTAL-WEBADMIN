@@ -82,7 +82,8 @@ public class ClientController  extends Common {
      */
     @GetMapping(value = {Constants.V2_URL + "/clients"})
     @ResponseBody
-    public Map<String, Object> getClientList() throws Exception {
+    public Map<String, Object> getClientList(HttpServletRequest request) throws Exception {
+        request.getParameter("key");
         return commonService.procCfApiRestTemplate(Constants.V3_URL + "/clients", HttpMethod.GET, null, this.getToken());
     }
 
