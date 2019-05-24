@@ -103,7 +103,7 @@
 
     $( "#apiUrls" ).change(function() {
        key = $("#apiUrls").val();
-       alert(key);
+       // alert(key);
         procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"?key="+key,"GET",null ,procCallbackGetOrgs);
     });
 
