@@ -144,9 +144,16 @@
     var userInfo;
     var autoCompleteIndex;
 
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        getAuthGroups(setAuthGroupTable,key);
+        getUserInfo(setUserInfo,key);
+    });
+
     $(document).ready(function(){
-        getAuthGroups(setAuthGroupTable)
-        getUserInfo(setUserInfo)
+        key = $("#apiUrls").val();
+        getAuthGroups(setAuthGroupTable,key);
+        getUserInfo(setUserInfo,key);
 
         $("#user-add-name-input").keyup(function(event) {
             switch (event.which){
@@ -175,7 +182,7 @@
             reqData =null;
         }
         $.ajax({
-            url: reqUrl,
+            url: reqUrl+"?key="+key,
             method: reqMethod,
             data: reqData,
             dataType: 'json',
@@ -199,7 +206,7 @@
 
                 console.log("ERROR :: error :: ", error);
                 procAlert("danger", JSON.parse(xhr.responseText).message);
-                if(reqMethod == "POST" && reqUrl == AUTHORITY_MEMBER_URL)
+                if(reqMethod == "POST" && reqUrl == AUTHORITY_MEMBER_URL+"?key="+key)
                 {
                     procAlert("danger", "유저등록/삭제 할 수 있는 권한이 없습니다.");
                 }
@@ -217,7 +224,7 @@
     }
 
     function getGroupMembersInfo(groupGuid, callback){
-        procCallAjax(AUTHORITY_GROUPS_URL, {"groupGuid":groupGuid}, callback)
+        procCallAjax(AUTHORITY_GROUPS_URL +"?key="+key, {"groupGuid":groupGuid}, callback)
     }
 
     function createAuthorityGroup(groupToCreate, callback) {
@@ -231,7 +238,7 @@
         procClosePopup()
     }
 
-    function addAuthorityGroupMembers(groupGuid, memberUserNameList, callback){
+    function addAuthorityGroupMembers(groupGuid, memberUserNameList, callback,key){
         AuthorityCallAjax(AUTHORITY_MEMBER_URL,"POST", {"groupGuid":groupGuid, "memberUserNameList":memberUserNameList}, callback);
     }
 
@@ -242,7 +249,7 @@
         procClosePopup()
     }
 
-    function getUserInfo(callback){
+    function getUserInfo(callback,key){
         AuthorityCallAjax(GET_USER_INFO,"GET", {}, callback);
     }
 

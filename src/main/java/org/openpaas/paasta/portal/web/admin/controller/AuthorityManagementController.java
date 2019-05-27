@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -40,8 +41,9 @@ public class AuthorityManagementController extends Common{
      */
     @GetMapping(V2_URL+"/authority")
     @ResponseBody
-    public Map<String, Object> getAuthorityGroups() throws Exception {
-        return authorityManagementService.getAuthorityGroups("/authority", HttpMethod.GET, null, null);
+    public Map<String, Object> getAuthorityGroups(HttpServletRequest request) throws Exception {
+        String key = request.getParameter("key");
+        return authorityManagementService.getAuthorityGroups(Integer.parseInt(key),"/authority", HttpMethod.GET, null);
     }
 
     /**
@@ -52,9 +54,10 @@ public class AuthorityManagementController extends Common{
      */
     @GetMapping(V2_URL+"/authority/group")
     @ResponseBody
-    public Map<String, Object> getUaaUserInfo() throws Exception {
+    public Map<String, Object> getUaaUserInfo(HttpServletRequest request) throws Exception {
         //사용안함???
-        return authorityManagementService.getUaaUserInfo("/authority/group", HttpMethod.GET, null, null);
+        String key = request.getParameter("key");
+        return authorityManagementService.getUaaUserInfo(Integer.parseInt(key),"/authority/group", HttpMethod.GET, null);
     }
 
     /**
@@ -66,8 +69,9 @@ public class AuthorityManagementController extends Common{
      */
     @PostMapping(V2_URL+"/authority/group")
     @ResponseBody
-    public Map<String, Object> createAuthorityGroup(@RequestBody Map param) throws Exception {
-        return authorityManagementService.createAuthorityGroup("/authority/group", HttpMethod.POST, param, null);
+    public Map<String, Object> createAuthorityGroup(HttpServletRequest request, @RequestBody Map param) throws Exception {
+        String key = request.getParameter("key");
+        return authorityManagementService.createAuthorityGroup(Integer.parseInt(key),"/authority/group", HttpMethod.POST, param);
     }
 
     /**
@@ -79,8 +83,9 @@ public class AuthorityManagementController extends Common{
      */
     @DeleteMapping(V2_URL+"/authority/group/{groupguid}")
     @ResponseBody
-    public Map<String, Object> deleteAuthorityGroup(@PathVariable String groupguid, @RequestBody Map param) throws Exception {
-        return authorityManagementService.deleteAuthorityGroup("/authority/group/" + groupguid, HttpMethod.DELETE, param, null);
+    public Map<String, Object> deleteAuthorityGroup(@PathVariable String groupguid, HttpServletRequest request, @RequestBody Map param) throws Exception {
+        String key = request.getParameter("key");
+        return authorityManagementService.deleteAuthorityGroup(Integer.parseInt(key),"/authority/group/" + groupguid, HttpMethod.DELETE, param);
     }
 
     /**
@@ -92,8 +97,9 @@ public class AuthorityManagementController extends Common{
      */
     @PostMapping(V2_URL+"/authority/member")
     @ResponseBody
-    public Map<String, Object> addGroupMembers(@RequestBody Map param) throws Exception {
-        return authorityManagementService.addGroupMembers("/authority/member", HttpMethod.POST, param, null);
+    public Map<String, Object> addGroupMembers(HttpServletRequest request, @RequestBody Map param) throws Exception {
+        String key = request.getParameter("key");
+        return authorityManagementService.addGroupMembers(Integer.parseInt(key),"/authority/member", HttpMethod.POST, param);
     }
 
     /**
@@ -105,8 +111,9 @@ public class AuthorityManagementController extends Common{
      */
     @DeleteMapping(V2_URL+"/authority/member/{groupguid}")
     @ResponseBody
-    public Map<String, Object> deleteGroupMembers(@PathVariable String groupguid, @RequestBody Map param) throws Exception {
-        return authorityManagementService.deleteGroupMembers("/authority/member/"+groupguid, HttpMethod.DELETE, param, null);
+    public Map<String, Object> deleteGroupMembers(@PathVariable String groupguid, HttpServletRequest request, @RequestBody Map param) throws Exception {
+        String key = request.getParameter("key");
+        return authorityManagementService.deleteGroupMembers(Integer.parseInt(key),"/authority/member/"+groupguid, HttpMethod.DELETE, param);
     }
 
     /**
@@ -118,7 +125,8 @@ public class AuthorityManagementController extends Common{
      */
     @GetMapping(V2_URL+"/users")
     @ResponseBody
-    public Map<String, Object> getUserNameList() throws Exception {
-        return authorityManagementService.getUserNameList("/users", HttpMethod.GET, null, null);
+    public Map<String, Object> getUserNameList(HttpServletRequest request) throws Exception {
+        String key = request.getParameter("key");
+        return authorityManagementService.getUserNameList(Integer.parseInt(key),"/users", HttpMethod.GET, null);
     }
 }
