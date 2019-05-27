@@ -53,6 +53,7 @@ public class UserManagementController extends Common {
         return userManagementService.getUserInfoList("/usermgnts/"+filter+"/user?searchKeyword="+param.getSearchKeyword(), HttpMethod.GET, param, null);
     }
 
+
     @GetMapping(V2_URL + "/usermgnts/{userid}")
     @ResponseBody
     public Map<String, Object> getUserInfoList(@PathVariable String userid) {
