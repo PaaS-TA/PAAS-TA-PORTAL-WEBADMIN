@@ -83,8 +83,8 @@ public class ClientController  extends Common {
     @GetMapping(value = {Constants.V2_URL + "/clients"})
     @ResponseBody
     public Map<String, Object> getClientList(HttpServletRequest request) throws Exception {
-        request.getParameter("key");
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/clients", HttpMethod.GET, null, this.getToken());
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/clients", HttpMethod.GET, null);
     }
 
 
@@ -97,8 +97,9 @@ public class ClientController  extends Common {
      */
     @GetMapping(value = {Constants.V2_URL + "/clients/{clientId}"})
     @ResponseBody
-    public Map<String, Object> getClient(@PathVariable String clientId) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/clients/"+clientId, HttpMethod.GET, null, this.getToken());
+    public Map<String, Object> getClient(@PathVariable String clientId, HttpServletRequest request) throws Exception {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/clients/"+clientId, HttpMethod.GET, null);
     }
 
     /**
@@ -110,8 +111,9 @@ public class ClientController  extends Common {
      */
     @PostMapping(value = {Constants.V2_URL + "/clients"})
     @ResponseBody
-    public Map<String, Object> registerClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/clients", HttpMethod.POST, param, this.getToken());
+    public Map<String, Object> registerClient(@RequestBody Map<String, Object> param, HttpServletRequest request) throws Exception {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key), Constants.V3_URL + "/clients", HttpMethod.POST, param);
     }
 
     /**
@@ -123,8 +125,9 @@ public class ClientController  extends Common {
      */
     @PutMapping(value = {Constants.V2_URL + "/clients"})
     @ResponseBody
-    public Map<String, Object> updateClient(@RequestBody Map<String, Object> param) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/clients", HttpMethod.PUT, param, this.getToken());
+    public Map<String, Object> updateClient(@RequestBody Map<String, Object> param, HttpServletRequest request) throws Exception {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/clients", HttpMethod.PUT, param);
     }
 
     /**
@@ -136,8 +139,9 @@ public class ClientController  extends Common {
      */
     @DeleteMapping(value = {Constants.V2_URL + "/clients/{clientId}"})
     @ResponseBody
-    public Map<String, Object> deleteClient(@PathVariable String clientId) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/clients/" + clientId, HttpMethod.DELETE, null, this.getToken());
+    public Map<String, Object> deleteClient(@PathVariable String clientId, HttpServletRequest request) throws Exception {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/clients/" + clientId, HttpMethod.DELETE, null);
     }
 
 }
