@@ -33,8 +33,8 @@ public class UserManagementService extends Common {
      *
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getUserInfoList(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(Constants.V2_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> getUserInfoList(int key, String reqUrl, HttpMethod httpMethod, Object param) {
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + reqUrl, httpMethod, param);
     }
 
 
@@ -44,8 +44,8 @@ public class UserManagementService extends Common {
      * @param param UserManagement(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> setResetPassword(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(Constants.V2_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> setResetPassword(int key, String reqUrl, HttpMethod httpMethod, Object param) {
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + reqUrl, httpMethod, param);
     }
 
 
@@ -55,8 +55,8 @@ public class UserManagementService extends Common {
      * @param param UserManagement(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> updateOperatingAuthority(String reqUrl, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(Constants.V2_URL + reqUrl, httpMethod, param, reqToken);
+    public Map<String, Object> updateOperatingAuthority(int key, String reqUrl, HttpMethod httpMethod, Object param) {
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + reqUrl, httpMethod, param);
     }
 
 
@@ -66,8 +66,8 @@ public class UserManagementService extends Common {
      * @param param UserManagement(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> deleteUserAccount(String guid, HttpMethod httpMethod, Object param, String reqToken) {
-        return commonService.procCommonApiRestTemplate(Constants.V2_URL + "/user/" + guid + "/all", httpMethod, param, reqToken);
+    public Map<String, Object> deleteUserAccount(int key, String guid, HttpMethod httpMethod, Object param) {
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/user/" + guid + "/all", httpMethod, param);
     }
 
     /**
@@ -76,12 +76,12 @@ public class UserManagementService extends Common {
      * @param param Info
      * @return Map(자바클래스)
      */
-    public Map<String, Object> addUser(HttpMethod httpMethod, Map param, String reqToken) {
-        Map<String, Object> result = commonService.procCfApiRestTemplate(Constants.V3_URL + "/users", HttpMethod.POST, param, this.getToken());
+    public Map<String, Object> addUser(int key,HttpMethod httpMethod, Map param) {
+        Map<String, Object> result = commonService.procCfApiRestTemplate(key,Constants.V3_URL + "/users", HttpMethod.POST, param);
         if ((boolean) result.get("result")) {
             param.remove("active");
             param.put("active", param.get("active2").toString());
-            commonService.procCommonApiRestTemplate(Constants.V2_URL + "/user", httpMethod, param, reqToken);
+            commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/user", httpMethod, param);
         }
         return result;
     }
@@ -92,10 +92,10 @@ public class UserManagementService extends Common {
      * @param param UserManagement(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> updateUserActive(String reqUrl, HttpMethod httpMethod, UserManagement param, String reqToken) {
-        Map<String, Object> result = commonService.procCfApiRestTemplate(Constants.V3_URL + "/user/" + param.getUserGuid() + "/active", httpMethod, param, reqToken);
+    public Map<String, Object> updateUserActive(int key, String reqUrl, HttpMethod httpMethod, UserManagement param) {
+        Map<String, Object> result = commonService.procCfApiRestTemplate(key,Constants.V3_URL + "/user/" + param.getUserGuid() + "/active", httpMethod, param);
         param.setActive(result.get("active").toString().equals("true") ? "Y" : "N");
-        return commonService.procCommonApiRestTemplate(Constants.V2_URL + reqUrl, httpMethod, param, reqToken);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + reqUrl, httpMethod, param);
     }
 
 

@@ -161,7 +161,7 @@
 
 
     // GET LIST
-    var getUserInfoList = function (reqPageNo,key) {
+    var getUserInfoList = function (reqPageNo, key) {
         $('#buttonGetMoreList').hide();
         var filter = $("#access").val();
         var param = {
@@ -170,7 +170,7 @@
             pageNo: reqPageNo
         };
 
-        procCallAjax(REST_URL+"/" +filter +"/user/", "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL+"/" +filter +"/user"+"?key="+key, "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
 
     };
 
@@ -194,7 +194,7 @@
             pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "",
             pageNo: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ ""
         };
-        procCallAjax(REST_URL+"/"+filter+"/user" , "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL+"/"+filter+"/user"+"?key="+key , "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
     }
 
 
@@ -363,7 +363,7 @@
             procAlert("danger", /*[[#{common.email.validation.error.message}]]*/ "");
         } else {
             var param = {userid: reqUserId};
-            procCallAjax(REST_URL + "/password/email", "POST", JSON.stringify(param), procCallbackResetPassword, $('#serviceModalLoadingBar'));
+            procCallAjax(REST_URL + "/password/email"+"?key="+key, "POST", JSON.stringify(param), procCallbackResetPassword, $('#serviceModalLoadingBar'));
         }
 
 
@@ -381,7 +381,7 @@
     // UPDATE OPERATING AUTHORITY
     var updateOperatingAuthority = function (reqUserId) {
         var param = {userGuid: reqUserId};
-        procCallAjax(REST_URL + "/" + reqUserId + "/authority", 'PUT', JSON.stringify(param), procCallbackUpdateOperatingAuthority, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL + "/" + reqUserId + "/authority"+"?key="+key, 'PUT', JSON.stringify(param), procCallbackUpdateOperatingAuthority, $('#serviceModalLoadingBar'));
     };
 
 
@@ -397,13 +397,13 @@
     // DELETE USER ACCOUNT
     var deleteUserAccount = function (reqUserGuid) {
         var param = {guid: reqUserGuid};
-        procCallAjax(REST_URL + "/" + reqUserGuid, 'DELETE', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL + "/" + reqUserGuid +"?key="+key, 'DELETE', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
     };
 
     // UPDATE USER ACTIVE
     var updateUserActive = function(reqUserId){
         var param = {userGuid: reqUserId};
-        procCallAjax(REST_URL + "/" + reqUserId+"/active", 'PUT', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL + "/" + reqUserId+"/active" +"?key="+key, 'PUT', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
     };
 
     // DELETE USER ACCOUNT CALLBACK
@@ -467,7 +467,7 @@
             adminYn: "N"
         };
 
-        procCallAjax(REST_URL + "/user", 'POST', JSON.stringify(param), procCallbackAddUserInsert, $('#layerModalLoadingBar'));
+        procCallAjax(REST_URL + "/user"+"?key="+key, 'POST', JSON.stringify(param), procCallbackAddUserInsert, $('#layerModalLoadingBar'));
     };
 
     var procCallbackAddUserInsert = function(data) {
@@ -476,11 +476,17 @@
         }
     };
 
-
     // ON LOAD
     $(document.body).ready(function () {
         procInitPage();
     });
+
+
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        alert(key);
+    });
+
     /*]]>*/
 </script>
 </body>

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 import java.util.Map;
@@ -49,15 +50,17 @@ public class UserManagementController extends Common {
      */
     @GetMapping(V2_URL + "/usermgnts/{filter}/user")
     @ResponseBody
-    public Map<String, Object> getUserInfoList(@PathVariable String filter, @ModelAttribute UserManagement param) {
-        return userManagementService.getUserInfoList("/usermgnts/"+filter+"/user?searchKeyword="+param.getSearchKeyword(), HttpMethod.GET, param, null);
+    public Map<String, Object> getUserInfoList(@PathVariable String filter, HttpServletRequest request, @ModelAttribute UserManagement param) {
+        String key = request.getParameter("key");
+        return userManagementService.getUserInfoList(Integer.parseInt(key),"/usermgnts/"+filter+"/user?searchKeyword="+param.getSearchKeyword(), HttpMethod.GET, param);
     }
 
 
     @GetMapping(V2_URL + "/usermgnts/{userid}")
     @ResponseBody
-    public Map<String, Object> getUserInfoList(@PathVariable String userid) {
-        return userManagementService.getUserInfoList("/usermgnts/" + userid, HttpMethod.GET, null, null);
+    public Map<String, Object> getUserInfoList(@PathVariable String userid, HttpServletRequest request) {
+        String key = request.getParameter("key");
+        return userManagementService.getUserInfoList(Integer.parseInt(key),"/usermgnts/" + userid, HttpMethod.GET, null);
     }
 
 
@@ -69,8 +72,9 @@ public class UserManagementController extends Common {
      */
     @PostMapping(V2_URL + "/usermgnts/password/email")
     @ResponseBody
-    public Map<String, Object> setResetPassword(@RequestBody Map map) {
-        return userManagementService.setResetPassword("/users/password/email", HttpMethod.POST, map, null);
+    public Map<String, Object> setResetPassword(HttpServletRequest request, @RequestBody Map map) {
+        String key = request.getParameter("key");
+        return userManagementService.setResetPassword(Integer.parseInt(key), "/users/password/email", HttpMethod.POST, map);
     }
 
     /**
@@ -82,8 +86,9 @@ public class UserManagementController extends Common {
      */
     @PutMapping(V2_URL + "/usermgnts/{userid}/authority")
     @ResponseBody
-    public Map<String, Object> updateOperatingAuthority(@PathVariable String userid, @RequestBody UserManagement param) throws UnsupportedEncodingException {
-        return userManagementService.updateOperatingAuthority("/usermgnts/" + userid + "/authority", HttpMethod.PUT, param, null);
+    public Map<String, Object> updateOperatingAuthority(@PathVariable String userid, HttpServletRequest request, @RequestBody UserManagement param) throws UnsupportedEncodingException {
+        String key = request.getParameter("key");
+        return userManagementService.updateOperatingAuthority(Integer.parseInt(key),"/usermgnts/" + userid + "/authority", HttpMethod.PUT, param);
     }
 
 
@@ -95,8 +100,9 @@ public class UserManagementController extends Common {
      */
     @DeleteMapping(V2_URL + "/usermgnts/{guid}")
     @ResponseBody
-    public Map<String, Object> deleteUserAccount(@PathVariable String guid) {
-        return userManagementService.deleteUserAccount( guid , HttpMethod.DELETE, null, this.getToken());
+    public Map<String, Object> deleteUserAccount(@PathVariable String guid, HttpServletRequest request) {
+        String key = request.getParameter("key");
+        return userManagementService.deleteUserAccount(Integer.parseInt(key), guid , HttpMethod.DELETE, null);
     }
 
 
@@ -108,8 +114,9 @@ public class UserManagementController extends Common {
      */
     @PostMapping(V2_URL + "/usermgnts/user")
     @ResponseBody
-    public Map<String, Object> addUser(@RequestBody Map param) {
-        return userManagementService.addUser(HttpMethod.POST, param, this.getToken());
+    public Map<String, Object> addUser(HttpServletRequest request, @RequestBody Map param) {
+        String key = request.getParameter("key");
+        return userManagementService.addUser(Integer.parseInt(key),HttpMethod.POST, param);
     }
 
 
@@ -121,7 +128,8 @@ public class UserManagementController extends Common {
      */
     @PutMapping(V2_URL + "/usermgnts/{guid}/active")
     @ResponseBody
-    public Map<String, Object> updateUserActive(@PathVariable String guid, @RequestBody UserManagement param) {
-        return userManagementService.updateUserActive("/usermgnts/" + guid + "/active", HttpMethod.PUT, param, this.getToken());
+    public Map<String, Object> updateUserActive(@PathVariable String guid,  HttpServletRequest request, @RequestBody UserManagement param) {
+        String key = request.getParameter("key");
+        return userManagementService.updateUserActive(Integer.parseInt(key), "/usermgnts/" + guid + "/active", HttpMethod.PUT, param);
     }
 }
