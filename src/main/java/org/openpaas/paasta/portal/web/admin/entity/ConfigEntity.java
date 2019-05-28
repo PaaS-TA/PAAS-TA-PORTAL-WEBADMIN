@@ -1,9 +1,6 @@
 package org.openpaas.paasta.portal.web.admin.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 구성 모델
@@ -16,7 +13,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "infra_config")
 public class ConfigEntity {
+
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "key")
     private int key;
 
@@ -32,7 +32,7 @@ public class ConfigEntity {
     @Column(name = "uaa_uri")
     private String uaaUri;
 
-    @Column(name = "desc")
+    @Column(name = "description")
     private String desc;
 
 
