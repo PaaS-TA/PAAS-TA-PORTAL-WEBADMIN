@@ -30,33 +30,8 @@
     }
 
     $(document).ready(function () {
-        init();
+
     });
-
-    var init = function(){
-        //getApiUrlList();
-        //$("#apiUrls").val("");
-    }
-
-    function getApiUrlList() {
-        procCallAjax(API_PROC_URL, "GET", null, viewApiUrls, $('#loadingBar') );
-    };
-
-
-    // GET LIST
-    var viewApiUrls = function (data) {
-        console.log(data);
-        var html = '';
-        $.each(data, function (_idx, data) {
-            var idx = (_idx + 1);
-            var apiUri = data.apiUri;
-            var key = data.key;
-            console.log(">> index " + idx +", "+ "apiUri: "+apiUri +", "+"key: "+key);
-             html += '<option value="'+key+'">'+data.apiUri+'</option>';
-        });
-        $("#apiUrls").append(html);
-    };
-
 </script>
 <div class="wrapper">
 
