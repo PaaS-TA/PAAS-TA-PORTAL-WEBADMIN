@@ -2,10 +2,8 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
-import org.openpaas.paasta.portal.web.admin.respository.ConfigRepository;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +16,7 @@ public class RootController {
 
 
     @Autowired
-    RootService rootService;
+    ConfigService configService;
 
 
     /**
@@ -29,7 +27,7 @@ public class RootController {
     @CrossOrigin
     @GetMapping(value = {"/external/configs"})
     public List<ConfigEntity> configs() {
-        return rootService.configs();
+        return configService.configs();
     }
 
 
@@ -41,7 +39,7 @@ public class RootController {
     @CrossOrigin
     @GetMapping(value = {"/external/configs/{guid}/auth"})
     public ConfigEntity configAuth(@PathVariable int guid) {
-        return rootService.configAuth(guid);
+        return configService.configAuth(guid);
     }
 
 }

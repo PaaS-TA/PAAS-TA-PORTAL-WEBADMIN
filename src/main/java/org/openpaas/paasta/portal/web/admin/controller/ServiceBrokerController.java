@@ -5,16 +5,14 @@ import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.ServiceBroker;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * 서비스 브로커 관리 컨트롤러 - 서비스 브로커를 관리하는 컨트롤러이다.
@@ -108,11 +106,11 @@ public class ServiceBrokerController extends Common {
 
 
     @Autowired
-    RootService rootService;
+    ConfigService configService;
 
     @ModelAttribute("configs")
     public List<ConfigEntity> configs(){
-        return rootService.getConfigs();
+        return configService.getConfigs();
     }
 
 }

@@ -6,9 +6,6 @@ package org.openpaas.paasta.portal.web.admin.config.security;
 
 import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.config.security.userdetail.CustomUserDetailsService;
-import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
-import org.openpaas.paasta.portal.web.admin.respository.ConfigRepository;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

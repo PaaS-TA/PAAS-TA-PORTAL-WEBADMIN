@@ -5,7 +5,7 @@ import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.ServiceBroker;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,10 +137,10 @@ public class ServicePlansController extends Common {
 
 
     @Autowired
-    RootService rootService;
+    ConfigService configService;
 
     @ModelAttribute("configs")
     public List<ConfigEntity> configs(){
-        return rootService.getConfigs();
+        return configService.getConfigs();
     }
 }

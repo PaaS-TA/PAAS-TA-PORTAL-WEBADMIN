@@ -1,14 +1,11 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
-import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +30,7 @@ public class LoginController extends Common {
 
 
     @Autowired
-    RootService rootService;
+    ConfigService configService;
 
     /**
      * 로그인 화면
@@ -89,7 +86,7 @@ public class LoginController extends Common {
 
     @ModelAttribute("configs")
     public List<ConfigEntity> configs(){
-        return rootService.getConfigs();
+        return configService.getConfigs();
     }
 
 

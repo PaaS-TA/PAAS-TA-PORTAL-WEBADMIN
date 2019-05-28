@@ -4,9 +4,8 @@ import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.Quota;
-import org.openpaas.paasta.portal.web.admin.model.ServiceBroker;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
@@ -178,11 +177,11 @@ public class QuotaManagementController extends Common {
 
 
     @Autowired
-    RootService rootService;
+    ConfigService configService;
 
     @ModelAttribute("configs")
     public List<ConfigEntity> configs(){
-        return rootService.getConfigs();
+        return configService.getConfigs();
     }
 }
 

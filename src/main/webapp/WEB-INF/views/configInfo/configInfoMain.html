@@ -23,134 +23,33 @@
             <div class="box box-default" >
                 <!-- /.box box-default-header -->
                 <div class="col-sm-6 pt5">
-                    <h3> API URL </h3>
+                    <h3>인프라 설정</h3>
                 </div>
                 <div style="padding:10px;">
                     <table class="table table-striped">
-                        <tbody><tr>
-                            <td width="10%" style="vertical-align: middle" align="center">API 내용</td>
-                            <td width="70%" style="vertical-align: middle"><input type="text" maxlength="200" name="api_url" id="api_url" class="form-control"/></td>
-                            <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('API URL','api_url', $('#api_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
-                            </td>
+                        <thead>
+                        <tr>
+                            <td width="15%" style="vertical-align: middle">Name</td>
+                            <td width="23%" style="vertical-align: middle">API_URI</td>
+                            <td width="23%" style="vertical-align: middle">UAA_URI</td>
+                            <td width="23%" style="vertical-align: middle">Authorization</td>
+                            <td width="12%" style="vertical-align: middle">/</td>
                         </tr>
-                        </tbody></table>
-                </div>
-
-            </div>
-
-            <div class="box box-default" >
-                <div class="col-sm-6 pt5">
-                    <h3> UAA URL </h3>
-                </div>
-
-                <div style="padding:10px;">
-                    <table class="table table-striped">
-                        <tbody><tr>
-                            <td width="10%" style="vertical-align: middle" align="center"> UAA URL
-                            </td>
-                            <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="uaa_url" id="uaa_url" size="150" class="form-control"/></td>
-                            <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('UAA URL','uaa_url', $('#uaa_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
-                            </td>
+                        </thead>
+                        <tbody>
+                        <tr th:each="config : ${configs}">
+                            <td th:text="${config.name}"></td>
+                            <td th:text="${config.apiUri}"></td>
+                            <td th:text="${config.uaaUri}"></td>
+                            <td th:text="${config.authorization}"></td>
+                            <td style="text-align: center;"><div class="divButtons"><button class="btn btn-del" >삭제</button></div></td>
                         </tr>
-                        </tbody></table>
+
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
-
-            <div class="box box-default" >
-                <div class="col-sm-6 pt5">
-                    <h3> 사용자포탈 URL </h3>
-                </div>
-
-                <div style="padding:10px;">
-                    <table class="table table-striped">
-                        <tbody><tr>
-                            <td width="10%" style="vertical-align: middle" align="center">사용자포탈 URL
-                            </td>
-                            <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="user_portal_url" id="user_portal_url" size="150" class="form-control"/></td>
-                            <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('사용자포탈 URL','user_portal_url', $('#user_portal_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
-                            </td>
-                        </tr>
-                        </tbody></table>
-                </div>
-
-            </div>
-
-            <div class="box box-default" >
-                <div class="col-sm-6 pt5">
-                    <h3> SMTP URL </h3>
-                </div>
-
-                <div style="padding:10px;">
-                    <table class="table table-striped">
-                        <tbody><tr>
-                            <td width="10%" style="vertical-align: middle" align="center">SMTP
-                            </td>
-                            <td width="70%" style="vertical-align: middle"><input type="text" maxlength="300" name="smtp_url" id="smtp_url" size="150" class="form-control"/></td>
-                            <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('SMTP URL', 'smtp_url',$('#smtp_url').val())" data-toggle="modal" data-target="#modal-default" >저장</button>
-                            </td>
-                        </tr>
-                        </tbody></table>
-                </div>
-
-            </div>
-
-            <div class="box box-default" >
-                <div class="col-sm-6 pt5">
-                    <h3> WEB IDE URL </h3>
-                </div>
-
-                <div style="padding:10px;">
-                    <table class="table table-striped" style="margin: 0 0 0 0;">
-                        <tbody ><tr>
-                            <td width="10%"  style="vertical-align: middle" align="center"> <br>WEB IDE URL</br>
-                                <h6> ** 콤마(,)로 각 서버 구분.</h6>
-                            </td>
-                            <td width="70%" style="vertical-align: middle">
-                                <input type="text" maxlength="300" name="web_ide_url" id="web_ide_url" size="150" class="form-control"/>
-                            </td>
-                            <td width="10%" style="vertical-align: middle">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" onClick="initmodal('WEB IDE URL','web_ide_url', $('#web_ide_url').val())" data-toggle="modal" data-target="#modal-default">저장</button>
-                            </td>
-                        </tr>
-                        </tbody></table>
-                </div>
-                <div style="padding:10px;"></div>
-                <!-- /.box box-default-body -->
-            </div>
-
-            <!-- Modal Layer-->
-            <div style="height: 20px;"></div>
-            <div class="modal fade" id="modal-default" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span></button>
-                            <h3 class="modal-title" id="titlename">Default Modal</h3><h3 id="urlname" style="display: none" ></h3>
-                        </div>
-                        <div></div>
-                        <div class="modal-body">
-                            <h5 style="display: inline">변경 전 URL : </h5> <h5 style="display: inline" id="beforename"> </h5>
-                        </div>
-                        <div class="modal-body">
-                            <h5 style="display: inline">변경 후 URL : </h5> <h5 style="display: inline" id="aftername"> </h5>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal" >취소</button>
-                            <button type="button" class="btn btn-primary" onClick="updateValue($('#urlname').text(), $('#aftername').text())" data-dismiss="modal">저장</button>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-            <!-- Modal Layer-->
-
         </section>
         <!-- /.content -->
         <!-- ===================================================================================== -->

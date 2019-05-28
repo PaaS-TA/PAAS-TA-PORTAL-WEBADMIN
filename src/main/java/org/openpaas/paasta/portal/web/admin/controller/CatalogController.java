@@ -5,7 +5,7 @@ import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.Catalog;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.openpaas.paasta.portal.web.admin.util.MultipartFileResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -564,11 +564,11 @@ class CatalogController extends Common {
      * ------------------------------------------------------------------------------------삭제 끝
      */
     @Autowired
-    RootService rootService;
+    ConfigService configService;
 
     @ModelAttribute("configs")
     public List<ConfigEntity> configs(){
-        return rootService.getConfigs();
+        return configService.getConfigs();
     }
 
 }

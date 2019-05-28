@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Service
-public class RootService {
+public class ConfigService {
 
 
 

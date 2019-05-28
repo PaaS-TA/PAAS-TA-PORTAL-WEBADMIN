@@ -3,7 +3,7 @@ package org.openpaas.paasta.portal.web.admin.controller;
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.CommonCode;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -186,10 +186,10 @@ public class CommonCodeController extends Common {
     }
 
     @Autowired
-    RootService rootService;
+    ConfigService configService;
 
     @ModelAttribute("configs")
     public List<ConfigEntity> configs(){
-        return rootService.getConfigs();
+        return configService.getConfigs();
     }
 }

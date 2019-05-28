@@ -4,7 +4,7 @@ import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.respository.ConfigRepository;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private CommonService commonService;
 
     @Autowired
-    private RootService rootService;
+    private ConfigService configService;
 
     @Autowired
     ConfigRepository configRepository;
@@ -60,7 +60,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         List userList = new ArrayList();
 
-        for (ConfigEntity configEntity : rootService.getConfigs()) {
+        for (ConfigEntity configEntity : configService.getConfigs()) {
             Map result = null;
             try {
 

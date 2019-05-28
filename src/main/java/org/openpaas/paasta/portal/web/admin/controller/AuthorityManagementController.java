@@ -2,12 +2,9 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
-import org.openpaas.paasta.portal.web.admin.service.AuthorityManagementService;
-import org.openpaas.paasta.portal.web.admin.service.CommonService;
-import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -134,10 +131,10 @@ public class AuthorityManagementController extends Common{
     }
 
     @Autowired
-    RootService rootService;
+    ConfigService configService;
 
     @ModelAttribute("configs")
     public List<ConfigEntity> configs(){
-        return rootService.getConfigs();
+        return configService.getConfigs();
     }
 }
