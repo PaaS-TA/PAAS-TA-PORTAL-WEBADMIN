@@ -83,6 +83,37 @@ public class CommonService extends Common {
     /**
      * REST TEMPLATE 처리
      *
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
+     * @return map map
+     */
+    public Map<String, Object> procRestTemplate(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+        LOGGER.info("> Init procRestTemplate");
+
+        Map map = getServerInfos(key);
+        String apiUri = map.get("apiuri").toString();
+        String authorization = map.get("authorization").toString();
+        String token = map.get("token").toString();
+
+        restTemplate = new RestTemplate();
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
+
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, Map.class);
+        Map<String, Object> resultMap = resEntity.getBody();
+
+        LOGGER.info("procRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+
+        return resultMap;
+    }
+
+
+    /**
+     * REST TEMPLATE 처리
+     *
      * @param reqUrl   the req url
      * @param file     the file
      * @param reqToken the req token
@@ -241,7 +272,7 @@ public class CommonService extends Common {
         ResponseEntity<Map> resEntity = restTemplate.exchange(cfApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        if(resultMap != null){
+        if (resultMap != null) {
             LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
         }
         return resultMap;
@@ -249,7 +280,6 @@ public class CommonService extends Common {
 
     /**
      * REST TEMPLATE 처리 - CfApi(PortalApi)
-     *
      *
      * @param apiUri
      * @param reqUrl     the req url
@@ -267,11 +297,11 @@ public class CommonService extends Common {
 
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        LOGGER.info("> cfApiUrl : " + apiUri + "/portalapi" +reqUrl); //http://+apiUri+"/portalapi"+reqUrl
+        LOGGER.info("> cfApiUrl : " + apiUri + "/portalapi" + reqUrl); //http://+apiUri+"/portalapi"+reqUrl
 
-        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" +reqUrl, httpMethod, reqEntity, Map.class);
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
-        if(resultMap != null){
+        if (resultMap != null) {
             LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
         }
         return resultMap;
@@ -303,9 +333,9 @@ public class CommonService extends Common {
 
         if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        LOGGER.info("> cfApiUrl : " + apiUri + "/portalapi"+ reqUrl);
+        LOGGER.info("> cfApiUrl : " + apiUri + "/portalapi" + reqUrl);
 
-        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri+ "/portalapi"+ reqUrl, httpMethod, reqEntity, Map.class);
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
         if (resultMap != null) {
             LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
@@ -329,7 +359,7 @@ public class CommonService extends Common {
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
 
-        LOGGER.info("CommonApiUrl::"+commonApiUrl + reqUrl);
+        LOGGER.info("CommonApiUrl::" + commonApiUrl + reqUrl);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
         ResponseEntity<Map> resEntity = restTemplate.exchange(commonApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
@@ -363,9 +393,9 @@ public class CommonService extends Common {
 
         if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        LOGGER.info("> commonApiUrl : " + commonApiUrl + reqUrl);
+        LOGGER.info("> apiUricommonApiUrl : " + apiUri + "/commonapi" + reqUrl);
 
-        ResponseEntity<Map> resEntity = restTemplate.exchange(commonApiUrl+ reqUrl, httpMethod, reqEntity, Map.class);
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/commonapi" + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
         if (resultMap != null) {
             LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
@@ -379,7 +409,7 @@ public class CommonService extends Common {
      *
      * @param reqUrl     the req url
      * @param httpMethod the http method
-     * @param bodyObject        the obj
+     * @param bodyObject the obj
      * @param reqToken   the req token
      * @return map map
      */
@@ -388,7 +418,7 @@ public class CommonService extends Common {
 
         // create url
         String storageRequestURL = storageApiUrl + "/v2/" + storageApiType + '/';
-        if (null != reqUrl && false == "".equals( reqUrl ))
+        if (null != reqUrl && false == "".equals(reqUrl))
             storageRequestURL += reqUrl;
 
         HttpHeaders reqHeaders = new HttpHeaders();
@@ -405,10 +435,10 @@ public class CommonService extends Common {
     }
 
     public ResponseEntity<String> procStorageApiRestTemplateText(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
-        return procStorageApiRestTemplate( reqUrl, httpMethod, bodyObject, reqToken, String.class );
+        return procStorageApiRestTemplate(reqUrl, httpMethod, bodyObject, reqToken, String.class);
     }
 
     public ResponseEntity<byte[]> procStorageApiRestTemplateBinary(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
-        return procStorageApiRestTemplate( reqUrl, httpMethod, bodyObject, reqToken, byte[].class );
+        return procStorageApiRestTemplate(reqUrl, httpMethod, bodyObject, reqToken, byte[].class);
     }
 }
