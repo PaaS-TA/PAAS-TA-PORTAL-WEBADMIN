@@ -164,7 +164,11 @@
   var USER_LABEL  = "사용자";
 
   $( "#apiUrls" ).change(function() {
+
+    //key 값 저장
     key = $("#apiUrls").val();
+    $.cookie("api_key",key);
+
     getTotalCountList(key);  // 조직 / 공간 / 앱 /사용자 수 조회
     getChartList(key);       // 조직 / 공간 차트 조회
   });
@@ -176,8 +180,14 @@
 
   // Init
   var procInitPage = function() {
-    key = $("#apiUrls").val();
-    alert(key);
+      //key 값 설정
+      if($.cookie("api_key") != null){
+      key = $.cookie("api_key");
+      $("#apiUrls").val(key);
+    }else{
+      key = $("#apiUrls").val();
+    }
+
     getTotalCountList(key);  // 조직 / 공간 / 앱 /사용자 수 조회
     getChartList(key);       // 조직 / 공간 차트 조회
     setBoardEvent();      // Board Event Listener Setting
