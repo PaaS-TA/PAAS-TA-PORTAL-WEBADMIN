@@ -161,7 +161,9 @@
 
 
     // GET LIST
-    var getUserInfoList = function (reqPageNo, key) {
+    var getUserInfoList = function (reqPageNo) {
+        key = $("#apiUrls").val();
+
         $('#buttonGetMoreList').hide();
         var filter = $("#access").val();
         var param = {
@@ -175,18 +177,21 @@
     };
 
     var procButtonClick = function () {
+        key = $("#apiUrls").val();
         BOOLEN_SEARCH = true;
-        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "");
+        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "",key);
     }
 
     var procCheckSearchFormKeyEvent = function (e) {
+        key = $("#apiUrls").val();
         if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
             BOOLEN_SEARCH = true;
-            getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "");
+            getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "",key);
         }
     };
 
     var selectChange = function(){
+        key = $("#apiUrls").val();
         $('#buttonGetMoreList').hide();
         var filter = $("#access").val();
         var param = {
@@ -297,7 +302,8 @@
 
     // GET MORE LIST
     var procGetMoreList = function () {
-        getUserInfoList(parseInt(document.getElementById('currentPageNo').value) + 1);
+        key = $("#apiUrls").val();
+        getUserInfoList(parseInt(document.getElementById('currentPageNo').value) + 1, key);
     };
 
 
@@ -431,7 +437,16 @@
     // INIT PAGE
     var procInitPage = function () {
         procAlert("info", WELCOME_MESSAGE);
-        key =  $("#apiUrls").val();
+        key = $("#apiUrls").val();
+
+        //key 값 설정
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+        // alert("INIT PAGE_index_"+key);
 
         $('#userInfoViewArea').hide();
         getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "",key);
@@ -448,6 +463,8 @@
     };
 
     function addUserInsert() {
+        key = $("#apiUrls").val();
+
         if(usersObj[$("#addUserId").val()] != undefined) {
             notifyAlert("warning", "", $("#addUserId").val()+" 은(는) 이미 사용중인 ID 입니다.");
             return false;
@@ -484,6 +501,8 @@
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
+        $.cookie("api_key",key);
+        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "",key);
     });
 
     /*]]>*/

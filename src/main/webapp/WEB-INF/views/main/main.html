@@ -180,8 +180,8 @@
 
   // Init
   var procInitPage = function() {
-      //key 값 설정
-      if($.cookie("api_key") != null){
+    //key 값 설정
+    if($.cookie("api_key") != null){
       key = $.cookie("api_key");
       $("#apiUrls").val(key);
     }else{
