@@ -2,8 +2,10 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.ServiceBroker;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
+import org.openpaas.paasta.portal.web.admin.service.RootService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -130,5 +133,14 @@ public class ServicePlansController extends Common {
     @DeleteMapping(value = {Constants.V2_URL + "/serviceplanvisibilities/all/{guid}"})
     public Map<String, Object> deleteAllServicePlanVisibility( @PathVariable String guid) throws Exception {
         return commonService.procCfApiRestTemplate(Constants.V3_URL + "/serviceplanvisibilities/all/" + guid, HttpMethod.DELETE, null, this.getToken());
+    }
+
+
+    @Autowired
+    RootService rootService;
+
+    @ModelAttribute("configs")
+    public List<ConfigEntity> configs(){
+        return rootService.getConfigs();
     }
 }

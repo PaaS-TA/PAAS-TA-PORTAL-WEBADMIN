@@ -1,8 +1,11 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
+import org.openpaas.paasta.portal.web.admin.service.RootService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -75,6 +78,15 @@ public class DomainController extends Common {
     public Map<String, Object> deleteDomain(@RequestBody Map body) {
         LOGGER.info("Start deleteDomain");
         return domainService.deleteDomain("/domains-admin", HttpMethod.DELETE, body, getToken());
+    }
+
+
+    @Autowired
+    RootService rootService;
+
+    @ModelAttribute("configs")
+    public List<ConfigEntity> configs(){
+        return rootService.getConfigs();
     }
 }
 

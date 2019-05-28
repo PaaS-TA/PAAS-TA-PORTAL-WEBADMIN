@@ -1,17 +1,17 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.WebIdeUser;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
+import org.openpaas.paasta.portal.web.admin.service.RootService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -98,6 +98,14 @@ public class WebIdeUserController extends Common {
 
         return commonService.procRestTemplate("/webIdeUser/getList", HttpMethod.POST, webIdeUser, null);
 
+    }
+
+    @Autowired
+    RootService rootService;
+
+    @ModelAttribute("configs")
+    public List<ConfigEntity> configs(){
+        return rootService.getConfigs();
     }
 
 }

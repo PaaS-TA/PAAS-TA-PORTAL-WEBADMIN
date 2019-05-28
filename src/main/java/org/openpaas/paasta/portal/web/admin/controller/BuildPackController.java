@@ -2,12 +2,16 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.BuildPack;
+import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -65,5 +69,11 @@ public class BuildPackController extends Common {
         return commonService.procCfApiRestTemplate(Constants.V3_URL + "/buildpacks/" + buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
     }
 
+    @Autowired
+    RootService rootService;
 
+    @ModelAttribute("configs")
+    public List<ConfigEntity> configs(){
+        return rootService.getConfigs();
+    }
 }

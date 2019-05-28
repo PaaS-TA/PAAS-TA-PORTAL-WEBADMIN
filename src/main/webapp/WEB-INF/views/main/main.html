@@ -177,6 +177,7 @@
   // Init
   var procInitPage = function() {
     key = $("#apiUrls").val();
+    alert(key);
     getTotalCountList(key);  // 조직 / 공간 / 앱 /사용자 수 조회
     getChartList(key);       // 조직 / 공간 차트 조회
     setBoardEvent();      // Board Event Listener Setting

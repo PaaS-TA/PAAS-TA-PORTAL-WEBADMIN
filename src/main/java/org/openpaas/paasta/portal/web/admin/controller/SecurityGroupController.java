@@ -2,6 +2,8 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
+import org.openpaas.paasta.portal.web.admin.service.RootService;
 import org.openpaas.paasta.portal.web.admin.service.SecurityGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -222,5 +224,14 @@ public class SecurityGroupController extends Common {
     @DeleteMapping(Constants.V2_URL+"/securitygroup/{securityid}/spaces/{spaceid}")
     public Map<String, Object> removeSecurityGroupSpace(@PathVariable String securityid, @PathVariable String spaceid) throws Exception {
         return securityGroupService.removeSecurityGroupSpace(securityid, spaceid);
+    }
+
+
+    @Autowired
+    RootService rootService;
+
+    @ModelAttribute("configs")
+    public List<ConfigEntity> configs(){
+        return rootService.getConfigs();
     }
 }

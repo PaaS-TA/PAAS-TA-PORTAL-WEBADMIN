@@ -2,11 +2,15 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.ServiceBroker;
+import org.openpaas.paasta.portal.web.admin.service.RootService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -167,5 +171,14 @@ public class IsolationSegmentsController extends Common {
     @ResponseBody
     public Map resetSpaceDefaultIsolationSegments(@PathVariable String spaceId) throws Exception {
         return commonService.procCfApiRestTemplate(Constants.V3_URL + "/spaces/"+spaceId+"/isolationSegments/reset", HttpMethod.PUT, null, this.getToken());
+    }
+
+
+    @Autowired
+    RootService rootService;
+
+    @ModelAttribute("configs")
+    public List<ConfigEntity> configs(){
+        return rootService.getConfigs();
     }
 }

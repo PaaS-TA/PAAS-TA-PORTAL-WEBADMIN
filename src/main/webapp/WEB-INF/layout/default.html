@@ -34,8 +34,8 @@
     });
 
     var init = function(){
-        getApiUrlList();
-        $("#apiUrls").val("");
+        //getApiUrlList();
+        //$("#apiUrls").val("");
     }
 
     function getApiUrlList() {
@@ -87,6 +87,7 @@
 
     <div class="box-header" style="text-align: right;">
         <select class="form-control toCheckString" id="apiUrls" style="width:200px;margin-top: -3px; display: unset;text-align: right;" onchange="selectChange()">
+            <option th:each="config : ${configs}" th:value="${config.key}" th:text="${config.apiUri}"></option>
         </select>
     </div>
 

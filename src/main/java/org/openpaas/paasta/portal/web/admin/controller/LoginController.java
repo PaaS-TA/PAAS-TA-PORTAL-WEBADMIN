@@ -2,11 +2,15 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
+import org.openpaas.paasta.portal.web.admin.service.RootService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +31,9 @@ public class LoginController extends Common {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
+
+    @Autowired
+    RootService rootService;
 
     /**
      * 로그인 화면
@@ -70,12 +77,6 @@ public class LoginController extends Common {
     public ModelAndView homePage(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
 
-        Map map = getServerInfos(1);
-
-        LOGGER.info("API URI " + map.get("apiuri").toString());
-        LOGGER.info("TOKEN  " + map.get("token").toString());
-        LOGGER.info("Authorization  " + map.get("authorization").toString());
-
         if (!request.isUserInRole("ROLE_ADMIN")) {
             mv.setViewName("redirect:/index");
         } else {
@@ -83,6 +84,12 @@ public class LoginController extends Common {
         }
 
         return mv;
+    }
+
+
+    @ModelAttribute("configs")
+    public List<ConfigEntity> configs(){
+        return rootService.getConfigs();
     }
 
 
