@@ -22,7 +22,7 @@ import java.util.*;
  * @version 1.0
  * @since 2016.5.24
  */
-public class Common {
+public class Common  {
 
     private static final Logger LOG = LoggerFactory.getLogger(Common.class);
 
@@ -173,3 +173,4 @@ public class Common {
         return map;
     }
 }
+

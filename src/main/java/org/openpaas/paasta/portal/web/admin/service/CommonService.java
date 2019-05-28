@@ -393,6 +393,7 @@ public class CommonService extends Common {
 
         if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+
         LOGGER.info("> apiUricommonApiUrl : " + apiUri + "/commonapi" + reqUrl);
 
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/commonapi" + reqUrl, httpMethod, reqEntity, Map.class);

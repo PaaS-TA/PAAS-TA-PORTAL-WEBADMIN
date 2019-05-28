@@ -369,15 +369,28 @@
 //            getSpaceQuotaDefinitionList();
 //            $('#quotaDefinitionFormModal').modal('hide');
 //        }, 1000);
-
+        getApiUrlList();
         getOrgQuotaDefinitionList();
         getSpaceQuotaDefinitionList();
         $('#quotaDefinitionFormModal').modal('hide');
-
+        $("#apiUrls").val("");
+        alert("나야나 init"+key);
     };
 
-    $(document).ready(function () {
+    function getApiUrlList() {
+        procCallAjax(API_PROC_URL, "GET", null, viewApiUrls, $('#loadingBar') );
+    };
 
+
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        alert("나야나 apiUrls.change"+key);
+        getOrgList();
+    });
+
+    $(document).ready(function () {
+        key = $("#apiUrls").val();
+        alert("나야나 $(document).ready(function ()"+key);
         getOrgList();
         setPopover();
 
@@ -587,11 +600,11 @@
 
 
     function getOrgQuotaDefinitionList() {
-        procCallAjax("/v2/orgs/quota-definitions", "GET", null, procCallbackGetOrgQuotaDefinitionList, $('#orgTabLoadingBar') );
+        procCallAjax("/v2/orgs/quota-definitions"+"?key="+key, "GET", null, procCallbackGetOrgQuotaDefinitionList, $('#orgTabLoadingBar') );
     };
 
     function getSpaceQuotaDefinitionList() {
-        procCallAjax("/v2/spaces/quota-definitions", "GET", null, procCallbackGetSpaceQuotaDefinitionList, $('#spaceTabLoadingBar') );
+        procCallAjax("/v2/spaces/quota-definitions"+"?key="+key, "GET", null, procCallbackGetSpaceQuotaDefinitionList, $('#spaceTabLoadingBar') );
     };
 
     var procCallbackGetOrgQuotaDefinitionList = function(data){
@@ -611,7 +624,7 @@
         $('#form')[0].reset();
         $('#quotaDefinitionFormModal .modal-title div').text("조직 할당량 상세");
         $('#quotaDefinitionFormModal').modal('toggle');
-        procCallAjax("/v2/orgs/quota-definitions/"+quotaId, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
+        procCallAjax("/v2/orgs/quota-definitions/"+quotaId+"?key="+key, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
     }
 
     // 공간 허용량 정의 상세
@@ -619,7 +632,7 @@
         $('#form')[0].reset();
         $('#quotaDefinitionFormModal .modal-title div').text("공간 할당량 상세");
         $('#quotaDefinitionFormModal').modal('toggle');
-        procCallAjax("/v2/spaces/quota-definitions/"+quotaId, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
+        procCallAjax("/v2/spaces/quota-definitions/"+quotaId+"?key="+key, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
     }
 
     var procCallbackGetQuotaDefinition = function(data){
@@ -811,7 +824,7 @@
 
     // 조직 정보 조회(공간 할당량정의시 참조 정보)
     function getOrgList() {
-        procCallAjax("/v2/orgs", "GET", null, procCallbackGetOrgList, null );
+        procCallAjax("/v2/orgs"+"?key="+key, "GET", null, procCallbackGetOrgList, null );
     };
 
     var procCallbackGetOrgList = function(data) {
