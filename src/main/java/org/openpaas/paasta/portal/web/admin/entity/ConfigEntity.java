@@ -33,7 +33,7 @@ public class ConfigEntity {
     private String uaaUri;
 
     @Column(name = "description")
-    private String desc;
+    private String description;
 
 
     public int getKey() {
@@ -43,7 +43,6 @@ public class ConfigEntity {
     public void setKey(int key) {
         this.key = key;
     }
-
 
     public String getName() {
         return name;
@@ -77,16 +76,16 @@ public class ConfigEntity {
         this.uaaUri = uaaUri;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return "ConfigEntity{" + "key=" + key + ", name='" + name + '\'' + ", authorization='" + authorization + '\'' + ", apiUri='" + apiUri + '\'' + ", uaaUri='" + uaaUri + '\'' + ", desc='" + desc + '\'' + '}';
+        return "ConfigEntity{" + "key=" + key + ", name='" + name + '\'' + ", authorization='" + authorization + '\'' + ", apiUri='" + apiUri + '\'' + ", uaaUri='" + uaaUri + '\'' + ", description='" + description + '\'' + '}';
     }
 }

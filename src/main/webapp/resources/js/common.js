@@ -100,7 +100,65 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
         }
     });
 };
+// Http Method , loadingBar Element Argument 추가
+var procCallAjax5 = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {
+    var reqData = "";
 
+    if (param != null) {
+        reqData = param;
+    }
+    $.ajax({
+        url: reqUrl,
+        method: reqMethod,
+        data: reqData,
+        dataType: 'json',
+        contentType: "application/json",
+        beforeSend: function(){
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.removeClass("hide");
+            }
+        },
+        success: function(data) {
+
+
+            if (data.result == true) {
+                callback(data, param);
+
+                if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
+                    switch (reqMethod) {
+                        case "PUT" :
+                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            break;
+                        case "POST" :
+                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            break;
+                        case "DELETE" :
+                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            break;
+                        default :
+                            break;
+                    }
+                }
+            } else {
+                notifyAlert('danger','',"작업중에 오류가 발생하였습니다.");
+                return false;
+            }
+        },
+        error: function(xhr, status, error) {
+            //var resData = {RESULT : RESULT_STATUS_FAIL,
+            //    RESULT_MESSAGE : JSON.parse(xhr.responseText).message};
+            //callback(resData, param);
+            console.log("ERROR :: error :: ", error);
+            notifyAlert('danger','',JSON.parse(xhr.responseText).message);
+        },
+        complete : function(data) {
+            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+                $targetLoadingBarElement.addClass('hide');
+            }
+            console.log("COMPLETE :: data :: ", data);
+        }
+    });
+};
 
 // Http Method , loadingBar Element Argument 추가
 var procCallAjax4 = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {

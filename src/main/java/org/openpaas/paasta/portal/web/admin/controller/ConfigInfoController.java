@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,9 @@ public class ConfigInfoController extends Common {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigInfoController.class);
     private final String V2_URL = "/v2";
 
+    @Autowired
+    ConfigService configService;
+
     /**
      * 설정 정보 메인 화면이다.
      *
@@ -37,20 +41,21 @@ public class ConfigInfoController extends Common {
 
     @GetMapping("/configInfos")
     public ModelAndView configInfo() {
-        return configInfoService.configInfo();
+        return new ModelAndView() {{
+            setViewName("/configInfo/configInfoMain");
+        }};
     }
 
 
     /**
      * 설정 정보를 조회한다.
      *
-     * @param configInfo the ConfigInfo
      * @return ModelAndView model
      */
-    @GetMapping(V2_URL + "/configInfos")
+    @GetMapping(V2_URL + "/configInfos/{key}")
     @ResponseBody
-    public Map<String, Object> getValues(@ModelAttribute ConfigInfo configInfo) {
-        return configInfoService.getValues("/configInfos", HttpMethod.GET, configInfo, null);
+    public ConfigEntity getValues(@PathVariable int key) {
+        return configService.getConfig(key);
     }
 
     /**
@@ -59,25 +64,40 @@ public class ConfigInfoController extends Common {
      * @param key - primary key
      * @return ModelAndView model
      */
-    @GetMapping(V2_URL + "/configInfos/{key}")
+    @DeleteMapping(V2_URL + "/configInfos/{key}")
     @ResponseBody
-    public Map<String, Object> getValue(@PathVariable String key) {
-        return null;
+    public Map<String, Object> deleteConfig(@PathVariable int key) {
+        return configService.deleteConfig(key);
     }
 
 
     /**
      * 설정 정보를 수정한다.
      *
-     * @param name       - primary key
-     * @param configInfo the configInfo
+     * @param configEntity - primary key
      * @return ModelAndView model
      */
-    @PutMapping(V2_URL + "/configInfos/{name}")
+    @PutMapping(V2_URL + "/configInfos/{key}")
     @ResponseBody
-    public Map<String, Object> updateValue(@PathVariable String name, @RequestBody ConfigInfo configInfo) {
-        return configInfoService.updateValue("/configInfos/" + name, HttpMethod.PUT, configInfo, null);
+    public Map<String, Object> updateConfig(@PathVariable int key, @RequestBody ConfigEntity configEntity) {
+        LOGGER.info("UPDATE : " + configEntity.toString());
+        configEntity.setKey(key);
+
+        return configService.updateConfig(key, configEntity);
     }
+
+
+    /**
+     * 설정 정보를 저장한다.
+     *
+     * @return ModelAndView model
+     */
+    @PostMapping(V2_URL + "/configInfos")
+    @ResponseBody
+    public Map<String, Object> addConfig(@RequestBody ConfigEntity configEntity) {
+        return configService.saveConfig(configEntity);
+    }
+
 
     /*
      *예제~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~₩
@@ -90,8 +110,6 @@ public class ConfigInfoController extends Common {
 //        return commonService.procCommonApiRestTemplate("/configInfos"+name, HttpMethod.GET, configInfo, null);
 //    }
 
-    @Autowired
-    ConfigService configService;
 
     @ModelAttribute("configs")
     public List<ConfigEntity> configs() {

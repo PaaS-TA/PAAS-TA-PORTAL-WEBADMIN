@@ -9,10 +9,10 @@
     <header></header>
     <!-- Left side column. contains the logo and sidebar -->
     <!-- Content Wrapper. Contains page content -->
-        <!-- ===================================================================================== -->
-        <!-- Content Header (Page header) -->
-        <div layout:fragment="content">
-            <section class="content-header">
+    <!-- ===================================================================================== -->
+    <!-- Content Header (Page header) -->
+    <div layout:fragment="content">
+        <section class="content-header">
             <h3>
                 설정 정보
             </h3>
@@ -20,29 +20,38 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="box box-default" >
+            <div class="box box-default">
                 <!-- /.box box-default-header -->
                 <div class="col-sm-6 pt5">
                     <h3>인프라 설정</h3>
                 </div>
+                <div class="box-header">
+                    <div class="pull-right" style="padding-right: 0px;">
+                        <button type="button" class="btn btn-block btn-primary btn-sm" id="configBtn"
+                                name="configBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                                data-target="#configFormModal">
+                            인프라 등록
+                        </button>
+
+                    </div>
+                </div>
                 <div style="padding:10px;">
+
                     <table class="table table-striped">
                         <thead>
                         <tr>
                             <td width="15%" style="vertical-align: middle">Name</td>
-                            <td width="23%" style="vertical-align: middle">API_URI</td>
-                            <td width="23%" style="vertical-align: middle">UAA_URI</td>
-                            <td width="23%" style="vertical-align: middle">Authorization</td>
-                            <td width="12%" style="vertical-align: middle">/</td>
+                            <td width="15%" style="vertical-align: middle">API_URI</td>
+                            <td width="25%" style="vertical-align: middle">UAA_URI</td>
+                            <td width="25%" style="vertical-align: middle">Authorization</td>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr th:each="config : ${configs}">
+                        <tbody name="dataList">
+                        <tr th:each="config : ${configs}" style="cursor:pointer;" th:attr="data-id=${config.key}">
                             <td th:text="${config.name}"></td>
                             <td th:text="${config.apiUri}"></td>
                             <td th:text="${config.uaaUri}"></td>
                             <td th:text="${config.authorization}"></td>
-                            <td style="text-align: center;"><div class="divButtons"><button class="btn btn-del" >삭제</button></div></td>
                         </tr>
 
                         </tbody>
@@ -53,11 +62,100 @@
         </section>
         <!-- /.content -->
         <!-- ===================================================================================== -->
+        <!-- [앱 서비스] Modal-->
+        <div class="modal fade" id="configFormModal" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span></button>
+
+                        <h4 class="modal-title">
+                            <div id="serviceTitle" name="modalTitle">인프라 정보 등록</div>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                            <div id="configModalLoadingBar" name="modalLoadingBar" class="overlay hide"><i
+                                    class="fa fa-refresh fa-spin"></i></div>
+                            <form id="serviceForm" class="form-horizontal">
+                                <div class="box-body">
+                                    <div class="form-group required">
+                                        <label for="infra_name" class="col-sm-3 control-label">NAME</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control checkServiceForm" id="infra_name"
+                                                   name="infra_name" placeholder=""/>
+                                            <input type="hidden" id="key" name="key"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group required">
+                                        <label for="apiUri" class="col-sm-3 control-label">API_URI</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control checkServiceForm" id="apiUri"
+                                                   name="apiUri" placeholder=""/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group required">
+                                        <label for="uaaUri" class="col-sm-3 control-label">UAA_URI</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control checkServiceForm" id="uaaUri"
+                                                   name="uaaUri" placeholder=""/>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group required">
+                                        <label for="authorization" class="col-sm-3 control-label">Authorization</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control checkServiceForm" id="authorization"
+                                                   name="authorization" placeholder=""/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="desc" class="col-sm-3 control-label">설명</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" rows="5" id="desc"></textarea>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="configDeleteBtn" name="modalDeleteBtn"
+                                class="btn btn-sm btn-danger pull-left" onClick="deleteConfig();">삭제
+                        </button>
+                        <button type="button" id="configUpdateBtn" name="modalSaveBtn"
+                                class="btn btn-sm btn-primary pull-right" onClick="updateInfra();">저장
+                        </button>
+                        <button type="button" id="configSaveBtn" name="modalSaveBtn"
+                                class="btn btn-sm btn-primary pull-right" onClick="addInfra();">저장
+                        </button>
+                        <button type="button" id="configCloseBtn" class="btn btn-sm btn-default pull-left"
+                                data-dismiss="modal">취소
+                        </button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- Modal END -->
+
+
     </div>
+
+
     <!-- /.content-wrapper -->
 
     <!--footer -->
-
 
 
     <!-- Control Sidebar -->
@@ -66,100 +164,134 @@
     <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->
     <!--<div class="control-sidebar-bg"></div>-->
-<!-- ./wrapper -->
+    <!-- ./wrapper -->
     <footer></footer>
 </div>
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
     var V2_URL = "/v2";
     var REST_URL = V2_URL + "/configInfos"
 
-    $(document).ready(function(){
-        getValues();
+    $(document).ready(function () {
+        $('#configFormModal').on('shown.bs.modal', function () {
+        });
+
+        $(document).on("click", 'button[name=configBtn]', function (e) {
+            initTextBox();
+        });
+
+
+        // 리스트 클릭시 상세 출력
+        $(document).on("mouseup", 'tbody[name=dataList]', function (e) {
+
+            $("#configSaveBtn").hide();
+            $("#configDeleteBtn").show();
+            $("#configUpdateBtn").show();
+
+            var id = $(e.target).parent().data('id');
+            getInfo(id);
+            $('#configFormModal').modal('toggle');
+        });
+
     });
 
-    function getValues(){
-
-        $.ajax({
-            url: REST_URL,
-            dataType: 'json',
-            success: function(data){
-                if(data.list){
-                    $.each(data.list, function (id, data) {
-                        $('#'+data.name).val(data.value);
-                    });
-                }
-            }
-        });
+    /*
+    * 인프라 정보 등록
+     */
+    function initTextBox(){
+        $("#key").val("");
+        $("#infra_name").val("");
+        $("#apiUri").val("");
+        $("#uaaUri").val("");
+        $("#authorization").val("");
+        $("#desc").val("");
+        $("#configSaveBtn").show();
+        $("#configDeleteBtn").hide();
+        $("#configUpdateBtn").hide();
     }
 
-    function getValue(name)
-    {
-        $.ajax({
-            url: REST_URL + "/" + name,
-            method: "GET",
-            dataType: 'json',
-            success: function(data){
-                if(data.list){
-                    $.each(data.list, function (id, data) {
-                        $("#beforename").html(data.value);
-                    });
-                }
-            }
-        });
-    }
-
-    function initmodal(Titlename, urlname, value)
-    {
-        $("#titlename").html(Titlename);
-        $("#urlname").html(urlname);
-        getValue(urlname);
-        $("#aftername").html(value);
-    }
-
-
-    function updateValue(name, value){
-        if (0 != value.length) {
-            if (0 == value.replace(/ /g,"").length) {
-                $('#' + name).focus();
-                notifyAlert("warning", "" ,/*[[#{common.info.empty.req.data}]]*/ "");
-                return false;
-            }
-
-            if (value.includes(' ')) {
-                $('#' + name).focus();
-                notifyAlert("warning", "" ,/*[[#{common.url.validation.error.message}]]*/ "");
-                return false;
-            }
-            if(name!='smtp_url'){
-                if (!procCheckValidUrl(value)) {
-                    $('#' + name).focus();
-                    notifyAlert("warning", "" ,/*[[#{common.url.validation.error.message}]]*/ "");
-                    return false;
-                }
-            }
-        } else {
-            $('#' + name).focus();
+    function addInfra() {
+        if (!procCheckValidStringSpaceClass('checkServiceForm')) {
             return false;
         }
-
-        param = {
-            value: value
-        }
-
-        $.ajax({
-            url: REST_URL+"/"+name,
-            method: "PUT",
-            data: JSON.stringify(param),
-            dataType: 'json',
-            contentType: "application/json",
-            success: function(data){
-                if(data){
-                    notifyAlert("success", "" ,"설정이 저장되었습니다.");
-                }
-            }
-        });
-
+        var infra_name    = $("#infra_name").val();
+        var apiUri        = $("#apiUri").val();
+        var uaaUri        = $("#uaaUri").val();
+        var authorization = $("#authorization").val();
+        var desc          = $("#desc").val();
+        var params = {
+            "key": "",
+            "name": infra_name,
+            "apiUri": apiUri,
+            "uaaUri": uaaUri,
+            "authorization": authorization,
+            "description": desc
+        };
+        procCallAjax5(REST_URL, "POST", JSON.stringify(params), refresh, $('#configModalLoadingBar'));
     }
+
+    /*
+     * 인프라 정보 업데이트
+     */
+    function updateInfra() {
+        if (!procCheckValidStringSpaceClass('checkServiceForm')) {
+            return false;
+        }
+        var key           = $("#key").val();
+        var infra_name    = $("#infra_name").val();
+        var apiUri        = $("#apiUri").val();
+        var uaaUri        = $("#uaaUri").val();
+        var authorization = $("#authorization").val();
+        var desc          = $("#desc").val();
+        var params = {
+            "key": key,
+            "name": infra_name,
+            "apiUri": apiUri,
+            "uaaUri": uaaUri,
+            "authorization": authorization,
+            "description": desc
+        };
+        procCallAjax5(REST_URL + "/" + key, "PUT", JSON.stringify(params), refresh, $('#configModalLoadingBar'));
+    }
+
+    /*
+    * Config를 삭제한다.
+     */
+
+    function deleteConfig() {
+        var key           = $("#key").val();
+        procCallAjax5(REST_URL + "/" + key, "DELETE", '', refresh, $('#configModalLoadingBar'));
+    }
+
+    var procCallbackGetInfo = function (data) {
+        var key           = data.key;
+        var infra_name    = data.name;
+        var apiUri        = data.apiUri;
+        var uaaUri        = data.uaaUri;
+        var authorization = data.authorization;
+        var desc          = data.description;
+
+        $("#key").val(key);
+        $("#infra_name").val(infra_name);
+        $("#apiUri").val(apiUri);
+        $("#uaaUri").val(uaaUri);
+        $("#authorization").val(authorization);
+        $("#desc").val(desc);
+    }
+
+    // Refresh Page
+    var refresh = function () {
+        location.reload();
+    };
+
+
+
+
+    // GET Infra_info
+    var getInfo = function (id) {
+        $('.modal').modal('hide');
+        procCallAjax(REST_URL + "/" + id, "GET", null, procCallbackGetInfo, $('#configModalLoadingBar'));
+    };
+
 
 
 </script>

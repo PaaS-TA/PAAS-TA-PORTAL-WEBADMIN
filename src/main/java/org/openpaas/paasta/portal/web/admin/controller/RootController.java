@@ -39,7 +39,7 @@ public class RootController {
     @CrossOrigin
     @GetMapping(value = {"/external/configs/{guid}/auth"})
     public ConfigEntity configAuth(@PathVariable int guid) {
-        return configService.configAuth(guid);
+        return configService.getConfig(guid);
     }
 
 }

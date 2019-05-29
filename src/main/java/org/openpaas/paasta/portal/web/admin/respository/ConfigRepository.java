@@ -16,4 +16,6 @@ public interface ConfigRepository extends JpaRepository<ConfigEntity, Integer> {
 
     ConfigEntity findByApiUri(String apiUri);
 
+    void deleteByKey(int key);
+
 }
