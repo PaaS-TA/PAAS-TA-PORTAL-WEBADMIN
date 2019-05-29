@@ -219,12 +219,11 @@
         var authorization = $("#authorization").val();
         var desc          = $("#desc").val();
         var params = {
-            "key": "",
             "name": infra_name,
             "apiUri": apiUri,
             "uaaUri": uaaUri,
             "authorization": authorization,
-            "description": desc
+            "desc": desc
         };
         procCallAjax5(REST_URL, "POST", JSON.stringify(params), refresh, $('#configModalLoadingBar'));
     }
@@ -243,12 +242,11 @@
         var authorization = $("#authorization").val();
         var desc          = $("#desc").val();
         var params = {
-            "key": key,
             "name": infra_name,
             "apiUri": apiUri,
             "uaaUri": uaaUri,
             "authorization": authorization,
-            "description": desc
+            "desc": desc
         };
         procCallAjax5(REST_URL + "/" + key, "PUT", JSON.stringify(params), refresh, $('#configModalLoadingBar'));
     }
@@ -268,7 +266,7 @@
         var apiUri        = data.apiUri;
         var uaaUri        = data.uaaUri;
         var authorization = data.authorization;
-        var desc          = data.description;
+        var desc          = data.desc;
 
         $("#key").val(key);
         $("#infra_name").val(infra_name);

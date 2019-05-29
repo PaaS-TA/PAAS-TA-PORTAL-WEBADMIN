@@ -80,10 +80,8 @@ public class ConfigInfoController extends Common {
     @PutMapping(V2_URL + "/configInfos/{key}")
     @ResponseBody
     public Map<String, Object> updateConfig(@PathVariable int key, @RequestBody ConfigEntity configEntity) {
-        LOGGER.info("UPDATE : " + configEntity.toString());
         configEntity.setKey(key);
-
-        return configService.updateConfig(key, configEntity);
+        return configService.saveConfig(configEntity);
     }
 
 

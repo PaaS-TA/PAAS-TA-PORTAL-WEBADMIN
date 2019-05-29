@@ -17,7 +17,7 @@ public class ConfigEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "key")
+    @Column(name = "id")
     private int key;
 
     @Column(name = "name")
@@ -33,7 +33,7 @@ public class ConfigEntity {
     private String uaaUri;
 
     @Column(name = "description")
-    private String description;
+    private String desc;
 
 
     public int getKey() {
@@ -76,16 +76,16 @@ public class ConfigEntity {
         this.uaaUri = uaaUri;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     @Override
     public String toString() {
-        return "ConfigEntity{" + "key=" + key + ", name='" + name + '\'' + ", authorization='" + authorization + '\'' + ", apiUri='" + apiUri + '\'' + ", uaaUri='" + uaaUri + '\'' + ", description='" + description + '\'' + '}';
+        return "ConfigEntity{" + "key=" + key + ", name='" + name + '\'' + ", authorization='" + authorization + '\'' + ", apiUri='" + apiUri + '\'' + ", uaaUri='" + uaaUri + '\'' + ", desc='" + desc + '\'' + '}';
     }
 }

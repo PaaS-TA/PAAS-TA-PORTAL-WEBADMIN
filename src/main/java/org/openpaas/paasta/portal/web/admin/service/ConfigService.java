@@ -6,7 +6,6 @@ import org.openpaas.paasta.portal.web.admin.respository.ConfigRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -69,6 +68,7 @@ public class ConfigService {
     public Map saveConfig(ConfigEntity configEntity) {
         Map rs = new HashMap();
         try {
+            LOGGER.info("saveConfig : " + configEntity.toString());
             configRepository.save(configEntity);
             rs.put("result", true);
         } catch (Exception e) {
@@ -76,26 +76,6 @@ public class ConfigService {
             rs.put("result", false);
         }
         return rs;
-    }
-
-
-    public Map updateConfig(int key, ConfigEntity configEntity) {
-        Map rs = new HashMap();
-        try {
-            ConfigEntity param = configRepository.findOne(key);
-            LOGGER.info("PARAM : " +param.toString() + " :: UPDATE");
-            param.setName(configEntity.getName());
-            param.setApiUri(configEntity.getApiUri());
-            param.setUaaUri(configEntity.getUaaUri());
-            param.setAuthorization(configEntity.getAuthorization());
-            param.setDescription(configEntity.getDescription());
-            configRepository.save(param);
-        } catch (Exception e) {
-            e.printStackTrace();
-            rs.put("result", false);
-        }
-        return rs;
-
     }
 
     /**
