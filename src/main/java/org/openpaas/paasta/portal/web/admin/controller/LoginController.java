@@ -1,6 +1,7 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
@@ -65,29 +66,6 @@ public class LoginController extends Common {
     }
 
 
-    /**
-     * 로그인처리 후 첫 화면
-     *
-     * @return ModelAndView model
-     */
-    @RequestMapping(value = {"/dashboard"}, method = RequestMethod.GET)
-    public ModelAndView homePage(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView();
-
-        if (!request.isUserInRole("ROLE_ADMIN")) {
-            mv.setViewName("redirect:/index");
-        } else {
-            mv.setViewName("/main/main");
-        }
-
-        return mv;
-    }
-
-
-    @ModelAttribute("configs")
-    public List<ConfigEntity> configs(){
-        return configService.getConfigs();
-    }
 
 
 }

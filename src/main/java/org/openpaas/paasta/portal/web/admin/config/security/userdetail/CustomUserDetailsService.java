@@ -50,7 +50,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
-
     public List loginByUsernameAndPassword(String username, String password) throws UsernameNotFoundException {
 
         Map<String, Object> resBody = new HashMap();
@@ -59,47 +58,85 @@ public class CustomUserDetailsService implements UserDetailsService {
         resBody.put("password", password);
 
         List userList = new ArrayList();
-
+        int loginCount = 0;
         for (ConfigEntity configEntity : configService.getConfigs()) {
+
+            LOGGER.info("> configEntity Name: " + configEntity.getName());
+            LOGGER.info("> configEntity ApiUri: " + configEntity.getApiUri());
+            LOGGER.info("> configEntity UaaUri: " + configEntity.getUaaUri());
+
+
+            /*
+             * CF_API  로그인 요청
+             */
             Map result = null;
             try {
-
-                LOGGER.info("> configEntity Name: " + configEntity.getName());
-                LOGGER.info("> configEntity ApiUri: " + configEntity.getApiUri());
-                LOGGER.info("> configEntity UaaUri: " + configEntity.getUaaUri());
-                result = commonService.procCfApiRestTemplate(configEntity.getApiUri(), "/login", HttpMethod.POST, resBody, "");
-
+                result = commonService.procCfApiRestTemplate(configEntity.getApiUri(), "/login", configEntity.getAuthorization(), HttpMethod.POST, resBody, "");
+                loginCount++;
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new BadCredentialsException(e.getMessage());
             }
-            Map info = new HashMap();
+
+            /*
+             * DB에 사용자 정보 요청
+             */
+            Map info = null;
+            Map userInfo = null;
             try {
-                info = commonService.procCommonApiRestTemplate("/v2/user/" + username, HttpMethod.GET, null, "");
+                info = commonService.procCommonApiRestTemplate(configEntity.getApiUri(), "/v2/user/" + username, configEntity.getAuthorization(), HttpMethod.GET, null, "");
+                userInfo = (Map) info.get("User");
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            Map userInfo = (Map) info.get("User");
+            String token = null;
+            Long expireDate = null;
+            if (result != null) {
+                token = (String) result.get("token");
+                expireDate = (Long) result.get("expireDate");
+            }
+
+            String name = null;
+            String adminYn = null;
+            String imgPath = null;
+
+            if (userInfo != null) {
+                adminYn = (String) userInfo.get("adminYn");
+                imgPath = (String) userInfo.get("imgPath");
+                name = (String) userInfo.get("name");
+            }
+
+
+            String roleName;
+            if (adminYn != null && adminYn.equals("Y")) {
+                roleName = "ROLE_ADMIN";
+            } else {
+                roleName = "ROLE_USER";
+                token = null;
+            }
+
 
             List role = new ArrayList();
-            if (userInfo.get("adminYn").toString().equals("Y")) {
-                role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            } else {
-                role.add(new SimpleGrantedAuthority("ROLE_USER"));
-            }
+            role.add(new SimpleGrantedAuthority(roleName));
 
-            User user = new User((String) result.get("id"), (String) result.get("password"), role);
-            user.setKey(configEntity.getKey());
-            user.setToken((String) result.get("token"));
-            user.setExpireDate((Long) result.get("expireDate"));
-            user.setName((String) userInfo.get("name"));
-            user.setImgPath((String) userInfo.get("imgPath"));
+            User user = new User(username, password, role);
+            user.setName(name);
+            user.setToken(token);
+            user.setExpireDate(expireDate);
+            user.setImgPath(imgPath);
             user.setAuthorization(configEntity.getAuthorization());
             user.setApiUri(configEntity.getApiUri());
             user.setUaaUri(configEntity.getUaaUri());
+            user.setKey(configEntity.getKey());
+
+            LOGGER.info("End Login :: " + configEntity.getApiUri() + " /// " + user.toString());
+
             userList.add(user);
         }
+        if (loginCount == 0) {
+            new BadCredentialsException("Incorrect login information or incorrect contact address.");
+        }
+
         return userList;
     }
 }

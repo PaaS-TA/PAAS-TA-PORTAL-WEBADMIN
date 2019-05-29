@@ -1,6 +1,7 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,11 +131,8 @@ public class AuthorityManagementController extends Common{
         return authorityManagementService.getUserNameList(Integer.parseInt(key),"/users", HttpMethod.GET, null);
     }
 
-    @Autowired
-    ConfigService configService;
-
     @ModelAttribute("configs")
-    public List<ConfigEntity> configs(){
-        return configService.getConfigs();
+    public List<User> configs(){
+        return getServerInfos();
     }
 }

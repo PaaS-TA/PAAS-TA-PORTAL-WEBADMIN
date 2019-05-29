@@ -92,7 +92,7 @@ public class CommonService extends Common {
     public Map<String, Object> procRestTemplate(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
         LOGGER.info("> Init procRestTemplate");
 
-        Map map = getServerInfos(key);
+        Map map = getServerInfo(key);
         String apiUri = map.get("apiuri").toString();
         String authorization = map.get("authorization").toString();
         String token = map.get("token").toString();
@@ -289,11 +289,11 @@ public class CommonService extends Common {
      * @param reqToken   the req token
      * @return map map
      */
-    public Map<String, Object> procCfApiRestTemplate(String apiUri, String reqUrl, HttpMethod httpMethod, Object obj, String reqToken) {
+    public Map<String, Object> procCfApiRestTemplate(String apiUri, String reqUrl, String authorization,HttpMethod httpMethod, Object obj, String reqToken) {
 
         restTemplate = new RestTemplate();
         HttpHeaders reqHeaders = new HttpHeaders();
-        reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
         LOGGER.info(base64Authorization);
 
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
@@ -322,7 +322,7 @@ public class CommonService extends Common {
 
         LOGGER.info("> Init");
 
-        Map map = getServerInfos(key);
+        Map map = getServerInfo(key);
         String apiUri = map.get("apiuri").toString();
         String authorization = map.get("authorization").toString();
         String token = map.get("token").toString();
@@ -376,13 +376,37 @@ public class CommonService extends Common {
      * @param reqUrl     the req url
      * @param httpMethod the http method
      * @param obj        the obj
+     * @param reqToken   the req token
+     * @return map map
+     */
+    public Map<String, Object> procCommonApiRestTemplate(String apiUri, String reqUrl, String authorization, HttpMethod httpMethod, Object obj, String reqToken) {
+        restTemplate = new RestTemplate();
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
+
+        LOGGER.info("CommonApiUrl::" + apiUri + "/commonapi" + reqUrl);
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/commonapi" + reqUrl, httpMethod, reqEntity, Map.class);
+        Map<String, Object> resultMap = resEntity.getBody();
+
+        LOGGER.info("procCommonApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        return resultMap;
+    }
+
+    /**
+     * REST TEMPLATE 처리 - CommonApi
+     *
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
      * @return map map
      */
     public Map<String, Object> procCommonApiRestTemplate(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
 
         LOGGER.info("> Init");
 
-        Map map = getServerInfos(key);
+        Map map = getServerInfo(key);
         String apiUri = map.get("apiuri").toString();
         String authorization = map.get("authorization").toString();
         String token = map.get("token").toString();
@@ -420,14 +444,12 @@ public class CommonService extends Common {
 
         // create url
         String storageRequestURL = storageApiUrl + "/v2/" + storageApiType + '/';
-        if (null != reqUrl && false == "".equals(reqUrl))
-            storageRequestURL += reqUrl;
+        if (null != reqUrl && false == "".equals(reqUrl)) storageRequestURL += reqUrl;
 
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
-        if (null == bodyObject)
-            bodyObject = new LinkedMultiValueMap<>();
+        if (null == bodyObject) bodyObject = new LinkedMultiValueMap<>();
         HttpEntity<Object> reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
 
         ResponseEntity<T> resEntity = restTemplate.exchange(storageRequestURL, httpMethod, reqEntity, resClazz);
