@@ -2,6 +2,7 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
+import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
 import org.openpaas.paasta.portal.web.admin.service.ConfigService;
@@ -147,12 +148,9 @@ public class ClientController  extends Common {
         return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/clients/" + clientId, HttpMethod.DELETE, null);
     }
 
-    @Autowired
-    ConfigService configService;
-
     @ModelAttribute("configs")
-    public List<ConfigEntity> configs(){
-        return configService.getConfigs();
+    public List<User> configs(){
+        return getServerInfos();
     }
 
 }

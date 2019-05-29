@@ -1,6 +1,7 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.ConfigInfo;
 import org.openpaas.paasta.portal.web.admin.service.ConfigService;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +45,7 @@ public class ConfigInfoController extends Common {
     public ModelAndView configInfo() {
         return new ModelAndView() {{
             setViewName("/configInfo/configInfoMain");
-        }};
+        }}.addObject("infra_infos",configService.getConfigs());
     }
 
 
@@ -110,8 +112,9 @@ public class ConfigInfoController extends Common {
 
 
     @ModelAttribute("configs")
-    public List<ConfigEntity> configs() {
-        return configService.getConfigs();
+    public List<User> configs(){
+
+        return getServerInfos();
     }
 }
 

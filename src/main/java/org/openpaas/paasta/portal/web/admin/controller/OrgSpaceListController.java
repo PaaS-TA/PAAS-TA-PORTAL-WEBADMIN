@@ -2,6 +2,7 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
+import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
@@ -155,11 +156,8 @@ public class OrgSpaceListController extends Common {
     }
 
 
-    @Autowired
-    ConfigService configService;
-
     @ModelAttribute("configs")
-    public List<ConfigEntity> configs(){
-        return configService.getConfigs();
+    public List<User> configs(){
+        return getServerInfos();
     }
 }

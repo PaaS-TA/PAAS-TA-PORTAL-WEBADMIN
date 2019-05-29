@@ -22,7 +22,7 @@ import java.util.*;
  * @version 1.0
  * @since 2016.5.24
  */
-public class Common  {
+public class Common {
 
     private static final Logger LOG = LoggerFactory.getLogger(Common.class);
 
@@ -113,7 +113,7 @@ public class Common  {
 
             Map result;
 
-            result = commonService.procCfApiRestTemplate(user.getApiUri(), "/login", HttpMethod.POST, resBody, null);
+            result = commonService.procCfApiRestTemplate(user.getApiUri(), "/login", user.getAuthorization(), HttpMethod.POST, resBody, null);
 
             user.setToken((String) result.get("token"));
             user.setExpireDate((Long) result.get("expireDate"));
@@ -132,7 +132,7 @@ public class Common  {
      * 3. Token 만료되지 않은 경우, 업데이트는 하지 않는다.
      */
 
-    public Map getServerInfos(int key) {
+    public Map getServerInfo(int key) {
         Map map = new HashMap();
         try {
             String password = "";
@@ -172,5 +172,20 @@ public class Common  {
         }
         return map;
     }
+
+
+    public List getServerInfos() {
+        Map map = new HashMap();
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            final Object authPrincipal = auth.getPrincipal();
+            List users = (List) authPrincipal;
+            return users;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
 

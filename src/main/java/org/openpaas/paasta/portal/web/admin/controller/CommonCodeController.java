@@ -1,6 +1,7 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.User;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.CommonCode;
 import org.openpaas.paasta.portal.web.admin.service.ConfigService;
@@ -185,11 +186,8 @@ public class CommonCodeController extends Common {
         return commonCodeService.deleteCommonDetail(no);
     }
 
-    @Autowired
-    ConfigService configService;
-
     @ModelAttribute("configs")
-    public List<ConfigEntity> configs(){
-        return configService.getConfigs();
+    public List<User> configs(){
+        return getServerInfos();
     }
 }

@@ -47,11 +47,11 @@
                         </tr>
                         </thead>
                         <tbody name="dataList">
-                        <tr th:each="config : ${configs}" style="cursor:pointer;" th:attr="data-id=${config.key}">
-                            <td th:text="${config.name}"></td>
-                            <td th:text="${config.apiUri}"></td>
-                            <td th:text="${config.uaaUri}"></td>
-                            <td th:text="${config.authorization}"></td>
+                        <tr th:each="infra_info : ${infra_infos}" style="cursor:pointer;" th:attr="data-id=${infra_info.key}">
+                            <td th:text="${infra_info.name}"></td>
+                            <td th:text="${infra_info.apiUri}"></td>
+                            <td th:text="${infra_info.uaaUri}"></td>
+                            <td th:text="${infra_info.authorization}"></td>
                         </tr>
 
                         </tbody>
