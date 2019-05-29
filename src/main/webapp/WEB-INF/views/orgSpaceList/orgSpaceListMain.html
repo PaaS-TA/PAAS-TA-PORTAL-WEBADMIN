@@ -95,16 +95,25 @@
     var spaceQuotaText;
 
     $(document).ready(function(){
-        key = $("#apiUrls").val();
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+
         procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"?key="+key,"GET",null ,procCallbackGetOrgs);
         getDomains(key);
 
     });
 
     $( "#apiUrls" ).change(function() {
-       key = $("#apiUrls").val();
-       // alert(key);
+        key = $("#apiUrls").val();
+        $.cookie("api_key",key);
         procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"?key="+key,"GET",null ,procCallbackGetOrgs);
+        procCallbackGetSpace();
+        procCallbackGetOrgs();
+
     });
 
 

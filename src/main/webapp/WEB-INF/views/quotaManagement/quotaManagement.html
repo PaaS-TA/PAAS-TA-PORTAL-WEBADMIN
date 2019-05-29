@@ -369,28 +369,28 @@
 //            getSpaceQuotaDefinitionList();
 //            $('#quotaDefinitionFormModal').modal('hide');
 //        }, 1000);
-        getApiUrlList();
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
         getOrgQuotaDefinitionList();
         getSpaceQuotaDefinitionList();
         $('#quotaDefinitionFormModal').modal('hide');
-        $("#apiUrls").val("");
-        alert("나야나 init"+key);
+        //key 값 설정
     };
-
-    function getApiUrlList() {
-        procCallAjax(API_PROC_URL, "GET", null, viewApiUrls, $('#loadingBar') );
-    };
-
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
-        alert("나야나 apiUrls.change"+key);
-        getOrgList();
+        $.cookie("api_key",key);
+
+        getOrgQuotaDefinitionList();
+        getSpaceQuotaDefinitionList();
     });
 
     $(document).ready(function () {
         key = $("#apiUrls").val();
-        alert("나야나 $(document).ready(function ()"+key);
         getOrgList();
         setPopover();
 
