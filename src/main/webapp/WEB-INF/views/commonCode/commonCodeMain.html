@@ -409,18 +409,35 @@
     });
 
     function init() {
-        getCodeGroupList();
+        keyApiUrl = $("#apiUrls").val();
+
+        //key 값 설정
+        if($.cookie("api_key") != null){
+            keyApiUrl = $.cookie("api_key");
+            $("#apiUrls").val(keyApiUrl);
+        }else{
+            keyApiUrl = $("#apiUrls").val();
+        }
+
+        getCodeGroupList(key);
         $("#DetailRegister").hide();
 
         $('#codeGrouprModal').modal('hide');
         $('#codeDetailModal').modal('hide');
     }
 
-    getSearchList = function () {
-        getCodeGroupList();
-        getCodeDetailList();
-    }
+    $( "#apiUrls" ).change(function() {
 
+        //key 값 저장
+        keyApiUrl = $("#apiUrls").val();
+        $.cookie("api_key",key);
+        alert(keyApiUrl);
+
+        getCodeGroupList();
+        $("#DetailRegister").hide();
+        $('#codeGrouprModal').modal('hide');
+        $('#codeDetailModal').modal('hide');
+    });
 
     // CHECK SEARCH FORM KEY EVENT
     var procCheckSearchFormKeyEvent = function (e) {
@@ -428,6 +445,11 @@
             getSearchList();
         }
     };
+
+    getSearchList = function () {
+        getCodeGroupList();
+        getCodeDetailList();
+    }
 
     var isGroupValidation = false;
     // CHECK VALID STRING SPACE : 'name' Unify = codeGroup
@@ -461,7 +483,7 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax(LIST_GROUP_PROC_URL, "GET", param, procCallbackGetCodeGroupList, $('#serviceModalLoadingBar'));
+        procCallAjax(LIST_GROUP_PROC_URL+"?key="+keyApiUrl, "GET", param, procCallbackGetCodeGroupList, $('#serviceModalLoadingBar'));
 
     };
 
@@ -474,7 +496,8 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax(LIST_DETAIL_PROC_URL, "GET", param, procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+        procCallAjax(LIST_DETAIL_PROC_URL+"?key="+keyApiUrl, "GET", param, procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+        alert('::getCodeDetailList::'+keyApiUrl);
 
     };
 
@@ -512,7 +535,7 @@
     function getCodeGroup(id) {
         $("#groupId").val(id);
         $.ajax({
-            url: "/v2/codegroup/" + id,
+            url: "/v2/codegroup/" + id +"?key="+keyApiUrl,
             method: "GET",
             dataType: 'json',
             contentType: "application/json",
@@ -533,7 +556,9 @@
 
     // GET LIST CALLBACK CodeDetailList
     var procCallbackGetCodeDetailList = function (data) {
-        var objTable = $("#codeDetailList");
+        alert("::procCallbackGetCodeDetailList(2):: "+keyApiUrl);
+
+        var objTable = $("#codeDetailList") ;
         var objTableArea = $('#codeDetailGroupTableArea');
         var objMessageArea = $('#codeDetailMessageArea');
         var listLength = data.list.length;
@@ -579,14 +604,14 @@
         selectKey = key;
         $("#DetailRegister").show();
         $("#groupId").val(key);
-        procCallAjax("/v2/codedetail?groupId=" + key, "GET", '', procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+        procCallAjax("/v2/codedetail?groupId=" + key + "?key=" + keyApiUrl, "GET", '', procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+        alert("::getCodeDetail(1):: "+ "/v2/codedetail?groupId=" + key + "?key=" + keyApiUrl);
     }
 
 
     function getCodeDetailTable(no) {
-
        $.ajax({
-            url: "/v2/codedetail/"+no,
+            url: "/v2/codedetail/"+no+"?key="+keyApiUrl,
             method: "GET",
             dataType: 'json',
             contentType: "application/json",
@@ -621,7 +646,7 @@
             name: $("#name").val(),
         }
         $.ajax({
-            url: "/v2/codegroup",
+            url: "/v2/codegroup"+"?key="+keyApiUrl,
             method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -651,7 +676,7 @@
         }
 
         $.ajax({
-            url: "/v2/codegroup/" + id,
+            url: "/v2/codegroup/" + id+"?key="+keyApiUrl,
             method: "PUT",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -672,7 +697,7 @@
     //deleteGroup
     function deleteGroupModal() {
         var groupId = $("#groupId").val();
-        procCallAjax("/v2/codegroup/" + groupId, "DELETE", '', deleteGroup, $('#serviceModalLoadingBar'));
+        procCallAjax("/v2/codegroup/" + groupId+"?key="+keyApiUrl, "DELETE", '', deleteGroup, $('#serviceModalLoadingBar'));
         getCodeGroupList();
         modalInit();
     }
@@ -699,7 +724,7 @@
 
         console.log(param);
         $.ajax({
-            url: "/v2/codedetail",
+            url: "/v2/codedetail"+"?key="+keyApiUrl,
             method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -735,7 +760,7 @@
 
         console.log(param);
         $.ajax({
-            url: "/v2/codedetail/"+ no,
+            url: "/v2/codedetail/"+ no +"?key="+keyApiUrl,
             method: "PUT",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -757,7 +782,7 @@
     //deleteGroup
     function deleteDetailModal() {
         var no = $("#detailNo").val();
-        procCallAjax("/v2/codedetail/" + no, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
+        procCallAjax("/v2/codedetail/" + no +"?key="+keyApiUrl, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
 
         console.log("      "+ 1);
     }

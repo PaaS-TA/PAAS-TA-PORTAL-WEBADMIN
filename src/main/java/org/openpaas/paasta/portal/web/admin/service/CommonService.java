@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -228,9 +229,9 @@ public class CommonService extends Common {
      * @return user id
      */
     public String getUserId() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return user.getUsername();
-    }
+        final List<User> userList = (List<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userList.get(0).getUsername();
+}
 
 
     /**
@@ -436,10 +437,13 @@ public class CommonService extends Common {
     }
 
     public ResponseEntity<String> procStorageApiRestTemplateText(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
+        LOGGER.info(">>> Init procStorageApiRestTemplateText >> reqUrl"+reqUrl +"::"+ "httpMethod"+ httpMethod+"::"+ "bodyObject"+ bodyObject+"::"+ "reqToken"+ reqToken);
         return procStorageApiRestTemplate(reqUrl, httpMethod, bodyObject, reqToken, String.class);
     }
 
     public ResponseEntity<byte[]> procStorageApiRestTemplateBinary(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
+        LOGGER.info(">>> Init procStorageApiRestTemplateBinary >> reqUrl"+reqUrl +"::"+ "httpMethod"+ httpMethod+"::"+ "bodyObject"+ bodyObject+"::"+ "reqToken"+ reqToken);
         return procStorageApiRestTemplate(reqUrl, httpMethod, bodyObject, reqToken, byte[].class);
     }
+
 }
