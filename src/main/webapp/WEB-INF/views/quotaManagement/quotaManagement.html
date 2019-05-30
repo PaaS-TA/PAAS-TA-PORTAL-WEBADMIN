@@ -362,6 +362,21 @@
 
     var ORG_LIST_MAP = new Map(); // 조직 할당량정의에서 사용할 조직 정보 Map
 
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        $.cookie("api_key",key);
+
+        procCallAjax("/v2/orgs"+"?key="+key, "GET", null, procCallbackGetOrgList, null);
+
+        var searchResult = [];
+
+        if(ACTIVE_TAB == 'org'){
+            printOrgData(searchResult);
+        }else{
+            printSpaceData(searchResult);
+        }
+    });
+
     var init = function(){
         // 삭제후 조회시 딜레이 필요.
 //        setTimeout(function() {
@@ -369,28 +384,22 @@
 //            getSpaceQuotaDefinitionList();
 //            $('#quotaDefinitionFormModal').modal('hide');
 //        }, 1000);
+
         if($.cookie("api_key") != null){
             key = $.cookie("api_key");
             $("#apiUrls").val(key);
         }else{
             key = $("#apiUrls").val();
         }
+
         getOrgQuotaDefinitionList();
         getSpaceQuotaDefinitionList();
         $('#quotaDefinitionFormModal').modal('hide');
-        //key 값 설정
+
     };
 
-    $( "#apiUrls" ).change(function() {
-        key = $("#apiUrls").val();
-        $.cookie("api_key",key);
-
-        getOrgQuotaDefinitionList();
-        getSpaceQuotaDefinitionList();
-    });
-
     $(document).ready(function () {
-        key = $("#apiUrls").val();
+
         getOrgList();
         setPopover();
 
@@ -699,7 +708,7 @@
             return false;
         };
 
-        procCallAjax(apiUrl, "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
+        procCallAjax(apiUrl+"?key="+key, "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
 
     // 조직/공간 할당량 정의 수정
@@ -733,7 +742,7 @@
             return false;
         };
 
-        procCallAjax(apiUrl, "PUT", JSON.stringify(param), init, null);
+        procCallAjax(apiUrl+"?key="+key, "PUT", JSON.stringify(param), init, null);
     }
 
 
@@ -766,7 +775,7 @@
         }
 
         //procCallAjax(apiUrl, "DELETE", null, init, null);
-        procCallAjaxForSyncDelete(apiUrl, "DELETE", null, init, null);
+        procCallAjaxForSyncDelete(apiUrl+"?key="+key, "DELETE", null, init, null);
     }
 
     // 조직 할당량 정의 리스트 출력
@@ -824,11 +833,11 @@
 
     // 조직 정보 조회(공간 할당량정의시 참조 정보)
     function getOrgList() {
-        procCallAjax("/v2/orgs"+"?key="+key, "GET", null, procCallbackGetOrgList, null );
+        key = $("#apiUrls").val();
+        procCallAjax("/v2/orgs"+"?key="+key, "GET", null, procCallbackGetOrgList, null);
     };
 
     var procCallbackGetOrgList = function(data) {
-
         var objTable = $('#organization');
         objTable.html('');
 

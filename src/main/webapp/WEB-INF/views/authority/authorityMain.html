@@ -146,12 +146,22 @@
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
+        $.cookie("api_key",key);
         getAuthGroups(setAuthGroupTable,key);
         getUserInfo(setUserInfo,key);
     });
 
     $(document).ready(function(){
+
+        //key 값 설정
         key = $("#apiUrls").val();
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+
         getAuthGroups(setAuthGroupTable,key);
         getUserInfo(setUserInfo,key);
 

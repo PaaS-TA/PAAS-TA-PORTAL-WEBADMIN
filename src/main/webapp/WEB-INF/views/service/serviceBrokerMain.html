@@ -160,8 +160,27 @@
     /*<![CDATA[*/
     var serviceBrokerGuid = /*[[${guid}]]*/ 'empty';
 
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        $.cookie("api_key",key);
+
+        //getServiceBrokerList
+        procCallAjax("/v2/servicebrokers"+"?key="+key, "GET", null, procCallbackGetServiceBrokerList, $('#loadingBar') );
+
+        //reset
+        $("#serviceBrokerList *").remove();
+    });
+
     var init = function(){
-        getServiceBrokerList();
+        //key 값 설정
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+
+        getServiceBrokerList(key);
         $('#serviceBrokerFormModal').modal('hide');
     }
 
@@ -199,7 +218,7 @@
     });
 
     function getServiceBrokerList() {
-        procCallAjax("/v2/servicebrokers", "GET", null, procCallbackGetServiceBrokerList, $('#loadingBar') );
+        procCallAjax("/v2/servicebrokers"+"?key="+key, "GET", null, procCallbackGetServiceBrokerList, $('#loadingBar') );
     };
 
     var procCallbackGetServiceBrokerList = function(data){
@@ -227,7 +246,7 @@
     function getServiceBroker(guid) {
         $('#serviceBrokerForm')[0].reset();
         $('#serviceBrokerFormModal').modal('toggle');
-        procCallAjax("/v2/servicebrokers/"+guid, "GET", null, procCallbackGetServiceBroker, $('#modalLoadingBar'));
+        procCallAjax("/v2/servicebrokers/"+guid+"?key="+key, "GET", null, procCallbackGetServiceBroker, $('#modalLoadingBar'));
     }
 
     var procCallbackGetServiceBroker = function(data){
@@ -253,7 +272,7 @@
             url: $("#url").val()
         }
 
-        procCallAjax("/v2/servicebrokers", "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
+        procCallAjax("/v2/servicebrokers"+"?key="+key, "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
 
     // 서비스브로커 수정
@@ -272,7 +291,7 @@
             password: $("#password").val(),
             url: $("#url").val()
         }
-        procCallAjax("/v2/servicebrokers/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
+        procCallAjax("/v2/servicebrokers/"+guid+"?key="+key, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
 
     // 서비스 브로커 삭제 (confirm layer)
@@ -292,7 +311,7 @@
     function deleteServiceBroker() {
         var guid = $('#guid').val();
         var purge = $('#purge').is(":checked");
-        procCallAjax("/v2/servicebrokers/"+guid+"?purge="+purge, "DELETE", null, init, $('#modalLoadingBar'));
+        procCallAjax("/v2/servicebrokers/"+guid+"?purge="+purge+"?key="+key, "DELETE", null, init, $('#modalLoadingBar'));
     }
 
 

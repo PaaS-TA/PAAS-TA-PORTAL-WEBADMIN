@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +40,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @GetMapping(Constants.V2_URL+ "/securitygroups/{page}")
-    public Map<String, Object> getSecurityGroupList(@PathVariable String page) throws Exception {
-        return securityGroupService.getSecurityGroupList(page);
+    public Map<String, Object> getSecurityGroupList(HttpServletRequest request,  @PathVariable String page) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.getSecurityGroupList(Integer.parseInt(key), page);
     }
 
     /**
@@ -52,8 +54,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @GetMapping(Constants.V2_URL+ "/securitygroup/{securityid}")
-    public Map<String, Object> getSecurityGroupResponse(@PathVariable String securityid) throws Exception {
-        return securityGroupService.getSecurityGroupResponse(securityid);
+    public Map<String, Object> getSecurityGroupResponse(HttpServletRequest request, @PathVariable String securityid) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.getSecurityGroupResponse(Integer.parseInt(key), securityid);
     }
 
     /**
@@ -66,8 +69,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @PostMapping(Constants.V2_URL+"/securitygroup/{groupname:.+}")
-    public Map<String, Object> createSecurityGroupResponse(@PathVariable String groupname, @RequestBody Object rule) throws Exception {
-        return securityGroupService.createSecurityGroupResponse(groupname, rule);
+    public Map<String, Object> createSecurityGroupResponse(HttpServletRequest request, @PathVariable String groupname, @RequestBody Object rule) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.createSecurityGroupResponse(Integer.parseInt(key), groupname, rule);
     }
 
 
@@ -82,9 +86,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @PutMapping(Constants.V2_URL+"/securitygroup/{securityid}/{groupname:.+}")
-    public Map<String, Object> updateSecurityGroupResponse(@PathVariable String securityid, @PathVariable String groupname, @RequestBody Object rule) throws Exception {
-        System.out.println("실행합니다.");
-        return securityGroupService.updateSecurityGroupResponse(securityid, groupname, rule);
+    public Map<String, Object> updateSecurityGroupResponse(HttpServletRequest request,@PathVariable String securityid, @PathVariable String groupname, @RequestBody Object rule) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.updateSecurityGroupResponse(Integer.parseInt(key), securityid, groupname, rule);
     }
 
 
@@ -97,8 +101,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @DeleteMapping(Constants.V2_URL+"/securitygroup/{securityid}")
-    public Map<String, Object> deleteSecurityGroupResponse(@PathVariable String securityid) throws Exception {
-        return securityGroupService.deleteSecurityGroupResponse(securityid);
+    public Map<String, Object> deleteSecurityGroupResponse(HttpServletRequest request, @PathVariable String securityid) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.deleteSecurityGroupResponse(Integer.parseInt(key), securityid);
     }
 
 
@@ -111,8 +116,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @PutMapping(Constants.V2_URL+"/securitygroup/{securityid}/staging")
-    public Map<String, Object> setSecurityGroupStagingDefaultResponse(@PathVariable String securityid) throws Exception {
-        return securityGroupService.setSecurityGroupStagingDefaultResponse(securityid);
+    public Map<String, Object> setSecurityGroupStagingDefaultResponse(HttpServletRequest request, @PathVariable String securityid) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.setSecurityGroupStagingDefaultResponse(Integer.parseInt(key), securityid);
     }
 
 
@@ -125,8 +131,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @GetMapping(Constants.V2_URL+"/securitygroups/staging/{page}")
-    public Map<String, Object>  listSecurityGroupStagingDefaultsResponse(@PathVariable int page) throws Exception {
-        return securityGroupService.listSecurityGroupStagingDefaultsResponse(page);
+    public Map<String, Object>  listSecurityGroupStagingDefaultsResponse(HttpServletRequest request, @PathVariable int page) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.listSecurityGroupStagingDefaultsResponse(Integer.parseInt(key), page);
     }
 
 
@@ -139,8 +146,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @DeleteMapping(Constants.V2_URL+"/securitygroup/{securityid}/staging")
-    public Map<String, Object> removeSecurityGroupStaging(@PathVariable String securityid)  throws Exception {
-        return securityGroupService.removeSecurityGroupStaging(securityid);
+    public Map<String, Object> removeSecurityGroupStaging(HttpServletRequest request, @PathVariable String securityid)  throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.removeSecurityGroupStaging(Integer.parseInt(key), securityid);
     }
 
 
@@ -154,8 +162,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @PutMapping(Constants.V2_URL+"/securitygroup/{securityid}/running")
-    public Map<String, Object> setSecurityGroupRunningDefaultResponse(@PathVariable String securityid) throws Exception {
-        return securityGroupService.setSecurityGroupRunningDefaultResponse(securityid);
+    public Map<String, Object> setSecurityGroupRunningDefaultResponse(HttpServletRequest request, @PathVariable String securityid) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.setSecurityGroupRunningDefaultResponse(Integer.parseInt(key), securityid);
     }
 
 
@@ -168,8 +177,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @GetMapping(Constants.V2_URL+"/securitygroups/running/{page}")
-    public Map<String, Object> listSecurityGroupRunningDefaultsResponse(@PathVariable int page) throws Exception {
-        return securityGroupService.listSecurityGroupRunningDefaultsResponse(page);
+    public Map<String, Object> listSecurityGroupRunningDefaultsResponse(HttpServletRequest request, @PathVariable int page) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.listSecurityGroupRunningDefaultsResponse(Integer.parseInt(key), page);
     }
 
 
@@ -182,8 +192,9 @@ public class SecurityGroupController extends Common {
      * @author 박철한
      */
     @DeleteMapping(Constants.V2_URL+"/securitygroup/{securityid}/running")
-    public Map<String, Object> removeSecurityGroupRunning(@PathVariable String securityid) throws Exception {
-        return securityGroupService.removeSecurityGroupRunning(securityid);
+    public Map<String, Object> removeSecurityGroupRunning(HttpServletRequest request, @PathVariable String securityid) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.removeSecurityGroupRunning(Integer.parseInt(key), securityid);
     }
 
 
@@ -196,8 +207,9 @@ public class SecurityGroupController extends Common {
      * @throws Exception the exception
      */
     @GetMapping(Constants.V2_URL+"/securitygroup/{securityid}/{page}")
-    public Map<String, Object> listSecurityGroupSpacesResponse(@PathVariable String securityid, @PathVariable int page) throws Exception {
-        return securityGroupService.listSecurityGroupSpacesResponse(securityid, page);
+    public Map<String, Object> listSecurityGroupSpacesResponse(HttpServletRequest request, @PathVariable String securityid, @PathVariable int page) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.listSecurityGroupSpacesResponse(Integer.parseInt(key), securityid, page);
     }
 
     /**
@@ -209,9 +221,10 @@ public class SecurityGroupController extends Common {
      * @throws Exception the exception
      */
     @PutMapping(Constants.V2_URL+"/securitygroup/{securityid}/spaces/{spaceid}")
-    public Map<String, Object> associateSecurityGroupSpaceResponse(@PathVariable String securityid, @PathVariable String spaceid) throws Exception {
+    public Map<String, Object> associateSecurityGroupSpaceResponse(HttpServletRequest request, @PathVariable String securityid, @PathVariable String spaceid) throws Exception {
         System.out.println("*****************************");
-        return securityGroupService.associateSecurityGroupSpaceResponse(securityid, spaceid);
+        String key = request.getParameter("key");
+        return securityGroupService.associateSecurityGroupSpaceResponse(Integer.parseInt(key), securityid, spaceid);
     }
 
     /**
@@ -223,8 +236,9 @@ public class SecurityGroupController extends Common {
      * @throws Exception the exception
      */
     @DeleteMapping(Constants.V2_URL+"/securitygroup/{securityid}/spaces/{spaceid}")
-    public Map<String, Object> removeSecurityGroupSpace(@PathVariable String securityid, @PathVariable String spaceid) throws Exception {
-        return securityGroupService.removeSecurityGroupSpace(securityid, spaceid);
+    public Map<String, Object> removeSecurityGroupSpace(HttpServletRequest request, @PathVariable String securityid, @PathVariable String spaceid) throws Exception {
+        String key = request.getParameter("key");
+        return securityGroupService.removeSecurityGroupSpace(Integer.parseInt(key), securityid, spaceid);
     }
 
 

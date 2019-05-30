@@ -328,8 +328,14 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     var CURRENT_LIST;
 
     $(document).ready(function () {
-        key = $("#apiUrls").val();
-        getClientList();
+
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+        getClientList(key);
 
         // 등록 버튼 클릭시, 등록 팝업 이벤트 설정
         $(document).on("click", 'button[name=registBtn]', function (e) {
@@ -354,7 +360,10 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
+        $.cookie("api_key",key);
         getClientList(key);
+        var objTable = $("#clientList");
+        objTable.html('');
     });
 
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -51,8 +52,9 @@ public class BuildPackController extends Common {
      */
     @RequestMapping(value = {V2_URL + "/buildpacks"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getBuildPacks(@ModelAttribute BuildPack buildPack) {
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/buildpacks", HttpMethod.GET, buildPack, getToken());
+    public Map<String, Object> getBuildPacks(HttpServletRequest request, @ModelAttribute BuildPack buildPack) {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/buildpacks", HttpMethod.GET, buildPack);
 
     }
 
@@ -64,10 +66,10 @@ public class BuildPackController extends Common {
      */
     @RequestMapping(value = {V2_URL + "/buildpacks/{guid}"}, method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, Object> updateBuildPack(@RequestBody BuildPack buildPack, @PathVariable String guid) {
-
+    public Map<String, Object> updateBuildPack(HttpServletRequest request, @RequestBody BuildPack buildPack, @PathVariable String guid) {
+        String key = request.getParameter("key");
         buildPack.setGuid(UUID.fromString(guid));
-        return commonService.procCfApiRestTemplate(Constants.V3_URL + "/buildpacks/" + buildPack.getGuid().toString(), HttpMethod.PUT, buildPack, getToken());
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/buildpacks/" + buildPack.getGuid().toString(), HttpMethod.PUT, buildPack);
     }
 
     @Autowired

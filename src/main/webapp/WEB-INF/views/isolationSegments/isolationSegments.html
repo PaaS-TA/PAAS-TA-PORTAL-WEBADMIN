@@ -138,11 +138,27 @@
     var SELECT_ORGANIZATIONS_ISOLATION_SEGMENT_LIST;
     var SELECT_DEFAULT_ISOLATION_SEGMENT_GUID;
 
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        $.cookie("api_key",key);
+        alert(key);
+        getIsolationSegments(key);
+    });
+
     $(document).ready(function () {
         init();
     });
 
     function init() {
+        key = $("#apiUrls").val();
+
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+
         $("#isolationList").empty();
         $("#selectOrgList").empty();
         $("#createSegmentName").val("");
@@ -151,7 +167,7 @@
     };
 
     function getIsolationSegments() {
-        procCallAjax("/v3/isolationSegments", "GET", null, procCallbackGetIsolationSegments, $('#isolationTabLoadingBar'));
+        procCallAjax("/v3/isolationSegments"+"?key="+key, "GET", null, procCallbackGetIsolationSegments, $('#isolationTabLoadingBar'));
     };
 
     var procCallbackGetIsolationSegments = function(data){
@@ -184,7 +200,7 @@
         $("[id^='isolation_']").removeClass("bg-aqua disabled color-palette");
         $("#"+selectId).addClass("bg-aqua disabled color-palette");
 
-        procCallAjax("/v3/isolationSegments/"+isolationSegmentId+"/organizations", "GET", null, procCallbackGetIsolationSegmentsOrgs, $('#isolationTabLoadingBar'));
+        procCallAjax("/v3/isolationSegments/"+isolationSegmentId+"/organizations"+"?key="+key, "GET", null, procCallbackGetIsolationSegmentsOrgs, $('#isolationTabLoadingBar'));
     };
 
     var procCallbackGetIsolationSegmentsOrgs = function(data){
@@ -206,7 +222,7 @@
     };
 
     function getOrgs() {
-        procCallAjax("/v2/orgs", "GET", null, procCallbackGetOrgs, null);
+        procCallAjax("/v2/orgs"+"?key="+key, "GET", null, procCallbackGetOrgs, null);
     };
 
     var procCallbackGetOrgs = function(data){
@@ -241,7 +257,7 @@
     };
 
     function changeSelectOrgs() {
-        procCallAjax("/v3/isolationSegments/"+SELECT_ISOLATION_SEGMENT_GUID+"/organizations/"+$("#selectSegmentOrgs").val(), "POST", null, procCallbackEnableIsolationSegments, $('#isolationTabLoadingBar'));
+        procCallAjax("/v3/isolationSegments/"+SELECT_ISOLATION_SEGMENT_GUID+"/organizations/"+$("#selectSegmentOrgs").val()+"?key="+key, "POST", null, procCallbackEnableIsolationSegments, $('#isolationTabLoadingBar'));
     };
 
     var procCallbackEnableIsolationSegments = function(data) {
@@ -265,7 +281,7 @@
             return false;
         }
 
-        procCallAjax("/v3/isolationSegments/"+createSegmentName, "POST", null, procCallbackCreateIsolationSegments, $('#isolationTabLoadingBar'));
+        procCallAjax("/v3/isolationSegments/"+createSegmentName+"?key="+key, "POST", null, procCallbackCreateIsolationSegments, $('#isolationTabLoadingBar'));
     };
 
     var procCallbackCreateIsolationSegments = function(data) {
@@ -279,7 +295,7 @@
 
     function btnDeleteIsolationSegments(isolationSegmentId) {
         DELETE_ISOLATION_SEGMENT_GUID = isolationSegmentId;
-        procCallAjax("/v3/isolationSegments/"+isolationSegmentId, "DELETE", null, procCallbackDeleteIsolationSegments, null);
+        procCallAjax("/v3/isolationSegments/"+isolationSegmentId+"?key="+key, "DELETE", null, procCallbackDeleteIsolationSegments, null);
     };
 
     var procCallbackDeleteIsolationSegments = function(data){
@@ -301,7 +317,7 @@
         SELECT_ORGANIZATIONS_GUID = organizationsId;
         SELECT_ORGANIZATIONS_NAME = organizationsName;
 
-        procCallAjax("/v3/isolationSegments/organizations/"+organizationsId, "GET", null, procCallbackShowLayerPopSegmentsOrgs, $('#isolationTabLoadingBar'));
+        procCallAjax("/v3/isolationSegments/organizations/"+organizationsId+"?key="+key, "GET", null, procCallbackShowLayerPopSegmentsOrgs, $('#isolationTabLoadingBar'));
     };
 
     var procCallbackShowLayerPopSegmentsOrgs = function(data){
@@ -326,7 +342,7 @@
     };
 
     function getOrg() {
-        procCallAjax("/v2/orgs/"+SELECT_ORGANIZATIONS_GUID+"", "GET", null, procCallbackGetOrg, $('#isolationTabLoadingBar'));
+        procCallAjax("/v2/orgs/"+SELECT_ORGANIZATIONS_GUID+""+"?key="+key, "GET", null, procCallbackGetOrg, $('#isolationTabLoadingBar'));
     };
 
     var procCallbackGetOrg = function(data){
@@ -339,7 +355,7 @@
     };
 
     function getSpaces() {
-        procCallAjax("/v2/orgs/"+SELECT_ORGANIZATIONS_GUID+"/spaces", "GET", null, procCallbackGetSpaces, $('#isolationTabLoadingBar'));
+        procCallAjax("/v2/orgs/"+SELECT_ORGANIZATIONS_GUID+"/spaces"+"?key="+key, "GET", null, procCallbackGetSpaces, $('#isolationTabLoadingBar'));
     }
 
     var procCallbackGetSpaces = function(data){
@@ -379,10 +395,10 @@
     function changeSelectSpaceSegment (selectSpaceSegmentId, spaceGuid) {
         if($("#"+selectSpaceSegmentId).val() != "") {
             //enable
-            procCallAjax("/v3/spaces/"+spaceGuid+"/isolationSegments/"+$("#"+selectSpaceSegmentId).val(), "PUT", null, procCallbackChangeSelectSpaceSegment, $('#isolationTabLoadingBar'));
+            procCallAjax("/v3/spaces/"+spaceGuid+"/isolationSegments/"+$("#"+selectSpaceSegmentId).val()+"?key="+key, "PUT", null, procCallbackChangeSelectSpaceSegment, $('#isolationTabLoadingBar'));
         } else {
             //disable
-            procCallAjax("/v3/spaces/"+spaceGuid+"/isolationSegments/reset", "PUT", null, procCallbackChangeSelectSpaceSegment, $('#isolationTabLoadingBar'));
+            procCallAjax("/v3/spaces/"+spaceGuid+"/isolationSegments/reset"+"?key="+key, "PUT", null, procCallbackChangeSelectSpaceSegment, $('#isolationTabLoadingBar'));
         }
     };
 
@@ -393,20 +409,20 @@
     function btnSetOrResetOrgDefaultIsolationSegments(isolationSegmentId) {
         if(SELECT_DEFAULT_ISOLATION_SEGMENT_GUID == isolationSegmentId) {
             // reset
-            procCallAjax("/v3/orgs/"+SELECT_ORGANIZATIONS_GUID+"/isolationSegments/reset", "PUT", null, procCallbackSetOrResetOrgDefaultIsolationSegments, $('#isolationTabLoadingBar'));
+            procCallAjax("/v3/orgs/"+SELECT_ORGANIZATIONS_GUID+"/isolationSegments/reset"+"?key="+key, "PUT", null, procCallbackSetOrResetOrgDefaultIsolationSegments, $('#isolationTabLoadingBar'));
         } else {
             // set
-            procCallAjax("/v3/orgs/"+SELECT_ORGANIZATIONS_GUID+"/isolationSegments/"+isolationSegmentId, "PUT", null, procCallbackSetOrResetOrgDefaultIsolationSegments, $('#isolationTabLoadingBar'));
+            procCallAjax("/v3/orgs/"+SELECT_ORGANIZATIONS_GUID+"/isolationSegments/"+isolationSegmentId+"?key="+key, "PUT", null, procCallbackSetOrResetOrgDefaultIsolationSegments, $('#isolationTabLoadingBar'));
         }
     };
 
     var procCallbackSetOrResetOrgDefaultIsolationSegments = function(data) {
-        showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID, SELECT_ORGANIZATIONS_NAME);
+        showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID+"?key="+key, SELECT_ORGANIZATIONS_NAME+"?key="+key);
         init();
     };
 
     function btnDisableIsolationSegments(isolationSegmentId) {
-        procCallAjax("/v3/isolationSegments/"+isolationSegmentId+"/organizations/"+SELECT_ORGANIZATIONS_GUID, "DELETE", null, procCallbackDisableIsolationSegments, $('#isolationTabLoadingBar'));
+        procCallAjax("/v3/isolationSegments/"+isolationSegmentId+"/organizations/"+SELECT_ORGANIZATIONS_GUID+"?key="+key, "DELETE", null, procCallbackDisableIsolationSegments, $('#isolationTabLoadingBar'));
     };
 
     var procCallbackDisableIsolationSegments = function(data) {
@@ -415,7 +431,7 @@
                 init();
                 $("#segmentsOrgModal").modal("hide");
             } else {
-                showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID, SELECT_ORGANIZATIONS_NAME);
+                showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID+"?key="+key, SELECT_ORGANIZATIONS_NAME+"?key="+key);
                 init();
             }
         } else {

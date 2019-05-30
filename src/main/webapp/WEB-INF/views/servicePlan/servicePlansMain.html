@@ -109,13 +109,32 @@
 
     var DETAIL_SELECT_ORGS;
 
+    $( "#apiUrls" ).change(function() {
+        //key 값 저장
+        key = $("#apiUrls").val();
+        $.cookie("api_key",key);
+
+        $("#orgDiv").hide();
+
+        //getServicePlanList
+        procCallAjaxAsyncFalse("/v2/servicepacks"+"?key="+key, "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
+    });
 
     var asynchronousInit = function(){
-        procCallAjax("/v2/servicepacks", "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
+        procCallAjax("/v2/servicepacks"+"?key="+key, "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
     };
 
     var synchronousInit = function(){
         console.debug("===start init===");
+
+        //key 값 설정
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+
         $("#orgDiv").hide();
 
         getServicePlanList();
@@ -139,7 +158,7 @@
 
     // 조직 전체 목록 리스트:[동기화]
     function getOrgs() {
-        procCallAjaxAsyncFalse("/v2/orgs", "GET", null, procCallbackGetOrgs, null);
+        procCallAjaxAsyncFalse("/v2/orgs"+"?key="+key, "GET", null, procCallbackGetOrgs, null);
     };
 
     var procCallbackGetOrgs = function(data) {
@@ -151,7 +170,8 @@
 
     // 서비스 제어전체 목록 리스트:[동기화]
     function getServicePlanList(){
-        procCallAjaxAsyncFalse("/v2/servicepacks", "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
+        key = $.cookie("api_key");
+        procCallAjaxAsyncFalse("/v2/servicepacks"+"?key="+key, "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
     };
 
 
@@ -165,7 +185,7 @@
     // 서비스제어 리스트 출력: [동기화]
     function printData(dataList) {
         $("#servicePlanList").html("");
-        procCallAjaxAsyncFalse("/v2/catalogs/serviceplan-admin", "GET", null, procCallbackGetServicePlan, $('#servicePlansLoadingBar'));
+        procCallAjaxAsyncFalse("/v2/catalogs/serviceplan-admin"+"?key="+key, "GET", null, procCallbackGetServicePlan, $('#servicePlansLoadingBar'));
     };
 
     var procCallbackGetServicePlan = function(data){
@@ -306,7 +326,7 @@
             orgGuid : orgGuid
         }
 
-        procCallAjax("/v2/serviceplanvisibilities/"+ SELECT_SERVICE_PLAN_UNIQUE_ID, "PUT", JSON.stringify(param), procCallbackChangeSelectOrgs, $('#servicePlansLoadingBar'));
+        procCallAjax("/v2/serviceplanvisibilities/"+ SELECT_SERVICE_PLAN_UNIQUE_ID+"?key="+key, "PUT", JSON.stringify(param), procCallbackChangeSelectOrgs, $('#servicePlansLoadingBar'));
     };
 
     var procCallbackChangeSelectOrgs = function(data) {
@@ -317,7 +337,7 @@
     function deleteServicePlanVisibility(selectMetaGuid, organizationGuid) {
         SELECT_DELETE_ORG_GUID = organizationGuid;
 
-        procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/"+selectMetaGuid, "DELETE", null, procCallbackDeleteServicePlanVisibility, $('#servicePlansLoadingBar'));
+        procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/"+selectMetaGuid+"?key="+key, "DELETE", null, procCallbackDeleteServicePlanVisibility, $('#servicePlansLoadingBar'));
     };
 
     var procCallbackDeleteServicePlanVisibility = function(data) {
@@ -358,7 +378,7 @@
     }
 
     function ServicePlanDelete(guid, serviceAccess) {
-        procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/all/"+guid, "DELETE", null, procCallbackDeleteServicePlanVisibilityAll, $('#servicePlansLoadingBar'));
+        procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/all/"+guid+"?key="+key, "DELETE", null, procCallbackDeleteServicePlanVisibilityAll, $('#servicePlansLoadingBar'));
         if(serviceAccess  =="none"){
             enableServiceAccess(false);
         }else if(serviceAccess  =="all"){
@@ -376,7 +396,7 @@
             publiclyVisible : publiclyVisible
         }
 
-        procCallAjaxAsyncFalse("/v2/serviceplans/"+guid, "PUT", JSON.stringify(param), synchronousInit, $('#servicePlansLoadingBar'));
+        procCallAjaxAsyncFalse("/v2/serviceplans/"+guid+"?key="+key, "PUT", JSON.stringify(param), synchronousInit, $('#servicePlansLoadingBar'));
     };
 
     /*]]>*/
