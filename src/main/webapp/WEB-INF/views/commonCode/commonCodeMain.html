@@ -609,9 +609,7 @@
         selectKey = key;
         $("#DetailRegister").show();
         $("#groupId").val(key);
-        // +"?key="+$("#apiUrls").val(),
         procCallAjax("/v2/codedetail?groupId=" + key, "GET", '', procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
-        alert("getCodeDetail:: "+ $("#apiUrls").val());
     };
 
     // GET LIST CALLBACK CodeDetailList
