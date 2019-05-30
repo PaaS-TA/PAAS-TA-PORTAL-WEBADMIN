@@ -66,8 +66,8 @@ public class CommonCodeController extends Common {
     @ResponseBody
     public Map<String, Object> getGroupDetailList(HttpServletRequest request, @ModelAttribute CommonCode param) {
         LOGGER.info(param.toString());
-        String key = request.getParameter("key");
-        return commonCodeService.getGroupDetailList(Integer.parseInt(key), param);
+//        String key = request.getParameter("key");
+        return commonCodeService.getGroupDetailList(param);
     }
 
 
@@ -79,7 +79,7 @@ public class CommonCodeController extends Common {
      */
     @GetMapping(V2_URL +"/codegroup/{id}")
     @ResponseBody
-    public Map<String, Object> getGroupDetail(@PathVariable("id") String  id, HttpServletRequest request, @ModelAttribute CommonCode param) {
+    public Map<String, Object> getGroupDetail( HttpServletRequest request, @PathVariable("id") String  id, @ModelAttribute CommonCode param) {
         String key = request.getParameter("key");
         return commonCodeService.getGroupDetail(Integer.parseInt(key), id, param);
     }
@@ -107,7 +107,7 @@ public class CommonCodeController extends Common {
      */
     @PutMapping(V2_URL +"/codegroup/{id}")
     @ResponseBody
-    public Map<String, Object> updateCommonGroup(@PathVariable String id, HttpServletRequest request, @RequestBody CommonCode param) {
+    public Map<String, Object> updateCommonGroup( HttpServletRequest request, @PathVariable String id, @RequestBody CommonCode param) {
         String key = request.getParameter("key");
         return commonCodeService.updateCommonGroup(Integer.parseInt(key), id, param);
     }
@@ -121,7 +121,7 @@ public class CommonCodeController extends Common {
      */
     @DeleteMapping(V2_URL +"/codegroup/{id}")
     @ResponseBody
-    public Map<String, Object> deleteCommonGroup(@PathVariable String id, HttpServletRequest request) {
+    public Map<String, Object> deleteCommonGroup(HttpServletRequest request, @PathVariable String id) {
         String key = request.getParameter("key");
         LOGGER.info("########## " + id);
         return commonCodeService.deleteCommonGroup(Integer.parseInt(key), id);
@@ -136,9 +136,9 @@ public class CommonCodeController extends Common {
      */
     @GetMapping(V2_URL+"/codedetail")
     @ResponseBody
-    public Map<String, Object> getCodeDetailList(HttpServletRequest request, @ModelAttribute CommonCode param) {
-        String key = request.getParameter("key");
-        return commonCodeService.getCodeDetailList(Integer.parseInt(key), param);
+    public Map<String, Object> getCodeDetailList(@ModelAttribute CommonCode param) {
+        LOGGER.info("getCodeDetailList :: " + param);
+        return commonCodeService.getCodeDetailList(param);
     }
 
 
@@ -150,10 +150,9 @@ public class CommonCodeController extends Common {
      */
     @GetMapping(V2_URL + "/codedetail/{no}")
     @ResponseBody
-    public Map<String, Object> getCodeDetail(@PathVariable("no") int no, HttpServletRequest request) {
-        String key = request.getParameter("key");
+    public Map<String, Object> getCodeDetail(@PathVariable("no") int no) {
         LOGGER.info("NO :: " + no);
-        return commonCodeService.getCodeDetail(Integer.parseInt(key), no);
+        return commonCodeService.getCodeDetail(no);
     }
 
 
@@ -165,9 +164,8 @@ public class CommonCodeController extends Common {
      */
     @PostMapping(V2_URL +"/codedetail")
     @ResponseBody
-    public Map<String, Object> insertDetail(HttpServletRequest request, @RequestBody CommonCode param) {
-        String key = request.getParameter("key");
-        return commonCodeService.insertDetail(Integer.parseInt(key), param);
+    public Map<String, Object> insertDetail(@RequestBody CommonCode param) {
+        return commonCodeService.insertDetail(param);
     }
 
 
@@ -179,9 +177,8 @@ public class CommonCodeController extends Common {
      */
     @PutMapping(V2_URL +"/codedetail/{no}")
     @ResponseBody
-    public Map<String, Object> updateCommonDetail(@PathVariable int no, HttpServletRequest request, @RequestBody CommonCode param) {
-        String key = request.getParameter("key");
-        return commonCodeService.updateCommonDetail(Integer.parseInt(key), no, param);
+    public Map<String, Object> updateCommonDetail(@PathVariable int no, @RequestBody CommonCode param) {
+        return commonCodeService.updateCommonDetail(no, param);
     }
 
 
@@ -193,9 +190,8 @@ public class CommonCodeController extends Common {
      */
     @DeleteMapping(V2_URL +"/codedetail/{no}")
     @ResponseBody
-    public Map<String, Object> deleteCommonDetail(@PathVariable int no, HttpServletRequest request) {
-        String key = request.getParameter("key");
-        return commonCodeService.deleteCommonDetail(Integer.parseInt(key), no);
+    public Map<String, Object> deleteCommonDetail(@PathVariable int no) {
+        return commonCodeService.deleteCommonDetail(no);
     }
 
     @ModelAttribute("configs")
