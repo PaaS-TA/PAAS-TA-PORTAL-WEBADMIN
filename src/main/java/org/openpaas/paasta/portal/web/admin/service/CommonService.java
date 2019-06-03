@@ -2,6 +2,7 @@ package org.openpaas.paasta.portal.web.admin.service;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.common.UserList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -229,9 +230,9 @@ public class CommonService extends Common {
      * @return user id
      */
     public String getUserId() {
-        final List<User> userList = (List<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userList.get(0).getUsername();
-}
+        UserList userList = (UserList) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userList.getUsername();
+    }
 
 
     /**
@@ -334,6 +335,7 @@ public class CommonService extends Common {
 
         if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        LOGGER.info("> apiUri : " + apiUri);
         LOGGER.info("> cfApiUrl : " + apiUri + "/portalapi" + reqUrl);
 
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" + reqUrl, httpMethod, reqEntity, Map.class);
@@ -419,10 +421,13 @@ public class CommonService extends Common {
         if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
 
-        LOGGER.info("> apiUricommonApiUrl : " + apiUri + "/commonapi" + reqUrl);
+        LOGGER.info("> apiUricommonApiUrl[key] : " + apiUri + "/commonapi" + reqUrl);
 
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/commonapi" + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
+
+        LOGGER.info("> resEntity : " +resEntity);
+
         if (resultMap != null) {
             LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
         }
@@ -452,6 +457,7 @@ public class CommonService extends Common {
         if (null == bodyObject) bodyObject = new LinkedMultiValueMap<>();
         HttpEntity<Object> reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
 
+
         ResponseEntity<T> resEntity = restTemplate.exchange(storageRequestURL, httpMethod, reqEntity, resClazz);
         LOGGER.info("procRestStorageApiTemplate reqUrl :: {} || resultEntity type :: {}", storageRequestURL, resEntity.getHeaders().getContentType());
         LOGGER.info("procRestStorageApiTemplate response Http status code :: {}", resEntity.getStatusCode());
@@ -466,6 +472,52 @@ public class CommonService extends Common {
     public ResponseEntity<byte[]> procStorageApiRestTemplateBinary(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
         LOGGER.info(">>> Init procStorageApiRestTemplateBinary >> reqUrl"+reqUrl +"::"+ "httpMethod"+ httpMethod+"::"+ "bodyObject"+ bodyObject+"::"+ "reqToken"+ reqToken);
         return procStorageApiRestTemplate(reqUrl, httpMethod, bodyObject, reqToken, byte[].class);
+    }
+
+
+    /**
+     * REST TEMPLATE 처리 - StorageApi
+     *
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param bodyObject the obj
+     * @return map map
+     */
+    public <T> ResponseEntity<T> procStorageApiRestTemplate(int key, String reqUrl, HttpMethod httpMethod, Object bodyObject, Class<T> resClazz) {
+
+        LOGGER.info("> Init");
+
+        Map map = getServerInfo(key);
+        String apiUri = map.get("apiuri").toString();
+        String authorization = map.get("authorization").toString();
+        String token = map.get("token").toString();
+
+        // create url
+        String storageRequestURL =  apiUri + "/storageapi/v2/" + storageApiType + '/';
+        LOGGER.info("storageRequestURL" + storageRequestURL);
+        if (null != reqUrl && false == "".equals(reqUrl)) storageRequestURL += reqUrl;
+
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
+        if (null == bodyObject) bodyObject = new LinkedMultiValueMap<>();
+        HttpEntity<Object> reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
+
+
+        ResponseEntity<T> resEntity = restTemplate.exchange(storageRequestURL, httpMethod, reqEntity, resClazz);
+        LOGGER.info("procRestStorageApiTemplate reqUrl :: {} || resultEntity type :: {}", storageRequestURL, resEntity.getHeaders().getContentType());
+        LOGGER.info("procRestStorageApiTemplate response Http status code :: {}", resEntity.getStatusCode());
+        return resEntity;
+    }
+
+    public ResponseEntity<String> procStorageApiRestTemplateText(int key, String reqUrl, HttpMethod httpMethod, Object bodyObject) {
+        LOGGER.info(">>> Init procStorageApiRestTemplateText >> reqUrl"+reqUrl +"::"+ "httpMethod"+ httpMethod+"::"+ "bodyObject"+ bodyObject+"::");
+        return procStorageApiRestTemplate(key,reqUrl, httpMethod, bodyObject, String.class);
+    }
+
+    public ResponseEntity<byte[]> procStorageApiRestTemplateBinary(int key, String reqUrl, HttpMethod httpMethod, Object bodyObject) {
+        LOGGER.info(">>> Init procStorageApiRestTemplateBinary >> reqUrl"+reqUrl +"::"+ "httpMethod"+ httpMethod+"::"+ "bodyObject"+ bodyObject+"::");
+        return procStorageApiRestTemplate(key,reqUrl, httpMethod, bodyObject, byte[].class);
     }
 
 }

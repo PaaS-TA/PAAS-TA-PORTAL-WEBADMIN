@@ -549,13 +549,14 @@
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
         }
-        procCallAjax(LIST_DETAIL_PROC_URL, "GET", param, procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+        procCallAjax(LIST_DETAIL_PROC_URL+"?key="+key, "GET", param, procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
 
     };
 
 
     // GET LIST CALLBACK CodeDetailList
     var procCallbackGetCodeGroupList = function (data) {
+        console.log("procCallbackGetCodeGroupList :: 2");
         var objTable = $("#codeGroupList");
         var objTableArea = $('#codeGroupTableArea');
         var objMessageArea = $('#codeGroupMessageArea');
@@ -572,19 +573,21 @@
 
             for (var i = 0; i < listLength; i++) {
                 htmlString.push('<tr style="cursor:pointer;" >'
-                    + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].id + '</td>'
-                    + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\')">' + codeGroupList[i].name + '</td>'
+                    + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\',\'' +  "&key="+key+ '\')">' + codeGroupList[i].id + '</td>'
+                    + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\',\'' +  "&key="+key + '\')">' + codeGroupList[i].name + '</td>'
                     + '<td>'
-                    + ' <span class="glyphicon glyphicon-list-alt" name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id + '\')" ></span>'
+                    + ' <span class="glyphicon glyphicon-list-alt" name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id+'\')" ></span>'
                     + '</td>'
                     + '</tr>');
             }
             objTableArea.append(htmlString).trigger("create");
+            console.log("procCallbackGetCodeGroupList objTableArea.append :: 2");
         }
     };
 
 
     function getCodeGroup(id) {
+        console.log("getCodeGroup :: 3");
         $("#groupId").val(id);
         $.ajax({
             url: "/v2/codegroup/" + id + "?key="+key,
@@ -602,14 +605,13 @@
                 $("#validation_group").hide();
             }
         });
-
     }
 
     function getCodeDetail(key) {
         selectKey = key;
         $("#DetailRegister").show();
         $("#groupId").val(key);
-        procCallAjax("/v2/codedetail?groupId=" + key, "GET", '', procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+        procCallAjax("/v2/codedetail?groupId=" + key +"&key="+$("#apiUrls").val(), "GET", '', procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
     };
 
     // GET LIST CALLBACK CodeDetailList
@@ -658,7 +660,7 @@
     function getCodeDetailTable(no) {
 
        $.ajax({
-            url: "/v2/codedetail/"+no,
+            url: "/v2/codedetail/"+no + "?key="+key,
             method: "GET",
             dataType: 'json',
             contentType: "application/json",
@@ -771,7 +773,7 @@
 
         console.log(param);
         $.ajax({
-            url: "/v2/codedetail",
+            url: "/v2/codedetail"+ "?key="+key,
             method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -807,7 +809,7 @@
 
         console.log(param);
         $.ajax({
-            url: "/v2/codedetail/"+ no,
+            url: "/v2/codedetail/"+ no + "?key="+key,
             method: "PUT",
             data: JSON.stringify(param),
             dataType: 'json',
@@ -829,7 +831,7 @@
     //deleteGroup
     function deleteDetailModal() {
         var no = $("#detailNo").val();
-        procCallAjax("/v2/codedetail/" + no, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
+        procCallAjax("/v2/codedetail/" + no + "?key="+key, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
 
         console.log("      "+ 1);
     }
