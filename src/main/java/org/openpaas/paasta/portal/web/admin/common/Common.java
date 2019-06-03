@@ -139,7 +139,8 @@ public class Common {
             int tokenExpired = 0;
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             final Object authPrincipal = auth.getPrincipal();
-            List users = (List) authPrincipal;
+            UserList userList = (UserList) authPrincipal;
+            List<User> users = userList.getUsers();
             List<User> refreshUsers = new ArrayList<>();
             for (Object obj : users) {
                 User user = (User) obj;
@@ -163,7 +164,8 @@ public class Common {
                 List role = new ArrayList();
                 role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 authorities = role;
-                Authentication authentication = new UsernamePasswordAuthenticationToken(refreshUsers, password, authorities);
+                userList.setUsers(refreshUsers);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userList, password, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
@@ -175,11 +177,11 @@ public class Common {
 
 
     public List getServerInfos() {
-        Map map = new HashMap();
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             final Object authPrincipal = auth.getPrincipal();
-            List users = (List) authPrincipal;
+            UserList userList = (UserList) authPrincipal;
+            List users = userList.getUsers();
             return users;
         } catch (Exception e) {
             e.printStackTrace();

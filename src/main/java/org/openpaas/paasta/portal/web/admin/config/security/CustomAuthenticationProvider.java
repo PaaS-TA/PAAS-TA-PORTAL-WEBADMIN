@@ -5,6 +5,7 @@ package org.openpaas.paasta.portal.web.admin.config.security;
  */
 
 import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.common.UserList;
 import org.openpaas.paasta.portal.web.admin.config.security.userdetail.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         Collection<? extends GrantedAuthority> authorities = null;
 
-        List<User> users = null;
+        UserList users = null;
 
         try {
             users = customUserDetailsService.loginByUsernameAndPassword(username, password);
@@ -55,6 +56,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException(e.getMessage());
         } catch (Exception e) {
             LOGGER.info(e.toString());
+            throw new BadCredentialsException("");
         }
 
 

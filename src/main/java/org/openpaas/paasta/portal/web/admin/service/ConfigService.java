@@ -95,6 +95,5 @@ public class ConfigService {
      */
     public ConfigEntity getConfig(int key) {
         return configRepository.findOne(key);
-
     }
 }

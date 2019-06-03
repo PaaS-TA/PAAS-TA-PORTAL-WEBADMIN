@@ -1,6 +1,7 @@
 package org.openpaas.paasta.portal.web.admin.config.security.userdetail;
 
 import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.common.UserList;
 import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.respository.ConfigRepository;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
@@ -50,15 +51,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
-    public List loginByUsernameAndPassword(String username, String password) throws UsernameNotFoundException {
+    public UserList loginByUsernameAndPassword(String username, String password) throws Exception {
 
         Map<String, Object> resBody = new HashMap();
 
         resBody.put("id", username);
         resBody.put("password", password);
 
-        List userList = new ArrayList();
-        int loginCount = 0;
+
+        List users = new ArrayList();
+        int apiLoginCount = 0;
+        int adminYN = 0;
         for (ConfigEntity configEntity : configService.getConfigs()) {
 
             LOGGER.info("> configEntity Name: " + configEntity.getName());
@@ -72,7 +75,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             Map result = null;
             try {
                 result = commonService.procCfApiRestTemplate(configEntity.getApiUri(), "/login", configEntity.getAuthorization(), HttpMethod.POST, resBody, "");
-                loginCount++;
+                apiLoginCount++;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -110,6 +113,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             String roleName;
             if (adminYn != null && adminYn.equals("Y")) {
                 roleName = "ROLE_ADMIN";
+                adminYN++;
             } else {
                 roleName = "ROLE_USER";
                 token = null;
@@ -128,15 +132,24 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.setApiUri(configEntity.getApiUri());
             user.setUaaUri(configEntity.getUaaUri());
             user.setKey(configEntity.getKey());
-
             LOGGER.info("End Login :: " + configEntity.getApiUri() + " /// " + user.toString());
-
-            userList.add(user);
-        }
-        if (loginCount == 0) {
-            new BadCredentialsException("Incorrect login information or incorrect contact address.");
+            users.add(user);
         }
 
+        LOGGER.info("LOGIN :: " + apiLoginCount);
+        if (apiLoginCount == 0) {
+            throw new BadCredentialsException("Incorrect login information or incorrect contact address.");
+        }
+        LOGGER.info("adminYN :: " + apiLoginCount);
+        if (adminYN == 0) {
+            throw new BadCredentialsException("You do not have access..");
+        }
+
+        List role = new ArrayList();
+        role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        UserList userList = new UserList(username, password, role);
+        userList.setUsers(users);
         return userList;
     }
 }
