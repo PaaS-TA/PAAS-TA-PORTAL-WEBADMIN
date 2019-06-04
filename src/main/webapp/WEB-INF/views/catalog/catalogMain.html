@@ -1881,7 +1881,7 @@
             eval("$('input:radio[name=dashBoardUseYn][value="+entity.dashboardUseYn+"]').prop('checked', true);");
 
             // 온디멘드 사용여부
-            eval("$('input:radio[name=OnDemandYn][value="+entity.OnDemandYn+"]').prop('checked', true);");
+            eval("$('input:radio[name=OnDemandYn][value="+entity.onDemandYn+"]').prop('checked', true);");
 
             //요약
             $("#serviceSummary").val(entity.summary);
@@ -2203,7 +2203,7 @@
             appBindYn                   : $("input[name=appBindUseYn]:checked").val(),
             appBindParameter            : JSON.stringify(inputAppBindParamJson),
             dashboardUseYn              : $("input[name=dashBoardUseYn]:checked").val(),
-            OnDemandYn                   : $("input[name=OnDemandYn]:checked").val(),
+            onDemandYn                   : $("input[name=OnDemandYn]:checked").val(),
             useYn                       : $("input[name=serviceUseYn]:checked").val(),
             pay                         : $("input[name=payYn]:checked").val(),
             summary                     : $("#serviceSummary").val(),
