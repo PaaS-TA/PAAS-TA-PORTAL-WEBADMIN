@@ -843,6 +843,30 @@
                                             </div>
                                         </div>
 
+
+                                        <div class="form-group">
+                                            <label for="isUseOnDemand" class="col-sm-3 control-label">온디멘드</label>
+                                            <div class="col-sm-9">
+
+                                                <div id="isUseOnDemand" class="radio">
+                                                    <div class="col-sm-2">
+                                                        <label>
+                                                            <input type="radio" name="OnDemandYn" value="Y"/>
+                                                            Y
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <label>
+                                                            <input type="radio" name="OnDemandYn" value="N" />
+                                                            N
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
                                         <div class="form-group" name="tagParamForm" style="height:50px;">
                                             <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
@@ -1856,6 +1880,9 @@
             // 대시보드 사용여부
             eval("$('input:radio[name=dashBoardUseYn][value="+entity.dashboardUseYn+"]').prop('checked', true);");
 
+            // 온디멘드 사용여부
+            eval("$('input:radio[name=OnDemandYn][value="+entity.OnDemandYn+"]').prop('checked', true);");
+
             //요약
             $("#serviceSummary").val(entity.summary);
 
@@ -2176,6 +2203,7 @@
             appBindYn                   : $("input[name=appBindUseYn]:checked").val(),
             appBindParameter            : JSON.stringify(inputAppBindParamJson),
             dashboardUseYn              : $("input[name=dashBoardUseYn]:checked").val(),
+            OnDemandYn                   : $("input[name=OnDemandYn]:checked").val(),
             useYn                       : $("input[name=serviceUseYn]:checked").val(),
             pay                         : $("input[name=payYn]:checked").val(),
             summary                     : $("#serviceSummary").val(),
@@ -2617,6 +2645,7 @@
             $('input:radio[name=serviceUseYn]:input[value="Y"]').prop('checked', true); // 공개 여부
             $('input:radio[name=appBindUseYn]:input[value="Y"]').prop('checked', true); // 앱 바인드 파라미터 사용
             $('input:radio[name=dashBoardUseYn]:input[value="N"]').prop('checked', true); // 대시보드 사용
+            $('input:radio[name=OnDemandYn]:input[value="N"]').prop('checked', true); // 대시보드 사용
 
             // 초기화
             $('input[name=serviceParamInput]').val("");
