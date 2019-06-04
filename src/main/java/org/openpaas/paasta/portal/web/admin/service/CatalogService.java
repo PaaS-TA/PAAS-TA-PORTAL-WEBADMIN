@@ -153,7 +153,7 @@ public class CatalogService {
      */
 
     public Map<String, Object> getServices(int key) {
-        return commonService.procCfApiRestTemplate(key,Constants.V3_URL + "/services", HttpMethod.GET, null);
+        return commonService.procCfApiRestTemplate(key,Constants.V2_URL + "/services", HttpMethod.GET, null);
     }
 
     /**
