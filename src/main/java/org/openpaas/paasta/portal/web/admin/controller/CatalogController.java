@@ -175,25 +175,21 @@ class CatalogController extends Common {
      * 이미지 파일을 가져온다.
      *
      * @param thumbnailFilename
-     * @return ResponseEntity<byte   [   ]> (relays response from storage api)
+     * @return ResponseEntity<byte [ ]> (relays response from storage api)
      */
     @GetMapping(V2_URL + "/thumbnail/{filename}")
     @ResponseBody
     public ResponseEntity<byte[]> getThumbnail(HttpServletRequest request, @PathVariable("filename") String thumbnailFilename) {
         String key = request.getParameter("key");
-        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(Integer.parseInt(key),thumbnailFilename, HttpMethod.GET,null);
-        if (result.getHeaders().getContentType().toString().toLowerCase().startsWith("image")) {
-            return result;
-        } else {
-            return generateMethodNotAllowResponse();
-        }
+        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(Integer.parseInt(key), thumbnailFilename, HttpMethod.GET, null);
+        return result;
     }
 
     /**
      * 이미지 파일을 업로드한다.
      *
      * @param multipartFile MultipartFile(Spring 클래스)
-     * @return ResponseEntity<Map < String ,   Object>> (relays response from storage api)
+     * @return ResponseEntity<Map < String, Object>> (relays response from storage api)
      * @throws Exception Exception(자바클래스)
      */
     @SuppressWarnings("unchecked")
@@ -204,7 +200,7 @@ class CatalogController extends Common {
             String key = request.getParameter("key");
             MultiValueMap<String, Object> requestBodyObject = new LinkedMultiValueMap<>();
             requestBodyObject.add("file", new MultipartFileResource(multipartFile));
-            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key),null, HttpMethod.POST, requestBodyObject);
+            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key), null, HttpMethod.POST, requestBodyObject);
             Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
             resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
 
@@ -233,7 +229,7 @@ class CatalogController extends Common {
      * 앱 샘플 파일을 가져온다.
      *
      * @param appSampleFilename
-     * @return ResponseEntity<byte   [   ]> (relays response from storage api)
+     * @return ResponseEntity<byte [ ]> (relays response from storage api)
      */
     @GetMapping(V2_URL + "/appsample/{filename}")
     @ResponseBody
@@ -258,7 +254,7 @@ class CatalogController extends Common {
      * 앱 샘플 파일을 업로드한다.
      *
      * @param multipartFile MultipartFile(Spring 클래스)
-     * @return ResponseEntity<Map < String ,   Object>> (relays response from storage api)
+     * @return ResponseEntity<Map < String, Object>> (relays response from storage api)
      * @throws Exception Exception(자바클래스)
      */
     @SuppressWarnings("unchecked")
@@ -269,7 +265,7 @@ class CatalogController extends Common {
             String key = request.getParameter("key");
             MultiValueMap<String, Object> requestBodyObject = new LinkedMultiValueMap<>();
             requestBodyObject.add("file", new MultipartFileResource(multipartFile));
-            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key),null, HttpMethod.POST, requestBodyObject);
+            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key), null, HttpMethod.POST, requestBodyObject);
             Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
             resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
 
@@ -418,7 +414,7 @@ class CatalogController extends Common {
     @ResponseBody
     public Map<String, Object> getServicePackCatalogCount(HttpServletRequest request, @ModelAttribute Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getServicePackCatalogCount(Integer.parseInt(key),param);
+        return catalogService.getServicePackCatalogCount(Integer.parseInt(key), param);
     }
 
     /**
@@ -590,7 +586,7 @@ class CatalogController extends Common {
      * ------------------------------------------------------------------------------------삭제 끝
      */
     @ModelAttribute("configs")
-    public List<User> configs(){
+    public List<User> configs() {
         return getServerInfos();
     }
 
