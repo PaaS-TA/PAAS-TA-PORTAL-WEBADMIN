@@ -51,7 +51,7 @@ dependencies {
 //    compile ('de.codecentric:spring-boot-admin-starter-client:1.5.7')
 
     //Eureka
-    compile('org.springframework.cloud:spring-cloud-starter-eureka')
+//    compile('org.springframework.cloud:spring-cloud-starter-eureka')
 
     //ConfigEntity Server Setting
 //    compile("org.springframework.cloud:spring-cloud-starter-config")

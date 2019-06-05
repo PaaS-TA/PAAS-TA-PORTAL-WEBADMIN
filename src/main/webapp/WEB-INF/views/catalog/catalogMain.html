@@ -2473,14 +2473,11 @@
         var afterThumbPath = $('#servicePreview img').attr("src");
         var thumbFile = $("#serviceThumbnail")[0].files[0];
 
-
-        alert("BEFORE_THUMB_NAME " + BEFORE_THUMB_NAME);
         var formData = new FormData();
         formData.append("file", thumbFile);
         if(BEFORE_THUMB_NAME == ""){
             if(thumbFile != ""){
                 // UPLOAD FILE
-                alert("UPLOAD");
                 uploadFile(formData,"POST","/v2/thumbnail"+"?key="+key,updateServiceThumbFileInfo);
             }else{
                 modifyService();
