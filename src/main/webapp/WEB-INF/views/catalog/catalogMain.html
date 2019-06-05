@@ -1038,11 +1038,21 @@
         key = $("#apiUrls").val();
         $.cookie("api_key",key);
 
+        // GET StarterList
         getStarterList(key);
+        // GET BuildPackList
         getBuildPackList(key);
+        // GET ServicePackList
         getServicePackList(key);
+        //[앱 템플릿] 컴포넌트
+        procCallAjax(DEVELOP_PACK_PROC_URL+"?key="+key, "GET", null, procCallbackStarterDevEnvList, null);
+        //[앱 개발환경] 컴포넌트
+        procCallAjax("/v2/buildpacks"+"?key="+key, 'GET', null, procCallbackDevEnvBuildPackList, null);
+        //[앱 서비스] 컴포넌트
+        procCallAjax("/v2/services"+"?key="+key, "GET", null, procCallbackServiceServiceList, null);
 
-        //reset
+
+        /*reset*/
         // [앱 서비스] 리스트 출력
         var objTablestarterList = $("#starterList");
         objTablestarterList.html('');
@@ -1054,6 +1064,10 @@
         // [앱 서비스] 리스트 출력
         var objTableserviceList = $('#serviceList');
         objTableserviceList.html('');
+
+        // [앱 서비스][서비스] 셀렉트 리스트
+        var objSelectBox = $('#serviceServicePackList');
+        objSelectBox.html('');
 
     });
 
@@ -1989,7 +2003,7 @@
             var pathEnd = afterThumbPath.length;
             var afterThumbName = afterThumbPath.substring(pathHeader + 1, pathEnd);
 
-            if(BEFORE_THUMB_NAME == afterThumbName){
+            if(afterThumbName.indexOf(BEFORE_THUMB_NAME) > -1){
                 var fileInfo = {
                     filename: $('#starterLabelThumbName').text(),
                     fileURL: BEFORE_THUMB_PATH
@@ -2323,7 +2337,7 @@
             var pathEnd = afterThumbPath.length;
             var afterThumbName = afterThumbPath.substring(pathHeader + 1, pathEnd);
             // 기존 파일과 파일명 비교
-            if(BEFORE_THUMB_NAME == afterThumbName){
+            if(afterThumbName.indexOf(BEFORE_THUMB_NAME) > -1){
 
                 FILE_INFO.thumbImgName  = $('#devEnvLabelThumbName').text();
                 FILE_INFO.thumbImgPath  = BEFORE_THUMB_PATH;
@@ -2459,24 +2473,25 @@
         var afterThumbPath = $('#servicePreview img').attr("src");
         var thumbFile = $("#serviceThumbnail")[0].files[0];
 
+
+        alert("BEFORE_THUMB_NAME " + BEFORE_THUMB_NAME);
         var formData = new FormData();
         formData.append("file", thumbFile);
-
         if(BEFORE_THUMB_NAME == ""){
-            if(afterThumbPath != ""){
+            if(thumbFile != ""){
                 // UPLOAD FILE
+                alert("UPLOAD");
                 uploadFile(formData,"POST","/v2/thumbnail"+"?key="+key,updateServiceThumbFileInfo);
             }else{
                 modifyService();
             }
 
         }else{
-
             var pathHeader = afterThumbPath.lastIndexOf("/");
             var pathEnd = afterThumbPath.length;
             var afterThumbName = afterThumbPath.substring(pathHeader + 1, pathEnd);
             // 기존 파일과 파일명 비교
-            if(BEFORE_THUMB_NAME == afterThumbName){
+            if(afterThumbName.indexOf(BEFORE_THUMB_NAME) > -1){
 
                 FILE_INFO.thumbImgName  = $('#serviceLabelThumbName').text();
                 FILE_INFO.thumbImgPath  = BEFORE_THUMB_PATH;
@@ -2513,7 +2528,7 @@
     function modifyService(){
         // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
         var no = $('#serviceId').val();
-        procCallAjax(SERVICE_PACK_PROC_URL +"/"+ no, "PUT", JSON.stringify(serviceParam(FILE_INFO)), getServicePackList, $('#serviceModalLoadingBar') );
+        procCallAjax(SERVICE_PACK_PROC_URL +"/"+ no + "?key="+key, "PUT", JSON.stringify(serviceParam(FILE_INFO)), getServicePackList, $('#serviceModalLoadingBar') );
     }
 
 
