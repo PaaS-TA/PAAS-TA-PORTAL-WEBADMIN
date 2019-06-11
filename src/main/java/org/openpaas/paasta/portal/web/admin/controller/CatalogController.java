@@ -181,8 +181,12 @@ class CatalogController extends Common {
     @ResponseBody
     public ResponseEntity<byte[]> getThumbnail(HttpServletRequest request, @PathVariable("filename") String thumbnailFilename) {
         String key = request.getParameter("key");
-        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(Integer.parseInt(key), thumbnailFilename, HttpMethod.GET, null);
-        return result;
+        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(Integer.parseInt(key),thumbnailFilename, HttpMethod.GET,null);
+        if (result.getHeaders().getContentType().toString().toLowerCase().startsWith("image")) {
+            return result;
+        } else {
+            return generateMethodNotAllowResponse();
+        }
     }
 
     /**
@@ -198,12 +202,15 @@ class CatalogController extends Common {
     public ResponseEntity<Map<String, Object>> uploadThumbnail(HttpServletRequest request, @RequestParam("file") MultipartFile multipartFile) throws Exception {
         try {
             String key = request.getParameter("key");
+
             MultiValueMap<String, Object> requestBodyObject = new LinkedMultiValueMap<>();
             requestBodyObject.add("file", new MultipartFileResource(multipartFile));
-            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key), null, HttpMethod.POST, requestBodyObject);
-            Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
-            resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
 
+            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key), null, HttpMethod.POST, requestBodyObject);
+
+            Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
+
+            resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
             final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String, Object>>(resultMap, result.getHeaders(), result.getStatusCode());
             return generateResponseEntity;
         } finally {
