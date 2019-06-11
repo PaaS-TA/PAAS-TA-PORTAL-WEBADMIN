@@ -107,7 +107,7 @@ public class CommonService extends Common {
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        LOGGER.info("procRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        LOGGER.info("procRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl);
 
         return resultMap;
     }
@@ -169,8 +169,6 @@ public class CommonService extends Common {
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
         ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
 
-        //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
-
         return result;
     }
 
@@ -195,8 +193,6 @@ public class CommonService extends Common {
         LOGGER.info("apiUrl::" + apiUrl);
         ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
 
-        //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
-
         return result;
     }
 
@@ -217,8 +213,6 @@ public class CommonService extends Common {
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
         LOGGER.info("apiUrl::" + apiUrl);
         ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
-
-        //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
 
         return result;
     }
@@ -341,7 +335,7 @@ public class CommonService extends Common {
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
         if (resultMap != null) {
-            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl);
         }
         return resultMap;
     }
@@ -429,7 +423,7 @@ public class CommonService extends Common {
         LOGGER.info("> resEntity : " +resEntity);
 
         if (resultMap != null) {
-            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl);
         }
         return resultMap;
     }

@@ -109,23 +109,25 @@
 
     var DETAIL_SELECT_ORGS;
 
+
     $( "#apiUrls" ).change(function() {
         //key 값 저장
         key = $("#apiUrls").val();
         $.cookie("api_key",key);
 
-        $("#orgDiv").hide();
+        asynchronousInit();
 
-        //getServicePlanList
-        procCallAjaxAsyncFalse("/v2/servicepacks"+"?key="+key, "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
+        location.reload();
     });
 
     var asynchronousInit = function(){
-        procCallAjax("/v2/servicepacks"+"?key="+key, "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
+        procCallAjax("/v2/servicepacks"+"?key="+$("#apiUrls").val(), "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
     };
 
     var synchronousInit = function(){
+        //alert("synchronousInit 동기식 :: " + key);
         console.debug("===start init===");
+        $("#orgDiv").hide();
 
         //key 값 설정
         if($.cookie("api_key") != null){
@@ -135,12 +137,19 @@
             key = $("#apiUrls").val();
         }
 
-        $("#orgDiv").hide();
-
         getServicePlanList();
     };
 
     $(document).ready(function () {
+
+        //key 값 설정
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+
         asynchronousInit();
 
         $('#register').click(function(){
@@ -154,11 +163,12 @@
             $("#serviceOrgList").val("");
         });
 
+
     });
 
     // 조직 전체 목록 리스트:[동기화]
     function getOrgs() {
-        procCallAjaxAsyncFalse("/v2/orgs"+"?key="+key, "GET", null, procCallbackGetOrgs, null);
+        procCallAjaxAsyncFalse("/v2/orgs"+"?key="+$("#apiUrls").val(), "GET", null, procCallbackGetOrgs, null);
     };
 
     var procCallbackGetOrgs = function(data) {
@@ -170,8 +180,7 @@
 
     // 서비스 제어전체 목록 리스트:[동기화]
     function getServicePlanList(){
-        key = $.cookie("api_key");
-        procCallAjaxAsyncFalse("/v2/servicepacks"+"?key="+key, "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
+        procCallAjax("/v2/servicepacks"+"?key="+$("#apiUrls").val(), "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
     };
 
 
@@ -185,7 +194,7 @@
     // 서비스제어 리스트 출력: [동기화]
     function printData(dataList) {
         $("#servicePlanList").html("");
-        procCallAjaxAsyncFalse("/v2/catalogs/serviceplan-admin"+"?key="+key, "GET", null, procCallbackGetServicePlan, $('#servicePlansLoadingBar'));
+        procCallAjaxAsyncFalse("/v2/catalogs/serviceplan-admin"+"?key="+$("#apiUrls").val(), "GET", null, procCallbackGetServicePlan, $('#servicePlansLoadingBar'));
     };
 
     var procCallbackGetServicePlan = function(data){
@@ -200,7 +209,7 @@
                 var accessSelectBoxHtml = "";
                 var serviceAccessType = "";
 
-                accessSelectBoxHtml += "<select id='service_access_"+resource.metadata.guid+"' onchange='changeServiceAccess(\""+resource.metadata.guid+"\", this.value)'>";
+                accessSelectBoxHtml += "<select id='service_access_"+resource.metadata.guid+"' onchange='changeServiceAccess(\""+resource.metadata.guid+"\", this.value,\""+"key="+$("#apiUrls").val()+"\")'>";
                 if(resource.entity.public) {
                     accessSelectBoxHtml += "    <option value='none'>NONE</option>";
                     accessSelectBoxHtml += "    <option value='all' selected='selected'>ALL</option>";
@@ -214,12 +223,13 @@
                 accessSelectBoxHtml += "</select>";
 
                 serviceAccessList += "<tr id='servicePlan_"+(cnt+1)+"\'>";
-                serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\");'  style='cursor:pointer;'>"+data2.Service.entity.label+"</td> ";
-                serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\");'  style='cursor:pointer;'>"+resource.entity.name+"</td> ";
+                serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\", \""+"key="+$("#apiUrls").val()+"\");'  style='cursor:pointer;'>"+data2.Service.entity.label+"</td> ";
+                serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\", \""+"key="+$("#apiUrls").val()+"\");'  style='cursor:pointer;'>"+resource.entity.name+"</td> ";
                 serviceAccessList += "    <td>"+accessSelectBoxHtml+"</td> ";
                 // serviceAccessList += "    <input type='hidden' id='hidden_org_guid_"+resource.metadata.guid+"'/>";
                 serviceAccessList += "    <input type='hidden' id='service_access_type_"+resource.metadata.guid+"' value='"+serviceAccessType+"'/>";
                 serviceAccessList += "    <input type='hidden' id='service_plan_meta_guid_"+resource.metadata.guid+"' value=''/>";
+                serviceAccessList += "    <input type='hidden' id='apiUrls_"+"key="+$("#apiUrls").val()+"' value=''/>";
                 serviceAccessList += "</tr> ";
 
                 cnt++;
@@ -236,7 +246,8 @@
         }
     };
 
-    function getServicePlanOrgs(selectId, uniqueId) {
+    function getServicePlanOrgs(selectId, uniqueId) {;
+
         $("[id^='servicePlan_']").removeClass("bg-aqua disabled color-palette");
         $("#"+selectId).addClass("bg-aqua disabled color-palette");
         $("#"+selectId+" > td > select").css("color", "black");
@@ -326,7 +337,7 @@
             orgGuid : orgGuid
         }
 
-        procCallAjax("/v2/serviceplanvisibilities/"+ SELECT_SERVICE_PLAN_UNIQUE_ID+"?key="+key, "PUT", JSON.stringify(param), procCallbackChangeSelectOrgs, $('#servicePlansLoadingBar'));
+        procCallAjax("/v2/serviceplanvisibilities/"+ SELECT_SERVICE_PLAN_UNIQUE_ID +"?key="+$("#apiUrls").val(), "PUT", JSON.stringify(param), procCallbackChangeSelectOrgs, $('#servicePlansLoadingBar'));
     };
 
     var procCallbackChangeSelectOrgs = function(data) {
@@ -337,7 +348,7 @@
     function deleteServicePlanVisibility(selectMetaGuid, organizationGuid) {
         SELECT_DELETE_ORG_GUID = organizationGuid;
 
-        procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/"+selectMetaGuid+"?key="+key, "DELETE", null, procCallbackDeleteServicePlanVisibility, $('#servicePlansLoadingBar'));
+        procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/"+selectMetaGuid+"?key="+$("#apiUrls").val(), "DELETE", null, procCallbackDeleteServicePlanVisibility, $('#servicePlansLoadingBar'));
     };
 
     var procCallbackDeleteServicePlanVisibility = function(data) {
@@ -378,7 +389,7 @@
     }
 
     function ServicePlanDelete(guid, serviceAccess) {
-        procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/all/"+guid+"?key="+key, "DELETE", null, procCallbackDeleteServicePlanVisibilityAll, $('#servicePlansLoadingBar'));
+        procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/all/"+guid +"?key="+$("#apiUrls").val(), "DELETE", null, procCallbackDeleteServicePlanVisibilityAll, $('#servicePlansLoadingBar'));
         if(serviceAccess  =="none"){
             enableServiceAccess(false);
         }else if(serviceAccess  =="all"){
@@ -396,7 +407,7 @@
             publiclyVisible : publiclyVisible
         }
 
-        procCallAjaxAsyncFalse("/v2/serviceplans/"+guid+"?key="+key, "PUT", JSON.stringify(param), synchronousInit, $('#servicePlansLoadingBar'));
+        procCallAjaxAsyncFalse("/v2/serviceplans/"+guid +"?key="+$("#apiUrls").val(), "PUT", JSON.stringify(param), synchronousInit, $('#servicePlansLoadingBar'));
     };
 
     /*]]>*/

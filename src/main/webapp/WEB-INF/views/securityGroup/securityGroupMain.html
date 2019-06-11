@@ -631,7 +631,6 @@
         var param = getRules();
         var servicename = $('#securityGroupName').val();
         procCallAjax2('/v2/securitygroup/' + servicename +"?key="+key, "POST", param, setCreateDefaultStagingSetting, $('#modalLoadingBar'));
-        alert(key);
     };
 
     function updateSecurityGroup() {

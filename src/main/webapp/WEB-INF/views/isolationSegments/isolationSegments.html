@@ -141,7 +141,6 @@
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
         $.cookie("api_key",key);
-        alert(key);
         getIsolationSegments(key);
     });
 
