@@ -104,7 +104,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="url" class="col-sm-3 control-label">강제 삭제</label>
+                                            <label for="purge" class="col-sm-3 control-label" id="forcedeletion">강제 삭제</label>
                                             <div class="col-sm-9">
                                                 <input type="checkbox" id="purge"/>
                                             </div>
@@ -180,7 +180,7 @@
             key = $("#apiUrls").val();
         }
 
-        getServiceBrokerList(key);
+        getServiceBrokerList();
         $('#serviceBrokerFormModal').modal('hide');
     }
 
@@ -193,6 +193,8 @@
             $('#titleDetail').hide();
             $('#deleteBtn').hide();
             $('#saveBtn').hide();
+            $('#forcedeletion').hide();
+            $('#purge').hide();
 
             $('#titleReg').show();
             $('#regBtn').show();
@@ -203,6 +205,7 @@
             $("#password").val("");
             $("#url").val("");
             $("#guid").val("");
+
         });
 
         $('#serviceBrokerList').click(function(){
@@ -210,14 +213,18 @@
             $('#titleDetail').show();
             $('#deleteBtn').show();
             $('#saveBtn').show();
+            $('#forcedeletion').show();
+            $('#purge').show();
 
             $('#titleReg').hide();
             $('#regBtn').hide();
             //$('#closeBtn').hide();
         });
+
     });
 
     function getServiceBrokerList() {
+        key = $("#apiUrls").val();
         procCallAjax("/v2/servicebrokers"+"?key="+key, "GET", null, procCallbackGetServiceBrokerList, $('#loadingBar') );
     };
 
@@ -271,8 +278,8 @@
             password: $("#password").val(),
             url: $("#url").val()
         }
-
         procCallAjax("/v2/servicebrokers"+"?key="+key, "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
+
     }
 
     // 서비스브로커 수정
@@ -311,10 +318,8 @@
     function deleteServiceBroker() {
         var guid = $('#guid').val();
         var purge = $('#purge').is(":checked");
-        procCallAjax("/v2/servicebrokers/"+guid+"?purge="+purge+"?key="+key, "DELETE", null, init, $('#modalLoadingBar'));
+        procCallAjax("/v2/servicebrokers/"+guid+"?purge="+purge+"&key="+key, "DELETE", null, init, $('#modalLoadingBar'));
     }
-
-
 
     /*]]>*/
 </script>
