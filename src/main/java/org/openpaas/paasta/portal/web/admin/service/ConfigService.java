@@ -38,6 +38,11 @@ public class ConfigService {
     }
 
 
+    public List<ConfigEntity> configsAll() {
+        return  configRepository.findAll();
+    }
+
+
     /**
      * 기본 설정 삭제 한다.
      *
