@@ -33,6 +33,18 @@ public class RootController {
     }
 
 
+
+    /**
+     * 기본 설정 정보 추출
+     *
+     * @return model and view
+     */
+    @CrossOrigin
+    @GetMapping(value = {"/external/configs/all"})
+    public List<ConfigEntity> configsall() {
+        return configService.configsAll();
+    }
+
     /**
      * 기본 설정 정보 추출
      *
