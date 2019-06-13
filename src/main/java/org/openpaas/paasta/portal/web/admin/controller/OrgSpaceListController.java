@@ -69,7 +69,6 @@ public class OrgSpaceListController extends Common {
     @GetMapping(V2_URL + "/orgs")
     public Map<String, Object> getOrgsForAdmin( HttpServletRequest request) throws Exception {
         String key = request.getParameter("key");
-        LOGGER.info("!!!!!!!!!!!!!!!!!!! "  +key);
         return orgSpaceListService.getOrgsForAdmin(Integer.parseInt(key),"/orgs-admin", HttpMethod.GET, null);
     }
 
@@ -96,7 +95,6 @@ public class OrgSpaceListController extends Common {
     @GetMapping(V2_URL + "/orgs/{orgid}/summary")
     public Map<String, Object> getOrgSummary(@PathVariable String orgid, HttpServletRequest request) {
         String key = request.getParameter("key");
-        LOGGER.info("index----> "  +key);
         return orgSpaceListService.getOrgSummary(Integer.parseInt(key),"/orgs/" + orgid + "/summary-admin", HttpMethod.GET, null);
     }
 
@@ -110,7 +108,6 @@ public class OrgSpaceListController extends Common {
     @GetMapping(V2_URL + "/orgs/{orgid}/quota")
     public Map<String, Object> getOrgQuota(@PathVariable String orgid, HttpServletRequest request) {
         String key = request.getParameter("key");
-        LOGGER.info("index----> "  +key);
         return orgSpaceListService.getOrgQuota(Integer.parseInt(key),"/orgs/" + orgid + "/quota-admin", HttpMethod.GET, null);
     }
 
@@ -125,7 +122,6 @@ public class OrgSpaceListController extends Common {
     @GetMapping(V2_URL + "/spaces/{spaceid}/summary")
     public Map<String, Object> getSpaceSummary(@PathVariable String spaceid, HttpServletRequest request) {
         String key = request.getParameter("key");
-        LOGGER.info("index----> "  +key);
         return orgSpaceListService.getSpaceSummary(Integer.parseInt(key),"/spaces/" + spaceid + "/summary-admin", HttpMethod.GET, null);
     }
 
@@ -138,7 +134,6 @@ public class OrgSpaceListController extends Common {
     @GetMapping(V2_URL + "/spaces/{spacequtaid}/quota")
     public Map<String, Object> getSpaceQuota(@PathVariable String spacequtaid, HttpServletRequest request) {
         String key = request.getParameter("key");
-        LOGGER.info("index----> "  +key);
         return orgSpaceListService.getSpaceQuota(Integer.parseInt(key),"/spaces/" + spacequtaid + "/quota-admin", HttpMethod.GET, null);
     }
 
@@ -150,7 +145,6 @@ public class OrgSpaceListController extends Common {
     @GetMapping(V2_URL + "/spaces")
     public Map<String, Object> getSpace(HttpServletRequest request) {
         String key = request.getParameter("key");
-        LOGGER.info("index----> "  +key);
         return orgSpaceListService.getSpace(Integer.parseInt(key),"/spaces-admin", HttpMethod.GET, null);
 
     }

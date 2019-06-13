@@ -77,7 +77,7 @@ public class CommonService extends Common {
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        LOGGER.info("procRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        LOGGER.info("procRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
 
         return resultMap;
     }
@@ -107,7 +107,7 @@ public class CommonService extends Common {
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        LOGGER.info("procRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl);
+        LOGGER.info("procRestTemplate reqUrl :: {} ", reqUrl);
 
         return resultMap;
     }
@@ -143,7 +143,7 @@ public class CommonService extends Common {
 
         Map resultMap = resEntity.getBody();
 
-        LOGGER.info("procRestTemplate resultMap :: {}", resultMap.toString());
+        LOGGER.info("procRestTemplate status code :: {}", resEntity.getStatusCode());
         return resultMap;
     }
 
@@ -269,7 +269,7 @@ public class CommonService extends Common {
         Map<String, Object> resultMap = resEntity.getBody();
 
         if (resultMap != null) {
-            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
         }
         return resultMap;
     }
@@ -298,7 +298,7 @@ public class CommonService extends Common {
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
         if (resultMap != null) {
-            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
         }
         return resultMap;
     }
@@ -335,7 +335,7 @@ public class CommonService extends Common {
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
         if (resultMap != null) {
-            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl);
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} ", reqUrl);
         }
         return resultMap;
     }
@@ -361,7 +361,7 @@ public class CommonService extends Common {
         ResponseEntity<Map> resEntity = restTemplate.exchange(commonApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        LOGGER.info("procCommonApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        LOGGER.info("procCommonApiRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
         return resultMap;
     }
 
@@ -386,7 +386,7 @@ public class CommonService extends Common {
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/commonapi" + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        LOGGER.info("procCommonApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        LOGGER.info("procCommonApiRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
         return resultMap;
     }
 
@@ -423,7 +423,7 @@ public class CommonService extends Common {
         LOGGER.info("> resEntity : " +resEntity);
 
         if (resultMap != null) {
-            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl);
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} ", reqUrl);
         }
         return resultMap;
     }
@@ -459,12 +459,12 @@ public class CommonService extends Common {
     }
 
     public ResponseEntity<String> procStorageApiRestTemplateText(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
-        LOGGER.info(">>> Init procStorageApiRestTemplateText >> reqUrl"+reqUrl +"::"+ "httpMethod"+ httpMethod+"::"+ "bodyObject"+ bodyObject+"::"+ "reqToken"+ reqToken);
+        LOGGER.info(">>> Init procStorageApiRestTemplateText >> reqUrl "+reqUrl +" :: httpMethod "+ httpMethod+" :: "+ "reqToken"+ reqToken);
         return procStorageApiRestTemplate(reqUrl, httpMethod, bodyObject, reqToken, String.class);
     }
 
     public ResponseEntity<byte[]> procStorageApiRestTemplateBinary(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
-        LOGGER.info(">>> Init procStorageApiRestTemplateBinary >> reqUrl"+reqUrl +"::"+ "httpMethod"+ httpMethod+"::"+ "bodyObject"+ bodyObject+"::"+ "reqToken"+ reqToken);
+        LOGGER.info(">>> Init procStorageApiRestTemplateBinary >> reqUrl "+reqUrl +" :: httpMethod"+ httpMethod+" :: " + bodyObject+" :: "+ "reqToken"+ reqToken);
         return procStorageApiRestTemplate(reqUrl, httpMethod, bodyObject, reqToken, byte[].class);
     }
 
@@ -505,12 +505,12 @@ public class CommonService extends Common {
     }
 
     public ResponseEntity<String> procStorageApiRestTemplateText(int key, String reqUrl, HttpMethod httpMethod, Object bodyObject) {
-        LOGGER.info(">>> Init procStorageApiRestTemplateText >> reqUrl"+reqUrl +"::"+ "httpMethod"+ httpMethod+"::"+ "bodyObject"+ bodyObject+"::");
+        LOGGER.info(">>> Init procStorageApiRestTemplateText >> reqUrl "+reqUrl +" :: httpMethod "+ httpMethod+" ::");
         return procStorageApiRestTemplate(key,reqUrl, httpMethod, bodyObject, String.class);
     }
 
     public ResponseEntity<byte[]> procStorageApiRestTemplateBinary(int key, String reqUrl, HttpMethod httpMethod, Object bodyObject) {
-        LOGGER.info(">>> Init procStorageApiRestTemplateBinary >> reqUrl"+reqUrl +"::"+ "httpMethod"+ httpMethod+"::"+ "bodyObject"+ bodyObject+"::");
+        LOGGER.info(">>> Init procStorageApiRestTemplateBinary >> reqUrl" +reqUrl +"  :: httpMethod "+ httpMethod+" ::");
         return procStorageApiRestTemplate(key,reqUrl, httpMethod, bodyObject, byte[].class);
     }
 

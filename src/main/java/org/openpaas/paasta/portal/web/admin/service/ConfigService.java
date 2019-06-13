@@ -45,7 +45,6 @@ public class ConfigService {
      */
 
     public Map deleteConfig(int key) {
-        LOGGER.info("deleteConfig " + key);
         Map rs = new HashMap();
         try {
             configRepository.delete(key);
