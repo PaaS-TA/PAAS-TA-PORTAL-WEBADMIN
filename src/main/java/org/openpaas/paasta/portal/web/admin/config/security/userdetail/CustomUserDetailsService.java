@@ -128,6 +128,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.setToken(token);
             user.setExpireDate(expireDate);
             user.setImgPath(imgPath);
+            user.setInfra_name(configEntity.getName());
             user.setAuthorization(configEntity.getAuthorization());
             user.setApiUri(configEntity.getApiUri());
             user.setUaaUri(configEntity.getUaaUri());

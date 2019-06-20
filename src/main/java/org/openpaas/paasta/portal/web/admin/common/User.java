@@ -41,6 +41,7 @@ public class User implements UserDetails, CredentialsContainer {
     private String password;
     private String token;
     private String name;
+    private String infra_name;
     private String apiUri;
     private String uaaUri;
     private String authorization;
@@ -189,6 +190,14 @@ public class User implements UserDetails, CredentialsContainer {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public String getInfra_name() {
+        return infra_name;
+    }
+
+    public void setInfra_name(String infra_name) {
+        this.infra_name = infra_name;
     }
 
     public String getApiUri() {
