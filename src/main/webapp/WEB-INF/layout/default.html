@@ -63,8 +63,8 @@
     <div class="box-header" style="text-align: right;">
         <select class="form-control toCheckString" id="apiUrls" style="width:300px;margin-top: -3px; display: unset;text-align: right;" onchange="selectChange()">
             <span th:each="config : ${configs}">
-                <option th:if="${config.token != null}"  th:value="${config.key}" th:text="${config.apiUri}"></option>
-                <option th:if="${config.token == null}"  value="0" th:text="${config.apiUri + ' (로그인실패)'}"></option>
+                <option th:if="${config.token != null}"  th:value="${config.key}" th:text="${config.name}"></option>
+                <option th:if="${config.token == null}"  value="0" th:text="${config.name + ' (로그인실패)'}"></option>
             </span>
         </select>
     </div>
