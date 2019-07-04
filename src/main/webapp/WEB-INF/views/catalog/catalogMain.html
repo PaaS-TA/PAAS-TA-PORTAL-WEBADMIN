@@ -2030,7 +2030,7 @@
     function modifyStarterItem(FILE_INFO){
         // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
         var no = $('#starterId').val();
-        procCallAjax(STARTER_PACK_PROC_URL +"/"+ no+"&key="+key, "PUT", JSON.stringify(starterParam(FILE_INFO)), getStarterList, null);
+        procCallAjax(STARTER_PACK_PROC_URL +"/"+ no+"?key="+key, "PUT", JSON.stringify(starterParam(FILE_INFO)), getStarterList, null);
     }
 
     // [앱 템플릿][앱 개발환경][앱 서비스] 삭제 Confirm layer
@@ -2420,7 +2420,7 @@
     function modifyDevEnv(){
         // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
         var no = $('#devEnvId').val();
-        procCallAjax(DEVELOP_PACK_PROC_URL +"/"+ no+"&key="+key, "PUT", JSON.stringify(devEnvParam(FILE_INFO)), getBuildPackList, $('#devEnvModalLoadingBar') );
+        procCallAjax(DEVELOP_PACK_PROC_URL +"/"+ no+"?key="+key, "PUT", JSON.stringify(devEnvParam(FILE_INFO)), getBuildPackList, $('#devEnvModalLoadingBar') );
     }
 
 
@@ -2525,7 +2525,7 @@
     function modifyService(){
         // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
         var no = $('#serviceId').val();
-        procCallAjax(SERVICE_PACK_PROC_URL +"/"+ no + "&key="+key, "PUT", JSON.stringify(serviceParam(FILE_INFO)), getServicePackList, $('#serviceModalLoadingBar') );
+        procCallAjax(SERVICE_PACK_PROC_URL +"/"+ no + "?key="+key, "PUT", JSON.stringify(serviceParam(FILE_INFO)), getServicePackList, $('#serviceModalLoadingBar') );
     }
 
 
