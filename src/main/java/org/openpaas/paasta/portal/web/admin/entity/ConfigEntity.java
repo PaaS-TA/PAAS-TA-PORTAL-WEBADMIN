@@ -35,6 +35,12 @@ public class ConfigEntity {
     @Column(name = "description")
     private String desc;
 
+    @Column(name = "caas_api_uri")
+    private String caas_apiUri;
+
+    @Column(name = "caas_authorization")
+    private String caas_authorization;
+
 
     public int getKey() {
         return key;
@@ -84,8 +90,24 @@ public class ConfigEntity {
         this.desc = desc;
     }
 
+    public String getCaas_apiUri() {
+        return caas_apiUri;
+    }
+
+    public void setCaas_apiUri(String caas_apiUri) {
+        this.caas_apiUri = caas_apiUri;
+    }
+
+    public String getCaas_authorization() {
+        return caas_authorization;
+    }
+
+    public void setCaas_authorization(String caas_authorization) {
+        this.caas_authorization = caas_authorization;
+    }
+
     @Override
     public String toString() {
-        return "ConfigEntity{" + "key=" + key + ", name='" + name + '\'' + ", authorization='" + authorization + '\'' + ", apiUri='" + apiUri + '\'' + ", uaaUri='" + uaaUri + '\'' + ", desc='" + desc + '\'' + '}';
+        return "ConfigEntity{" + "key=" + key + ", name='" + name + '\'' + ", authorization='" + authorization + '\'' + ", apiUri='" + apiUri + '\'' + ", uaaUri='" + uaaUri + '\'' + ", desc='" + desc + '\'' + ", caas_apiUri='" + caas_apiUri + '\'' + ", caas_authorization='" + caas_authorization + '\'' + '}';
     }
 }

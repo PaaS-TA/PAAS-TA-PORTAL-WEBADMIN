@@ -41,9 +41,11 @@
                         <thead>
                         <tr>
                             <td width="15%" style="vertical-align: middle">Name</td>
-                            <td width="15%" style="vertical-align: middle">API_URI</td>
-                            <td width="25%" style="vertical-align: middle">UAA_URI</td>
-                            <td width="25%" style="vertical-align: middle">Authorization</td>
+                            <td width="15%" style="vertical-align: middle">Portal_Api_Uri</td>
+                            <td width="17.5%" style="vertical-align: middle">UAA_Uri</td>
+                            <td width="17.5%" style="vertical-align: middle">Authorization</td>
+                            <td width="17.5%" style="vertical-align: middle">CaaS_Api_Uri</td>
+                            <td width="17.5%" style="vertical-align: middle">CaaS_Authorization</td>
                         </tr>
                         </thead>
                         <tbody name="dataList">
@@ -52,6 +54,8 @@
                             <td th:text="${infra_info.apiUri}"></td>
                             <td th:text="${infra_info.uaaUri}"></td>
                             <td th:text="${infra_info.authorization}"></td>
+                            <td th:text="${infra_info.caas_apiUri}"></td>
+                            <td th:text="${infra_info.caas_authorization}"></td>
                         </tr>
 
                         </tbody>
@@ -91,7 +95,7 @@
                                     </div>
 
                                     <div class="form-group required">
-                                        <label for="apiUri" class="col-sm-3 control-label">API_URI</label>
+                                        <label for="apiUri" class="col-sm-3 control-label">Portal_Api_Uri</label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control checkServiceForm" id="apiUri"
                                                    name="apiUri" placeholder=""/>
@@ -99,7 +103,7 @@
                                     </div>
 
                                     <div class="form-group required">
-                                        <label for="uaaUri" class="col-sm-3 control-label">UAA_URI</label>
+                                        <label for="uaaUri" class="col-sm-3 control-label">UAA_Uri</label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control checkServiceForm" id="uaaUri"
                                                    name="uaaUri" placeholder=""/>
@@ -122,7 +126,21 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="caas_apiUri" class="col-sm-3 control-label">CaaS_Api_Uri</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control checkServiceForm" id="caas_apiUri"
+                                                   name="caas_apiUri" placeholder=""/>
+                                        </div>
+                                    </div>
 
+                                    <div class="form-group">
+                                        <label for="caas_authorization" class="col-sm-3 control-label">CaaS_Authorization</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control checkServiceForm" id="caas_authorization"
+                                                   name="caas_authorization" placeholder=""/>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -218,12 +236,16 @@
         var uaaUri        = $("#uaaUri").val();
         var authorization = $("#authorization").val();
         var desc          = $("#desc").val();
+        var caas_apiUri          = $("#caas_apiUri").val();
+        var caas_authorization          = $("#caas_authorization").val();
         var params = {
             "name": infra_name,
             "apiUri": apiUri,
             "uaaUri": uaaUri,
             "authorization": authorization,
-            "desc": desc
+            "desc": desc,
+            "caas_apiUri" : caas_apiUri,
+            "caas_authorization" : caas_authorization
         };
         procCallAjax5(REST_URL, "POST", JSON.stringify(params), refresh, $('#configModalLoadingBar'));
     }
@@ -241,12 +263,16 @@
         var uaaUri        = $("#uaaUri").val();
         var authorization = $("#authorization").val();
         var desc          = $("#desc").val();
+        var caas_apiUri   = $("#caas_apiUri").val();
+        var caas_authorization = $("#caas_authorization").val();
         var params = {
             "name": infra_name,
             "apiUri": apiUri,
             "uaaUri": uaaUri,
             "authorization": authorization,
-            "desc": desc
+            "desc": desc,
+            "caas_apiUri" : caas_apiUri,
+            "caas_authorization" : caas_authorization
         };
         procCallAjax5(REST_URL + "/" + key, "PUT", JSON.stringify(params), refresh, $('#configModalLoadingBar'));
     }
@@ -267,13 +293,16 @@
         var uaaUri        = data.uaaUri;
         var authorization = data.authorization;
         var desc          = data.desc;
-
+        var caas_apiUri   = data.caas_apiUri;
+        var caas_authorization = data.caas_authorization;
         $("#key").val(key);
         $("#infra_name").val(infra_name);
         $("#apiUri").val(apiUri);
         $("#uaaUri").val(uaaUri);
         $("#authorization").val(authorization);
         $("#desc").val(desc);
+        $("#caas_apiUri").val(caas_apiUri);
+        $("#caas_authorization").val(caas_authorization);
     }
 
     // Refresh Page
