@@ -109,8 +109,7 @@
 
     //사용유무,Lock유무 Event
     $(document).on('change','input[name=isEnabled],input[name=isLocked]',function(){
-      console.log($(this).closest('tr').find('input[name=isEnabled]').val());
-      console.log($(this).closest('tr').find('input[name=isEnabled]').val());
+
       updateBuildPack( $(this).closest('tr'), false );
     });
 
@@ -122,7 +121,7 @@
   };
 
   var procCallbackGetBuildPackList = function(datalist){
-     console.log(datalist);
+
     if(datalist.resources){ //
 
       var dataLength = datalist.resources.length;
@@ -177,7 +176,6 @@
       lock : lock
     }
 
-    console.log(param);
     procCallAjax("/v2/buildpacks/"+guid+"?key="+key, "PUT", JSON.stringify(param), procCallbackUpdateBuildPack, $('#loadingBar'));
   }
 

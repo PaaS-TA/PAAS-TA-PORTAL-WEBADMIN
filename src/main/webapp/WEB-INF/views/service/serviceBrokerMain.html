@@ -241,7 +241,7 @@
         objTable.html('');
 
         $.each(dataList, function (id, data) {
-            console.log(data);
+
             objTable.append(" <tr align='center' style='cursor:pointer;'" +
                     " onclick='javascript:getServiceBroker(\""+data.metadata.guid+"\");'>" +
                     "<td>" + data.entity.name + "</td>" +

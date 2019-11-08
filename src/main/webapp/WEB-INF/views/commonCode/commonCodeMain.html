@@ -345,7 +345,7 @@
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
     var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
     var EMPTY_MSG = /*[[#{common.info.empty.data}]]*/ '';
-
+    var LIST_DETAIL_PROC_URL = "/v2/codedetail";
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
@@ -356,7 +356,6 @@
 
         $('#GroupRegister').click(function () {
 
-            console.log("Init GroupRegister");
 
             $('#titleDetail').hide();
             $('#deleteBtn').hide();
@@ -383,7 +382,6 @@
 
         $('#DetailRegister').click(function () {
 
-            console.log("Init DetailRegister");
 
             $('#titleDetail2').hide();
             $('#deleteBtn2').hide();
@@ -414,10 +412,9 @@
     $(document.body).ready(function () {
 
         init();
-
+        getsssssInitMarketPlaceURL();
         $('#GroupRegister').click(function () {
 
-            console.log("Init GroupRegister");
 
             $('#titleDetail').hide();
             $('#deleteBtn').hide();
@@ -444,7 +441,6 @@
 
         $('#DetailRegister').click(function () {
 
-            console.log("Init DetailRegister");
 
             $('#titleDetail2').hide();
             $('#deleteBtn2').hide();
@@ -483,13 +479,32 @@
             key = $("#apiUrls").val();
         }
 
-        getInitMarketPlaceURL();
-        getCodeGroupList();
+        codeInitMarketPlaceURL();
 
         $("#DetailRegister").hide();
 
         $('#codeGrouprModal').modal('hide');
         $('#codeDetailModal').modal('hide');
+    }
+
+
+    function codeInitMarketPlaceURL() {
+        var param = {"searchKeyword": "MARKET_PLACE_URL"};
+        procCallAjax(LIST_DETAIL_PROC_URL+"?key="+key, "GET", param, codeCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+    }
+
+    function codeCallbackGetCodeDetailList(data) {
+        var market_html = "";
+        for(var i = 0; i < data.list.length; i++){
+            if(data.list[i].groupId == "MARKET_PLACE_URL" && data.list[i].useYn == "Y"){
+                market_html += "<li><a onclick=\"goMarketPlace('" + data.list[i].value + "')\" style='cursor: pointer'><i class=\"fa fa-circle-o\" style='cursor: pointer'></i>"+data.list[i].key+"</a></li>";
+            }
+        }
+        if(market_html == ""){
+            $('#market_head').remove();
+        }else{
+            $('#market_place').html(market_html);
+        }
     }
 
 
@@ -512,7 +527,7 @@
         var target =$("input[name='codeGroup']").val();
         var blank_pattern = /[\s]/g;
         if(blank_pattern.test(target) == true){
-            console.log('blank_pattern ::::');
+
             $("#validation_group").show();
             isGroupValidation = false;
             return false;
@@ -557,7 +572,7 @@
 
     // GET LIST CALLBACK CodeDetailList
     var procCallbackGetCodeGroupList = function (data) {
-        console.log("procCallbackGetCodeGroupList :: 2");
+
         var objTable = $("#codeGroupList");
         var objTableArea = $('#codeGroupTableArea');
         var objMessageArea = $('#codeGroupMessageArea');
@@ -582,13 +597,13 @@
                     + '</tr>');
             }
             objTableArea.append(htmlString).trigger("create");
-            console.log("procCallbackGetCodeGroupList objTableArea.append :: 2");
+
         }
     };
 
 
     function getCodeGroup(id) {
-        console.log("getCodeGroup :: 3");
+
         $("#groupId").val(id);
         $.ajax({
             url: "/v2/codegroup/" + id + "?key="+key,
@@ -596,7 +611,7 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                console.log(data);
+
                 if (data) {
                     $("#id").val(data.list[0].id);
                     $("#name").val(data.list[0].name);
@@ -617,7 +632,7 @@
 
     // GET LIST CALLBACK CodeDetailList
     var procCallbackGetCodeDetailList = function (data) {
-        console.log("procCallbackGetCodeDetailList");
+
         var objTable = $("#codeDetailList");
         var objTableArea = $('#codeDetailGroupTableArea');
         var objMessageArea = $('#codeDetailMessageArea');
@@ -634,7 +649,7 @@
             var codeDetailList = data.list;
 
             for (var i = 0; i < listLength; i++) {
-                console.log(codeDetailList[i]);
+
 
                 htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetailTable(\'' + codeDetailList[i].no + '\')">');
 //                htmlString.push('<tr style="cursor:pointer;">'
@@ -687,7 +702,7 @@
 
     //createGroup
     function createGroup() {
-        console.log("procCheckValidStringSpaceGroup() ::: " +isGroupValidation);
+
         if (isGroupValidation == false) {
             return false;
         }
@@ -772,7 +787,6 @@
             useYn: reqUseYn,
         }
 
-        console.log(param);
         $.ajax({
             url: "/v2/codedetail"+ "?key="+key,
             method: "POST",
@@ -808,7 +822,6 @@
             useYn: $("#useYn").is(":checked") ? 'Y' : 'N',
         }
 
-        console.log(param);
         $.ajax({
             url: "/v2/codedetail/"+ no + "?key="+key,
             method: "PUT",
@@ -834,16 +847,29 @@
         var no = $("#detailNo").val();
         procCallAjax("/v2/codedetail/" + no + "?key="+key, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
 
-        console.log("      "+ 1);
+
     }
 
     var deleteDetail = function (data) {
-        console.log("      "+ 2)
+
         init();
         getCodeDetail(selectKey);
     }
 
+
+    function goMarketPlace(no){
+        window.open(no);
+    }
+
+
+
+
+
     /*]]>*/
+
+
+
+
 </script>
 
 </body>

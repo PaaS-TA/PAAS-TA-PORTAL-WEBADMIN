@@ -750,7 +750,6 @@ function getInitMarketPlaceURL() {
 }
 
 function procCallbackGetCodeDetailList(data) {
-    console.log(data);
     var market_html = "";
     for(var i = 0; i < data.list.length; i++){
         if(data.list[i].groupId == "MARKET_PLACE_URL" && data.list[i].useYn == "Y"){
@@ -765,6 +764,5 @@ function procCallbackGetCodeDetailList(data) {
 }
 
 function goMarketPlace(no){
-    console.log(no);
     window.open(no);
 }

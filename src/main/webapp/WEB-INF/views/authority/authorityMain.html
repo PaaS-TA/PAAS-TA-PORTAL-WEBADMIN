@@ -215,7 +215,7 @@
 
                 callback(resData, param);
 
-                console.log("ERROR :: error :: ", error);
+
                 procAlert("danger", JSON.parse(xhr.responseText).message);
                 if(reqMethod == "POST" && reqUrl == AUTHORITY_MEMBER_URL+"?key="+key)
                 {
@@ -224,7 +224,7 @@
 
             },
             complete : function(data) {
-                console.log("COMPLETE :: data :: ", data);
+
             }
         });
     };

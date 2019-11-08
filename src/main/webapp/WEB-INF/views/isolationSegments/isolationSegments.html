@@ -268,7 +268,7 @@
         var createSegmentName = $("#createSegmentName").val();
 
         $("#isolationList > tr > td:first-child").each(function(index) {
-            // console.log($(this).text());
+
             if(createSegmentName == "") {
                 notifyAlert('warning','', 'Isolation Segments Name이 올바르지 않습니다.');
                 return false;
@@ -286,10 +286,10 @@
 
     var procCallbackCreateIsolationSegments = function(data) {
         if(data.guid != null) {
-            console.log("success");
+
             init();
         } else {
-            console.log("fail");
+
         }
     };
 
@@ -300,7 +300,7 @@
 
     var procCallbackDeleteIsolationSegments = function(data){
         if(data.result) {
-            console.log("success");
+
 
             if(DELETE_ISOLATION_SEGMENT_GUID == SELECT_ISOLATION_SEGMENT_GUID) {
                 SELECT_ISOLATION_SEGMENT_GUID = "";
@@ -308,7 +308,6 @@
             }
             init();
         } else {
-            console.log("fail");
             notifyAlert('warning','', 'CF-UnprocessableEntity(10008): Revoke the Organization entitlements for your Isolation Segment.');
         }
     };
@@ -403,7 +402,6 @@
     };
 
     var procCallbackChangeSelectSpaceSegment = function(data) {
-        console.log(data);
     };
 
     function btnSetOrResetOrgDefaultIsolationSegments(isolationSegmentId) {
@@ -435,7 +433,6 @@
                 init();
             }
         } else {
-            console.log("fail");
         }
     };
 

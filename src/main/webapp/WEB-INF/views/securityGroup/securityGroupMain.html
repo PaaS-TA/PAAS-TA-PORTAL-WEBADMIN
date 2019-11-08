@@ -707,7 +707,7 @@
         var objTable = $('#securityGroup_1List');
 
         objTable.html('');
-        console.log(objTable);
+
         var orgValue = '';
         $.each(sltSecuritySpaces, function (index, data) {
             var bind = true;
@@ -963,7 +963,7 @@
     };
 
     var setCreateDefaultStagingSetting = function (data) {
-        console.log(data.RESULT);
+
         if (data.RESULT == "SUCCESS") {
             notifyAlert('success', "", '생성 완료 되었습니다.');
             sltSecurityGuid = data.DATA.metadata.guid;

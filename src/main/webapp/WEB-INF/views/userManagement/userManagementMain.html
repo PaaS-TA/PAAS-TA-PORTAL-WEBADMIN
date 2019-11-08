@@ -229,7 +229,7 @@
             objMessageArea.show();
 
         } else {
-            console.log(data.list);
+
             var resultList = data.list;
             var totalListCount = resultList[0].totalCount;
             var boldClass = '';
@@ -415,7 +415,7 @@
     // DELETE USER ACCOUNT CALLBACK
     var procCallbackDeleteUserAccount = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) {
-            console.log(data);
+
         }
         procInitPage();
         procAlert("success", /*[[#{common.info.result.success}]]*/ "");

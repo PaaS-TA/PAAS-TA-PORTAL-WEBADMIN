@@ -1678,7 +1678,7 @@
                 var obj = jQuery.parseJSON(entity.tagsParam);
                 var index = 0;
                 $.each(obj,function(key, value) {
-                    console.log(index + ' key:'+key+', value:'+value);
+
                     if(index !== ""){
                         setStarterTagParam(index, key, value)
                     }else{
@@ -1767,7 +1767,7 @@
                 var obj = jQuery.parseJSON(entity.tagsParam);
                 var index = 0;
                 $.each(obj,function(key, value) {
-                    console.log(index + ' key:'+key+', value:'+value);
+
                     if(index !== ""){
                         setDevEnvTagParam(index, key, value)
                     }else{
@@ -1877,7 +1877,7 @@
                 var obj = jQuery.parseJSON(entity.tagsParam);
                 var index = 0;
                 $.each(obj,function(key, value) {
-                    console.log('key:'+key+', value:'+value);
+
                     if(index !== ""){
                         setTagParam(index, key, value);
                     }
@@ -2833,11 +2833,11 @@
                 }
             },
             error: function(xhr, status, error) {
-                console.log("ERROR :: error :: ", error);
+
                 notifyAlert('danger','',JSON.parse(xhr.responseText).message);
             },
             complete : function(data) {
-                console.log("COMPLETE :: data :: ", data);
+
             }
         });
     };
@@ -3175,7 +3175,7 @@
 
     // [앱 서비스] 상세 - [앱 Tag] 셋팅
     function setTagParam(index, type, type2){
-        console.log($('select[name=tagParamInput]:eq("+index+")').val('"+type+"'))
+
 
         eval("$('select[name=tagParamInput]:eq("+index+")').val('"+type+"')");
         eval("$('select[name=tagParamType]:eq("+index+")').val('"+type2+"')");
