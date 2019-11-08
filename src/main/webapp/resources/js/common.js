@@ -745,14 +745,14 @@ var LIST_DETAIL_PROC_URL = "/v2/codedetail";
 
 
 function getInitMarketPlaceURL() {
-    var param = {"searchKeyword": "MARKET_PLACE_URL"};
+    var param = {"searchKeyword": "MARKET_ADMIN_URL"};
     procCallAjax(LIST_DETAIL_PROC_URL+"?key="+key, "GET", param, procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
 }
 
 function procCallbackGetCodeDetailList(data) {
     var market_html = "";
     for(var i = 0; i < data.list.length; i++){
-        if(data.list[i].groupId == "MARKET_PLACE_URL" && data.list[i].useYn == "Y"){
+        if(data.list[i].groupId == "MARKET_ADMIN_URL" && data.list[i].useYn == "Y"){
             market_html += "<li><a onclick=\"goMarketPlace('" + data.list[i].value + "')\" style='cursor: pointer'><i class=\"fa fa-circle-o\" style='cursor: pointer'></i>"+data.list[i].key+"</a></li>";
         }
     }
