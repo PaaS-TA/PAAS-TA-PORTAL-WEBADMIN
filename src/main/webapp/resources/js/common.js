@@ -740,3 +740,31 @@ function SelectSort(SelList)
         }
     }
 }
+
+var LIST_DETAIL_PROC_URL = "/v2/codedetail";
+
+
+function getInitMarketPlaceURL() {
+    var param = {"searchKeyword": "MARKET_PLACE_URL"};
+    procCallAjax(LIST_DETAIL_PROC_URL+"?key="+key, "GET", param, procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
+}
+
+function procCallbackGetCodeDetailList(data) {
+    console.log(data);
+    var market_html = "";
+    for(var i = 0; i < data.list.length; i++){
+        if(data.list[i].groupId == "MARKET_PLACE_URL" && data.list[i].useYn == "Y"){
+            market_html += "<li><a onclick=\"goMarketPlace('" + data.list[i].value + "')\" style='cursor: pointer'><i class=\"fa fa-circle-o\" style='cursor: pointer'></i>"+data.list[i].key+"</a></li>";
+        }
+    }
+    if(market_html == ""){
+        $('#market_head').remove();
+    }else{
+        $('#market_place').html(market_html);
+    }
+}
+
+function goMarketPlace(no){
+    console.log(no);
+    window.open(no);
+}

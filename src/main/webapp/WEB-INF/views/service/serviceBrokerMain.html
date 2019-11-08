@@ -179,12 +179,13 @@
         }else{
             key = $("#apiUrls").val();
         }
-
+        getInitMarketPlaceURL();
         getServiceBrokerList();
         $('#serviceBrokerFormModal').modal('hide');
     }
 
     $(document).ready(function () {
+
 
         init();
 

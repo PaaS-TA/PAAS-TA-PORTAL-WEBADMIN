@@ -145,12 +145,13 @@
     });
 
     $(document).ready(function () {
+
         init();
     });
 
     function init() {
         key = $("#apiUrls").val();
-
+        getInitMarketPlaceURL();
         if($.cookie("api_key") != null){
             key = $.cookie("api_key");
             $("#apiUrls").val(key);

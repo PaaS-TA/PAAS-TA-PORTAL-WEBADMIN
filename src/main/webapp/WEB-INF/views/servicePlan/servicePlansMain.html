@@ -141,7 +141,6 @@
     };
 
     $(document).ready(function () {
-
         //key 값 설정
         if($.cookie("api_key") != null){
             key = $.cookie("api_key");
@@ -150,6 +149,7 @@
             key = $("#apiUrls").val();
         }
 
+        getInitMarketPlaceURL();
         asynchronousInit();
 
         $('#register').click(function(){

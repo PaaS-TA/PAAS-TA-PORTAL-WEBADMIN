@@ -448,6 +448,7 @@
         }
         // alert("INIT PAGE_index_"+key);
 
+        getInitMarketPlaceURL();
         $('#userInfoViewArea').hide();
         getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "",key);
     };
@@ -495,6 +496,7 @@
 
     // ON LOAD
     $(document.body).ready(function () {
+
         procInitPage();
     });
 

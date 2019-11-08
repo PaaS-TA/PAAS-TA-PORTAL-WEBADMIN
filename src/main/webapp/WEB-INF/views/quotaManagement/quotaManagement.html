@@ -400,6 +400,7 @@
 
     $(document).ready(function () {
 
+
         getOrgList();
         setPopover();
 
@@ -834,7 +835,9 @@
     // 조직 정보 조회(공간 할당량정의시 참조 정보)
     function getOrgList() {
         key = $("#apiUrls").val();
+        getInitMarketPlaceURL();
         procCallAjax("/v2/orgs"+"?key="+key, "GET", null, procCallbackGetOrgList, null);
+
     };
 
     var procCallbackGetOrgList = function(data) {
