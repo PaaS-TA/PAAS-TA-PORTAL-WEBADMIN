@@ -680,10 +680,8 @@
 
                     if($('#securityLog_' + (idx + 1)).val() == 'true'){
                         param += true + ',';
-                    }else if($('#securityLog_' + (idx + 1)).val() == 'false'){
-                        param += false + ',';
                     }else {
-                        param += null + ',';
+                        param += false + ',';
                     }
 
                 param += '\r\n\t\t"protocol" :' + '"' + $('#securityProtocol_' + (idx + 1)).val() + '"';
