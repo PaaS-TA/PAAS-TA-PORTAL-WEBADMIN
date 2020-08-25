@@ -1,12 +1,14 @@
 package org.openpaas.paasta.portal.web.admin.service;
 
 
+import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.model.CommonCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @Service
 public class CommonCodeService {
@@ -14,7 +16,6 @@ public class CommonCodeService {
     @Autowired
     public CommonService commonService;
 
-    private final String V2_URL = "/v2";
 
     /**
      * 공통코드 목록을 조회한다.
@@ -22,7 +23,7 @@ public class CommonCodeService {
      * @param param CommonCode
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getCodeDetailList(CommonCode param) {
+    public Map<String,Object> getCodeDetailList(int key, CommonCode param) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
@@ -32,8 +33,7 @@ public class CommonCodeService {
             search = "?";
             search += "groupId=" + param.getGroupId();
         }
-
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + search, HttpMethod.GET, param);
     }
 
 
@@ -43,8 +43,8 @@ public class CommonCodeService {
      * @param no CommonCode
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getCodeDetail(int no) {
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + no , HttpMethod.GET, null, null);
+    public Map<String,Object> getCodeDetail(int key, int no) {
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + no , HttpMethod.GET, null);
     }
 
 
@@ -54,7 +54,7 @@ public class CommonCodeService {
      * @param param CodeGroup(아이디)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getGroupDetailList(CommonCode param) {
+    public Map<String,Object> getGroupDetailList(int key, CommonCode param) {
         String search = "";
 
         if (param.getSearchKeyword() != null) {
@@ -62,7 +62,7 @@ public class CommonCodeService {
             search += "searchKeyword=" + param.getSearchKeyword();
         }
 
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup" + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup" + search, HttpMethod.GET, param);
     }
 
 
@@ -73,13 +73,13 @@ public class CommonCodeService {
      * @param param CodeGroup(아이디)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getGroupDetail(String id, CommonCode param) {
+    public Map<String,Object> getGroupDetail(int key, String id, CommonCode param) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + id + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/codegroup/" + id + search, HttpMethod.GET, param);
     }
 
 
@@ -89,13 +89,13 @@ public class CommonCodeService {
      * @param param odeDetail,CodeGroup (모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getCommonCodeJoinGroup(CommonCode param) {
+    public Map<String,Object> getCommonCodeJoinGroup(int key, CommonCode param) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(V2_URL + "/commoncode/" + search, HttpMethod.GET, param, null);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/commoncode/" + search, HttpMethod.GET, param);
     }
 
 
@@ -105,9 +105,9 @@ public class CommonCodeService {
      * @param param CodeGroup (모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> insertDetailGroup(CommonCode param) {
+    public Map<String,Object> insertDetailGroup(int key, CommonCode param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup", HttpMethod.POST, param);
     }
 
     /**
@@ -116,9 +116,9 @@ public class CommonCodeService {
      * @param param CodeDetail (모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> insertDetail(CommonCode param) {
+    public Map<String,Object> insertDetail(int key, CommonCode param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail", HttpMethod.POST, param, null);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail", HttpMethod.POST, param);
     }
 
 
@@ -128,9 +128,9 @@ public class CommonCodeService {
      * @param param CodeGroup (모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> updateCommonGroup(String id, CommonCode param) {
+    public Map<String,Object> updateCommonGroup(int key, String id, CommonCode param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + id, HttpMethod.PUT, param, null);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup/" + id, HttpMethod.PUT, param);
     }
 
 
@@ -140,9 +140,9 @@ public class CommonCodeService {
      * @param param CodeDetail (모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> updateCommonDetail(int no, CommonCode param) {
+    public Map<String,Object> updateCommonDetail(int key, int no, CommonCode param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + no, HttpMethod.PUT, param, null);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + no, HttpMethod.PUT, param);
     }
 
 
@@ -152,8 +152,8 @@ public class CommonCodeService {
      * @param id
      * * @return Map(자바클래스)
      */
-    public Map<String,Object> deleteCommonGroup(String id) {
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codegroup/" + id, HttpMethod.DELETE, null, null);
+    public Map<String,Object> deleteCommonGroup(int key, String id) {
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup/" + id, HttpMethod.DELETE, null);
     }
 
 
@@ -163,8 +163,8 @@ public class CommonCodeService {
      * @param no
      * @return Map(자바클래스)
      */
-    public Map<String,Object> deleteCommonDetail(int no) {
-        return commonService.procCommonApiRestTemplate(V2_URL + "/codedetail/" + no, HttpMethod.DELETE, null, null);
+    public Map<String,Object> deleteCommonDetail(int key, int no) {
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + no, HttpMethod.DELETE, null);
     }
 
 }

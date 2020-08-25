@@ -1,16 +1,20 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.ConfigInfo;
-import org.openpaas.paasta.portal.web.admin.service.ConfigInfoService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,6 +29,10 @@ import java.util.Map;
 public class ConfigInfoController extends Common {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigInfoController.class);
     private final String V2_URL = "/v2";
+
+    @Autowired
+    ConfigService configService;
+
     /**
      * 설정 정보 메인 화면이다.
      *
@@ -35,48 +43,61 @@ public class ConfigInfoController extends Common {
 
     @GetMapping("/configInfos")
     public ModelAndView configInfo() {
-        return configInfoService.configInfo();
+        return new ModelAndView() {{
+            setViewName("/configInfo/configInfoMain");
+        }}.addObject("infra_infos",configService.getConfigs());
     }
 
 
     /**
      * 설정 정보를 조회한다.
      *
-     * @param configInfo the ConfigInfo
      * @return ModelAndView model
      */
-    @GetMapping(V2_URL+ "/configInfos")
+    @GetMapping(V2_URL + "/configInfos/{key}")
     @ResponseBody
-    public Map<String, Object> getValues(@ModelAttribute ConfigInfo configInfo) {
-        return configInfoService.getValues("/configInfos", HttpMethod.GET, configInfo, null);
+    public ConfigEntity getValues(@PathVariable int key) {
+        return configService.getConfig(key);
     }
 
     /**
-     * 설정 정보를 조회한다.
-     * @param name - primary key
+     * 설정 정보를 삭제한다.
+     *
+     * @param key - primary key
      * @return ModelAndView model
      */
-    @GetMapping(V2_URL+ "/configInfos/{name}")
+    @DeleteMapping(V2_URL + "/configInfos/{key}")
     @ResponseBody
-    public Map<String, Object> getValue(@PathVariable String name) {
-        return configInfoService.getValue("/configInfos/"+name, HttpMethod.GET, null, null);
+    public Map<String, Object> deleteConfig(@PathVariable int key) {
+        return configService.deleteConfig(key);
     }
-
-
-
 
 
     /**
      * 설정 정보를 수정한다.
-     * @param name - primary key
-     * @param configInfo the configInfo
+     *
+     * @param configEntity - primary key
      * @return ModelAndView model
      */
-    @PutMapping(V2_URL+ "/configInfos/{name}")
+    @PutMapping(V2_URL + "/configInfos/{key}")
     @ResponseBody
-    public Map<String, Object> updateValue(@PathVariable String name, @RequestBody ConfigInfo configInfo) {
-        return configInfoService.updateValue("/configInfos/"+name, HttpMethod.PUT, configInfo, null);
+    public Map<String, Object> updateConfig(@PathVariable int key, @RequestBody ConfigEntity configEntity) {
+        configEntity.setKey(key);
+        return configService.saveConfig(configEntity);
     }
+
+
+    /**
+     * 설정 정보를 저장한다.
+     *
+     * @return ModelAndView model
+     */
+    @PostMapping(V2_URL + "/configInfos")
+    @ResponseBody
+    public Map<String, Object> addConfig(@RequestBody ConfigEntity configEntity) {
+        return configService.saveConfig(configEntity);
+    }
+
 
     /*
      *예제~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~₩
@@ -90,5 +111,10 @@ public class ConfigInfoController extends Common {
 //    }
 
 
+    @ModelAttribute("configs")
+    public List<User> configs(){
+
+        return getServerInfos();
+    }
 }
 

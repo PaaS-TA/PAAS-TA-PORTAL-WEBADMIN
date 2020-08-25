@@ -59,6 +59,7 @@ public class Catalog {
     private int MemorySize;
     private String dashboardUseYn;
     private String tagsParam;
+    private String onDemandYn;
 
     /**
      * GETTER 카탈로그 번호
@@ -905,6 +906,10 @@ public class Catalog {
         this.dashboardUseYn = dashboardUseYn;
     }
 
+
+    public String getOnDemandYn() { return onDemandYn; }
+
+    public void setOnDemandYn(String onDemandYn) { this.onDemandYn = onDemandYn; }
 
     @Override
     public String toString() {

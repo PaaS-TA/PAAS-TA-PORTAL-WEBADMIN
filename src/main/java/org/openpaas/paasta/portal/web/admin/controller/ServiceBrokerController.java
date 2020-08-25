@@ -2,16 +2,19 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
+import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.ServiceBroker;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * 서비스 브로커 관리 컨트롤러 - 서비스 브로커를 관리하는 컨트롤러이다.
@@ -48,8 +51,9 @@ public class ServiceBrokerController extends Common {
      */
     @GetMapping(value = {Constants.V2_URL + "/servicebrokers"})
     @ResponseBody
-    public Map<String, Object> getServiceBrokers(@ModelAttribute ServiceBroker serviceBroker) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers", HttpMethod.GET, serviceBroker, this.getToken());
+    public Map<String, Object> getServiceBrokers(HttpServletRequest request, @ModelAttribute ServiceBroker serviceBroker) {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/servicebrokers", HttpMethod.GET, serviceBroker);
     }
 
 
@@ -61,8 +65,9 @@ public class ServiceBrokerController extends Common {
      */
     @GetMapping(value = {Constants.V2_URL + "/servicebrokers/{guid}"})
     @ResponseBody
-    public Map<String, Object> getServiceBroker(@ModelAttribute ServiceBroker serviceBroker, @PathVariable String guid) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers/"+guid, HttpMethod.GET, serviceBroker, this.getToken());
+    public Map<String, Object> getServiceBroker(HttpServletRequest request, @ModelAttribute ServiceBroker serviceBroker, @PathVariable String guid) {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/servicebrokers/" + guid, HttpMethod.GET, serviceBroker);
     }
 
     /**
@@ -73,8 +78,9 @@ public class ServiceBrokerController extends Common {
      */
     @PostMapping(value = {Constants.V2_URL + "/servicebrokers"})
     @ResponseBody
-    public Map<String, Object> createServiceBroker(@RequestBody ServiceBroker serviceBroker) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers", HttpMethod.POST, serviceBroker, this.getToken());
+    public Map<String, Object> createServiceBroker(HttpServletRequest request, @RequestBody ServiceBroker serviceBroker) {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/servicebrokers", HttpMethod.POST, serviceBroker);
     }
 
 
@@ -86,8 +92,9 @@ public class ServiceBrokerController extends Common {
      */
     @PutMapping(value = {Constants.V2_URL + "/servicebrokers/{guid}"})
     @ResponseBody
-    public Map<String, Object> updateServiceBroker(@RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers/"+guid, HttpMethod.PUT, serviceBroker, this.getToken());
+    public Map<String, Object> updateServiceBroker(HttpServletRequest request, @RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/servicebrokers/" + guid, HttpMethod.PUT, serviceBroker);
     }
 
 
@@ -99,9 +106,15 @@ public class ServiceBrokerController extends Common {
      */
     @DeleteMapping(value = {Constants.V2_URL + "/servicebrokers/{guid}"})
     @ResponseBody
-    public Map<String, Object> deleteServiceBroker(@PathVariable String guid ) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/servicebrokers/"+guid, HttpMethod.DELETE, null, this.getToken());
+    public Map<String, Object> deleteServiceBroker(HttpServletRequest request, @PathVariable String guid, @RequestParam boolean purge) {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V2_URL + "/servicebrokers/"+guid+"?purge="+purge, HttpMethod.DELETE, null);
     }
 
+
+    @ModelAttribute("configs")
+    public List<User> configs(){
+        return getServerInfos();
+    }
 }
 

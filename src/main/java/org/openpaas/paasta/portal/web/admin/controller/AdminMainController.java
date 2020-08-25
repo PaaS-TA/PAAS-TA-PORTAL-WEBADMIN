@@ -1,18 +1,22 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
-import org.openpaas.paasta.portal.web.admin.model.AdminMain;
+import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
  * 운영자 포탈 관리자 대시보드 관련 API 를 호출 하는 컨트롤러이다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.09.08 최초작성
  */
@@ -21,6 +25,7 @@ public class AdminMainController extends Common {
 
     private final String V2_URL = "/v2";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminMainController.class);
 //    /**
 //     * 관리자포탈 조직 선택 메인페이지로 이동한다.
 //     *
@@ -44,8 +49,10 @@ public class AdminMainController extends Common {
      */
     @GetMapping(value = {V2_URL + "/statistics"})
     @ResponseBody
-    public Map<String, Object> getTotalCountList() {
-        return commonService.procCommonApiRestTemplate(V2_URL + "/statistics", HttpMethod.GET, null, null);
+    public Map<String, Object> getTotalCountList(HttpServletRequest request) {
+        String key = request.getParameter("key");
+        LOGGER.info("::getTotalCountList index:: "  +key);
+        return commonService.procCommonApiRestTemplate(Integer.parseInt(key),V2_URL + "/statistics", HttpMethod.GET, null);
     }
 
 
@@ -58,8 +65,10 @@ public class AdminMainController extends Common {
      */
     @GetMapping(value = {V2_URL + "/statistics/organizations"})
     @ResponseBody
-    public Map<String, Object> getTotalOrganizationList() {
-        return commonService.procCommonApiRestTemplate(V2_URL + "/statistics/organizations", HttpMethod.GET, null, null);
+    public Map<String, Object> getTotalOrganizationList(HttpServletRequest request) {
+        String key = request.getParameter("key");
+        LOGGER.info("::getTotalOrganizationList::"  +key);
+        return commonService.procCommonApiRestTemplate(Integer.parseInt(key),V2_URL + "/statistics/organizations", HttpMethod.GET, null);
     }
 
 
@@ -70,9 +79,16 @@ public class AdminMainController extends Common {
      */
     @GetMapping(value = {V2_URL + "/statistics/organizations/{organizationId}/spaces"})
     @ResponseBody
-    public Map<String, Object> getTotalSpaceList(@PathVariable String organizationId) {
+    public Map<String, Object> getTotalSpaceList(@PathVariable String organizationId, HttpServletRequest request) {
+        String key = request.getParameter("key");
+        LOGGER.info("::getTotalSpaceList::"  +key);
         // spaceId, spaceName, applicationCount Info
-        return commonService.procCommonApiRestTemplate(V2_URL + "/statistics/organizations/"+organizationId+"/spaces", HttpMethod.GET, null, null);
+        return commonService.procCommonApiRestTemplate(Integer.parseInt(key), V2_URL + "/statistics/organizations/"+organizationId+"/spaces", HttpMethod.GET, null);
     }
 
+
+    @ModelAttribute("configs")
+    public List<User> configs(){
+        return getServerInfos();
+    }
 }

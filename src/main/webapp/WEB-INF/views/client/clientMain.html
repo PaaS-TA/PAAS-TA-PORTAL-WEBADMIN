@@ -5,115 +5,219 @@
 <head></head>
 <body>
 <div>
-  <header></header>
-  <aside>/</aside>
+    <header></header>
+    <aside>/</aside>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div layout:fragment="content" class="content-wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div layout:fragment="content" class="content-wrapper">
 
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        클라이언트 목록
-      </h1>
-    </section>
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                클라이언트 목록
+            </h1>
+        </section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
 
-            <div id="loadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
-            <div class="box-header">
+                        <div id="loadingBar" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                        <div class="box-header">
 
-                    <!--<div class="col-xs-7 col-sm-5">-->
-                      <!--<div class="input-group input-group-sm">-->
-                        <!--<div class="input-group-btn">-->
-                          <!--<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>-->
-                        <!--</div>-->
-                        <!--<input type="text" name="table_search" id="searchKeyword" class="form-control" style="margin-left:-1px;"  placeholder="클라이언트 ID로 조회" onkeyup="procSearchByKeyword(event);"/>-->
-                      <!--</div>-->
-                    <!--</div>-->
+                            <!--<div class="col-xs-7 col-sm-5">-->
+                            <!--<div class="input-group input-group-sm">-->
+                            <!--<div class="input-group-btn">-->
+                            <!--<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>-->
+                            <!--</div>-->
+                            <!--<input type="text" name="table_search" id="searchKeyword" class="form-control" style="margin-left:-1px;"  placeholder="클라이언트 ID로 조회" onkeyup="procSearchByKeyword(event);"/>-->
+                            <!--</div>-->
+                            <!--</div>-->
 
-                    <div class="box-tools col-xs-6 col-sm-5 pull-left" style="position:static;padding-left: 0px;">
-                      <div class="has-feedback">
-                        <input type="text" class="form-control input-sm" id="searchKeyword" onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
-                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                      </div>
+                            <div class="box-tools col-xs-6 col-sm-5 pull-left"
+                                 style="position:static;padding-left: 0px;">
+                                <div class="has-feedback">
+                                    <input type="text" class="form-control input-sm" id="searchKeyword"
+                                           onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </div>
+
+                            <div class="pull-right" style="padding-right: 0px;">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn"
+                                        name="registBtn" data-toggle="modal" data-backdrop="static"
+                                        data-keyboard="false" data-target="#clientFormModal">
+                                    클라이언트 등록
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="box-body">
+                            <table class="table table-striped text-center"> <!-- table-responsive -->
+                                <thead>
+                                <tr>
+                                    <th>클라이언트 ID</th>
+                                </tr>
+                                </thead>
+                                <tbody id="clientList" name="dataList">
+                                </tbody>
+                            </table>
+                            <!--<div id="buttonGetMoreList" style="text-align:center;">-->
+                            <!--<button type="button" class="btn btn-primary btn-sm" onclick="procGetMoreList();">-->
+                            <!--<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>-->
+                            <!--</button>-->
+                            <!--</div>-->
+                        </div>
+                        <!-- /.box-body -->
                     </div>
-
-                    <div class="pull-right" style="padding-right: 0px;">
-                      <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#clientFormModal">
-                        클라이언트 등록
-                      </button>
-                    </div>
-
+                    <!-- /.box -->
+                </div>
             </div>
 
-            <div class="box-body">
-              <table class="table table-striped text-center"> <!-- table-responsive -->
-                <thead>
-                <tr>
-                  <th>클라이언트 ID</th>
-                </tr>
-                </thead>
-                <tbody id="clientList" name="dataList">
-                </tbody>
-              </table>
-              <!--<div id="buttonGetMoreList" style="text-align:center;">-->
-                <!--<button type="button" class="btn btn-primary btn-sm" onclick="procGetMoreList();">-->
-                  <!--<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>-->
-                <!--</button>-->
-              <!--</div>-->
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-      </div>
+            <!-- Modal Layer-->
+            <div class="modal fade" id="clientFormModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title">클라이언트 등록</h4>
+                        </div>
+                        <div class="modal-body">
 
-      <!-- Modal Layer-->
-      <div class="modal fade" id="clientFormModal" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span></button>
-              <h4 class="modal-title">클라이언트 등록</h4>
-            </div>
-            <div class="modal-body">
+                            <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
+                                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i>
+                                </div>
+                                <form id="clientForm" class="form-horizontal">
+                                    <div class="box-body">
 
-              <div class="box" style="margin-bottom: 0px; border-top: 0px; box-shadow: 0 0px 0px">
-                <div id="modalLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
-                <form id="clientForm" class="form-horizontal">
-                  <div class="box-body">
+                                        <div class="form-group required">
+                                            <label for="clientId" class="col-sm-3 control-label">클라이언트 아이디</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString" id="clientId"
+                                                       placeholder=""/>
+                                            </div>
+                                        </div>
 
-                    <div class="form-group required">
-                      <label for="clientId" class="col-sm-3 control-label">클라이언트 아이디</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control toCheckString" id="clientId" placeholder=""/>
-                      </div>
-                    </div>
+                                        <div class="form-group required">
+                                            <label for="clientPwd" class="col-sm-3 control-label">클라이언트 패스워드</label>
+                                            <div class="col-sm-9">
+                                                <input type="password" class="form-control toCheckString" id="clientPwd"
+                                                       placeholder=""/>
+                                            </div>
+                                        </div>
 
-                    <div class="form-group required">
-                      <label for="clientPwd" class="col-sm-3 control-label">클라이언트 패스워드</label>
-                      <div class="col-sm-9">
-                        <input type="password" class="form-control toCheckString" id="clientPwd" placeholder=""/>
-                      </div>
-                    </div>
+<!--                                        <div class="form-group required">-->
+<!--                                            <label for="clientOption" class="col-sm-3 control-label">옵션</label>-->
+<!--                                            <div class="col-sm-9">-->
+<!--                                                <textarea class="form-control toCheckString" rows="5"-->
+<!--                                                          id="clientOption"></textarea>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
 
-                    <div class="form-group required">
-                      <label for="clientOption" class="col-sm-3 control-label">옵션</label>
-                      <div class="col-sm-9">
-                        <textarea class="form-control toCheckString" rows="5" id="clientOption"></textarea>
-                      </div>
-                    </div>
+                                        <div class="form-group required">
+                                            <label for="authorized_grant_types" class="col-sm-3 control-label">authorized_grant_types</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString"
+                                                          id="authorized_grant_types"/>
+                                            </div>
+                                        </div>
 
-                    <div class="form-group">
-                      <label for="optionGuide" class="col-sm-3 control-label">옵션 가이드</label>
-                      <div class="col-sm-9">
-                        <textarea class="form-control" rows="13" id="optionGuide" style="background: white; cursor: text" readonly="true">
+                                        <div class="form-group ">
+                                            <label for="redirect_uri" class="col-sm-3 control-label">redirect_uri</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control "
+                                                          id="redirect_uri"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="scope" class="col-sm-3 control-label">scope</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString"
+                                                          id="scope"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="authorities" class="col-sm-3 control-label">authorities</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control toCheckString"
+                                                          id="authorities"/>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group ">
+                                            <label for="autoapprove" class="col-sm-3 control-label">autoapprove</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control "
+                                                          id="autoapprove"/>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group ">
+                                            <label for="access_token_validity" class="col-sm-3 control-label">access_token_validity</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control "
+                                                          id="access_token_validity"/>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group ">
+                                            <label for="refresh_token_validity" class="col-sm-3 control-label">refresh_token_validity</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control "
+                                                          id="refresh_token_validity"/>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group ">
+                                            <label for="token_salt" class="col-sm-3 control-label">token_salt</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control "
+                                                          id="token_salt"/>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group ">
+                                            <label for="allowedproviders" class="col-sm-3 control-label">allowedproviders</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control "
+                                                          id="allowedproviders"/>
+                                            </div>
+                                        </div>
+
+
+<!--                                        <div class="form-group ">-->
+<!--                                            <label for="clone" class="col-sm-3 control-label">clone</label>-->
+<!--                                            <div class="col-sm-9">-->
+<!--                                                <input type="text" class="form-control "-->
+<!--                                                       id="clone"/>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+
+
+<!--                                        <div class="form-group ">-->
+<!--                                            <label for="signup_redirect_url" class="col-sm-3 control-label">signup_redirect_url</label>-->
+<!--                                            <div class="col-sm-9">-->
+<!--                                                <input type="text" class="form-control "-->
+<!--                                                       id="signup_redirect_url"/>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+
+                                        <div class="form-group">
+                                            <label for="optionGuide" class="col-sm-3 control-label">옵션 가이드</label>
+                                            <div class="col-sm-9">
+                        <textarea class="form-control" rows="13" id="optionGuide"
+                                  style="background: white; cursor: text" readonly="true">
 새 클라이언트 등록시 옵션 설정 예제)
     --authorized_grant_types client_credentials
 
@@ -133,7 +237,6 @@
 
 클라이언트 등록시 사용 가능한 옵션 목록
 
-   --name &lt;string&gt;
    --scope &lt;list&gt;
    --authorized_grant_types &lt;list&gt;
    --authorities &lt;list&gt;
@@ -143,360 +246,479 @@
    --token_salt &lt;token salt&gt;
    --autoapprove &lt;list&gt;
    --allowedproviders &lt;list&gt;
-   --client_secret &lt;client secret&gt;
 
 ---------------------------------------------------------------------------------------------------------------------------
 
 More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/content/en/Security/registering_client_in_uaa.html
                    # https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-APIs.rst#id85
                         </textarea>
-                      </div>
+                                            </div>
+                                        </div>
+                                        <div id="modifyGuide" class="hide">
+                                            <h5><i class="fa fa-warning text-yellow"></i> 수정은 삭제 후, 재등록 하시기 바랍니다.</h5>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" id="clientDeleteBtn" name="modalDeleteBtn"
+                                    class="btn btn-sm btn-danger pull-left" onClick="deleteClientModal();">삭제
+                            </button>
+                            <!--<button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateClient();">저장</button>-->
+                            <button type="button" id="clientRegBtn" name="modalRegBtn"
+                                    class="btn btn-sm btn-primary pull-right" onClick="createClient();">등록
+                            </button>
+                            <button type="button" id="clientCloseBtn" class="btn btn-sm btn-default pull-left"
+                                    data-dismiss="modal">취소
+                            </button>
+                        </div>
+
                     </div>
-                    <div id="modifyGuide" class="hide">
-                      <h5><i class="fa fa-warning text-yellow"></i> 수정은 삭제 후, 재등록 하시기 바랍니다.</h5>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="clientConfirmModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true"> &times; </span></button>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                        </div>
+                        <div class="modal-body">
+                            <p id="popupMessage"> MESSAGE </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"
+                                    id="popupButtonText"> SAVE CHANGES
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"
+                                    id="popupCancelButtonText"
+                                    onclick="procClosePopup('clientConfirmModal');"> 취소
+                            </button>
+                        </div>
                     </div>
-                  </div>
-                </form>
-              </div>
-
+                </div>
             </div>
+            <!-- Modal Layer-->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
-            <div class="modal-footer">
-              <button type="button" id="clientDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteClientModal();">삭제</button>
-              <!--<button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateClient();">저장</button>-->
-              <button type="button" id="clientRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createClient();">등록</button>
-              <button type="button" id="clientCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
-            </div>
-
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-
-      <div class="modal fade" tabindex="-1" role="dialog" id="clientConfirmModal">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
-              <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
-            </div>
-            <div class="modal-body">
-              <p id="popupMessage"> MESSAGE </p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
-              <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
-                      onclick="procClosePopup('clientConfirmModal');"> 취소
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Modal Layer-->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
-  <footer></footer>
+    <footer></footer>
 
 </div>
 <!-- ./wrapper -->
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
-  /*<![CDATA[*/
+    /*<![CDATA[*/
 
-  var CLIENT_PROC_URL = "/v2/clients";
-  var CLIENT_LIST;
+    var CLIENT_PROC_URL = "/v2/clients";
+    var CLIENT_LIST;
 
-  var LOADED_LIST_COUNT = 0;
-  var CURRENT_OFFSET = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ 0;
-  var LOAD_UNIT = 10;
-  var CURRENT_LIST;
+    var LOADED_LIST_COUNT = 0;
+    var CURRENT_OFFSET = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ 0;
+    var LOAD_UNIT = 10;
+    var CURRENT_LIST;
 
-  $(document).ready(function () {
-    getClientList();
+    $(document).ready(function () {
 
-    // 등록 버튼 클릭시, 등록 팝업 이벤트 설정
-    $(document).on( "click", 'button[name=registBtn]' ,function(e){
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+        getClientList(key);
+        getInitMarketPlaceURL();
+        // 등록 버튼 클릭시, 등록 팝업 이벤트 설정
+        $(document).on("click", 'button[name=registBtn]', function (e) {
 
-      $('.modal-title').text("클라이언트 등록");
-      $('#clientDeleteBtn').hide();
-      $('#clientSaveBtn').hide();
-      $('#clientRegBtn').show();
-      $('#modifyGuide').addClass('hide');
+            $('.modal-title').text("클라이언트 등록");
+            $('#clientDeleteBtn').hide();
+            $('#clientSaveBtn').hide();
+            $('#clientRegBtn').show();
+            $('#modifyGuide').addClass('hide');
 
-      initModal();
+            initModal();
+        });
+
+        // 리스트 클릭시 상세 출력
+        $(document).on("mouseup", 'tbody[name=dataList]', function (e) {
+            initModal();
+            var clientId = $(e.target).parent().data('id');
+            getClient(clientId);
+        });
+
     });
 
-    // 리스트 클릭시 상세 출력
-    $(document).on( "mouseup", 'tbody[name=dataList]' ,function(e){
-      initModal();
-      var clientId = $(e.target).parent().data('id');
-      getClient(clientId);
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        $.cookie("api_key",key);
+        getClientList(key);
+        var objTable = $("#clientList");
+        objTable.html('');
     });
 
-  });
 
-  // Modal 초기화
-  var initModal = function(){
-    CLIENT_LIST = "";
-    $('#clientForm')[0].reset();
-  }
-
-  // 클라리언트 리스트 조회
-  var getClientList = function () {
-    $('.modal').modal('hide');
-    var param = {};
-    procCallAjax(CLIENT_PROC_URL, "GET", param, procCallbackGetClientList, $('#loadingBar'));
-  };
-
-  // 클라리언트 리스트 조회 Callback
-  var procCallbackGetClientList = function (data) {
-    CLIENT_LIST = data.resources;
-    printData(CLIENT_LIST);
-  }
-
-  // 클라이언트 리스트 출력
-  function printData(dataList) {
-
-    var objTable = $("#clientList");
-    objTable.html('');
-
-    $.each(dataList, function (id, data) {
-      //var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
-      objTable.append('<tr style="cursor:pointer;" data-id='+data.client_id+'>'
-              + '<td>' + data.client_id + '</td>'
-              + '</tr>');
-    });
-
-    if(dataList.length == 0){
-      objTable.append('<tr><td>'+/*[[#{common.info.empty.data}]]*/ ""+'</td></tr>');
+    // Modal 초기화
+    var initModal = function () {
+        CLIENT_LIST = "";
+        $('#clientForm')[0].reset();
     }
 
-  };
-
-
-  // 클라리언트 조회
-  function getClient(clientId) {
-
-    $('.modal-title').text("클라이언트 상세");
-    $('#clientDeleteBtn').show();
-    $('#clientSaveBtn').show();
-    $('#clientRegBtn').hide();
-    $('#clientFormModal').modal('toggle');
-    $('#modifyGuide').removeClass('hide');
-
-    // 클라리언트 상세조회
-    procCallAjax(CLIENT_PROC_URL + "/" + clientId, "GET", null, procCallbackGetClient, $('#modalLoadingBar'));
-  }
-
-  // 클라이언트 조회 Callback
-  var procCallbackGetClient = function (data) {
-
-    var options = "";
-
-    var name = data.name;
-    if (name != undefined && name != "") if (name != "") options += "--name " + name + " ";
-
-    var scope = data.scope;
-    if (scope != undefined) if (scope != "") options += "--scope " + scope + " ";
-
-    var authorized_grant_types = data.authorized_grant_types;
-    if (authorized_grant_types != undefined) if (authorized_grant_types != "") options += "--authorized_grant_types " + authorized_grant_types + " ";
-
-    var authorities = data.authorities;
-    if (authorities != undefined) if (authorities != "") options += "--authorities " + authorities + " ";
-
-    var access_token_validity = data.access_token_validity;
-    if (access_token_validity != undefined) if (access_token_validity != "") options += "--access_token_validity " + access_token_validity + " ";
-
-    var refresh_token_validity = data.refresh_token_validity;
-    if (refresh_token_validity != undefined) if (refresh_token_validity != "") options += "--refresh_token_validity " + refresh_token_validity + " ";
-
-    var redirect_uri = data.redirect_uri;
-    if (redirect_uri != undefined) if (redirect_uri != "") options += "--redirect_uri " + redirect_uri + " ";
-
-    var autoapprove = data.autoapprove;
-    if (autoapprove != undefined) if (autoapprove != "") options += "--autoapprove " + autoapprove + " ";
-
-    var signup_redirect_url = data.signup_redirect_url;
-    if (signup_redirect_url != undefined) if (signup_redirect_url != "") options += "--signup_redirect_url " + signup_redirect_url + " ";
-
-    var clone = data.clone;
-    if (clone != undefined) if (clone != "") options += "--clone " + clone + " ";
-
-
-    $("#clientId").val(data.client_id);
-    $("#clientOption").val(options);
-
-  }
-
-
-  function paramSetting(optionName, optionContent) {
-
-    if (optionName == "name") {
-      return {name : optionContent};
-
-    } else if (optionName == "scope" ) {
-      return {scope : optionContent};
-
-    } else if (optionName == "authorized_grant_types") {
-      return {authorized_grant_types : optionContent};
-
-    } else if (optionName == "authorities") {
-      return {authorities : optionContent};
-
-    } else if (optionName == "access_token_validity") {
-      return {access_token_validity : optionContent};
-
-    } else if (optionName == "refresh_token_validity") {
-      return {refresh_token_validity : optionContent};
-
-    } else if (optionName == "redirect_uri") {
-      return {redirect_uri : optionContent};
-
-    } else if (optionName == "autoapprove") {
-      return {autoapprove : optionContent};
-
-    } else if (optionName == "signup_redirect_url" ) {
-      return {signup_redirect_url : optionContent};
-
-    } else if (optionName == "clone") {
-      return {clone : optionContent};
-
-    } else if (optionName == "s") {
-      return {client_secret : optionContent.toString()};
-
-    } else if (optionName == "i") {
-      return {client_secret : optionContent.toString()};
-    }
-
-  }
-
-  function parsingClientOptions () {
-    var clientId = $("#clientId").val();
-    var clientOption = $("#clientOption");
-
-    var checkString = '-';
-    var checkEmptyString = ' ';
-
-    var param = {
-      client_id : clientId
+    // 클라리언트 리스트 조회
+    var getClientList = function () {
+        key =  $("#apiUrls").val();
+        $('.modal').modal('hide');
+        var param = {};
+        procCallAjax(CLIENT_PROC_URL + "/" + "?key="+key, "GET", param, procCallbackGetClientList, $('#loadingBar'));
     };
 
-    if (clientOption.val().indexOf(checkString) == -1) {
-      notifyAlert("warning", "" ,/*[[#{common.client.option.validation.error.message}]]*/ "");
-      clientOption.focus();
-      return false;
+    // 클라리언트 리스트 조회 Callback
+    var procCallbackGetClientList = function (data) {
+        CLIENT_LIST = data.resources;
+        printData(CLIENT_LIST);
     }
 
-    var clientOptions = clientOption.val().trim();
+    // 클라이언트 리스트 출력
+    function printData(dataList) {
 
-    // parsing client options
-    var optionLine =  clientOptions.split(checkString);
-    var tempOptionLine = '';
+        var objTable = $("#clientList");
+        objTable.html('');
 
-    for (var i = 0; i < optionLine.length; i++) {
-      if (optionLine[i] != "") {
+        $.each(dataList, function (id, data) {
+            //var useYnClass = (data.useYn == 'Y')  ? "bg-green"  : "bg-red" ;
+            objTable.append('<tr style="cursor:pointer;" data-id=' + data.client_id + '>'
+                + '<td>' + data.client_id + '</td>'
+                + '</tr>');
+        });
 
-        tempOptionLine = optionLine[i].trim();
-
-        if (tempOptionLine.indexOf(checkEmptyString) == -1) {
-          notifyAlert("warning", "" , /*[[#{common.client.option.validation.error.message}]]*/ "");
-          clientOption.focus();
-          return false;
+        if (dataList.length == 0) {
+            objTable.append('<tr><td>' +/*[[#{common.info.empty.data}]]*/ "" + '</td></tr>');
         }
 
-        var option = tempOptionLine.split(checkEmptyString);
-        var optionLength = option.length;
-        var optionName = option[0];
-        var optionContent;
-
-        if (optionLength > 2) { // name, String
-          optionContent = "";
-          for (var j = 1; j < option.length; j++) {
-            optionContent =  optionContent + option[j].toString() + checkEmptyString;
-          }
-
-        } else {
-          var contents = option[1].split(',');
-          optionContent = [];
-          for (var k = 0; k < contents.length; k++) {
-            optionContent[k] = contents[k];
-          }
-        }
-
-        var renew = paramSetting(optionName, optionContent);
-        $.extend(param, renew);
-
-      }
-    }
-
-    // ToBe
-    if (param.authorized_grant_types === undefined || param.authorized_grant_types  == '') {
-      notifyAlert("warning","", "--authorized_grant_types 옵션은 필수 입니다.");
-      $("#option").focus();
-      return false;
-    }
-
-    // 등록
-      //$.extend(param, {client_secret : $("#clientPwd").val()}); // client_credentials 등록시 client_secret 필수
-      procCallAjax(CLIENT_PROC_URL, "POST", JSON.stringify(param), getClientList, $('#modalLoadingBar'));
-  }
-
-  //  [클라이언트] 생성
-  function createClient() {
-    if (!procCheckValidStringSpace()){
-      return false;
     };
 
-    parsingClientOptions();
-  }
 
-  // [클라이언트] 삭제 (confirm layer)
-  function deleteClientModal() {
+    // 클라리언트 조회
+    function getClient(clientId) {
 
-    $("#popupTitle").html("클라이언트 삭제");
-    $("#popupMessage").html("" +$("#clientId").val()+ " " + /*[[#{delete.confirm.message('클라이언트')}]]*/ "");
-    $("#popupButtonText").text("삭제");
-    $("#popupButtonText").addClass('pull-left');
-    $('#popupButtonText').attr('onclick', "deleteClient();");
-    $("#popupButtonText").show();
+        $('.modal-title').text("클라이언트 상세");
+        $('#clientDeleteBtn').show();
+        $('#clientSaveBtn').show();
+        $('#clientRegBtn').hide();
+        $('#clientFormModal').modal('toggle');
+        $('#modifyGuide').removeClass('hide');
 
-    $('#clientConfirmModal').modal('toggle');
-  }
-
-  // 서비스 브로커 삭제 처리
-  function deleteClient() {
-    var clientId = $('#clientId').val();
-    procCallAjax(CLIENT_PROC_URL +"/"+clientId, "DELETE", null, getClientList, $('#modalLoadingBar'));
-  }
-
-  // 검색 조회
-  function procSearchByKeyword(event) {
-    //$('#buttonGetMoreList').hide();
-    CURRENT_OFFSET = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ "";
-    LOADED_LIST_COUNT = 0;
-
-    //$('#clientInfoTableTitle').hide();
-    //$('#clientInfoTable').empty();
-
-    var searchKeyword = document.getElementById('searchKeyword').value;
-    var searchResult = new Array();
-    var newIdx = 0;
-    for (var i=0; i < CLIENT_LIST.length; i++ ){
-
-      if (CLIENT_LIST[i].client_id.toLowerCase().includes(document.getElementById('searchKeyword').value.toLowerCase())) {
-        searchResult[newIdx++] = CLIENT_LIST[i];
-      }
+        // 클라리언트 상세조회
+        procCallAjax(CLIENT_PROC_URL + "/" + clientId + "/" + "?key="+key, "GET", null, procCallbackGetClient, $('#modalLoadingBar'));
     }
-    printData(searchResult);
 
-  }
+    // 클라이언트 조회 Callback
+    var procCallbackGetClient = function (data) {
 
-  /*]]>*/
+        var options = "";
+
+        var name = data.name;
+        if (name != undefined && name != "") if (name != "") options += "--name " + name + " ";
+
+        var scope = data.scope;
+        if (scope != undefined) if (scope != ""){
+            options += "--scope " + scope + " ";
+            $("#scope").val(scope);
+        }
+
+        var authorized_grant_types = data.authorized_grant_types;
+        if (authorized_grant_types != undefined) if (authorized_grant_types != "") {
+            options += "--authorized_grant_types " + authorized_grant_types + " ";
+            $("#authorized_grant_types").val(authorized_grant_types);
+        }
+
+        var authorities = data.authorities;
+        if (authorities != undefined) if (authorities != "") {
+             options += "--authorities " + authorities + " ";
+            $("#authorities").val(authorities);
+        }
+
+        var authorities = data.authorities;
+        if (authorities != undefined) if (authorities != "") {
+            options += "--authorities " + authorities + " ";
+            $("#authorities").val(authorities);
+        }
+
+        var access_token_validity = data.access_token_validity;
+        if (access_token_validity != undefined) if (access_token_validity != ""){
+            options += "--access_token_validity " + access_token_validity + " ";
+            $("#access_token_validity").val(access_token_validity);
+        }
+
+        var refresh_token_validity = data.refresh_token_validity;
+        if (refresh_token_validity != undefined) if (refresh_token_validity != "") {
+            options += "--refresh_token_validity " + refresh_token_validity + " ";
+            $("#refresh_token_validity").val(refresh_token_validity);
+        }
+
+
+        var redirect_uri = data.redirect_uri;
+        if (redirect_uri != undefined) if (redirect_uri != "") {
+            options += "--redirect_uri " + redirect_uri + " ";
+            $("#redirect_uri").val(redirect_uri);
+        }
+
+        var autoapprove = data.autoapprove;
+        if (autoapprove != undefined) if (autoapprove != "") {
+            options += "--autoapprove " + autoapprove + " ";
+            $("#autoapprove").val(autoapprove);
+        }
+
+
+        // var signup_redirect_url = data.signup_redirect_url;
+        // if (signup_redirect_url != undefined) if (signup_redirect_url != "") {
+        //     options += "--signup_redirect_url " + signup_redirect_url + " ";
+        //     $("#signup_redirect_url").val(signup_redirect_url);
+        // }
+        //
+        // var clone = data.clone;
+        // if (clone != undefined) if (clone != "") {
+        //     options += "--clone " + clone + " ";
+        //    $("#clone").val(clone);
+        // }
+
+
+        $("#clientId").val(data.client_id);
+        // $("#clientOption").val(options);
+
+    }
+
+
+    function paramSetting(optionName, optionContent) {
+
+        if (optionName == "name") {
+            return {name: optionContent};
+
+        } else if (optionName == "scope") {
+            return {scope: optionContent};
+
+        } else if (optionName == "authorized_grant_types") {
+            return {authorized_grant_types: optionContent};
+
+        } else if (optionName == "authorities") {
+            return {authorities: optionContent};
+
+        } else if (optionName == "access_token_validity") {
+            return {access_token_validity: optionContent};
+
+        } else if (optionName == "refresh_token_validity") {
+            return {refresh_token_validity: optionContent};
+
+        } else if (optionName == "redirect_uri") {
+            return {redirect_uri: optionContent};
+
+        } else if (optionName == "autoapprove") {
+            return {autoapprove: optionContent};
+
+        } else if (optionName == "signup_redirect_url") {
+            return {signup_redirect_url: optionContent};
+
+        } else if (optionName == "clone") {
+            return {clone: optionContent};
+
+        } else if (optionName == "s") {
+            return {client_secret: optionContent.toString()};
+
+        } else if (optionName == "i") {
+            return {client_secret: optionContent.toString()};
+        }
+
+    }
+
+    function parsingClientOptions() {
+        // var clientId = $("#clientId").val();
+        // var clientPwd = $("#clientPwd").val();
+        // var clientOption = $("#clientOption");
+
+        // var checkString = '-';
+        // var checkEmptyString = ' ';
+
+        // var param = {
+        //     client_id: clientId,
+        //     client_secret: clientPwd
+        // };
+
+
+        // if (clientOption.val().indexOf(checkString) == -1) {
+        //     notifyAlert("warning", "",/*[[#{common.client.option.validation.error.message}]]*/ "");
+        //     clientOption.focus();
+        //     return false;
+        // }
+        //
+        // var clientOptions = clientOption.val().trim();
+        //
+        // // parsing client options
+        // var optionLine = clientOptions.split(checkString);
+        //
+        // var tempOptionLine = '';
+        //
+        // for (var i = 0; i < optionLine.length; i++) {
+        //     if (optionLine[i] != "") {
+        //
+        //         tempOptionLine = optionLine[i].trim();
+        //         alert('tempOptionLine '+  tempOptionLine+' '+  tempOptionLine.indexOf(checkEmptyString));
+        //         if (tempOptionLine.indexOf(checkEmptyString) == -1) {
+        //             notifyAlert("warning", "", /*[[#{common.client.option.validation.error.message}]]*/ "");
+        //             clientOption.focus();
+        //             return false;
+        //         }
+        //
+        //         var option = tempOptionLine.split(checkEmptyString);
+        //         var optionLength = option.length;
+        //         var optionName = option[0];
+        //         var optionContent;
+        //
+        //         if (optionLength > 2) { // name, String
+        //             optionContent = "";
+        //             for (var j = 1; j < option.length; j++) {
+        //                 optionContent = optionContent + option[j].toString() + checkEmptyString;
+        //             }
+        //
+        //         } else {
+        //             var contents = option[1].split(',');
+        //             optionContent = [];
+        //             for (var k = 0; k < contents.length; k++) {
+        //                 optionContent[k] = contents[k];
+        //             }
+        //         }
+        //
+        //         var renew = paramSetting(optionName, optionContent);
+        //         $.extend(param, renew);
+        //
+        //     }
+        // }
+        //
+        // // ToBe
+        // if (param.authorized_grant_types === undefined || param.authorized_grant_types == '') {
+        //     notifyAlert("warning", "", "--authorized_grant_types 옵션은 필수 입니다.");
+        //     $("#option").focus();
+        //     return false;
+        // }
+        // 등록
+        //$.extend(param, {client_secret : $("#clientPwd").val()}); // client_credentials 등록시 client_secret 필수
+
+
+
+        var clientId = $("#clientId").val();
+        var clientPwd = $("#clientPwd").val();
+        var scope = $("#scope").val().trim();
+        var authorized_grant_types = $("#authorized_grant_types").val().trim();
+        var authorities = $("#authorities").val().trim();
+        var access_token_validity = $("#access_token_validity").val().trim();
+        var refresh_token_validity = $("#refresh_token_validity").val().trim();
+        var redirect_uri = $("#redirect_uri").val().trim();
+        var token_salt = $("#token_salt").val().trim();
+        var autoapprove = $("#autoapprove").val().trim();
+        var allowedproviders = $("#allowedproviders").val().trim();
+        // var signup_redirect_url = $("#signup_redirect_url").val();
+        // var clone = $("#clone").val();
+
+
+        if (authorized_grant_types === undefined || authorized_grant_types == '') {
+            notifyAlert("warning", "", "--client_id 옵션은 필수 입니다.");
+            $("#clientId").focus();
+            return false;
+        }
+
+        if (authorized_grant_types === undefined || authorized_grant_types == '') {
+            notifyAlert("warning", "", "--client_secret 옵션은 필수 입니다.");
+            $("#clientPwd").focus();
+            return false;
+        }
+
+        if (authorized_grant_types === undefined || authorized_grant_types == '') {
+            notifyAlert("warning", "", "--authorized_grant_types 옵션은 필수 입니다.");
+            $("#authorized_grant_types").focus();
+            return false;
+        }
+
+        var param = {
+            client_id: clientId,
+            name:clientId,
+            client_secret: clientPwd,
+            scope: scope.split(","),
+            authorized_grant_types: authorized_grant_types.split(","),
+            authorities: authorities.split(","),
+            access_token_validity: access_token_validity,
+            refresh_token_validity: refresh_token_validity,
+            redirect_uri: redirect_uri.split(","),
+            token_salt: token_salt,
+            autoapprove: autoapprove.split(","),
+            allowedproviders: allowedproviders.split(",")
+            // signup_redirect_url:signup_redirect_url.split(","),
+            // clone:clone
+        };
+
+
+        procCallAjax4(CLIENT_PROC_URL + "/" + "?key="+key, "POST", JSON.stringify(param), getClientList, $('#modalLoadingBar'));
+    }
+
+    //  [클라이언트] 생성
+    function createClient() {
+        if (!procCheckValidStringSpace()) {
+            return false;
+        }
+        ;
+
+        parsingClientOptions();
+    }
+
+    // [클라이언트] 삭제 (confirm layer)
+    function deleteClientModal() {
+
+        $("#popupTitle").html("클라이언트 삭제");
+        $("#popupMessage").html("" + $("#clientId").val() + " " + /*[[#{delete.confirm.message('클라이언트')}]]*/ "");
+        $("#popupButtonText").text("삭제");
+        $("#popupButtonText").addClass('pull-left');
+        $('#popupButtonText').attr('onclick', "deleteClient();");
+        $("#popupButtonText").show();
+
+        $('#clientConfirmModal').modal('toggle');
+    }
+
+    // 서비스 브로커 삭제 처리
+    function deleteClient() {
+        var clientId = $('#clientId').val();
+        procCallAjax4(CLIENT_PROC_URL + "/" + clientId + "/" + "?key="+key, "DELETE", null, getClientList, $('#modalLoadingBar'));
+    }
+
+    // 검색 조회
+    function procSearchByKeyword(event) {
+        //$('#buttonGetMoreList').hide();
+        CURRENT_OFFSET = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).PAGE_OFFSET}]]*/ "";
+        LOADED_LIST_COUNT = 0;
+
+        //$('#clientInfoTableTitle').hide();
+        //$('#clientInfoTable').empty();
+
+        var searchKeyword = document.getElementById('searchKeyword').value;
+        var searchResult = new Array();
+        var newIdx = 0;
+        for (var i = 0; i < CLIENT_LIST.length; i++) {
+
+            if (CLIENT_LIST[i].client_id.toLowerCase().includes(document.getElementById('searchKeyword').value.toLowerCase())) {
+                searchResult[newIdx++] = CLIENT_LIST[i];
+            }
+        }
+        printData(searchResult);
+
+    }
+
+    /*]]>*/
 </script>
 
 

@@ -308,7 +308,7 @@ SCRIPT BEGIN
             fileSize : reqFileSize
         };
 
-        console.log("file SIze ::: (before insert/update) ::" + reqFileSize);
+
 
 
         if (INSERT_FLAG != "" && INSERT_FLAG == CUD_U) { // update

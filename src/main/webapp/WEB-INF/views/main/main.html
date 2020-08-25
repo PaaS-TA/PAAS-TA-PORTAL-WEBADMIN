@@ -163,26 +163,46 @@
   var APP_LABEL   = "APP";
   var USER_LABEL  = "사용자";
 
+  $( "#apiUrls" ).change(function() {
+
+    //key 값 저장
+    key = $("#apiUrls").val();
+    $.cookie("api_key",key);
+
+    getTotalCountList(key);  // 조직 / 공간 / 앱 /사용자 수 조회
+    getChartList(key);       // 조직 / 공간 차트 조회
+  });
+
   // ON LOAD
   $(document.body).ready(function() {
+
     procInitPage();
   }); // End ready()
 
   // Init
   var procInitPage = function() {
-    getTotalCountList();  // 조직 / 공간 / 앱 /사용자 수 조회
-    getChartList();       // 조직 / 공간 차트 조회
+    //key 값 설정
+    if($.cookie("api_key") != null){
+      key = $.cookie("api_key");
+      $("#apiUrls").val(key);
+    }else{
+      key = $("#apiUrls").val();
+    }
+      getInitMarketPlaceURL();
+    getTotalCountList(key);  // 조직 / 공간 / 앱 /사용자 수 조회
+    getChartList(key);       // 조직 / 공간 차트 조회
     setBoardEvent();      // Board Event Listener Setting
   };
 
 
   // 조직.공간.앱.사용자 수 조회
-  var getTotalCountList = function() {
-    procCallAjax(TOTAL_COUNT_LIST_PROC_URL,"GET", {}, procCallbackGetTotalCountList,null);
+  var getTotalCountList = function(key) {
+    procCallAjax(TOTAL_COUNT_LIST_PROC_URL+"?key="+key,"GET", {}, procCallbackGetTotalCountList,null);
   };
 
   // 조직.공간.앱.사용자 수 조회 CALLBACK
   var procCallbackGetTotalCountList = function(data) {
+
     var resultList = data.list[0];
     var organizationCount = $('#organizationCount');
     var spaceCount = $('#spaceCount');
@@ -196,9 +216,9 @@
   };
 
 
-  var getChartList = function(){
+  var getChartList = function(key){
       // 조직 공간 앱 사용자 통계정보
-      procCallAjax(TOTAL_ORGANIZATION_LIST_PROC_URL,"GET", {}, procCallbackGetTotalOrganizationList,null);
+      procCallAjax(TOTAL_ORGANIZATION_LIST_PROC_URL+"?key="+key,"GET", {}, procCallbackGetTotalOrganizationList,null);
   };
 
   // '조직'차트 CALLBACK
@@ -437,7 +457,8 @@
 
   // 조직 Label Click Event
   var getTotalSpaceList = function(reqOrganizationId) {
-    procCallAjax(TOTAL_ORGANIZATION_LIST_PROC_URL+"/"+reqOrganizationId+"/spaces","GET", {}, procCallbackGetTotalSpaceList,null);
+    key = $("#apiUrls").val();
+    procCallAjax(TOTAL_ORGANIZATION_LIST_PROC_URL+"/"+reqOrganizationId+"/spaces"+"?key="+key,"GET", {}, procCallbackGetTotalSpaceList,null);
   };
 
   // '공간'차트 CALLBACK

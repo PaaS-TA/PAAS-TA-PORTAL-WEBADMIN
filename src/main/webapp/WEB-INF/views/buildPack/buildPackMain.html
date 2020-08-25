@@ -77,8 +77,29 @@
 
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
   /*<![CDATA[*/
+  $( "#apiUrls" ).change(function() {
+
+    //key 값 저장
+    key = $("#apiUrls").val();
+    $.cookie("api_key",key);
+
+    //getBuildPackList
+    procCallAjax("/v2/buildpacks"+"?key="+key, "GET", null, procCallbackGetBuildPackList, $('#loadingBar'));
+
+    //reset
+    $("#buildPackList").html("");
+  });
 
   $(document).ready(function(){
+
+    //key 값 설정
+    if($.cookie("api_key") != null){
+      key = $.cookie("api_key");
+      $("#apiUrls").val(key);
+    }else{
+      key = $("#apiUrls").val();
+    }
+    getInitMarketPlaceURL();
     getBuildPackList();
 
     //순서 Event
@@ -88,19 +109,19 @@
 
     //사용유무,Lock유무 Event
     $(document).on('change','input[name=isEnabled],input[name=isLocked]',function(){
-      console.log($(this).closest('tr').find('input[name=isEnabled]').val());
-      console.log($(this).closest('tr').find('input[name=isEnabled]').val());
+
       updateBuildPack( $(this).closest('tr'), false );
     });
 
   });
 
   function getBuildPackList() {
-    procCallAjax("/v2/buildpacks", "GET", null, procCallbackGetBuildPackList, $('#loadingBar'));
+    key = $("#apiUrls").val();
+    procCallAjax("/v2/buildpacks"+"?key="+key, "GET", null, procCallbackGetBuildPackList, $('#loadingBar'));
   };
 
   var procCallbackGetBuildPackList = function(datalist){
-     console.log(datalist);
+
     if(datalist.resources){ //
 
       var dataLength = datalist.resources.length;
@@ -155,8 +176,7 @@
       lock : lock
     }
 
-    console.log(param);
-    procCallAjax("/v2/buildpacks/"+guid, "PUT", JSON.stringify(param), procCallbackUpdateBuildPack, $('#loadingBar'));
+    procCallAjax("/v2/buildpacks/"+guid+"?key="+key, "PUT", JSON.stringify(param), procCallbackUpdateBuildPack, $('#loadingBar'));
   }
 
   var procCallbackUpdateBuildPack = function(data){

@@ -143,6 +143,9 @@
     <footer></footer>
 </div>
 <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+
+
+
     /*<![CDATA[*/
     var V2_URL = "/v2";
     var REST_URL = V2_URL + "/usermgnts";
@@ -159,31 +162,36 @@
 
     // GET LIST
     var getUserInfoList = function (reqPageNo) {
+        key = $("#apiUrls").val();
+
         $('#buttonGetMoreList').hide();
         var filter = $("#access").val();
         var param = {
             searchKeyword: document.getElementById('searchKeyword').value.toLowerCase(),
-            pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "",
+            key: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "",
             pageNo: reqPageNo
         };
 
-        procCallAjax(REST_URL+"/" +filter +"/user", "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL+"/" +filter +"/user"+"?key="+key, "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
 
     };
 
     var procButtonClick = function () {
+        key = $("#apiUrls").val();
         BOOLEN_SEARCH = true;
-        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "");
+        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "",key);
     }
 
     var procCheckSearchFormKeyEvent = function (e) {
+        key = $("#apiUrls").val();
         if (e.keyCode == 13 && e.srcElement.type != 'textarea') {
             BOOLEN_SEARCH = true;
-            getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "");
+            getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ "",key);
         }
     };
 
     var selectChange = function(){
+        key = $("#apiUrls").val();
         $('#buttonGetMoreList').hide();
         var filter = $("#access").val();
         var param = {
@@ -191,7 +199,7 @@
             pageSize: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_SIZE}]]*/ "",
             pageNo: /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO }]]*/ ""
         };
-        procCallAjax(REST_URL+"/"+filter+"/user" , "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL+"/"+filter+"/user"+"?key="+key , "GET", param, procCallbackGetUserInfoList, $('#serviceModalLoadingBar'));
     }
 
 
@@ -221,7 +229,7 @@
             objMessageArea.show();
 
         } else {
-            console.log(data.list);
+
             var resultList = data.list;
             var totalListCount = resultList[0].totalCount;
             var boldClass = '';
@@ -294,7 +302,8 @@
 
     // GET MORE LIST
     var procGetMoreList = function () {
-        getUserInfoList(parseInt(document.getElementById('currentPageNo').value) + 1);
+        key = $("#apiUrls").val();
+        getUserInfoList(parseInt(document.getElementById('currentPageNo').value) + 1, key);
     };
 
 
@@ -360,7 +369,7 @@
             procAlert("danger", /*[[#{common.email.validation.error.message}]]*/ "");
         } else {
             var param = {userid: reqUserId};
-            procCallAjax(REST_URL + "/password/email", "POST", JSON.stringify(param), procCallbackResetPassword, $('#serviceModalLoadingBar'));
+            procCallAjax(REST_URL + "/password/email"+"?key="+key, "POST", JSON.stringify(param), procCallbackResetPassword, $('#serviceModalLoadingBar'));
         }
 
 
@@ -378,7 +387,7 @@
     // UPDATE OPERATING AUTHORITY
     var updateOperatingAuthority = function (reqUserId) {
         var param = {userGuid: reqUserId};
-        procCallAjax(REST_URL + "/" + reqUserId + "/authority", 'PUT', JSON.stringify(param), procCallbackUpdateOperatingAuthority, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL + "/" + reqUserId + "/authority"+"?key="+key, 'PUT', JSON.stringify(param), procCallbackUpdateOperatingAuthority, $('#serviceModalLoadingBar'));
     };
 
 
@@ -394,19 +403,19 @@
     // DELETE USER ACCOUNT
     var deleteUserAccount = function (reqUserGuid) {
         var param = {guid: reqUserGuid};
-        procCallAjax(REST_URL + "/" + reqUserGuid, 'DELETE', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL + "/" + reqUserGuid +"?key="+key, 'DELETE', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
     };
 
     // UPDATE USER ACTIVE
     var updateUserActive = function(reqUserId){
         var param = {userGuid: reqUserId};
-        procCallAjax(REST_URL + "/" + reqUserId+"/active", 'PUT', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
+        procCallAjax(REST_URL + "/" + reqUserId+"/active" +"?key="+key, 'PUT', JSON.stringify(param), procCallbackDeleteUserAccount, $('#serviceModalLoadingBar'));
     };
 
     // DELETE USER ACCOUNT CALLBACK
     var procCallbackDeleteUserAccount = function (data) {
         if (RESULT_STATUS_FAIL == data.RESULT) {
-            console.log(data);
+
         }
         procInitPage();
         procAlert("success", /*[[#{common.info.result.success}]]*/ "");
@@ -428,8 +437,20 @@
     // INIT PAGE
     var procInitPage = function () {
         procAlert("info", WELCOME_MESSAGE);
+        key = $("#apiUrls").val();
+
+        //key 값 설정
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+        // alert("INIT PAGE_index_"+key);
+
+        getInitMarketPlaceURL();
         $('#userInfoViewArea').hide();
-        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "");
+        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "",key);
     };
 
     function btnAddUser() {
@@ -443,6 +464,8 @@
     };
 
     function addUserInsert() {
+        key = $("#apiUrls").val();
+
         if(usersObj[$("#addUserId").val()] != undefined) {
             notifyAlert("warning", "", $("#addUserId").val()+" 은(는) 이미 사용중인 ID 입니다.");
             return false;
@@ -462,7 +485,7 @@
             adminYn: "N"
         };
 
-        procCallAjax(REST_URL + "/user", 'POST', JSON.stringify(param), procCallbackAddUserInsert, $('#layerModalLoadingBar'));
+        procCallAjax(REST_URL + "/user"+"?key="+key, 'POST', JSON.stringify(param), procCallbackAddUserInsert, $('#layerModalLoadingBar'));
     };
 
     var procCallbackAddUserInsert = function(data) {
@@ -471,11 +494,19 @@
         }
     };
 
-
     // ON LOAD
     $(document.body).ready(function () {
+
         procInitPage();
     });
+
+
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        $.cookie("api_key",key);
+        getUserInfoList(/*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USER_MANAGEMENT_PAGE_NO}]]*/ "",key);
+    });
+
     /*]]>*/
 </script>
 </body>

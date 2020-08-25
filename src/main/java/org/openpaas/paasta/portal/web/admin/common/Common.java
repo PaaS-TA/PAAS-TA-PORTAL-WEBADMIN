@@ -9,10 +9,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Common Class
@@ -63,12 +64,10 @@ public class Common {
     public String getToken() {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if ( "".equals( auth.getCredentials() ) )
-            return ( (String) auth.getPrincipal().toString() );
-        
+        if ("".equals(auth.getCredentials())) return ((String) auth.getPrincipal().toString());
+
         final Object authPrincipal = auth.getPrincipal();
-        if ( authPrincipal instanceof String )
-            return ( (String) authPrincipal );
+        if (authPrincipal instanceof String) return ((String) authPrincipal);
 
         User user = (User) authPrincipal;
 
@@ -104,4 +103,91 @@ public class Common {
 
         return token;
     }
+
+
+    public User updateToken(User user) {
+        try {
+            Map<String, Object> resBody = new HashMap();
+            resBody.put("id", user.getUsername());
+            resBody.put("password", user.getPassword());
+
+            Map result;
+
+            result = commonService.procCfApiRestTemplate(user.getApiUri(), "/login", user.getAuthorization(), HttpMethod.POST, resBody, null);
+
+            user.setToken((String) result.get("token"));
+            user.setExpireDate((Long) result.get("expireDate"));
+
+
+        } catch (Exception e) {
+            throw new BadCredentialsException(e.getMessage());
+        }
+        return user;
+    }
+
+
+    /*
+     * 1. Token이 만료되면, 만료된 토큰을 업데이트한다.
+     * 2. 업데이트 한 토큰을 다시 세션에 저장한다.
+     * 3. Token 만료되지 않은 경우, 업데이트는 하지 않는다.
+     */
+
+    public Map getServerInfo(int key) {
+        Map map = new HashMap();
+        try {
+            String password = "";
+            int tokenExpired = 0;
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            final Object authPrincipal = auth.getPrincipal();
+            UserList userList = (UserList) authPrincipal;
+            List<User> users = userList.getUsers();
+            List<User> refreshUsers = new ArrayList<>();
+            for (Object obj : users) {
+                User user = (User) obj;
+                if (user.getExpireDate() <= System.currentTimeMillis()) {
+                    password = user.getPassword();
+                    user = updateToken(user);
+                    tokenExpired++;
+                }
+
+                if (user.getKey() == key) {
+                    map.put("token", user.getToken());
+                    map.put("apiuri", user.getApiUri());
+                    map.put("uaauri", user.getUaaUri());
+                    map.put("authorization", user.getAuthorization());
+                }
+                refreshUsers.add(user);
+            }
+
+            if (tokenExpired > 0) {
+                Collection<? extends GrantedAuthority> authorities = null;
+                List role = new ArrayList();
+                role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                authorities = role;
+                userList.setUsers(refreshUsers);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userList, password, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+
+    public List getServerInfos() {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            final Object authPrincipal = auth.getPrincipal();
+            UserList userList = (UserList) authPrincipal;
+            List users = userList.getUsers();
+            return users;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
+

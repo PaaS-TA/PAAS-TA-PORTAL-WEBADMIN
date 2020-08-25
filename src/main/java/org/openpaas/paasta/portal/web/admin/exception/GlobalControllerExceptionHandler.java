@@ -28,7 +28,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 /**
  * org.openpaas.paasta.portal.web.admin.exception
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.07.07
  */

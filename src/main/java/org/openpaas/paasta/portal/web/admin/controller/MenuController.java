@@ -1,21 +1,22 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.Menu;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * 메뉴 목록 조회, 등록, 삭제 등 메뉴 관리의 API 를 호출 하는 컨트롤러이다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.09.29 최초작성
  */
@@ -113,5 +114,11 @@ public class MenuController extends Common {
     @ResponseBody
     public Map<String, Object> deleteMenu(@RequestBody Menu param) {
         return commonService.procRestTemplate("/menu/deleteMenu", HttpMethod.POST, param, null);
+    }
+
+
+    @ModelAttribute("configs")
+    public List<User> configs(){
+        return getServerInfos();
     }
 }

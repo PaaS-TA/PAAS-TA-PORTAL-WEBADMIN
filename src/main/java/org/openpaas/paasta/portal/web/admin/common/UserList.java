@@ -32,35 +32,27 @@ import java.util.*;
  * /**
  * Created by mg on 2016-05-13.
  */
-public class User implements UserDetails, CredentialsContainer {
+public class UserList implements UserDetails, CredentialsContainer {
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
-    //~ Instance fields ================================================================================================
-    private int key;
-    private String password;
-    private String token;
     private String name;
-    private String infra_name;
-    private String apiUri;
-    private String uaaUri;
-    private String authorization;
-
-    private Long expireDate;
     private String imgPath;
     private final String username;
+    private String password;
     private final Set<GrantedAuthority> authorities;
     private final boolean accountNonExpired;
     private final boolean accountNonLocked;
     private final boolean credentialsNonExpired;
     private final boolean enabled;
+    private List users;
 
     //~ Constructors ===================================================================================================
 
     /**
      * Calls the more complex constructor with all boolean arguments set to {@code true}.
      */
-    public User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserList(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this(username, password, true, true, true, true, authorities);
     }
 
@@ -87,8 +79,8 @@ public class User implements UserDetails, CredentialsContainer {
      *         either as a parameter or as an element in the
      *         <code>GrantedAuthority</code> collection
      */
-    public User(String username, String password, boolean enabled, boolean accountNonExpired,
-                boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public UserList(String username, String password, boolean enabled, boolean accountNonExpired,
+                    boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 
         if (((username == null) || "".equals(username)) || (password == null)) {
             throw new IllegalArgumentException("Cannot pass null or empty values to constructor");
@@ -105,14 +97,6 @@ public class User implements UserDetails, CredentialsContainer {
 
     //~ Methods ========================================================================================================
 
-
-    public int getKey() {
-        return key;
-    }
-
-    public void setKey(int key) {
-        this.key = key;
-    }
 
     public Collection<GrantedAuthority> getAuthorities() {
         return authorities;
@@ -160,13 +144,6 @@ public class User implements UserDetails, CredentialsContainer {
         return sortedAuthorities;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public String getName() {
         return name;
@@ -174,14 +151,6 @@ public class User implements UserDetails, CredentialsContainer {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getExpireDate() {
-        return expireDate;
-    }
-
-    public void setExpireDate(Long expireDate) {
-        this.expireDate = expireDate;
     }
 
     public String getImgPath() {
@@ -192,36 +161,13 @@ public class User implements UserDetails, CredentialsContainer {
         this.imgPath = imgPath;
     }
 
-    public String getInfra_name() {
-        return infra_name;
+
+    public List getUsers() {
+        return users;
     }
 
-    public void setInfra_name(String infra_name) {
-        this.infra_name = infra_name;
-    }
-
-    public String getApiUri() {
-        return apiUri;
-    }
-
-    public void setApiUri(String apiUri) {
-        this.apiUri = apiUri;
-    }
-
-    public String getUaaUri() {
-        return uaaUri;
-    }
-
-    public void setUaaUri(String uaaUri) {
-        this.uaaUri = uaaUri;
-    }
-
-    public String getAuthorization() {
-        return authorization;
-    }
-
-    public void setAuthorization(String authorization) {
-        this.authorization = authorization;
+    public void setUsers(List users) {
+        this.users = users;
     }
 
     private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {
@@ -251,8 +197,8 @@ public class User implements UserDetails, CredentialsContainer {
      */
     @Override
     public boolean equals(Object rhs) {
-        if (rhs instanceof User) {
-            return username.equals(((User) rhs).username);
+        if (rhs instanceof UserList) {
+            return username.equals(((UserList) rhs).username);
         }
         return false;
     }

@@ -5,107 +5,132 @@
 <head></head>
 <body>
 <div>
-  <header></header>
-  <!-- Left side column. contains the logo and sidebar -->
-  <!-- -->
-  <aside layout:fragment="aside" class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel" style="min-height: 80px;">
-        <div class="pull-left image">
-          <img src="./resources/images/userpic.png"
-               th:src="@{/resources/images/worker-512.png}" class="img-circle" style="background: white" alt="User Image"/>
-        </div>
-        <div class="pull-left info">
-          <p><span th:text="${#httpServletRequest.getUserPrincipal().getName()}"></span> 님</p>
+    <header></header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <!-- -->
+    <aside layout:fragment="aside" class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel" style="min-height: 80px;">
+                <div class="pull-left image">
+                    <img src="./resources/images/userpic.png"
+                         th:src="@{/resources/images/worker-512.png}" class="img-circle" style="background: white"
+                         alt="User Image"/>
+                </div>
+                <div class="pull-left info">
+                    <p><span th:text="${#httpServletRequest.getUserPrincipal().getName()}"></span> 님</p>
 
-          <a href="#" onclick="javascript:document.getElementById('logout').submit();">
-            <i class="fa fa-sign-out"></i> LogOut
-          </a>
-          <form id="logout" action="/logout" method="post">
-            <input type="hidden" name="" value=""/>
-          </form>
-          <!--
-          <a href="#">
-              <i class="fa fa-circle text-success">
-                 Online
-              </i>
-          </a>
-          -->
-        </div>
-      </div>
+                    <a href="#" onclick="javascript:document.getElementById('logout').submit();">
+                        <i class="fa fa-sign-out"></i> LogOut
+                    </a>
+                    <form id="logout" action="/logout" method="post">
+                        <input type="hidden" name="" value=""/>
+                    </form>
+                    <!--
+                    <a href="#">
+                        <i class="fa fa-circle text-success">
+                           Online
+                        </i>
+                    </a>
+                    -->
+                </div>
+            </div>
 
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu tree" data-widget="tree">
-        <!-- <li> 1depth 만 사용할 경우 -->
-        <!--<li class="header">운영관리</li>
-        <li>
-          <a href="#">
-            <i class="fa fa-circle-o text-red"></i> <span>설정 정보</span>
-          </a>
-        </li>
-        -->
-        <li>
-          <a href="/dashboard">
-            <i class="fa fa-dashboard"></i> <span>대시보드</span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-laptop"></i> <span>운영관리</span>
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu tree" data-widget="tree">
+                <!-- <li> 1depth 만 사용할 경우 -->
+                <!--<li class="header">운영관리</li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-circle-o text-red"></i> <span>설정 정보</span>
+                  </a>
+                </li>
+                -->
+                <li>
+                    <a href="/dashboard">
+                        <i class="fa fa-dashboard"></i> <span>대시보드</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i> <span>운영관리</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="/orgspacelist"><i class="fa fa-circle-o"></i> 조직 및 공간 조회</a></li>
-            <li><a href="/clientMain"><i class="fa fa-circle-o"></i> 클라이언트</a></li>
-            <li><a href="/catalogs"><i class="fa fa-circle-o"></i> 카탈로그</a></li>
-            <li><a href="/usermgnts"><i class="fa fa-circle-o"></i> 사용자 관리</a></li>
-            <li><a href="/authority"><i class="fa fa-circle-o"></i> 권한 관리</a></li>
-            <li><a href="/code"><i class="fa fa-circle-o"></i> 코드 관리</a></li>
-            <li><a href="/configInfos"><i class="fa fa-circle-o"></i> 설정 정보</a></li>
-            <li><a href="/quotadefinitions"><i class="fa fa-circle-o"></i> 할당량 관리</a></li>
-            <li><a href="/isolationSegments"><i class="fa fa-circle-o"></i> 분할 관리</a></li>
-          </ul>
-        </li>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/orgspacelist"><i class="fa fa-circle-o"></i> 조직 및 공간 조회</a></li>
+                        <li><a href="/clientMain"><i class="fa fa-circle-o"></i> 클라이언트</a></li>
+                        <li><a href="/catalogs"><i class="fa fa-circle-o"></i> 카탈로그</a></li>
+                        <li><a href="/usermgnts"><i class="fa fa-circle-o"></i> 사용자 관리</a></li>
+                        <li><a href="/authority"><i class="fa fa-circle-o"></i> 권한 관리</a></li>
+                        <li><a href="/code"><i class="fa fa-circle-o"></i> 코드 관리</a></li>
+                        <li><a href="/quotadefinitions"><i class="fa fa-circle-o"></i> 할당량 관리</a></li>
+                        <li><a href="/isolationSegments"><i class="fa fa-circle-o"></i> 분할 관리</a></li>
+                    </ul>
+                </li>
 
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-edit"></i>
-            <span>서비스 관리</span>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-edit"></i>
+                        <span>서비스 관리</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="/buildpacks"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
-            <li><a href="/servicebrokers"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
-            <li><a href="/serviceplans"><i class="fa fa-circle-o"></i> 서비스 제어</a></li>
-          </ul>
-        </li>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/buildpacks"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
+                        <li><a href="/servicebrokers"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
+                        <li><a href="/serviceplans"><i class="fa fa-circle-o"></i> 서비스 제어</a></li>
+                    </ul>
+                </li>
 
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-lock"></i>
-            <span>보안</span>
-            <span class="pull-right-container">
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-lock"></i>
+                        <span>보안</span>
+                        <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="/securitygroups"><i class="fa fa-circle-o"></i> 시큐리티 그룹</a></li>
-          </ul>
-        </li>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/securitygroups"><i class="fa fa-circle-o"></i> 시큐리티 그룹</a></li>
+                    </ul>
+                </li>
 
-      </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
-  <div class="content-wrapper"></div>
-  <!-- -->
-  <footer></footer>
+                <li class="treeview" id="market_head" >
+                    <a href="#">
+                        <i class="fa fa-cart-arrow-down"></i>
+                        <span>마켓플레이스</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" id = "market_place">
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-gears"></i>
+                        <span>설정</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/configInfos"><i class="fa fa-circle-o"></i>설정 정보</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <div class="content-wrapper"></div>
+    <!-- -->
+    <footer></footer>
 </div>
 </body>
 </html>

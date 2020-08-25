@@ -1,20 +1,22 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 도메인 컨트롤러 - 도메인 정보를 조회, 수정, 삭제한다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.09.19 최초작성
  */
@@ -35,10 +37,13 @@ public class DomainController extends Common {
      */
     @GetMapping(V2_URL+"/domains/{status}")
     @ResponseBody
-    public Map<String, Object> getDomains(@PathVariable String status) {
+    public Map<String, Object> getDomains(@PathVariable String status, HttpServletRequest request) {
+        String key = request.getParameter("key");
+        LOGGER.info(">>index : key : getDomains----> "  +key);
         LOGGER.info("Start getDomains" + status);
-        return domainService.getDomains("/domains-admin/" + status, HttpMethod.GET, null, getToken());
+        return domainService.getDomains(Integer.parseInt(key),"/domains-admin/" + status, HttpMethod.GET, null);
     }
+
 
     /**
      * 도메인 추가
@@ -72,6 +77,12 @@ public class DomainController extends Common {
     public Map<String, Object> deleteDomain(@RequestBody Map body) {
         LOGGER.info("Start deleteDomain");
         return domainService.deleteDomain("/domains-admin", HttpMethod.DELETE, body, getToken());
+    }
+
+
+    @ModelAttribute("configs")
+    public List<User> configs(){
+        return getServerInfos();
     }
 }
 

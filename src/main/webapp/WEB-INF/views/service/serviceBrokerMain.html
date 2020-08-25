@@ -102,6 +102,13 @@
                                                 <input type="text" class="form-control toCheckString" id="url" name="url" placeholder="ex) http://10.30.40.81:4567"/>
                                             </div>
                                         </div>
+
+                                        <div class="form-group required">
+                                            <label for="purge" class="col-sm-3 control-label" id="forcedeletion">강제 삭제</label>
+                                            <div class="col-sm-9">
+                                                <input type="checkbox" id="purge"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -153,12 +160,32 @@
     /*<![CDATA[*/
     var serviceBrokerGuid = /*[[${guid}]]*/ 'empty';
 
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        $.cookie("api_key",key);
+
+        //getServiceBrokerList
+        procCallAjax("/v2/servicebrokers"+"?key="+key, "GET", null, procCallbackGetServiceBrokerList, $('#loadingBar') );
+
+        //reset
+        $("#serviceBrokerList *").remove();
+    });
+
     var init = function(){
+        //key 값 설정
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+        getInitMarketPlaceURL();
         getServiceBrokerList();
         $('#serviceBrokerFormModal').modal('hide');
     }
 
     $(document).ready(function () {
+
 
         init();
 
@@ -167,6 +194,8 @@
             $('#titleDetail').hide();
             $('#deleteBtn').hide();
             $('#saveBtn').hide();
+            $('#forcedeletion').hide();
+            $('#purge').hide();
 
             $('#titleReg').show();
             $('#regBtn').show();
@@ -177,6 +206,7 @@
             $("#password").val("");
             $("#url").val("");
             $("#guid").val("");
+
         });
 
         $('#serviceBrokerList').click(function(){
@@ -184,15 +214,19 @@
             $('#titleDetail').show();
             $('#deleteBtn').show();
             $('#saveBtn').show();
+            $('#forcedeletion').show();
+            $('#purge').show();
 
             $('#titleReg').hide();
             $('#regBtn').hide();
             //$('#closeBtn').hide();
         });
+
     });
 
     function getServiceBrokerList() {
-        procCallAjax("/v2/servicebrokers", "GET", null, procCallbackGetServiceBrokerList, $('#loadingBar') );
+        key = $("#apiUrls").val();
+        procCallAjax("/v2/servicebrokers"+"?key="+key, "GET", null, procCallbackGetServiceBrokerList, $('#loadingBar') );
     };
 
     var procCallbackGetServiceBrokerList = function(data){
@@ -207,7 +241,7 @@
         objTable.html('');
 
         $.each(dataList, function (id, data) {
-            console.log(data);
+
             objTable.append(" <tr align='center' style='cursor:pointer;'" +
                     " onclick='javascript:getServiceBroker(\""+data.metadata.guid+"\");'>" +
                     "<td>" + data.entity.name + "</td>" +
@@ -220,7 +254,7 @@
     function getServiceBroker(guid) {
         $('#serviceBrokerForm')[0].reset();
         $('#serviceBrokerFormModal').modal('toggle');
-        procCallAjax("/v2/servicebrokers/"+guid, "GET", null, procCallbackGetServiceBroker, $('#modalLoadingBar'));
+        procCallAjax("/v2/servicebrokers/"+guid+"?key="+key, "GET", null, procCallbackGetServiceBroker, $('#modalLoadingBar'));
     }
 
     var procCallbackGetServiceBroker = function(data){
@@ -245,8 +279,8 @@
             password: $("#password").val(),
             url: $("#url").val()
         }
+        procCallAjax("/v2/servicebrokers"+"?key="+key, "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
 
-        procCallAjax("/v2/servicebrokers", "POST", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
 
     // 서비스브로커 수정
@@ -265,7 +299,7 @@
             password: $("#password").val(),
             url: $("#url").val()
         }
-        procCallAjax("/v2/servicebrokers/"+guid, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
+        procCallAjax("/v2/servicebrokers/"+guid+"?key="+key, "PUT", JSON.stringify(param), init, $('#modalLoadingBar'));
     }
 
     // 서비스 브로커 삭제 (confirm layer)
@@ -284,10 +318,9 @@
     // 서비스 브로커 삭제 처리
     function deleteServiceBroker() {
         var guid = $('#guid').val();
-        procCallAjax("/v2/servicebrokers/"+guid, "DELETE", null, init, $('#modalLoadingBar'));
+        var purge = $('#purge').is(":checked");
+        procCallAjax("/v2/servicebrokers/"+guid+"?purge="+purge+"&key="+key, "DELETE", null, init, $('#modalLoadingBar'));
     }
-
-
 
     /*]]>*/
 </script>

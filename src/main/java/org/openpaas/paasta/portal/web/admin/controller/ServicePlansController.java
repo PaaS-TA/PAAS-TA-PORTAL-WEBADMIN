@@ -2,8 +2,11 @@ package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
+import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.ServiceBroker;
 import org.openpaas.paasta.portal.web.admin.service.CommonService;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -41,8 +46,9 @@ public class ServicePlansController extends Common {
      * @return ModelAndView model
      */
     @GetMapping(value = {Constants.V2_URL + "/catalogs/serviceplan-admin"})
-    public Map<String, Object> getCatalogService() throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/catalogs/serviceplan-admin", HttpMethod.GET, null, this.getToken());
+    public Map<String, Object> getCatalogService(HttpServletRequest request) throws Exception {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/catalogs/serviceplan-admin", HttpMethod.GET, null);
     }
 
     /**
@@ -52,8 +58,9 @@ public class ServicePlansController extends Common {
      */
     @GetMapping(value = {Constants.V2_URL + "/serviceplans"})
     @ResponseBody
-    public Map<String, Object> getServicePlans() {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans", HttpMethod.GET, null, this.getToken());
+    public Map<String, Object> getServicePlans(HttpServletRequest request) {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/serviceplans", HttpMethod.GET, null);
     }
 
     /**
@@ -64,8 +71,9 @@ public class ServicePlansController extends Common {
      */
     @GetMapping(value = {Constants.V2_URL + "/serviceplans/{guid}"})
     @ResponseBody
-    public Map<String, Object> getServicePlan(@ModelAttribute ServiceBroker serviceBroker, @PathVariable String guid) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans/" + guid, HttpMethod.GET, serviceBroker, this.getToken());
+    public Map<String, Object> getServicePlan(HttpServletRequest request, @ModelAttribute ServiceBroker serviceBroker, @PathVariable String guid) {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/serviceplans/" + guid, HttpMethod.GET, serviceBroker);
     }
 
     /**
@@ -76,9 +84,10 @@ public class ServicePlansController extends Common {
      */
     @PutMapping(value = {Constants.V2_URL + "/serviceplans/{guid}"})
     @ResponseBody
-    public Map<String, Object> updateServicePlan(@RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
+    public Map<String, Object> updateServicePlan(HttpServletRequest request, @RequestBody ServiceBroker serviceBroker, @PathVariable String guid) {
+        String key = request.getParameter("key");
         LOGGER.info("updateServicePlan Start : " + serviceBroker.getGuid() + "   " + serviceBroker.getPubliclyVisible());
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans/" + guid, HttpMethod.PUT, serviceBroker, this.getToken());
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/serviceplans/" + guid, HttpMethod.PUT, serviceBroker);
     }
 
     /**
@@ -89,8 +98,9 @@ public class ServicePlansController extends Common {
      */
     @GetMapping(value = {Constants.V2_URL + "/serviceplans/{serviceplanId}/visibilites"})
     @ResponseBody
-    public Map<String, Object> getServicePlanVisibilites(@PathVariable String serviceplanId) {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplans/" + serviceplanId + "/visibilites", HttpMethod.GET, null, this.getToken());
+    public Map<String, Object> getServicePlanVisibilites(HttpServletRequest request, @PathVariable String serviceplanId) {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/serviceplans/" + serviceplanId + "/visibilites", HttpMethod.GET, null);
     }
 
 
@@ -102,8 +112,9 @@ public class ServicePlansController extends Common {
      * @return ModelAndView model
      */
     @PutMapping(value = {Constants.V2_URL + "/serviceplanvisibilities/{guid}"})
-    public Map<String, Object> updateServicePlanVisibility(@RequestBody Map param, @PathVariable String guid) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplanvisibilities/" + guid, HttpMethod.PUT, param, this.getToken());
+    public Map<String, Object> updateServicePlanVisibility(HttpServletRequest request, @RequestBody Map param, @PathVariable String guid) throws Exception {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/serviceplanvisibilities/" + guid, HttpMethod.PUT, param);
     }
 
     /**
@@ -114,8 +125,9 @@ public class ServicePlansController extends Common {
      * @throws Exception the exception
      */
     @DeleteMapping(value = {Constants.V2_URL + "/serviceplanvisibilities/{guid}"})
-    public Map<String, Object> deleteServicePlanVisibility( @PathVariable String guid) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplanvisibilities/" + guid, HttpMethod.DELETE, null, this.getToken());
+    public Map<String, Object> deleteServicePlanVisibility(HttpServletRequest request, @PathVariable String guid) throws Exception {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/serviceplanvisibilities/" + guid, HttpMethod.DELETE, null);
     }
 
 
@@ -128,7 +140,14 @@ public class ServicePlansController extends Common {
      * @throws Exception the exception
      */
     @DeleteMapping(value = {Constants.V2_URL + "/serviceplanvisibilities/all/{guid}"})
-    public Map<String, Object> deleteAllServicePlanVisibility( @PathVariable String guid) throws Exception {
-        return commonService.procCfApiRestTemplate(Constants.V2_URL + "/serviceplanvisibilities/all/" + guid, HttpMethod.DELETE, null, this.getToken());
+    public Map<String, Object> deleteAllServicePlanVisibility(HttpServletRequest request, @PathVariable String guid) throws Exception {
+        String key = request.getParameter("key");
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key), Constants.V3_URL + "/serviceplanvisibilities/all/" + guid, HttpMethod.DELETE, null);
+    }
+
+
+    @ModelAttribute("configs")
+    public List<User> configs(){
+        return getServerInfos();
     }
 }

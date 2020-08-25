@@ -95,15 +95,35 @@
     var spaceQuotaText;
 
     $(document).ready(function(){
-        procCallAjax2(GET_ORGS_FOR_ADMIN_URL,"GET",null ,procCallbackGetOrgs);
-        getDomains();
-
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+        getInitMarketPlaceURL();
+        procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"?key="+key,"GET",null ,procCallbackGetOrgs);
+        getDomains(key);
     });
+
+    $( "#apiUrls" ).change(function() {
+        key = $("#apiUrls").val();
+        $.cookie("api_key",key);
+
+        $("#orgTable *").remove();
+        $("#spaceTable *").remove();
+
+        procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"?key="+key,"GET",null ,procCallbackGetOrgs);
+        getDomains(key);
+    });
+
+
     /*<![CDATA[*/
-    function getDomains() {
+    function getDomains(key) {
+
 
         $.ajax({
-            url: V2_URL+ "/domains/shared",
+            url: V2_URL+ "/domains/shared/"+"?key="+key,
             method: "GET",
             dataType: 'json',
             contentType: "application/json",
@@ -168,7 +188,7 @@
         $("#spaceTable").hide();
         $("#noSpaceMessage").hide();
         currentOrg = orgName;
-        procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"/"+orgid+"/spaces","GET" ,null ,procCallbackGetSpace)
+        procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"/"+orgid+"/spaces"+"?key="+key,"GET" ,null ,procCallbackGetSpace)
         contentSelectControl("group", orgNum);
     }
 
@@ -209,7 +229,7 @@
         OrgId = orgid;
         //procCallAjax2(V2_URL + "/orgs/"+quotaid+"/quota","GET", null, procCallbackGetOrgQuota);
         //procCallAjax2(V2_URL + "/orgs/"+orgid+"/quota","GET", null, procCallbackGetOrgQuota);
-        procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary", "GET",null, procCallbackGetOrgSummary);
+        procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary"+"?key="+key, "GET",null, procCallbackGetOrgSummary);
     };
 
     // GET ORG SUMMARY CALLBACK
@@ -223,7 +243,7 @@
         } else {
             paidServices = "paid services disallowed";
         }
-        procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary", "GET",null, procCallbackGetOrgSummary);
+        procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary"+"?key="+key, "GET",null, procCallbackGetOrgSummary);
     }
 
     // GET ORG SUMMARY CALLBACK
@@ -251,7 +271,7 @@
             // To-Be : Quota 정보 관리 추가
         }
 
-        procCallAjax2(V2_URL + "/spaces/"+spaceId+"/summary","GET", null, procCallbackGetSpaceSummary);
+        procCallAjax2(V2_URL + "/spaces/"+spaceId+"/summary"+"?key="+key,"GET", null, procCallbackGetSpaceSummary);
     };
 
 

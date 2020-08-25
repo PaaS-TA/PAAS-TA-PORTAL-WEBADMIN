@@ -3,10 +3,14 @@ package org.openpaas.paasta.portal.web.admin.controller;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
+import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.model.Catalog;
+import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.openpaas.paasta.portal.web.admin.util.MultipartFileResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +25,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * 서비스 카탈로그, 개발 환경 카탈로그, 앱 템플릿 카탈로그 정보 조회 및 관리 등의 API 를 호출 하는 컨트롤러이다.
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.07.04 최초작성
  */
@@ -171,12 +175,13 @@ class CatalogController extends Common {
      * 이미지 파일을 가져온다.
      *
      * @param thumbnailFilename
-     * @return ResponseEntity<byte   [   ]> (relays response from storage api)
+     * @return ResponseEntity<byte [ ]> (relays response from storage api)
      */
     @GetMapping(V2_URL + "/thumbnail/{filename}")
     @ResponseBody
-    public ResponseEntity<byte[]> getThumbnail(@PathVariable("filename") String thumbnailFilename) {
-        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(thumbnailFilename, HttpMethod.GET, null, getToken());
+    public ResponseEntity<byte[]> getThumbnail(HttpServletRequest request, @PathVariable("filename") String thumbnailFilename) {
+        String key = request.getParameter("key");
+        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(Integer.parseInt(key),thumbnailFilename, HttpMethod.GET,null);
         if (result.getHeaders().getContentType().toString().toLowerCase().startsWith("image")) {
             return result;
         } else {
@@ -188,20 +193,24 @@ class CatalogController extends Common {
      * 이미지 파일을 업로드한다.
      *
      * @param multipartFile MultipartFile(Spring 클래스)
-     * @return ResponseEntity<Map < String ,   Object>> (relays response from storage api)
+     * @return ResponseEntity<Map < String, Object>> (relays response from storage api)
      * @throws Exception Exception(자바클래스)
      */
     @SuppressWarnings("unchecked")
     @PostMapping(V2_URL + "/thumbnail")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> uploadThumbnail(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+    public ResponseEntity<Map<String, Object>> uploadThumbnail(HttpServletRequest request, @RequestParam("file") MultipartFile multipartFile) throws Exception {
         try {
+            String key = request.getParameter("key");
+
             MultiValueMap<String, Object> requestBodyObject = new LinkedMultiValueMap<>();
             requestBodyObject.add("file", new MultipartFileResource(multipartFile));
-            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(null, HttpMethod.POST, requestBodyObject, getToken());
-            Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
-            resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
 
+            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key), null, HttpMethod.POST, requestBodyObject);
+
+            Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
+
+            resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
             final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String, Object>>(resultMap, result.getHeaders(), result.getStatusCode());
             return generateResponseEntity;
         } finally {
@@ -217,8 +226,9 @@ class CatalogController extends Common {
      */
     @DeleteMapping(V2_URL + "/thumbnail/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<String> deleteThumbnailImage(@PathVariable("filename") String thumbnailFilename) {
-        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(thumbnailFilename, HttpMethod.DELETE, null, getToken());
+    public ResponseEntity<String> deleteThumbnailImage(HttpServletRequest request, @PathVariable("filename") String thumbnailFilename) {
+        String key = request.getParameter("key");
+        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key), thumbnailFilename, HttpMethod.DELETE, null);
         return result;
     }
 
@@ -226,12 +236,13 @@ class CatalogController extends Common {
      * 앱 샘플 파일을 가져온다.
      *
      * @param appSampleFilename
-     * @return ResponseEntity<byte   [   ]> (relays response from storage api)
+     * @return ResponseEntity<byte [ ]> (relays response from storage api)
      */
     @GetMapping(V2_URL + "/appsample/{filename}")
     @ResponseBody
-    public ResponseEntity<byte[]> getAppSampleFile(@PathVariable("filename") String appSampleFilename) {
-        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(appSampleFilename, HttpMethod.GET, null, getToken());
+    public ResponseEntity<byte[]> getAppSampleFile(HttpServletRequest request, @PathVariable("filename") String appSampleFilename) {
+        String key = request.getParameter("key");
+        ResponseEntity<byte[]> result = commonService.procStorageApiRestTemplateBinary(Integer.parseInt(key), appSampleFilename, HttpMethod.GET, null);
         switch (result.getHeaders().getContentType().toString().toLowerCase()) {
             // zip, tar, rar, bz, bz2, 7z
             case "application/zip":
@@ -250,17 +261,18 @@ class CatalogController extends Common {
      * 앱 샘플 파일을 업로드한다.
      *
      * @param multipartFile MultipartFile(Spring 클래스)
-     * @return ResponseEntity<Map < String ,   Object>> (relays response from storage api)
+     * @return ResponseEntity<Map < String, Object>> (relays response from storage api)
      * @throws Exception Exception(자바클래스)
      */
     @SuppressWarnings("unchecked")
     @PostMapping(V2_URL + "/appsample")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> uploadAppSampleFile(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+    public ResponseEntity<Map<String, Object>> uploadAppSampleFile(HttpServletRequest request, @RequestParam("file") MultipartFile multipartFile) throws Exception {
         try {
+            String key = request.getParameter("key");
             MultiValueMap<String, Object> requestBodyObject = new LinkedMultiValueMap<>();
             requestBodyObject.add("file", new MultipartFileResource(multipartFile));
-            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(null, HttpMethod.POST, requestBodyObject, getToken());
+            ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key), null, HttpMethod.POST, requestBodyObject);
             Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
             resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
 
@@ -280,8 +292,9 @@ class CatalogController extends Common {
      */
     @DeleteMapping(V2_URL + "/appsample/{filename}")
     @ResponseBody
-    public ResponseEntity<String> deleteAppSampleFile(@PathVariable("filename") String appSampleFilename) {
-        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(appSampleFilename, HttpMethod.DELETE, null, getToken());
+    public ResponseEntity<String> deleteAppSampleFile(HttpServletRequest request, @PathVariable("filename") String appSampleFilename) {
+        String key = request.getParameter("key");
+        final ResponseEntity<String> result = commonService.procStorageApiRestTemplateText(Integer.parseInt(key), appSampleFilename, HttpMethod.DELETE, null);
         return result;
     }
 
@@ -299,8 +312,9 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/starterpacks")
     @ResponseBody
-    public Map<String, Object> getStarterNamesList(@ModelAttribute Catalog param) {
-        return catalogService.getStarterPacksList(param);
+    public Map<String, Object> getStarterNamesList(HttpServletRequest request, @ModelAttribute Catalog param) {
+        String key = request.getParameter("key");
+        return catalogService.getStarterPacksList(Integer.parseInt(key), param);
     }
 
 
@@ -312,8 +326,9 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/starterpacks/{no}")
     @ResponseBody
-    public Map<String, Object> getStarterNames(@PathVariable("no") int no, @ModelAttribute Catalog param) {
-        return catalogService.getStarterPack(no, param);
+    public Map<String, Object> getStarterNames(HttpServletRequest request, @PathVariable("no") int no, @ModelAttribute Catalog param) {
+        String key = request.getParameter("key");
+        return catalogService.getStarterPack(Integer.parseInt(key), no, param);
     }
 
     /**
@@ -324,8 +339,9 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/developpacks")
     @ResponseBody
-    public Map<String, Object> getBuildPackCatalogList(@ModelAttribute Catalog param) {
-        return catalogService.getDevelopPackCatalogList(param);
+    public Map<String, Object> getBuildPackCatalogList(HttpServletRequest request, @ModelAttribute Catalog param) {
+        String key = request.getParameter("key");
+        return catalogService.getDevelopPackCatalogList(Integer.parseInt(key), param);
     }
 
     /**
@@ -336,8 +352,9 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/developpacks/{no}")
     @ResponseBody
-    public Map<String, Object> getBuildPackCatalog(@PathVariable("no") int no, @ModelAttribute Catalog param) {
-        return catalogService.getDevelopPackCatalog(no, param);
+    public Map<String, Object> getBuildPackCatalog(HttpServletRequest request, @PathVariable("no") int no, @ModelAttribute Catalog param) {
+        String key = request.getParameter("key");
+        return catalogService.getDevelopPackCatalog(Integer.parseInt(key), no, param);
     }
 
     /**
@@ -349,8 +366,9 @@ class CatalogController extends Common {
 
     @GetMapping(V2_URL + "/servicepacks")
     @ResponseBody
-    public Map<String, Object> getServicePackCatalogList(@ModelAttribute Catalog param) {
-        return catalogService.getServicePackCatalogList(param);
+    public Map<String, Object> getServicePackCatalogList(HttpServletRequest request, @ModelAttribute Catalog param) {
+        String key = request.getParameter("key");
+        return catalogService.getServicePackCatalogList(Integer.parseInt(key), param);
     }
 
 
@@ -362,8 +380,9 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/servicepacks/{no}")
     @ResponseBody
-    public Map<String, Object> getServicePackCatalog(@PathVariable("no") int no, @ModelAttribute Catalog param) {
-        return catalogService.getServicePackCatalog(no, param);
+    public Map<String, Object> getServicePackCatalog(HttpServletRequest request, @PathVariable("no") int no, @ModelAttribute Catalog param) {
+        String key = request.getParameter("key");
+        return catalogService.getServicePackCatalog(Integer.parseInt(key), no, param);
     }
 
     /**
@@ -374,8 +393,9 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/starterpacks/count")
     @ResponseBody
-    public Map<String, Object> getStarterNamesCount(@ModelAttribute Catalog param) {
-        return catalogService.getStarterPackCount(param);
+    public Map<String, Object> getStarterNamesCount(HttpServletRequest request, @ModelAttribute Catalog param) {
+        String key = request.getParameter("key");
+        return catalogService.getStarterPackCount(Integer.parseInt(key), param);
     }
 
     /**
@@ -386,8 +406,9 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/developpacks/count")
     @ResponseBody
-    public Map<String, Object> getBuildPackCatalogCount(@ModelAttribute Catalog param) {
-        return catalogService.getDevelopPackCatalogCount(param);
+    public Map<String, Object> getBuildPackCatalogCount(HttpServletRequest request, @ModelAttribute Catalog param) {
+        String key = request.getParameter("key");
+        return catalogService.getDevelopPackCatalogCount(Integer.parseInt(key), param);
     }
 
     /**
@@ -398,8 +419,9 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/servicepacks/count")
     @ResponseBody
-    public Map<String, Object> getServicePackCatalogCount(@ModelAttribute Catalog param) {
-        return catalogService.getServicePackCatalogCount(param);
+    public Map<String, Object> getServicePackCatalogCount(HttpServletRequest request, @ModelAttribute Catalog param) {
+        String key = request.getParameter("key");
+        return catalogService.getServicePackCatalogCount(Integer.parseInt(key), param);
     }
 
     /**
@@ -409,8 +431,9 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/services")
     @ResponseBody
-    public Map<String, Object> getServices() {
-        return catalogService.getServices();
+    public Map<String, Object> getServices(HttpServletRequest request) {
+        String key = request.getParameter("key");
+        return catalogService.getServices(Integer.parseInt(key));
     }
 
     /*
@@ -431,9 +454,10 @@ class CatalogController extends Common {
      */
     @PostMapping(value = {V2_URL + "/starterpacks"})
     @ResponseBody
-    public Map<String, Object> insertStarterPackCatalog(@RequestBody Catalog param) throws Exception {
+    public Map<String, Object> insertStarterPackCatalog(HttpServletRequest request, @RequestBody Catalog param) throws Exception {
+        String key = request.getParameter("key");
         LOGGER.info(param.toString());
-        return catalogService.insertStarterPack(param);
+        return catalogService.insertStarterPack(Integer.parseInt(key), param);
     }
 
     /**
@@ -445,9 +469,10 @@ class CatalogController extends Common {
      */
     @PostMapping(value = {V2_URL + "/developpacks"})
     @ResponseBody
-    public Map<String, Object> insertBuildPackCatalog(@RequestBody Catalog param) throws Exception {
+    public Map<String, Object> insertBuildPackCatalog(HttpServletRequest request, @RequestBody Catalog param) throws Exception {
+        String key = request.getParameter("key");
         LOGGER.info(param.toString());
-        return catalogService.insertDevelopPackCatalog(param);
+        return catalogService.insertDevelopPackCatalog(Integer.parseInt(key), param);
     }
 
     /**
@@ -459,8 +484,9 @@ class CatalogController extends Common {
      */
     @PostMapping(value = {V2_URL + "/servicepacks"})
     @ResponseBody
-    public Map<String, Object> insertServicePack(@RequestBody Catalog param) throws Exception {
-        return catalogService.insertServicePackCatalog(param);
+    public Map<String, Object> insertServicePack(HttpServletRequest request, @RequestBody Catalog param) throws Exception {
+        String key = request.getParameter("key");
+        return catalogService.insertServicePackCatalog(Integer.parseInt(key), param);
     }
 
 
@@ -483,8 +509,9 @@ class CatalogController extends Common {
      */
     @PutMapping(value = {V2_URL + "/starterpacks/{no}"})
     @ResponseBody
-    public Map<String, Object> updateStarterPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
-        return catalogService.updateStarterPack(no, param);
+    public Map<String, Object> updateStarterPackCatalog(HttpServletRequest request, @PathVariable int no, @RequestBody Catalog param) throws Exception {
+        String key = request.getParameter("key");
+        return catalogService.updateStarterPack(Integer.parseInt(key), no, param);
     }
 
     /**
@@ -496,8 +523,9 @@ class CatalogController extends Common {
      */
     @PutMapping(value = {V2_URL + "/developpacks/{no}"})
     @ResponseBody
-    public Map<String, Object> updateBuildPackCatalog(@PathVariable int no, @RequestBody Catalog param) throws Exception {
-        return catalogService.updateDevelopPackCatalog(no, param);
+    public Map<String, Object> updateBuildPackCatalog(HttpServletRequest request, @PathVariable int no, @RequestBody Catalog param) throws Exception {
+        String key = request.getParameter("key");
+        return catalogService.updateDevelopPackCatalog(Integer.parseInt(key), no, param);
     }
 
     /**
@@ -509,9 +537,10 @@ class CatalogController extends Common {
      */
     @PutMapping(value = {V2_URL + "/servicepacks/{no}"})
     @ResponseBody
-    public Map<String, Object> updateServicePack(@PathVariable int no, @RequestBody Catalog param) throws Exception {
+    public Map<String, Object> updateServicePack(HttpServletRequest request, @PathVariable int no, @RequestBody Catalog param) throws Exception {
+        String key = request.getParameter("key");
         LOGGER.info("updateServicePack :::: " + param.toString());
-        return catalogService.updateServicePackCatalog(no, param);
+        return catalogService.updateServicePackCatalog(Integer.parseInt(key), no, param);
     }
 
     /*
@@ -529,8 +558,9 @@ class CatalogController extends Common {
      */
     @DeleteMapping(value = {V2_URL + "/starterpacks/{no}"})
     @ResponseBody
-    public Map<String, Object> deleteStarterPackCatalog(@PathVariable int no) {
-        return catalogService.deleteStarterPack(no);
+    public Map<String, Object> deleteStarterPackCatalog(HttpServletRequest request, @PathVariable int no) {
+        String key = request.getParameter("key");
+        return catalogService.deleteStarterPack(Integer.parseInt(key), no);
     }
 
 
@@ -541,8 +571,9 @@ class CatalogController extends Common {
      */
     @DeleteMapping(value = {V2_URL + "/developpacks/{no}"})
     @ResponseBody
-    public Map<String, Object> deleteBuildPackCatalog(@PathVariable int no) {
-        return catalogService.deleteBuildPackCatalog(no);
+    public Map<String, Object> deleteBuildPackCatalog(HttpServletRequest request, @PathVariable int no) {
+        String key = request.getParameter("key");
+        return catalogService.deleteBuildPackCatalog(Integer.parseInt(key), no);
     }
 
 
@@ -553,13 +584,17 @@ class CatalogController extends Common {
      */
     @DeleteMapping(value = {V2_URL + "/servicepacks/{no}"})
     @ResponseBody
-    public Map<String, Object> deleteServicePackCatalog(@PathVariable int no) {
-        return catalogService.deleteServicePackCatalog(no);
+    public Map<String, Object> deleteServicePackCatalog(HttpServletRequest request, @PathVariable int no) {
+        String key = request.getParameter("key");
+        return catalogService.deleteServicePackCatalog(Integer.parseInt(key), no);
     }
 
     /*
      * ------------------------------------------------------------------------------------삭제 끝
      */
-
+    @ModelAttribute("configs")
+    public List<User> configs() {
+        return getServerInfos();
+    }
 
 }

@@ -22,9 +22,16 @@
     var INFO_EMPTY_REQUEST_DATA = /*[[#{common.info.empty.req.data}]]*/ "";
     var IMAGE_PATH_PREFIX = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).IMAGE_PATH_PREFIX}]]*/ "";
 
+    var API_PROC_URL = "/external/configs";
+    var REST_URL = "/portalapi/login";
+
     function noticeAnimation() {
         $("#notice")
     }
+
+    $(document).ready(function () {
+
+    });
 </script>
 <div class="wrapper">
 
@@ -52,6 +59,15 @@
             </h4>
         </nav>
     </header>
+
+    <div class="box-header" style="text-align: right;">
+        <select class="form-control toCheckString" id="apiUrls" style="width:300px;margin-top: -3px; display: unset;text-align: right;" onchange="selectChange()">
+            <span th:each="config : ${configs}">
+                <option th:if="${config.token != null}"  th:value="${config.key}" th:text="${config.infra_name}"></option>
+                <option th:if="${config.token == null}"  value="0" th:text="${config.infra_name + ' (로그인실패)'}"></option>
+            </span>
+        </select>
+    </div>
 
     <!-- Left side column. contains the logo and sidebar -->
     <aside th:replace="../fragment/left::aside"></aside>

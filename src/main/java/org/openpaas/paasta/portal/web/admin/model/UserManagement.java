@@ -5,7 +5,6 @@ package org.openpaas.paasta.portal.web.admin.model;
  * 사용자 관리 정보를 가지고 있는 데이터 모델 bean 클래스
  * Json 어노테이션을 사용해서 JSON 형태로 제공
  *
- * @author 김도준
  * @version 1.0
  * @since 2016.08.31 최초작성
  */

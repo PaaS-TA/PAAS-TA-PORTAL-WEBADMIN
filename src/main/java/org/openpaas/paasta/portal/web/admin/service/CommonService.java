@@ -1,6 +1,8 @@
 package org.openpaas.paasta.portal.web.admin.service;
 
+import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.User;
+import org.openpaas.paasta.portal.web.admin.common.UserList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +30,7 @@ import java.util.Map;
  * @since 2016.07.07 최초작성
  */
 @Service
-public class CommonService {
+public class CommonService extends Common {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonService.class);
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
@@ -74,10 +77,41 @@ public class CommonService {
         ResponseEntity<Map> resEntity = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        LOGGER.info("procRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        LOGGER.info("procRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
 
         return resultMap;
     }
+
+    /**
+     * REST TEMPLATE 처리
+     *
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
+     * @return map map
+     */
+    public Map<String, Object> procRestTemplate(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+        LOGGER.info("> Init procRestTemplate");
+
+        Map map = getServerInfo(key);
+        String apiUri = map.get("apiuri").toString();
+        String authorization = map.get("authorization").toString();
+        String token = map.get("token").toString();
+
+        restTemplate = new RestTemplate();
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
+
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, Map.class);
+        Map<String, Object> resultMap = resEntity.getBody();
+
+        LOGGER.info("procRestTemplate reqUrl :: {} ", reqUrl);
+
+        return resultMap;
+    }
+
 
     /**
      * REST TEMPLATE 처리
@@ -109,7 +143,7 @@ public class CommonService {
 
         Map resultMap = resEntity.getBody();
 
-        LOGGER.info("procRestTemplate resultMap :: {}", resultMap.toString());
+        LOGGER.info("procRestTemplate status code :: {}", resEntity.getStatusCode());
         return resultMap;
     }
 
@@ -135,8 +169,6 @@ public class CommonService {
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
         ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
 
-        //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
-
         return result;
     }
 
@@ -161,8 +193,6 @@ public class CommonService {
         LOGGER.info("apiUrl::" + apiUrl);
         ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
 
-        //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
-
         return result;
     }
 
@@ -184,8 +214,6 @@ public class CommonService {
         LOGGER.info("apiUrl::" + apiUrl);
         ResponseEntity<T> result = restTemplate.exchange(apiUrl + reqUrl, httpMethod, reqEntity, responseType);
 
-        //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
-
         return result;
     }
 
@@ -196,8 +224,8 @@ public class CommonService {
      * @return user id
      */
     public String getUserId() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return user.getUsername();
+        UserList userList = (UserList) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userList.getUsername();
     }
 
 
@@ -240,11 +268,78 @@ public class CommonService {
         ResponseEntity<Map> resEntity = restTemplate.exchange(cfApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        if(resultMap != null){
-            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        if (resultMap != null) {
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
         }
         return resultMap;
     }
+
+    /**
+     * REST TEMPLATE 처리 - CfApi(PortalApi)
+     *
+     * @param apiUri
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
+     * @param reqToken   the req token
+     * @return map map
+     */
+    public Map<String, Object> procCfApiRestTemplate(String apiUri, String reqUrl, String authorization,HttpMethod httpMethod, Object obj, String reqToken) {
+
+        restTemplate = new RestTemplate();
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        LOGGER.info(base64Authorization);
+
+        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        LOGGER.info("> cfApiUrl : " + apiUri + "/portalapi" + reqUrl); //http://+apiUri+"/portalapi"+reqUrl
+
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" + reqUrl, httpMethod, reqEntity, Map.class);
+        Map<String, Object> resultMap = resEntity.getBody();
+        if (resultMap != null) {
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
+        }
+        return resultMap;
+    }
+
+
+    /**
+     * REST TEMPLATE 처리 - CfApi(PortalApi)
+     *
+     * @param key
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
+     * @return map map
+     */
+    public Map<String, Object> procCfApiRestTemplate(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+
+        LOGGER.info("> Init");
+
+        Map map = getServerInfo(key);
+        String apiUri = map.get("apiuri").toString();
+        String authorization = map.get("authorization").toString();
+        String token = map.get("token").toString();
+
+        restTemplate = new RestTemplate();
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        LOGGER.info(authorization);
+
+        if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        LOGGER.info("> apiUri : " + apiUri);
+        LOGGER.info("> cfApiUrl : " + apiUri + "/portalapi" + reqUrl);
+
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/portalapi" + reqUrl, httpMethod, reqEntity, Map.class);
+        Map<String, Object> resultMap = resEntity.getBody();
+        if (resultMap != null) {
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} ", reqUrl);
+        }
+        return resultMap;
+    }
+
 
     /**
      * REST TEMPLATE 처리 - CommonApi
@@ -261,39 +356,102 @@ public class CommonService {
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
 
-        LOGGER.info("CommonApiUrl::"+commonApiUrl + reqUrl);
+        LOGGER.info("CommonApiUrl::" + commonApiUrl + reqUrl);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
         ResponseEntity<Map> resEntity = restTemplate.exchange(commonApiUrl + reqUrl, httpMethod, reqEntity, Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
 
-        LOGGER.info("procCommonApiRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        LOGGER.info("procCommonApiRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
         return resultMap;
     }
+
+
+    /**
+     * REST TEMPLATE 처리 - CommonApi
+     *
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
+     * @param reqToken   the req token
+     * @return map map
+     */
+    public Map<String, Object> procCommonApiRestTemplate(String apiUri, String reqUrl, String authorization, HttpMethod httpMethod, Object obj, String reqToken) {
+        restTemplate = new RestTemplate();
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
+
+        LOGGER.info("CommonApiUrl::" + apiUri + "/commonapi" + reqUrl);
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/commonapi" + reqUrl, httpMethod, reqEntity, Map.class);
+        Map<String, Object> resultMap = resEntity.getBody();
+
+        LOGGER.info("procCommonApiRestTemplate reqUrl :: {} || status code :: {}", reqUrl, resEntity.getStatusCode());
+        return resultMap;
+    }
+
+    /**
+     * REST TEMPLATE 처리 - CommonApi
+     *
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
+     * @return map map
+     */
+    public Map<String, Object> procCommonApiRestTemplate(int key, String reqUrl, HttpMethod httpMethod, Object obj) {
+
+        LOGGER.info("> Init");
+
+        Map map = getServerInfo(key);
+        String apiUri = map.get("apiuri").toString();
+        String authorization = map.get("authorization").toString();
+        String token = map.get("token").toString();
+
+        restTemplate = new RestTemplate();
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        LOGGER.info(authorization);
+
+        if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+
+        LOGGER.info("> apiUricommonApiUrl[key] : " + apiUri + "/commonapi" + reqUrl);
+
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/commonapi" + reqUrl, httpMethod, reqEntity, Map.class);
+        Map<String, Object> resultMap = resEntity.getBody();
+
+        LOGGER.info("> resEntity : " +resEntity);
+
+        if (resultMap != null) {
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} ", reqUrl);
+        }
+        return resultMap;
+    }
+
 
     /**
      * REST TEMPLATE 처리 - StorageApi
      *
      * @param reqUrl     the req url
      * @param httpMethod the http method
-     * @param bodyObject        the obj
+     * @param bodyObject the obj
      * @param reqToken   the req token
      * @return map map
      */
     public <T> ResponseEntity<T> procStorageApiRestTemplate(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken, Class<T> resClazz) {
         restTemplate = new RestTemplate();
-        
+
         // create url
         String storageRequestURL = storageApiUrl + "/v2/" + storageApiType + '/';
-        if (null != reqUrl && false == "".equals( reqUrl ))
-            storageRequestURL += reqUrl;
-        
+        if (null != reqUrl && false == "".equals(reqUrl)) storageRequestURL += reqUrl;
+
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
-        if (null == bodyObject)
-            bodyObject = new LinkedMultiValueMap<>();
+        if (null == bodyObject) bodyObject = new LinkedMultiValueMap<>();
         HttpEntity<Object> reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
-        
+
+
         ResponseEntity<T> resEntity = restTemplate.exchange(storageRequestURL, httpMethod, reqEntity, resClazz);
         LOGGER.info("procRestStorageApiTemplate reqUrl :: {} || resultEntity type :: {}", storageRequestURL, resEntity.getHeaders().getContentType());
         LOGGER.info("procRestStorageApiTemplate response Http status code :: {}", resEntity.getStatusCode());
@@ -301,10 +459,59 @@ public class CommonService {
     }
 
     public ResponseEntity<String> procStorageApiRestTemplateText(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
-        return procStorageApiRestTemplate( reqUrl, httpMethod, bodyObject, reqToken, String.class );
+        LOGGER.info(">>> Init procStorageApiRestTemplateText >> reqUrl "+reqUrl +" :: httpMethod "+ httpMethod+" :: "+ "reqToken"+ reqToken);
+        return procStorageApiRestTemplate(reqUrl, httpMethod, bodyObject, reqToken, String.class);
     }
-    
+
     public ResponseEntity<byte[]> procStorageApiRestTemplateBinary(String reqUrl, HttpMethod httpMethod, Object bodyObject, String reqToken) {
-        return procStorageApiRestTemplate( reqUrl, httpMethod, bodyObject, reqToken, byte[].class );
+        LOGGER.info(">>> Init procStorageApiRestTemplateBinary >> reqUrl "+reqUrl +" :: httpMethod"+ httpMethod+" :: " + bodyObject+" :: "+ "reqToken"+ reqToken);
+        return procStorageApiRestTemplate(reqUrl, httpMethod, bodyObject, reqToken, byte[].class);
     }
+
+
+    /**
+     * REST TEMPLATE 처리 - StorageApi
+     *
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param bodyObject the obj
+     * @return map map
+     */
+    public <T> ResponseEntity<T> procStorageApiRestTemplate(int key, String reqUrl, HttpMethod httpMethod, Object bodyObject, Class<T> resClazz) {
+
+        LOGGER.info("> Init");
+
+        Map map = getServerInfo(key);
+        String apiUri = map.get("apiuri").toString();
+        String authorization = map.get("authorization").toString();
+        String token = map.get("token").toString();
+
+        // create url
+        String storageRequestURL =  apiUri + "/storageapi/v2/" + storageApiType + '/';
+        LOGGER.info("storageRequestURL" + storageRequestURL);
+        if (null != reqUrl && false == "".equals(reqUrl)) storageRequestURL += reqUrl;
+
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
+        if (null == bodyObject) bodyObject = new LinkedMultiValueMap<>();
+        HttpEntity<Object> reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
+
+
+        ResponseEntity<T> resEntity = restTemplate.exchange(storageRequestURL, httpMethod, reqEntity, resClazz);
+        LOGGER.info("procRestStorageApiTemplate reqUrl :: {} || resultEntity type :: {}", storageRequestURL, resEntity.getHeaders().getContentType());
+        LOGGER.info("procRestStorageApiTemplate response Http status code :: {}", resEntity.getStatusCode());
+        return resEntity;
+    }
+
+    public ResponseEntity<String> procStorageApiRestTemplateText(int key, String reqUrl, HttpMethod httpMethod, Object bodyObject) {
+        LOGGER.info(">>> Init procStorageApiRestTemplateText >> reqUrl "+reqUrl +" :: httpMethod "+ httpMethod+" ::");
+        return procStorageApiRestTemplate(key,reqUrl, httpMethod, bodyObject, String.class);
+    }
+
+    public ResponseEntity<byte[]> procStorageApiRestTemplateBinary(int key, String reqUrl, HttpMethod httpMethod, Object bodyObject) {
+        LOGGER.info(">>> Init procStorageApiRestTemplateBinary >> reqUrl" +reqUrl +"  :: httpMethod "+ httpMethod+" ::");
+        return procStorageApiRestTemplate(key,reqUrl, httpMethod, bodyObject, byte[].class);
+    }
+
 }
