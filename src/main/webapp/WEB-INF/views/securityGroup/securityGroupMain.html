@@ -90,7 +90,7 @@
                                         <div class="form-group required">
                                             <label for="securityGroupName" class="col-sm-3 control-label">이름</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckString"
+                                                <input type="text" class="form-control toCheckString toCheckSecurityForm"
                                                        id="securityGroupName" placeholder=""/>
                                             </div>
                                         </div>
@@ -150,7 +150,7 @@
                                                         <label for="securityDestination_1"
                                                                class="col-sm-3 control-label">규칙</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control toCheckString"
+                                                            <input type="text" class="form-control toCheckString toCheckSecurityForm"
                                                                    id="securityDestination_1" placeholder="규칙"></input>
                                                         </div>
                                                     </div>
@@ -252,11 +252,11 @@
                             </button>
                             <button type="button" id="clientSaveBtn" name="modalSaveBtn"
                                     class="btn btn-sm btn-primary pull-right" onClick="createSecurityGroup();"
-                                    data-dismiss="modal">등록
+                                    >등록
                             </button>
                             <button type="button" id="securityGroupRegBtn" name="modalRegBtn"
                                     class="btn btn-sm btn-primary pull-right" onClick="updateSecurityGroup();"
-                                    data-dismiss="modal" hidden="hidden">수정
+                                    hidden="hidden">수정
                             </button>
                             <button type="button" id="securityGroupCloseBtn" class="btn btn-sm btn-default pull-left"
                                     data-dismiss="modal">취소
@@ -434,7 +434,7 @@
                 '<div class="form-group required" id="securityDestinationDiv_' + idx + '">' +
                 '<label for="securityDestination_' + idx + '" class="col-sm-3 control-label">규칙</label>' +
                 '<div class="col-sm-9">' +
-                '<input type="text" class="form-control toCheckString"' +
+                '<input type="text" class="form-control toCheckString toCheckSecurityForm"' +
                 'id="securityDestination_' + idx + '" placeholder="규칙"></input>' +
                 '</div>' +
                 '</div>' +
@@ -513,14 +513,18 @@
     }
 
     function protocolChange(idx){
-        if($('#securityProtocol_' + idx).val() != 'icmp'){
-            $('#securityTypeDiv_' + idx).hide();
-            $('#securityGroupCodeDiv_' + idx).hide();
-            $('#securityPortsDiv_' + idx).show();
-        } else{
+        if($('#securityProtocol_' + idx).val() == 'icmp'){
             $('#securityTypeDiv_' + idx).show();
             $('#securityGroupCodeDiv_' + idx).show();
             $('#securityPortsDiv_' + idx).hide();
+        }else if($('#securityProtocol_' + idx).val() == 'all'){
+            $('#securityTypeDiv_' + idx).hide();
+            $('#securityGroupCodeDiv_' + idx).hide();
+            $('#securityPortsDiv_' + idx).hide();
+        } else{
+            $('#securityTypeDiv_' + idx).hide();
+            $('#securityGroupCodeDiv_' + idx).hide();
+            $('#securityPortsDiv_' + idx).show();
         }
     }
 
@@ -616,14 +620,28 @@
             $('#securityPorts_' + idx).val(data1.ports);
             $('#securityProtocol_' + idx).val(data1.protocol);
             $('#securityGroupType_' + idx).val(data1.type);
-            if(data1.protocol != 'icmp'){
-                $('#securityTypeDiv_' + idx).hide();
-                $('#securityGroupCodeDiv_' + idx).hide();
-                $('#securityPortsDiv_' + idx).show();
-            } else{
+            // if(data1.protocol != 'icmp'){
+            //     $('#securityTypeDiv_' + idx).hide();
+            //     $('#securityGroupCodeDiv_' + idx).hide();
+            //     $('#securityPortsDiv_' + idx).show();
+            // } else{
+            //     $('#securityTypeDiv_' + idx).show();
+            //     $('#securityGroupCodeDiv_' + idx).show();
+            //     $('#securityPortsDiv_' + idx).hide();
+            // }
+            if(data1.protocol == 'icmp'){
                 $('#securityTypeDiv_' + idx).show();
                 $('#securityGroupCodeDiv_' + idx).show();
                 $('#securityPortsDiv_' + idx).hide();
+            }else if(data1.protocol == 'all'){
+                $('#securityTypeDiv_' + idx).hide();
+                $('#securityGroupCodeDiv_' + idx).hide();
+                $('#securityPortsDiv_' + idx).hide();
+            }
+            else{
+                $('#securityTypeDiv_' + idx).hide();
+                $('#securityGroupCodeDiv_' + idx).hide();
+                $('#securityPortsDiv_' + idx).show();
             }
         });
     }
@@ -631,12 +649,20 @@
     function createSecurityGroup() {
         var param = getRules();
         var servicename = $('#securityGroupName').val();
+        if (!procCheckValidStringSpaceClass('toCheckSecurityForm')){
+            return false;
+        };
         procCallAjax2('/v2/securitygroup/' + servicename +"?key="+key, "POST", param, setCreateDefaultStagingSetting, $('#modalLoadingBar'));
+        $('#securityGroupFormModal').modal("hide");
     };
 
     function updateSecurityGroup() {
         var param = getRules();
         var servicename = $('#securityGroupName').val();
+
+        if (!procCheckValidStringSpaceClass('toCheckSecurityForm')){
+            return false;
+        };
         procCallAjax('/v2/securitygroup/' + sltSecurityGuid + '/' + servicename +"?key="+key, "PUT", param, setUpdateDefaultStagingSetting, $('#modalLoadingBar'));
         $.each(sltBindSpaceData, function (index, data) {
             procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/spaces/' + data.metadata.guid +"?key="+key , "PUT", data, bindResult);
@@ -644,6 +670,7 @@
         $.each(sltUnBindSpaceData, function (index, data) {
             procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/spaces/' + data +"?key="+key, "DELETE", data, bindResult);
         });
+        $('#securityGroupFormModal').modal("hide");
     };
 
     function bindResult(data) {

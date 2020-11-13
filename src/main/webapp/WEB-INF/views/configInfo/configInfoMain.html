@@ -129,7 +129,7 @@
                                     <div class="form-group">
                                         <label for="caas_apiUri" class="col-sm-3 control-label">CaaS_Api_Uri</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control checkServiceForm" id="caas_apiUri"
+                                            <input type="text" class="form-control" id="caas_apiUri"
                                                    name="caas_apiUri" placeholder=""/>
                                         </div>
                                     </div>
@@ -137,7 +137,7 @@
                                     <div class="form-group">
                                         <label for="caas_authorization" class="col-sm-3 control-label">CaaS_Authorization</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control checkServiceForm" id="caas_authorization"
+                                            <input type="text" class="form-control" id="caas_authorization"
                                                    name="caas_authorization" placeholder=""/>
                                         </div>
                                     </div>
@@ -190,6 +190,15 @@
     var REST_URL = V2_URL + "/configInfos"
 
     $(document).ready(function () {
+        //key 값 설정
+        if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+        }else{
+            key = $("#apiUrls").val();
+        }
+        getInitMarketPlaceURL();
+
         $('#configFormModal').on('shown.bs.modal', function () {
         });
 

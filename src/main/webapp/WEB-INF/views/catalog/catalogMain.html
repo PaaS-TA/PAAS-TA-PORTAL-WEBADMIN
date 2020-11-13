@@ -369,7 +369,7 @@
                                             <label for="startertagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" name="startertagParamInput" id="startertagParamInput">
-                                                    <option value="paasta">paasta</option>
+                                                    <option value="paas-ta">paas-ta</option>
                                                     <option value="community">community</option>
                                                 </select>
                                             </div>
@@ -384,7 +384,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                <button class="user_btn colors1" name="startertagPreview" id="startertagPreviewClassification" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paasta</button>
+                                                <button class="user_btn colors1" name="startertagPreview" id="startertagPreviewClassification" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paas-ta</button>
                                             </div>
                                         </div>
 
@@ -422,6 +422,13 @@
                                             <label for="description" class="col-sm-3 control-label">설명</label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" rows="5" id="description"></textarea>
+                                                <script th:inline="javascript" type="text/javascript">
+                                                    /*<![CDATA[*/
+                                                    // Replace the <textarea id="editor1"> with a CKEditor
+                                                    // instance, using default configuration.
+                                                    CKEDITOR.replace( 'description' );
+                                                    /*]]>*/
+                                                </script>
                                             </div>
                                         </div>
 
@@ -539,10 +546,10 @@
 
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group required">
                                             <label for="devEnvDocFileUrl" class="col-sm-3 control-label">문서 URL</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="devEnvDocFileUrl" name="name" placeholder="http://" />
+                                                <input type="text" class="form-control checkDevEnvForm" id="devEnvDocFileUrl" name="name" placeholder="http://" />
                                             </div>
                                         </div>
 
@@ -572,7 +579,7 @@
                                             <label for="devEnvtagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="devEnvtagParamInput" name="devEnvtagParamInput">
-                                                    <option value="paasta">paasta</option>
+                                                    <option value="paas-ta">paas-ta</option>
                                                     <option value="community">community</option>
                                                 </select>
                                             </div>
@@ -587,7 +594,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                <button class="user_btn colors1" name="devEnvtagPreview" id ="devEnvtagPreviewClassification" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paasta</button>
+                                                <button class="user_btn colors1" name="devEnvtagPreview" id ="devEnvtagPreviewClassification" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paas-ta</button>
                                             </div>
                                         </div>
 
@@ -731,7 +738,7 @@
                                         <div class="form-group required">
                                             <label for="serviceDocFileUrl" class="col-sm-3 control-label">문서 URL</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="serviceDocFileUrl" name="name" placeholder="http://" />
+                                                <input type="text" class="form-control checkServiceForm" id="serviceDocFileUrl" name="name" placeholder="http://" />
                                             </div>
                                         </div>
                                         <div class="form-group" name="serviceParamForm">
@@ -871,7 +878,7 @@
                                             <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="tagParamInput" name="tagParamInput">
-                                                    <option value="paasta" >paasta</option>
+                                                    <option value="paas-ta" >paas-ta</option>
                                                     <option value="community">community</option>
                                                 </select>
                                             </div>
@@ -887,7 +894,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-1 col-xs-3">
-                                                <button class="user_btn colors1 " name="tagPreview" id="tag1param" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paasta</button>
+                                                <button class="user_btn colors1 " name="tagPreview" id="tag1param" style="position: absolute;top: 6px;left: -8px;" disabled="disabled">paas-ta</button>
                                             </div>
                                         </div>
 
@@ -1149,7 +1156,9 @@
 
         // 등록 버튼 클릭시, 등록 팝업 이벤트 설정
         $(document).on( "click", 'button[name=registBtn]' ,function(e){
-
+            CKEDITOR.instances.description.setData("");
+            CKEDITOR.instances.devEnvDescription.setData("");
+            CKEDITOR.instances.serviceDescription.setData("");
             $('div[name=modalTitle]').text($(this).text());
 
             $('button[name=modalDeleteBtn]').hide();
@@ -1196,7 +1205,7 @@
 
         // [앱서비스][서비스 생성 파라미터] 삭제 이벤트
         $(document).on("click", "button[name=serviceParamRemove]" ,function(e) {
-            var index = $('button[name=serviceParamRemove]').index(this) +1;
+            var index = $('button[name=serviceParamRemove]').index(this)+2;
             $('div[name=serviceParamForm]:eq('+index+')').remove();
         });
 
@@ -1960,6 +1969,17 @@
             return false;
         };
 
+        var overlapCheck=false;
+        $.each(STARTER_SOURCE_LIST, function (index, list_data) {
+            if((starterParam()).name == list_data.name){
+                notifyAlert('warning','',"중복된 이름입니다.");
+                overlapCheck=true;
+            }
+        });
+        if(overlapCheck==true){
+            return false;
+        }
+
         // 파일 첨부 확인 및 업로드
         var file = $("#starterThumbnail")[0].files[0];
         if (file === undefined){
@@ -1978,10 +1998,24 @@
 
     //  [앱 템플릿] 수정 (파일저장 전 처리)
     function updateStarter() {
-
         if (!procCheckValidStringSpaceClass("checkStarterForm")){
             return false;
         };
+
+        var no = $('#starterId').val();
+
+        var overlapCheck=false;
+        console.log(STARTER_SOURCE_LIST);
+        $.each(STARTER_SOURCE_LIST, function (index, list_data) {
+            if(no != list_data.no && (starterParam(FILE_INFO)).name == list_data.name){
+                notifyAlert('warning','',"중복된 이름입니다.");
+                overlapCheck=true;
+            }
+        });
+        if(overlapCheck==true){
+            return false;
+        }
+
 
         // 파일 첨부 확인 및 업로드
         var afterThumbPath = $('#preview img').attr("src");
@@ -2031,6 +2065,7 @@
     function modifyStarterItem(FILE_INFO){
         // 파일저장 결과값(저장위치 및 파일명)을 반영한다.
         var no = $('#starterId').val();
+
         procCallAjax(STARTER_PACK_PROC_URL +"/"+ no+"?key="+key, "PUT", JSON.stringify(starterParam(FILE_INFO)), getStarterList, null);
     }
 
@@ -2244,6 +2279,18 @@
             return false;
         };
 
+        var overlapCheck=false;
+        $.each(DEV_SOURCE_LIST, function (index, list_data) {
+            if((devEnvParam()).name == list_data.name){
+                notifyAlert('warning','',"중복된 이름입니다.");
+                overlapCheck=true;
+            }
+        });
+        if(overlapCheck==true){
+            $('#devEnvModalLoadingBar').addClass('hide');
+            return false;
+        }
+
         FILE_INFO = {};
 
         // 썸네일 파일 첨부 확인 및 업로드
@@ -2314,6 +2361,24 @@
 
             return false;
         };
+
+
+        var no = $('#devEnvId').val();
+
+        var overlapCheck=false;
+        $.each(DEV_SOURCE_LIST, function (index, list_data) {
+            if(no != list_data.no && (devEnvParam()).name == list_data.name){
+                notifyAlert('warning','',"중복된 이름입니다.");
+                overlapCheck=true;
+            }
+        });
+        if(overlapCheck==true){
+            $('#devEnvModalLoadingBar').addClass('hide');
+            return false;
+        }
+
+
+
 
         FILE_INFO = {}; // 파일정보 초기화
 
@@ -2431,6 +2496,16 @@
         if (!procCheckValidStringSpaceClass('checkServiceForm')){
             return false;
         };
+        var overlapCheck=false;
+        $.each(SERVICE_SOURCE_LIST, function (index, list_data) {
+            if((serviceParam()).name == list_data.name){
+                notifyAlert('warning','',"중복된 이름입니다.");
+                overlapCheck=true;
+            }
+        });
+        if(overlapCheck==true){
+            return false;
+        }
 
         FILE_INFO = {}; // 파일정보 초기화
 
@@ -2468,6 +2543,21 @@
             return false;
         };
 
+
+        var no = $('#serviceId').val();
+
+        var overlapCheck=false;
+        $.each(SERVICE_SOURCE_LIST, function (index, list_data) {
+            if(no != list_data.no && (serviceParam()).name == list_data.name){
+                notifyAlert('warning','',"중복된 이름입니다.");
+                overlapCheck=true;
+            }
+        });
+        if(overlapCheck==true){
+            return false;
+        }
+
+
         FILE_INFO = {}; // 파일정보 초기화
 
         // 썸네일 파일 첨부 확인 및 업로드
@@ -2477,7 +2567,7 @@
         var formData = new FormData();
         formData.append("file", thumbFile);
         if(BEFORE_THUMB_NAME == ""){
-            if(thumbFile != ""){
+            if(afterThumbPath != ""){
                 // UPLOAD FILE
                 uploadFile(formData,"POST","/v2/thumbnail"+"?key="+key,updateServiceThumbFileInfo);
             }else{
@@ -2620,11 +2710,11 @@
             defaultStarterServiceOptionList();
 
             //초기화
-            $('select[id=startertagParamInput]').val("paasta");
+            $('select[id=startertagParamInput]').val("paas-ta");
             $('select[id=startertagParamInputPaidFree]').val("pay");
             $('select[id=startertag1]').val("colors1");
             $('select[id=startertag2]').val("colors1");
-            $('#startertagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1').text('paasta');
+            $('#startertagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1').text('paas-ta');
             $('#startertagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1').text('pay');
 
             // [서비스] 항목
@@ -2639,11 +2729,11 @@
             defaultDevEnvBuildpackOptionList();
 
             //초기화
-            $('select[id=devEnvtagParamInput]').val("paasta");
+            $('select[id=devEnvtagParamInput]').val("paas-ta");
             $('select[id=devEnvtagParamInputPaidFree]').val("pay");
             $('select[id=devEnvtag1]').val("colors1");
             $('select[id=devEnvtag2]').val("colors1");
-            $('#devEnvtagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1').text('paasta');
+            $('#devEnvtagPreviewClassification').removeAttr('class').attr('class', 'user_btn colors1').text('paas-ta');
             $('#devEnvtagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1').text('pay');
             $('input:radio[name=devEnvUseYn]:input[value="Y"]').prop('checked', true);
             $('#devEnvAppRemove').trigger('click');
@@ -2663,11 +2753,11 @@
             // 초기화
             $('input[name=serviceParamInput]').val("");
             $('input[name=appBindParamInput]').val("");
-            $('select[id=tagParamInput]').val("paasta");
+            $('select[id=tagParamInput]').val("paas-ta");
             $('select[id=tagParamInputPaidFree]').val("pay");
             $('select[id=tag1]').val("colors1");
             $('select[id=tag2]').val("colors1");
-            $('#tag1param').removeAttr('class').attr('class', 'user_btn colors1').text('paasta');
+            $('#tag1param').removeAttr('class').attr('class', 'user_btn colors1').text('paas-ta');
             $('#tagPreviewPaidFree').removeAttr('class').attr('class', 'user_btn colors1').text('pay');
 
 
@@ -2765,10 +2855,14 @@
     function defaultStarterDevEnvOptionList(){
         var objSelectBox = $('#buildPackList');
         objSelectBox.html('');
-        objSelectBox.append("<option value='0'>NONE</option>");
-        $.each(STARTER_DEV_ENV_LIST, function (index, data) {
-            objSelectBox.append("<option value='" + data.no + "'> " + data.name + " </option>");
-        });
+        if(STARTER_DEV_ENV_LIST.length==0){
+            objSelectBox.append("<option value='0'>NONE</option>");
+        }
+        else{
+            $.each(STARTER_DEV_ENV_LIST, function (index, data) {
+                objSelectBox.append("<option value='" + data.no + "'> " + data.name + " </option>");
+            });
+        }
     }
 
     // [앱 개발환경] 상세 - [분류] 셀렉트 박스 초기값
@@ -2784,10 +2878,14 @@
     function defaultDevEnvBuildpackOptionList(){
         var objSelectBox = $('#buildPackDevEnvList');
         objSelectBox.html('');
-        objSelectBox.append("<option value='NONE'>NONE</option>");
-        $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
-            objSelectBox.append("<option value='" + data.entity.name + "'> " + data.entity.name + " </option>");
-        });
+        if(DEV_ENV_BUILDPACK_LIST.length==0){
+            objSelectBox.append("<option value='NONE'>NONE</option>");
+        }
+        else{
+            $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
+                objSelectBox.append("<option value='" + data.entity.name + "'> " + data.entity.name + " </option>");
+            });
+        }
     }
 
     // [앱 서비스] 상세 - [분류] 셀렉트 박스 초기값
@@ -2803,10 +2901,16 @@
     function defaultServiceServiceOptionList(){
         var objSelectBox = $('#serviceServicePackList');
         objSelectBox.html('');
-        objSelectBox.append("<option value='NONE'>NONE</option>");
-        $.each(SERVICE_SERVICE_LIST, function (index, data) {
-            objSelectBox.append("<option value='" + data.entity.label + "'> " + data.entity.label + " </option>");
-        });
+
+        console.log(SERVICE_SERVICE_LIST);
+        if(SERVICE_SERVICE_LIST.length==0){
+            objSelectBox.append("<option value='NONE'>NONE</option>");
+        }
+        else {
+            $.each(SERVICE_SERVICE_LIST, function (index, data) {
+                objSelectBox.append("<option value='" + data.entity.label + "'> " + data.entity.label + " </option>");
+            });
+        }
     }
 
     // reqType 따른 파일 업로드 / 삭제 처리
@@ -2929,7 +3033,7 @@
             +"   <div name='paramArea'>"
             +"       <div class='col-sm-4 col-xs-3'>"
             +"           <select class='form-control' name='startertagParamInput' id='startertagPreviewClassification'>"
-            +"               <option value='paasta'>paasta</option>"
+            +"               <option value='paas-ta'>paas-ta</option>"
             +"               <option value='community'>community</option>"
             +"           </select>"
             +"       </div>"
@@ -3016,7 +3120,7 @@
             +"   <div name='paramArea'>"
             +"       <div class='col-sm-4 col-xs-3'>"
             +"           <select class='form-control' name='devEnvtagParamInput' id='devEnvtagPreviewClassification'>"
-            +"               <option value='paasta'>paasta</option>"
+            +"               <option value='paas-ta'>paas-ta</option>"
             +"               <option value='community'>community</option>"
             +"           </select>"
             +"       </div>"
@@ -3106,7 +3210,7 @@
             +"   <div name='paramArea'>"
             +"       <div class='col-sm-4 col-xs-3'>"
             +"           <select class='form-control' name='tagParamInput' id='tag1param'/>"
-            +"               <option value='paasta'>paasta</option>"
+            +"               <option value='paas-ta'>paas-ta</option>"
             +"               <option value='community'>community</option>"
             +"       </div>"
             +"       <div class='col-sm-2 col-xs-3'>"

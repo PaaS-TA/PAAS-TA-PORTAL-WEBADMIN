@@ -246,8 +246,10 @@
         }
     };
 
-    function getServicePlanOrgs(selectId, uniqueId) {;
-
+    function getServicePlanOrgs(selectId, uniqueId) {
+        if($("#"+selectId+" > td > select option:selected").val() != 'limited'){
+            $("#orgDiv").hide();
+        }
         $("[id^='servicePlan_']").removeClass("bg-aqua disabled color-palette");
         $("#"+selectId).addClass("bg-aqua disabled color-palette");
         $("#"+selectId+" > td > select").css("color", "black");
