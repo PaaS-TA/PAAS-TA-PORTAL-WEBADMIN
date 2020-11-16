@@ -2891,7 +2891,7 @@
         var objSelectBox = $('#buildPackDevEnvList');
         objSelectBox.html('');
         //if(DEV_ENV_BUILDPACK_LIST.length==0){
-            objSelectBox.append("<option value='존재하지 않는 개발환경'>존재하지 않는 개발환경</option>");
+            objSelectBox.append("<option value='미설치 개발환경'>미설치 개발환경</option>");
         //}
         //else{
             $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
@@ -2915,7 +2915,7 @@
         objSelectBox.html('');
 
         //if(SERVICE_SERVICE_LIST.length==0){
-            objSelectBox.append("<option value='존재하지 않는 서비스'>존재하지 않는 서비스</option>");
+            objSelectBox.append("<option value='미설치 서비스'>미설치 서비스</option>");
         //}
         //else {
             $.each(SERVICE_SERVICE_LIST, function (index, data) {
@@ -3332,7 +3332,7 @@
             }
 
             if($("#buildPackDevEnvList").val()===null){
-                $("#buildPackDevEnvList").val("존재하지 않는 개발환경");
+                $("#buildPackDevEnvList").val("미설치 개발환경");
             }
             updateDevEnv();
         }, 200);
@@ -3348,7 +3348,7 @@
                 $('input:radio[name="serviceUseYn"][value="N"]').prop('checked', false);
             }
             if($("#serviceServicePackList").val()===null){
-                $("#serviceServicePackList").val("존재하지 않는 서비스");
+                $("#serviceServicePackList").val("미설치 서비스");
             }
             updateService();
         }, 200);
