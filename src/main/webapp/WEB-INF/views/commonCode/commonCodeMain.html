@@ -848,11 +848,9 @@
         if($("#value").val()==""){
             $("#validation_group_value").show();
         }
-        if($("#summary").val()==""){
-            $("#validation_group_summary").show();
-        }
 
-        if (isGroupValidation == false || $("#summary").val()=="" || $("#value").val()=="" || $("#key").val()=="") {
+
+        if (isGroupValidation == false || $("#value").val()=="" || $("#key").val()=="") {
             return false;
         }
 
@@ -898,11 +896,8 @@
         if($("#value").val()==""){
             $("#validation_group_value").show();
         }
-        if($("#summary").val()==""){
-            $("#validation_group_summary").show();
-        }
 
-        if (isGroupValidation == false || $("#summary").val()=="" || $("#value").val()=="" || $("#key").val()=="") {
+        if (isGroupValidation == false ||  $("#value").val()=="" || $("#key").val()=="") {
             return false;
         }
 

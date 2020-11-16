@@ -1120,6 +1120,19 @@
 
             initModal();
 
+            if($(e.target)[0].nodeName == "SPAN"){
+                //alert("fire!");
+                var id = $(e.target).parent().parent().data('id');
+
+                if(ACTIVE_TAB == 'starter'){
+                    toggleStarterYN(id);
+                }else if(ACTIVE_TAB == 'dev'){
+                    toggleDevYN(id);
+                }else if(ACTIVE_TAB == 'service'){
+                    toggleServiceYN(id);
+                }
+                return false;
+            }
             var id = $(e.target).parent().data('id');
 
             if(ACTIVE_TAB == 'starter'){
@@ -1628,6 +1641,7 @@
     var procCallbackGetStarter = function(data){
 
         var entity = data.info;
+        console.log(entity);
 
         if(entity){
             $("#starterId").val(entity.no);
@@ -1847,7 +1861,6 @@
                 var obj = jQuery.parseJSON(entity.parameter);
                 var index = 0;
                 $.each(obj,function(key, value) {
-                    //console.log('key:'+key+', value:'+value);
                     if(index == 0){
                         // Fixed Area Set
                         setAppServiceParam(index, key, value)
@@ -1871,7 +1884,6 @@
                 var obj = jQuery.parseJSON(entity.appBindParameter);
                 var index = 0;
                 $.each(obj,function(key, value) {
-                    //console.log('key:'+key+', value:'+value);
                     if(index == 0){
                         setAppBindParam(index, key, value);
                     }else{
@@ -2855,14 +2867,14 @@
     function defaultStarterDevEnvOptionList(){
         var objSelectBox = $('#buildPackList');
         objSelectBox.html('');
-        if(STARTER_DEV_ENV_LIST.length==0){
+        //if(STARTER_DEV_ENV_LIST.length==0){
             objSelectBox.append("<option value='0'>NONE</option>");
-        }
-        else{
+        //}
+        //else{
             $.each(STARTER_DEV_ENV_LIST, function (index, data) {
                 objSelectBox.append("<option value='" + data.no + "'> " + data.name + " </option>");
             });
-        }
+        //}
     }
 
     // [앱 개발환경] 상세 - [분류] 셀렉트 박스 초기값
@@ -2878,14 +2890,14 @@
     function defaultDevEnvBuildpackOptionList(){
         var objSelectBox = $('#buildPackDevEnvList');
         objSelectBox.html('');
-        if(DEV_ENV_BUILDPACK_LIST.length==0){
-            objSelectBox.append("<option value='NONE'>NONE</option>");
-        }
-        else{
+        //if(DEV_ENV_BUILDPACK_LIST.length==0){
+            objSelectBox.append("<option value='존재하지 않는 개발환경'>존재하지 않는 개발환경</option>");
+        //}
+        //else{
             $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
                 objSelectBox.append("<option value='" + data.entity.name + "'> " + data.entity.name + " </option>");
             });
-        }
+        //}
     }
 
     // [앱 서비스] 상세 - [분류] 셀렉트 박스 초기값
@@ -2902,15 +2914,14 @@
         var objSelectBox = $('#serviceServicePackList');
         objSelectBox.html('');
 
-        console.log(SERVICE_SERVICE_LIST);
-        if(SERVICE_SERVICE_LIST.length==0){
-            objSelectBox.append("<option value='NONE'>NONE</option>");
-        }
-        else {
+        //if(SERVICE_SERVICE_LIST.length==0){
+            objSelectBox.append("<option value='존재하지 않는 서비스'>존재하지 않는 서비스</option>");
+        //}
+        //else {
             $.each(SERVICE_SERVICE_LIST, function (index, data) {
                 objSelectBox.append("<option value='" + data.entity.label + "'> " + data.entity.label + " </option>");
             });
-        }
+        //}
     }
 
     // reqType 따른 파일 업로드 / 삭제 처리
@@ -3292,6 +3303,56 @@
     }
 
     /*]]>*/
+
+
+    function toggleStarterYN(id){
+
+        procCallAjax(STARTER_PACK_PROC_URL + "/" + id +"?key="+key, "GET", null, procCallbackGetStarter, $('#starterModalLoadingBar '));
+
+        setTimeout(function() {
+            if($("input[name=starterUseYn]:checked").val() == "Y"){
+                $('input:radio[name="starterUseYn"][value="N"]').prop('checked', true);
+                $('input:radio[name="starterUseYn"][value="Y"]').prop('checked', false);
+            }else if($("input[name=starterUseYn]:checked").val() == "N"){
+                $('input:radio[name="starterUseYn"][value="Y"]').prop('checked', true);
+                $('input:radio[name="starterUseYn"][value="N"]').prop('checked', false);
+            }
+            updateStarter();
+        }, 200);
+    }
+    function toggleDevYN(id){
+        procCallAjax(DEVELOP_PACK_PROC_URL +"/"+id+"?key="+key, "GET", null, procCallbackGetDevEnv, $('#devEnvModalLoadingBar '));
+        setTimeout(function() {
+            if($("input[name=devEnvUseYn]:checked").val() == "Y"){
+                $('input:radio[name="devEnvUseYn"][value="N"]').prop('checked', true);
+                $('input:radio[name="devEnvUseYn"][value="Y"]').prop('checked', false);
+            }else if($("input[name=devEnvUseYn]:checked").val() == "N"){
+                $('input:radio[name="devEnvUseYn"][value="Y"]').prop('checked', true);
+                $('input:radio[name="devEnvUseYn"][value="N"]').prop('checked', false);
+            }
+
+            if($("#buildPackDevEnvList").val()===null){
+                $("#buildPackDevEnvList").val("존재하지 않는 개발환경");
+            }
+            updateDevEnv();
+        }, 200);
+    }
+    function toggleServiceYN(id){
+        procCallAjax(SERVICE_PACK_PROC_URL +"/"+id+"?key="+key, "GET", null, procCallbackGetServicePack, $('#serviceModalLoadingBar '));
+        setTimeout(function() {
+            if($("input[name=serviceUseYn]:checked").val() == "Y"){
+                $('input:radio[name="serviceUseYn"][value="N"]').prop('checked', true);
+                $('input:radio[name="serviceUseYn"][value="Y"]').prop('checked', false);
+            }else if($("input[name=serviceUseYn]:checked").val() == "N"){
+                $('input:radio[name="serviceUseYn"][value="Y"]').prop('checked', true);
+                $('input:radio[name="serviceUseYn"][value="N"]').prop('checked', false);
+            }
+            if($("#serviceServicePackList").val()===null){
+                $("#serviceServicePackList").val("존재하지 않는 서비스");
+            }
+            updateService();
+        }, 200);
+    }
 </script>
 
 </body>
