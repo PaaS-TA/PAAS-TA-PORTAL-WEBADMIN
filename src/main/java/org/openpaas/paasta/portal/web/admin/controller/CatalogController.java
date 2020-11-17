@@ -211,7 +211,8 @@ class CatalogController extends Common {
             Map<String, Object> resultMap = new ObjectMapper().readValue(result.getBody().toString(), Map.class);
 
             resultMap.put("RESULT", Constants.RESULT_STATUS_SUCCESS);
-            final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String, Object>>(resultMap, result.getHeaders(), result.getStatusCode());
+//            final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<Map<String, Object>>(resultMap, result.getHeaders(), result.getStatusCode());
+            final ResponseEntity<Map<String, Object>> generateResponseEntity = new ResponseEntity<>(resultMap, result.getStatusCode());
             return generateResponseEntity;
         } finally {
             IOUtils.closeQuietly(multipartFile.getInputStream());

@@ -500,7 +500,14 @@
         // 차트 여러번 조작시 animation complete시 셋팅한 데이터들이 사라지는 현상이 있어,
         // 조직 클릭시 차트를 새로 만드는 걸로 변경
         if($legendElem.children('text').length == 1 || triggerType == ORGANIZATION_LABEL) {
-          getChartList();
+          let key;
+          if($.cookie("api_key") != null){
+            key = $.cookie("api_key");
+            $("#apiUrls").val(key);
+          }else{
+            key = $("#apiUrls").val();
+          }
+          getChartList(key);
           return;
         }
 

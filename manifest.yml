@@ -1,0 +1,25 @@
+applications:
+  - name: portal-web-admin
+    memory: 1G
+    instances: 1
+    buildpacks:
+    - java_buildpack
+    path: build/libs/paas-ta-portal-webadmin.war
+    env:
+      server_port: 8090
+
+      spring_application_name: PortalWebAdmin
+
+      datasource_cfg_url: jdbc:mysql://<PORTAL_DB_IP>:<PORTAL_DB_PORT>/webconfig
+      datasource_cfg_username: <PORTAL_DB_USER>
+      datasource_cfg_password: <PORTAL_DB_USER_PASSWORD>
+      datasource_cfg_ddl-auto: none
+      datasource_cfg_naming_strategy: org.hibernate.dialect.MySQL5Dialect
+
+      paasta_portal_api_authorization_base64: Basic YWRtaW46b3BlbnBhYXN0YQ==
+      paasta_portal_api_zuulUrl_cfapi: http://portal-gateway.<DOMAIN>/portalapi
+      paasta_portal_api_zuulUrl_commonapi: http://portal-gateway.<DOMAIN>/commonapi
+      paasta_portal_api_zuulUrl_storageapi: http://portal-gateway.<DOMAIN>/storageapi
+      paasta_portal_storageapi_type: swift
+
+      logging_level_org.openpaas.paasta.portal.web.admin.exception.GlobalControllerExceptionHandler: DEBUG
