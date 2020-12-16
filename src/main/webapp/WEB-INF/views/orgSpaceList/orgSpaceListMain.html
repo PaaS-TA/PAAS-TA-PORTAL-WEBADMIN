@@ -255,8 +255,17 @@
             else spaces = data.resource[i].name;
         }
         $("#modalbody").html("<b>Domains</b> : " + domainNames +
-                "<br><b>Quota</b> : " + data.quota.name + " (" + data.quota.memoryLimit + "M memory limit, " + data.quota.totalRoutes + " routes, " + data.all_serviceTotal + "/" + data.quota.totalServices + " services)" +
-                "<br><b>Spaces</b> : " + spaces);
+                 "<br><b>Quota</b> : " + data.quota.name + " (" + (data.quota.memoryLimit==(-1)?"unlimited":data.quota.memoryLimit+"M") + " memory limit, " + (data.quota.totalRoutes==(-1)?"unlimited":data.quota.totalRoutes) + " routes, " +  (data.quota.totalServices==(-1)?"unlimited":data.all_serviceTotal + "/" + data.quota.totalServices) + " services)" +
+                 "<br><b>Spaces</b> : " + spaces);
+        // if(data.quota.totalServices==(-1)){
+        //     $("#modalbody").html("<b>Domains</b> : " + domainNames +
+        //         "<br><b>Quota</b> : " + data.quota.name + " (" + data.quota.memoryLimit + "M memory limit, " + data.quota.totalRoutes + " routes, " + "unlimited services)" +
+        //         "<br><b>Spaces</b> : " + spaces);
+        // }else {
+        //     $("#modalbody").html("<b>Domains</b> : " + domainNames +
+        //         "<br><b>Quota</b> : " + data.quota.name + " (" + data.quota.memoryLimit + "M memory limit, " + data.quota.totalRoutes + " routes, " + data.all_serviceTotal + "/" + data.quota.totalServices + " services)" +
+        //         "<br><b>Spaces</b> : " + spaces);
+        // }
     }
 
 
@@ -326,6 +335,7 @@
 
 
     function searchOrg() {
+        $(".bg-aqua").removeClass('bg-aqua disabled color-palette');
         $('#spaceTable').hide();
         $('#noSpaceMessage').hide();
 

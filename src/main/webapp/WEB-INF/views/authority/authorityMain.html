@@ -450,7 +450,7 @@
             objName.focus();
             return false;
         }
-        authoritymodal("그룹 생성","UAA 권한 그룹을 생성합니다."+reqName+"그룹을 생성 하시겠습니까?",
+        authoritymodal("그룹 생성","UAA 권한 그룹을 생성합니다. "+reqName+"그룹을 생성 하시겠습니까?",
             "createAuthorityGroup('"+reqName+"', refreshGroupArea)","저장")
 
     }
@@ -492,9 +492,14 @@
 
     function createGroupDuplicationCheck() {
         var input = $("#group-create-name-input").val();
+
+        var gtlt_pattern = /[<>]/g;
+
         if(!procCheckValidStringSpace(input)){
             //값이 빈값인 경우
             inputBoxControl("group-create-name-input", "warning", "warning");
+        }else if(gtlt_pattern.test(input) == true){
+            inputBoxControl("group-create-name-input", "error", "gtlted");
         } else if($("#groupTable-contents tr[id*='groupTable-group-no-'][name='"+input+"']").length > 0) {
             //중복되는 이름이 있는 경우
             inputBoxControl("group-create-name-input", "error", "duplicated");
@@ -573,6 +578,9 @@
         if(status == "error") {
             if(errorDetail === "duplicated"){
                 var errorMessage="이미 존재하는 그룹 이름입니다."
+            }
+            else if(errorDetail=="gtlted"){
+                var errorMessage="<, >는 입력할 수 없습니다."
             }
 
             if($("#"+element+"-statusMessage").is(":hidden")) {

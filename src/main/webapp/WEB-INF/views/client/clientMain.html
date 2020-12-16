@@ -98,7 +98,7 @@
                                             <label for="clientId" class="col-sm-3 control-label">클라이언트 아이디</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="clientId"
-                                                       placeholder=""/>
+                                                       placeholder="" />
                                             </div>
                                         </div>
 
@@ -106,7 +106,7 @@
                                             <label for="clientPwd" class="col-sm-3 control-label">클라이언트 패스워드</label>
                                             <div class="col-sm-9">
                                                 <input type="password" class="form-control toCheckString" id="clientPwd"
-                                                       placeholder=""/>
+                                                       placeholder="" />
                                             </div>
                                         </div>
 
@@ -122,7 +122,7 @@
                                             <label for="authorized_grant_types" class="col-sm-3 control-label">authorized_grant_types</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString"
-                                                          id="authorized_grant_types"/>
+                                                          id="authorized_grant_types" />
                                             </div>
                                         </div>
 
@@ -130,7 +130,7 @@
                                             <label for="redirect_uri" class="col-sm-3 control-label">redirect_uri</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control "
-                                                          id="redirect_uri"/>
+                                                          id="redirect_uri" />
                                             </div>
                                         </div>
 
@@ -138,7 +138,7 @@
                                             <label for="scope" class="col-sm-3 control-label">scope</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString"
-                                                          id="scope"/>
+                                                          id="scope" />
                                             </div>
                                         </div>
 
@@ -146,7 +146,7 @@
                                             <label for="authorities" class="col-sm-3 control-label">authorities</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString"
-                                                          id="authorities"/>
+                                                          id="authorities" />
                                             </div>
                                         </div>
 
@@ -155,7 +155,7 @@
                                             <label for="autoapprove" class="col-sm-3 control-label">autoapprove</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control "
-                                                          id="autoapprove"/>
+                                                          id="autoapprove" />
                                             </div>
                                         </div>
 
@@ -164,7 +164,7 @@
                                             <label for="access_token_validity" class="col-sm-3 control-label">access_token_validity</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control "
-                                                          id="access_token_validity"/>
+                                                          id="access_token_validity" />
                                             </div>
                                         </div>
 
@@ -173,7 +173,7 @@
                                             <label for="refresh_token_validity" class="col-sm-3 control-label">refresh_token_validity</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control "
-                                                          id="refresh_token_validity"/>
+                                                          id="refresh_token_validity" />
                                             </div>
                                         </div>
 
@@ -182,7 +182,7 @@
                                             <label for="token_salt" class="col-sm-3 control-label">token_salt</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control "
-                                                          id="token_salt"/>
+                                                          id="token_salt" />
                                             </div>
                                         </div>
 
@@ -191,7 +191,7 @@
                                             <label for="allowedproviders" class="col-sm-3 control-label">allowedproviders</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control "
-                                                          id="allowedproviders"/>
+                                                          id="allowedproviders" />
                                             </div>
                                         </div>
 
@@ -217,7 +217,7 @@
                                             <label for="optionGuide" class="col-sm-3 control-label">옵션 가이드</label>
                                             <div class="col-sm-9">
                         <textarea class="form-control" rows="13" id="optionGuide"
-                                  style="background: white; cursor: text" readonly="true">
+                                  style="cursor: text" readonly="true">
 새 클라이언트 등록시 옵션 설정 예제)
     --authorized_grant_types client_credentials
 
@@ -345,6 +345,18 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
             $('#clientSaveBtn').hide();
             $('#clientRegBtn').show();
             $('#modifyGuide').addClass('hide');
+
+            $("#clientId").attr("readonly",false);
+            $("#clientPwd").attr("readonly",false);
+            $("#scope").attr("readonly",false);
+            $("#authorized_grant_types").attr("readonly",false);
+            $("#authorities").attr("readonly",false);
+            $("#access_token_validity").attr("readonly",false);
+            $("#refresh_token_validity").attr("readonly",false);
+            $("#redirect_uri").attr("readonly",false);
+            $("#token_salt").attr("readonly",false);
+            $("#autoapprove").attr("readonly",false);
+            $("#allowedproviders").attr("readonly",false);
 
             initModal();
         });
@@ -495,6 +507,18 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
         $("#clientId").val(data.client_id);
         // $("#clientOption").val(options);
 
+        $("#clientId").attr("readonly",true);
+        $("#clientPwd").attr("readonly",true);
+        $("#scope").attr("readonly",true);
+        $("#authorized_grant_types").attr("readonly",true);
+        $("#authorities").attr("readonly",true);
+        $("#access_token_validity").attr("readonly",true);
+        $("#refresh_token_validity").attr("readonly",true);
+        $("#redirect_uri").attr("readonly",true);
+        $("#token_salt").attr("readonly",true);
+        $("#autoapprove").attr("readonly",true);
+        $("#allowedproviders").attr("readonly",true);
+
     }
 
 
@@ -626,6 +650,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
         var allowedproviders = $("#allowedproviders").val().trim();
         // var signup_redirect_url = $("#signup_redirect_url").val();
         // var clone = $("#clone").val();
+
 
 
         if (authorized_grant_types === undefined || authorized_grant_types == '') {
