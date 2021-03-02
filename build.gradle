@@ -74,7 +74,7 @@ dependencies {
 
     //compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.9.RELEASE'
     compile ('org.springframework.boot:spring-boot-starter-jdbc')
-    compile ('mysql:mysql-connector-java:5.0.8')
+    compile ('org.mariadb.jdbc:mariadb-java-client:2.7.2')
     // development only
 
     //Default Spring-boot setting

@@ -10,7 +10,7 @@ applications:
 
       spring_application_name: PortalWebAdmin
 
-      datasource_cfg_url: jdbc:mysql://<PORTAL_DB_IP>:<PORTAL_DB_PORT>/webconfig
+      datasource_cfg_url: jdbc:mariadb://<PORTAL_DB_IP>:<PORTAL_DB_PORT>/webconfig
       datasource_cfg_username: <PORTAL_DB_USER>
       datasource_cfg_password: <PORTAL_DB_USER_PASSWORD>
       datasource_cfg_ddl-auto: none

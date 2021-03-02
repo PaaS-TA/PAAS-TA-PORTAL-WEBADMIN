@@ -25,7 +25,7 @@ public class CfgConfig {
 
     private static final Logger logger = getLogger(CfgConfig.class);
 
-    String cfgDriverClassName = "com.mysql.jdbc.Driver";
+    String cfgDriverClassName = "org.mariadb.jdbc.Driver";
 
     @Value("${datasource.cfg.url}")
     String cfgUrl;
