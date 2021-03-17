@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class ConfigInfoService extends Common {
 
-    private final String V2_URL = "/v2";
+    private static final String V2_URL = "/v2";
 
     @Autowired
     CommonService commonService;

@@ -130,7 +130,7 @@ public class Service {
             this.service = service;
         }
 
-        public class ServiceInfo {
+        public static class ServiceInfo {
 
             private String label;
 

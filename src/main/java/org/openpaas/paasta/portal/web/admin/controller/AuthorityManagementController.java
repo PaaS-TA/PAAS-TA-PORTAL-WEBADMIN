@@ -22,7 +22,7 @@ import java.util.Map;
 @RestController
 public class AuthorityManagementController extends Common{
 
-    private final String V2_URL = "/v2";
+    private static final String V2_URL = "/v2";
     /**
      * Gets org space list main.
      *

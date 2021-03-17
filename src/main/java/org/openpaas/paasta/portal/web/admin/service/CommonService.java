@@ -95,6 +95,7 @@ public class CommonService extends Common {
 
         Map map = getServerInfo(key);
         String apiUri = map.get("apiuri").toString();
+        LOGGER.info("apiUri :: {}", apiUri);
         String authorization = map.get("authorization").toString();
         String token = map.get("token").toString();
 

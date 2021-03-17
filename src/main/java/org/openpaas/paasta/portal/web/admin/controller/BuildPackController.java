@@ -27,7 +27,7 @@ import java.util.UUID;
 @Controller
 public class BuildPackController extends Common {
 
-    private final String V2_URL = "/v2";
+    private static final String V2_URL = "/v2";
 
     /**
      * 빌드팩 화면

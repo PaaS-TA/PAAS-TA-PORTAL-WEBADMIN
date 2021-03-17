@@ -158,7 +158,7 @@ class CatalogController extends Common {
      */
     @RequestMapping(value = {"/starterpackForm"}, method = RequestMethod.POST)
     public ModelAndView getStarterForm(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView();
+        //ModelAndView mv = new ModelAndView();
 
         return new ModelAndView() {{
             setViewName("/catalog/starterPackForm");

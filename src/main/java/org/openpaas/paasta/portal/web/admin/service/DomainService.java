@@ -17,8 +17,8 @@ import java.util.Map;
 @Service
 public class DomainService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DomainController.class);
-    private final String V2_URL = "/v2";
-    private final String V3_URL = "/v3";
+    private static final String V2_URL = "/v2";
+    private static final String V3_URL = "/v3";
 
     @Autowired
     CommonService commonService;

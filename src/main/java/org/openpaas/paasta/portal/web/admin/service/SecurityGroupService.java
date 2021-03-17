@@ -15,8 +15,8 @@ import java.util.Map;
 @Service
 public class SecurityGroupService extends Common {
 
-    private final String V2_URL = "/v2";
-    private final String V3_URL = "/v3";
+    private static final String V2_URL = "/v2";
+    private static final String V3_URL = "/v3";
 
     @Autowired
     CommonService commonService;

@@ -20,7 +20,7 @@ public class CommonCode {
     private String orgKey;
     private String value;
     private String groupId;
-    private String group_id;
+    //private String group_id;
     private String useYn;
     private int order;
     private String summary;
