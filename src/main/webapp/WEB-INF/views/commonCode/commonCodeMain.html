@@ -550,8 +550,10 @@
             if(target.id=="key") {
                 $("#validation_group_key").show();
             }
-            isGroupValidation = false;
-            return false;
+            if(target.id!="value") {
+                isGroupValidation = false;
+                return false;
+            } 
         }
         if(special_value_pattern.test(target.value) == true){
             if(target.id=="value"){
