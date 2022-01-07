@@ -850,7 +850,7 @@
 
 
         var groupId = $('#groupId').val();
-        var reqUseYn = $("input:radio[id='useYn']:checked").val();
+        var reqUseYn = $("input:radio[name='RadiocodeDetail']:checked").val();
         var param = $("#codeDetailForm").serializeObject();
 
         var param = {
@@ -858,7 +858,7 @@
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: reqUseYn,
+            useYn: reqUseYn
         }
 
         $.ajax({
