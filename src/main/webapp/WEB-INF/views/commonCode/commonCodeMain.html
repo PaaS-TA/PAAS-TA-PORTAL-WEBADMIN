@@ -349,6 +349,7 @@
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
     var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
     var EMPTY_MSG = /*[[#{common.info.empty.data}]]*/ '';
+    var LIST_DETAIL_PROC_URL = "/v2/codedetail";
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
@@ -602,8 +603,6 @@
     // GET LIST CALLBACK CodeDetailList
     var procCallbackGetCodeGroupList = function (data) {
 
-        //log.console("data 뭐 들어오는거지,,");
-        //log.console(data);
         var objTable = $("#codeGroupList");
         var objTableArea = $('#codeGroupTableArea');
         var objMessageArea = $('#codeGroupMessageArea');
@@ -774,8 +773,8 @@
 
         var param = {
             id: $("#id").val(),
-            name: $("#name").val()
-        };
+            name: $("#name").val(),
+        }
 
         $.ajax({
             url: "/v2/codegroup" +"?key="+key,
@@ -789,8 +788,10 @@
                 }
             },
             success: function (data) {
-                procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
-                init();
+                if(data) {
+                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    init();
+                }
             },
             error: function (xhr, status, error) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
@@ -877,7 +878,7 @@
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: reqUseYn
+            useYn: reqUseYn,
         }
 
         $.ajax({
@@ -896,7 +897,6 @@
             },
             error: function (xhr, status, error) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
-                notifyAlert()
             }
         });
 
@@ -961,7 +961,7 @@
 
         init();
         getCodeDetail(selectKey);
-    };
+    }
 
 
     function goMarketPlace(no){
