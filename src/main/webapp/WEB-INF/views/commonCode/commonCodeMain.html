@@ -771,6 +771,10 @@
             }
         });
 
+        if(duplicated) {
+            return false;
+        }
+
         var param = {
             id: $("#id").val(),
             name: $("#name").val(),
@@ -782,11 +786,6 @@
             data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",
-            beforeSend : function(xhr, opts) {
-                if(duplicated) {
-                    xhr.abort();
-                }
-            },
             success: function (data) {
                 if(data) {
                     procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
