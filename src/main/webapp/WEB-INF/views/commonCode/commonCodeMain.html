@@ -344,11 +344,11 @@
     var groupId;
     var selectKey;
     var no;
+    var CODE_GROUP_LIST;
     var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
     var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
     var EMPTY_MSG = /*[[#{common.info.empty.data}]]*/ '';
-    var LIST_DETAIL_PROC_URL = "/v2/codedetail";
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
@@ -571,7 +571,7 @@
         if(target.id=="value")
             $("#validation_group_value").hide();
         isGroupValidation = true;
-    };
+    }
 
 
     // GET GroupList searchKeyword
@@ -602,6 +602,8 @@
     // GET LIST CALLBACK CodeDetailList
     var procCallbackGetCodeGroupList = function (data) {
 
+        //log.console("data 뭐 들어오는거지,,");
+        //log.console(data);
         var objTable = $("#codeGroupList");
         var objTableArea = $('#codeGroupTableArea');
         var objMessageArea = $('#codeGroupMessageArea');
@@ -621,13 +623,15 @@
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\',\'' +  "&key="+key+ '\')">' + codeGroupList[i].id + '</td>'
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\',\'' +  "&key="+key + '\')">' + codeGroupList[i].name + '</td>'
                     + '<td>'
-                    + ' <span class="glyphicon glyphicon-list-alt" name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id+'\')" ></span>'
+                    + ' <span class="glyphicon glyphicon-list-alt" name="codeDetailBtn" onclick="getCodeGroup(\'' + codeGroupList[i].id+'\')" ></span>'
                     + '</td>'
                     + '</tr>');
             }
             objTableArea.append(htmlString).trigger("create");
 
         }
+
+        CODE_GROUP_LIST = data.list;
     };
 
 
@@ -756,26 +760,41 @@
         if (isGroupValidation == false || $("#id").val()=="" || $("#name").val()=="") {
             return false;
         }
+
+        var duplicated = false;
+
+        // 코드 중복 여부 확인
+        $.each(CODE_GROUP_LIST, function (index, list_data) {
+            if($("#id").val() == list_data.id){
+                notifyAlert('warning','',"중복된 ID입니다.");
+                duplicated = true;
+                return false;
+            }
+        });
+
         var param = {
             id: $("#id").val(),
-            name: $("#name").val(),
-        }
+            name: $("#name").val()
+        };
+
         $.ajax({
             url: "/v2/codegroup" +"?key="+key,
             method: "POST",
             data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",
-            success: function (data) {
-                if (data) {
-                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
-                    init();
+            beforeSend : function(xhr, opts) {
+                if(duplicated) {
+                    xhr.abort();
                 }
+            },
+            success: function (data) {
+                procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                init();
             },
             error: function (xhr, status, error) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
-
         });
         //modalInit();
     }
@@ -877,6 +896,7 @@
             },
             error: function (xhr, status, error) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
+                notifyAlert()
             }
         });
 
@@ -941,7 +961,7 @@
 
         init();
         getCodeDetail(selectKey);
-    }
+    };
 
 
     function goMarketPlace(no){
