@@ -345,11 +345,11 @@
     var selectKey;
     var no;
     var CODE_GROUP_LIST;
+    var CODE_DETAIL_LIST;
     var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
     var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
     var EMPTY_MSG = /*[[#{common.info.empty.data}]]*/ '';
-    var LIST_DETAIL_PROC_URL = "/v2/codedetail";
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
@@ -502,7 +502,7 @@
             if(data.list[i].groupId == "MARKET_ADMIN_URL" && data.list[i].useYn == "Y"){
                 market_html += "<li><a onclick=\"goMarketPlace('" + data.list[i].value + "')\" style='cursor: pointer'><i class=\"fa fa-circle-o\" style='cursor: pointer'></i>"+data.list[i].key+"</a></li>";
             }
-    }
+        }
         if(market_html == ""){
             $('#market_head').remove();
         }else{
@@ -705,6 +705,8 @@
             }
             objTableArea.append(htmlString.toString()).trigger("create");
         }
+
+        CODE_DETAIL_LIST = data.list;
     };
 
     function modalInitInsert() {
@@ -787,9 +789,12 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                if(data) {
-                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                if(data.RESULT == "SUCCESS") {
+                    procAlert("success", [[#{common.info.popup.update.success}]]/*""*/);
                     init();
+                } else {
+                    notifyAlert('warning','',"중복된 ID입니다.");
+                    return false;
                 }
             },
             error: function (xhr, status, error) {
@@ -867,6 +872,20 @@
             return false;
         }
 
+        var duplicated = false;
+
+        // 코드 중복 여부 확인
+        $.each(CODE_DETAIL_LIST, function (index, list_data) {
+            if($("#key").val() == list_data.key){
+                notifyAlert('warning','',"중복된 Key입니다.");
+                duplicated = true;
+                return false;
+            }
+        });
+
+        if(duplicated) {
+            return false;
+        }
 
         var groupId = $('#groupId').val();
         var reqUseYn = $("input:radio[name='RadiocodeDetail']:checked").val();
@@ -889,9 +908,9 @@
             success: function (data) {
                 if (data) {
                     procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
-                    notifyAlert('success',"",'생성 완료 되었습니다.');
+                    //notifyAlert('success',"",'생성 완료 되었습니다.');
                     init();
-                    getCodeDetail(selectKey);
+                    //getCodeDetail(selectKey);
                 }
             },
             error: function (xhr, status, error) {
