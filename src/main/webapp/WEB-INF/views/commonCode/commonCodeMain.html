@@ -767,7 +767,7 @@
         // 코드 중복 여부 확인
         $.each(CODE_GROUP_LIST, function (index, list_data) {
             if($("#id").val() == list_data.id){
-                notifyAlert('warning','',"중복된 ID입니다.");
+                notifyAlert('warning','', /*[[#{common.info.result.duplicate('ID')}]]*/);
                 duplicated = true;
                 return false;
             }
@@ -789,15 +789,21 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                if(data.RESULT == "SUCCESS") {
-                    procAlert("success", [[#{common.info.popup.update.success}]]/*""*/);
-                    init();
-                } else {
-                    notifyAlert('warning','',"중복된 ID입니다.");
-                    return false;
+                switch (data.RESULT) {
+                    case "DUPLICATED" :
+                        notifyAlert('warning', '', /*[[#{common.info.result.duplicate('ID')}]]*/);
+                        break;
+                    case "FAIL" :
+                        procAlert("danger", FAIL_MSG);
+                        break;
+                    default :
+                        procAlert("success", SUCCESS_MSG);
+                        notifyAlert('success', '', /*[[#{insert.result.success}]]*/);
+                        init();
+                        break;
                 }
             },
-            error: function (xhr, status, error) {
+            error: function (xhr, status, error, data) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
         });
@@ -834,7 +840,8 @@
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    procAlert("success", SUCCESS_MSG);
+                    notifyAlert('success', '', /*[[#{update.result.success}]]*/);
                     init();
                 }
             },
@@ -876,8 +883,8 @@
 
         // 코드 중복 여부 확인
         $.each(CODE_DETAIL_LIST, function (index, list_data) {
-            if($("#key").val() == list_data.key){
-                notifyAlert('warning','',"중복된 Key입니다.");
+            if($("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
+                notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
                 duplicated = true;
                 return false;
             }
@@ -906,14 +913,22 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                if (data) {
-                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
-                    //notifyAlert('success',"",'생성 완료 되었습니다.');
-                    init();
-                    //getCodeDetail(selectKey);
+                switch (data.RESULT) {
+                    case "DUPLICATED" :
+                        notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
+                        break;
+                    case "FAIL" :
+                        notifyAlert('danger','', FAIL_MSG);
+                        break;
+                    default :
+                        procAlert("success", SUCCESS_MSG);
+                        notifyAlert('success', '', /*[[#{insert.result.success}]]*/);
+                        init();
+                        getCodeDetail(selectKey);
+                        break;
                 }
             },
-            error: function (xhr, status, error) {
+            error: function (xhr, status, error, data) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
         });
@@ -933,14 +948,29 @@
             return false;
         }
 
+        var duplicated = false;
 
+        // 코드 중복 여부 확인
+        $.each(CODE_DETAIL_LIST, function (index, list_data) {
+            if($("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
+                notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
+                duplicated = true;
+                return false;
+            }
+        });
+
+        if(duplicated) {
+            return false;
+        }
 
 
         var no = $('#detailNo').val();
+        var groupId = $('#groupId').val();
         var param = $("#codeDetailForm").serializeObject();
 
         var param = {
-            no:no,
+            groupId: groupId,
+            no: no,
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
@@ -954,14 +984,23 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                if (data) {
-                    //procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
-                    notifyAlert('success',"",'수정 완료 되었습니다.');
-                    init();
-                    getCodeDetail(selectKey);
+                switch (data.RESULT) {
+                    case "DUPLICATED" :
+                        notifyAlert('warning', '', /*[[#{common.info.result.duplicate('Key')}]]*/);
+                        break;
+                    case "FAIL" :
+                        notifyAlert('danger','', FAIL_MSG);
+                        break;
+                    default :
+                        notifyAlert('success','',/*[[#{update.result.success}]]*/);
+                        init();
+                        getCodeDetail(selectKey);
+                        break;
                 }
             },
-            error: function (xhr, status, error) {
+            error: function (xhr, status, error, data) {
+                //notifyAlert('warning', '', /*[[#{common.info.result.fail}]]*/);
+                notifyAlert('danger','', FAIL_MSG);
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
         });
