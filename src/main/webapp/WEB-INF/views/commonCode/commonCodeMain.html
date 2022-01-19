@@ -175,7 +175,7 @@
                             <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right"
                                     onClick="createGroup();">등록
                             </button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" onclick="modalInit()"
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left"
                                     data-dismiss="modal">닫기
                             </button>
                         </div>
@@ -952,7 +952,7 @@
 
         // 코드 중복 여부 확인
         $.each(CODE_DETAIL_LIST, function (index, list_data) {
-            if($("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
+            if($("#detailNo").val() != list_data.no && $("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
                 notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
                 duplicated = true;
                 return false;
