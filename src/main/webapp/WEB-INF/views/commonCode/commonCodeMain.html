@@ -857,11 +857,14 @@
         var groupId = $("#groupId").val();
         procCallAjax("/v2/codegroup/" + groupId +"?key="+key, "DELETE", '', deleteGroup, $('#serviceModalLoadingBar'));
         getCodeGroupList();
+        getCodeDetail(selectKey);
         //modalInit();
     }
 
     var deleteGroup = function (data) {
         init();
+        // getCodeGroupList();
+        // getCodeDetail(selectKey);
     }
 
 
@@ -903,7 +906,7 @@
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: reqUseYn,
+            useYn: reqUseYn
         }
 
         $.ajax({
