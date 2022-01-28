@@ -15,7 +15,7 @@
 
 <div id="statusTitle" class="col-sm-6 pt30">
 
-    <h4 class="modify_h4 fwn">게시판 상세</h4>
+    <h4 class="modify_h4 fwn">Bulletin board details</h4>
 
 </div>
 
@@ -23,19 +23,19 @@
 <form class="form-horizontal" role="form" id="boardForm" name="boardForm">
 
     <div class="form-group">
-        <label class="control-label col-sm-2" for="title">제목:</label>
+        <label class="control-label col-sm-2" for="title">Title:</label>
         <div class="col-sm-9">
             <input type="text" maxlength="100" class="form-control" id="title" disabled="disabled">
         </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label col-sm-2" for="userId">작성자:</label>
+        <label class="control-label col-sm-2" for="userId">Writer:</label>
         <div class="col-sm-4" style="width: 29%">
             <input type="text" maxlength="100" class="form-control" id="userId" disabled="disabled">
         </div>
 
-        <label class="control-label col-sm-2" for="created">게시일:</label>
+        <label class="control-label col-sm-2" for="created">Date:</label>
         <div class="col-sm-4" style="width: 29%">
             <input type="text" maxlength="100" class="form-control" id="created" disabled="disabled">
         </div>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-sm-2" for="content">내용:</label>
+        <label class="control-label col-sm-2" for="content">Contents:</label>
         <div class="col-sm-9">
             <textarea class="form-control" rows="5" id="content"></textarea>
         </div>
@@ -67,7 +67,7 @@
 
     <hr>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="boardCommentList">댓글</label>
+        <label class="control-label col-sm-2" for="boardCommentList">Comment</label>
         <div class="col-sm-9">
 
             <table class="table table-striped table-hover t1">
@@ -86,8 +86,8 @@
         <div class="col-sm-offset-1 col-sm-10 " align="right">
             <div class="divButtons">
 
-                <button type="button" class="btn btn_del2 fl ml-22" id="btnDelete">삭제</button>
-                <button type="button" class="btn btn-default btn-sm" id="btnCancel">목록</button>
+                <button type="button" class="btn btn_del2 fl ml-22" id="btnDelete">Delete</button>
+                <button type="button" class="btn btn-default btn-sm" id="btnCancel">List</button>
 
             </div>
         </div>
@@ -171,7 +171,7 @@ SCRIPT BEGIN
         var filePath = data.info.filePath;
 
         if (fileName == null || fileName == '') {
-            $("#attachedFileLabel-board").text("첨부 파일 없음");
+            $("#attachedFileLabel-board").text("No attachments");
         }
         else {
             procSetFileLabel(fileName, filePath);
@@ -202,7 +202,7 @@ SCRIPT BEGIN
             $('#attachedFileLabel-board').html(linkHtml);
 
         } else {
-            $('#attachedFileLabel-board').text('첨부파일없음');
+            $('#attachedFileLabel-board').text('No attachments');
         }
     };
 
@@ -411,7 +411,7 @@ SCRIPT BEGIN
     // BIND :: BUTTON EVENT
     $("#btnDelete").on("click", function() {
         //    deleteAnswer();
-        procPopup('게시글', DELETE_MESSAGE, 'setDeleteFlag();');
+        procPopup('Post', DELETE_MESSAGE, 'setDeleteFlag();');
 
     });
 

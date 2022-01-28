@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                분할 관리
+                Isolation Segment
             </h1>
         </section>
 
@@ -30,7 +30,7 @@
                                 <div class="input-group input-group-sm" style="width: 450px;">
                                     <input type="text" name="table_create" class="form-control pull-right" placeholder="Segment Name" id="createSegmentName" style="margin-right: 10px;"/>
                                     <div class="input-group-btn" >
-                                        <button type="submit"  class="btn btn-primary btn-sm" onclick="btnCreateIsolationSegments()">Segment 등록</button>
+                                        <button type="submit"  class="btn btn-primary btn-sm" onclick="btnCreateIsolationSegments()">Add Segment</button>
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                                     <tbody id="isolationList" name="dataList">
                                     </tbody>
                                 </table>
-                                <div id="noIsolationMessage" class='box-header with-border' style="display: none">생성된 Isolation Segments가 없습니다.</div>
+                                <div id="noIsolationMessage" class='box-header with-border' style="display: none">No Isolation Segment have been created.</div>
                             </div>
                             <div class="box-body table-responsive no-padding" style="width: 49%">
                                 <table class="table table-bordered table-striped dataTable">
@@ -78,10 +78,10 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="segmentsOrgModalTitle">조직 Isolation Segments 정보</h4>
+                        <h4 class="modal-title" id="segmentsOrgModalTitle">About Organization Isolation Segments</h4>
                     </div>
 
-                    <div style="text-align: right;padding-right: 15px;padding-top: 10px;font-weight: bold;color: #e04f4f;">* 조직 default 초기화는 CLI에서 하시기 바랍니다.</div>
+                    <div style="text-align: right;padding-right: 15px;padding-top: 10px;font-weight: bold;color: #e04f4f;">* Please initialize the organization default from the CLI.</div>
 
                     <div class="modal-body">
 
@@ -270,10 +270,10 @@
         $("#isolationList > tr > td:first-child").each(function(index) {
 
             if(createSegmentName == "") {
-                notifyAlert('warning','', 'Isolation Segments Name이 올바르지 않습니다.');
+                notifyAlert('warning','', 'The Isolation Segments Name is incorrect.');
                 return false;
             } else if($(this).text() == createSegmentName) {
-                notifyAlert('warning','', 'Isolation Segments Name이 이미 존재합니다.');
+                notifyAlert('warning','', 'Isolation Segment Name already exists.');
                 return false;
             }
         }) ;
@@ -322,7 +322,7 @@
     var procCallbackShowLayerPopSegmentsOrgs = function(data){
         SELECT_ORGANIZATIONS_ISOLATION_SEGMENT_LIST = data.resources;
 
-        $("#segmentsOrgModalTitle").text(SELECT_ORGANIZATIONS_NAME + " - Isolation Segments 정보");
+        $("#segmentsOrgModalTitle").text(SELECT_ORGANIZATIONS_NAME + " - About Isolation Segment");
 
         var objTable = $('#segmentsInfo');
 

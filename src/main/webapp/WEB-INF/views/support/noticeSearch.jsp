@@ -9,7 +9,7 @@
 <div class="content-box2 col-md-12 col-md-offset-13">
 
 <div class="form-group col-sm-4 mr-60" style="width: 39%; margin-left: -20px">
-    <label class="control-label-white col-sm-3 mt13" style="text-align:right;">게시일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
+    <label class="control-label-white col-sm-3 mt13" style="text-align:right;">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
     <div class="col-sm-4" style="width: 300px">
             <input type='text' class="form-control" size="20" style="width: 130px; background:url(/resources/images/btn_cal.png) no-repeat right; background-color:#fafafa; border-radius: 5px 5px 5px 5px;" id='startDateInput'/>
         &nbsp;&nbsp;&nbsp;
@@ -23,30 +23,30 @@
 
 <div class="form-group col-sm-2 mr-25" style="width: 20%;padding-left:20px">
     <label for="searchTypeColumn" class="control-label-white col-sm-6 mt13 ml-10"
-           style="text-align:right;">검색항목&nbsp; </label>
+           style="text-align:right;">Search items&nbsp; </label>
     <div class="col-sm-6">
         <select id="searchTypeColumn" name="searchTypeColumn" class="form-control" style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa; ">
-            <option value="<%= Constants.SEARCH_TYPE_ALL %>">전체</option>
-            <option value="<%= Constants.SEARCH_TYPE_CLASSIFICATION %>">분류</option>
-            <option value="<%= Constants.SEARCH_TYPE_TITLE %>">제목</option>
+            <option value="<%= Constants.SEARCH_TYPE_ALL %>">All</option>
+            <option value="<%= Constants.SEARCH_TYPE_CLASSIFICATION %>">Classification</option>
+            <option value="<%= Constants.SEARCH_TYPE_TITLE %>">Title</option>
         </select>
     </div>
 </div>
 <div class="form-group col-sm-2 mr-25" style="width: 19%;padding-left:0px">
     <label for="searchTypeUseYn" class="control-label-white col-sm-6 mt13 ml-10"
-           style="text-align:right;">공개여부&nbsp; </label>
+           style="text-align:right;">Show or Hide&nbsp; </label>
     <div class="col-sm-6">
         <select id="searchTypeUseYn" name="searchTypeUseYn" class="form-control" style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
-            <option value="<%= Constants.SEARCH_TYPE_ALL %>">전체</option>
-            <option value="<%= Constants.USE_YN_Y %>">공개</option>
-            <option value="<%= Constants.USE_YN_N %>">비공개</option>
+            <option value="<%= Constants.SEARCH_TYPE_ALL %>">All</option>
+            <option value="<%= Constants.USE_YN_Y %>">Show</option>
+            <option value="<%= Constants.USE_YN_N %>">Hide</option>
         </select>
     </div>
 </div>
 <div class="form-group col-sm-4" style="width: 29%;padding-left:0px">
-    <label for="searchKeyword" class="control-label-white col-sm-3 mt13 ml-10" style="text-align:right;width:28%">검색어&nbsp;&nbsp; </label>
+    <label for="searchKeyword" class="control-label-white col-sm-3 mt13 ml-10" style="text-align:right;width:28%">Search&nbsp;&nbsp; </label>
     <div class="input-group col-sm-8 ml20">
-        <input type="text" maxlength="100" id="searchKeyword" class="form-control2 ml10" placeholder="검색어를 입력하세요." style="width: 97%; background-color: rgb(255, 255, 255);"  onkeypress="procCheckSearchFormKeyEventNotice(event);">
+        <input type="text" maxlength="100" id="searchKeyword" class="form-control2 ml10" placeholder="Please enter your search term." style="width: 97%; background-color: rgb(255, 255, 255);"  onkeypress="procCheckSearchFormKeyEventNotice(event);">
         <div class="input-group-btn">
             <button type="button" id="btnSearch" class="btn" style="margin: 11px 0 0 0; color: #c4c3c3; background-color: #f7f7f9; height: 30px;">
                 <span class="glyphicon glyphicon-search" style="top: -1px; left: 4px;"></span>

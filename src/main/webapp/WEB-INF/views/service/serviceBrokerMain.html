@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                서비스 브로커
+                Service broker
             </h1>
         </section>
 
@@ -30,7 +30,7 @@
                             </div>
                             <div class="pull-right" style="padding-right: 0px;">
                                 <button type="button" id="register" class="btn btn-block btn-primary btn-sm" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceBrokerFormModal">
-                                    서비스브로커 등록
+                                    Add Service Broker
                                 </button>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                             <table class="table table-striped text-center"> <!-- table-responsive -->
                                 <thead>
                                 <tr>
-                                    <th>이름</th>
+                                    <th>Name</th>
                                     <th>URL</th>
                                 </tr>
                                 </thead>
@@ -63,8 +63,8 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="titleReg">서비스 브로커 등록</div>
-                                <div id="titleDetail">서비스 브로커 상세</div>
+                                <div id="titleReg">Service Broker</div>
+                                <div id="titleDetail">Service Broker Details</div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -75,7 +75,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="name" class="col-sm-3 control-label">서비스 브로커 이름</label>
+                                            <label for="name" class="col-sm-3 control-label">Service broker name</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="name" name="name" placeholder="ex) rabbitmq-service-broker"/>
                                                 <input type="hidden" id="guid"/>
@@ -83,28 +83,28 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="username" class="col-sm-3 control-label">사용자 이름</label>
+                                            <label for="username" class="col-sm-3 control-label">User name</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="username" name="username" placeholder="ex) admin"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="password" class="col-sm-3 control-label">사용자 패스워드</label>
+                                            <label for="password" class="col-sm-3 control-label">User password</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="password" name="password" placeholder="ex) admin"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="url" class="col-sm-3 control-label">URL 정보</label>
+                                            <label for="url" class="col-sm-3 control-label">URL information</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="url" name="url" placeholder="ex) http://10.30.40.81:4567"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="purge" class="col-sm-3 control-label" id="forcedeletion">강제 삭제</label>
+                                            <label for="purge" class="col-sm-3 control-label" id="forcedeletion">Force Delete</label>
                                             <div class="col-sm-9">
                                                 <input type="checkbox" id="purge"/>
                                             </div>
@@ -115,10 +115,10 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">삭제</button>
-                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">저장</button>
-                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">등록</button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteServiceBrokerModal();">Delete</button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateServiceBroker();">Save</button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right" onClick="createServiceBroker();">Add</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -139,7 +139,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
-                                    onclick="procClosePopup('serviceBrokerConfirmModal');"> 취소
+                                    onclick="procClosePopup('serviceBrokerConfirmModal');"> Cancel
                             </button>
                         </div>
                     </div>
@@ -305,9 +305,9 @@
     // 서비스 브로커 삭제 (confirm layer)
     function deleteServiceBrokerModal() {
 
-        $("#popupTitle").html("서비스 브로커 삭제");
-        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{delete.confirm.message('서비스 브로커')}]]*/ "");
-        $("#popupButtonText").text("삭제");
+        $("#popupTitle").html("Delete service broker");
+        $("#popupMessage").html("" +$("#name").val()+ " " + /*[[#{delete.confirm.message('Service broker')}]]*/ "");
+        $("#popupButtonText").text("Delete");
         $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "deleteServiceBroker();");
         $("#popupButtonText").show();

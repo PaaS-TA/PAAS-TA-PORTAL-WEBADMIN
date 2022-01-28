@@ -48,11 +48,11 @@ public class LoginController extends Common {
         ModelAndView mv = new ModelAndView();
 
         if (error != null) {
-            mv.addObject("error", "아이디 또는 비밀번호가 맞지 않습니다.");
+            mv.addObject("error", "ID or password does not match.");
         }
 
         if (logout != null) {
-            mv.addObject("message", "성공적으로 로그아웃 되었습니다.");
+            mv.addObject("message", "You have been successfully logged out.");
         }
 
         LOGGER.info("ROLE_ADMIN : " + request.isUserInRole("ROLE_ADMIN"));

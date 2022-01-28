@@ -14,7 +14,7 @@
 
 <div class="col-sm-12 ml-10">
     <button type="button" class="btn btn-point btn-sm fr mb10" onClick="procMovePage(FORM_URL_NOTICE, '<%= Constants.CUD_C %>');" >
-        공지 등록
+        Notice registration
     </button>
 </div>
 
@@ -22,11 +22,11 @@
     <table class="table table-hover" id="noticeTable">
         <thead>
         <tr>
-            <th>번호</th>
-            <th>분류</th>
-            <th>제목</th>
-            <th>게시일</th>
-            <th>공개</th>
+            <th>No</th>
+            <th>Classification</th>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Show</th>
         </tr>
         </thead>
         <tbody id="noticeList">

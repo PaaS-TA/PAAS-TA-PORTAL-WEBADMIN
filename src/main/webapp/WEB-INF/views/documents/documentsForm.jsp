@@ -20,10 +20,10 @@
     <c:set var="checkCudU" value="<%= Constants.CUD_U %>" />
     <c:choose>
         <c:when test="${insertFlag eq checkCudU}">
-            <h4 class="modify_h4 fwn">문서 상세</h4>
+            <h4 class="modify_h4 fwn">Document Details</h4>
         </c:when>
         <c:otherwise>
-            <h4 class="modify_h4 fwn">문서 등록</h4>
+            <h4 class="modify_h4 fwn">Document registration</h4>
         </c:otherwise>
     </c:choose>
 </div>
@@ -35,14 +35,14 @@
         <%--<input type="hidden" id="thumb_image_path" value="${thumb_image_path}">--%>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="title">제목</label>
+            <label class="control-label col-sm-2" for="title">Title</label>
             <div class="col-sm-9">
                 <input type="text" maxlength="100" class="form-control toCheckString" id="title">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="classification">분류</label>
+            <label class="control-label col-sm-2" for="classification">Classification</label>
             <div class="col-sm-9">
                 <select class="form-control" id="classification" style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
                     <%-- Category Area --%>
@@ -51,7 +51,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="useYn">공개</label>
+            <label class="control-label col-sm-2" for="useYn">Show</label>
             <div class="col-sm-9 mt10">
                 <label class="radio-inline"><input type="radio" id="useYn" name="useYn" value="Y" checked="checked">Y</label>
                 <label class="radio-inline"><input type="radio" name="useYn" value="N">N</label>
@@ -59,21 +59,21 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="content">내용</label>
+            <label class="control-label col-sm-2" for="content">Contents</label>
             <div class="col-sm-9">
                 <textarea class="form-control" rows="5" id="content"></textarea>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="attachedFile">첨부 파일</label>
+            <label class="control-label col-sm-2" for="attachedFile">Attachment</label>
 
             <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="파일 첨부는 1개 파일만 가능합니다."  style="width: 102%; background: white; cursor: default" disabled>
+                <input type="text" class="form-control" placeholder="Only one file can be attached."  style="width: 102%; background: white; cursor: default" disabled>
             </div>
             <div class="col-sm-1">
                 <button type="button" id="attachedFile" class="btn btn-cancel btn-sm tar" style="margin-top:11px;margin-left:-5px;" onclick="$('#hiddenFile').click()">
-                    <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;파일찾기
+                    <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Find files
                 </button>
                 <input type="file" id="hiddenFile" style="display: none">
 
@@ -86,7 +86,7 @@
                         <span id="attachedFileSize"></span>
                     </div>
                     <div class="divImageInfo fl ml20">
-                        <button id="delFIleImg" type="button" class="btn-del mt-30 ml3" aria-label="첨부파일 지우기">
+                        <button id="delFIleImg" type="button" class="btn-del mt-30 ml3" aria-label="Delete files">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -104,13 +104,13 @@
                     <c:set var="checkCudU" value="<%= Constants.CUD_U %>" />
                     <c:choose>
                         <c:when test="${insertFlag eq checkCudU}">
-                            <button type="button" class="btn btn_del2 fl ml-22" id="btnDelete">삭제</button>
-                            <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">취소</button>
-                            <button type="button" class="btn btn-save btn-sm" id="btnRegist">저장</button>
+                            <button type="button" class="btn btn_del2 fl ml-22" id="btnDelete">Delete</button>
+                            <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">Cancel</button>
+                            <button type="button" class="btn btn-save btn-sm" id="btnRegist">Save</button>
                         </c:when>
                         <c:otherwise>
-                            <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">취소</button>
-                            <button type="button" class="btn btn-save btn-sm" id="btnRegist">등록</button>
+                            <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">Cancel</button>
+                            <button type="button" class="btn btn-save btn-sm" id="btnRegist">Registration</button>
                         </c:otherwise>
                     </c:choose>
 
@@ -259,7 +259,7 @@ SCRIPT BEGIN
             $('#attachedFileLabel').html(linkHtml);
 
         } else {
-            $('#attachedFileLabel').text('첨부파일없음');
+            $('#attachedFileLabel').text('No attachments');
         }
     };
 
@@ -604,7 +604,7 @@ SCRIPT BEGIN
 
         var reqFile = $("#attachedFileLabel").text();
         if (reqFile == '') {
-            procAlert("warning", "첨부된 파일이 없습니다.");
+            procAlert("warning", "No attachments found.");
             reqFile.focus();
             return false;
         }
@@ -645,7 +645,7 @@ SCRIPT BEGIN
 
     // BIND :: BUTTON EVENT
     $("#btnDelete").on("click", function() {
-        procPopup('문서', DELETE_MESSAGE, 'setDeleteFlag();');
+        procPopup('Document', DELETE_MESSAGE, 'setDeleteFlag();');
     });
 
     function setDeleteFlag() {

@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                할당량 관리
+                Quota Management
             </h1>
         </section>
 
@@ -30,8 +30,8 @@
                             <div class="nav-tabs-custom" style="margin-bottom:0px;">
                                 <ul class="nav nav-tabs">
 
-                                    <li class="header no-padding active"><a href="#orgTab" data-toggle="tab" aria-expanded="true"  data-tab-type="org">조직 할당량</a></li>
-                                    <li class="header no-padding"><a href="#spaceTab" data-toggle="tab" aria-expanded="false" data-tab-type="space">공간 할당량</a></li>
+                                    <li class="header no-padding active"><a href="#orgTab" data-toggle="tab" aria-expanded="true"  data-tab-type="org">Organization Quota</a></li>
+                                    <li class="header no-padding"><a href="#spaceTab" data-toggle="tab" aria-expanded="false" data-tab-type="space">Space Quota</a></li>
 
                                 </ul>
                             </div>
@@ -47,14 +47,14 @@
 
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
                                                 <div class="has-feedback">
-                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
+                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" placeholder="Search by name"/>
                                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                                 </div>
                                             </div>
 
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-title-text="조직 할당량 등록" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal">
-                                                    조직 할당량 등록
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-title-text="Add Organization Quota" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal">
+                                                    Add Organization Quota
                                                 </button>
                                             </div>
 
@@ -65,13 +65,13 @@
                                             <table class="table table-striped text-center" style="table-layout:fixed; word-break:break-all;"> <!-- table-responsive -->
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>메모리</th>
-                                                    <th>인스턴스 메모리</th>
-                                                    <th>라우트</th>
-                                                    <th>서비스 인스턴스</th>
-                                                    <th>가격</th>
-                                                    <th>예약 라우트 포트</th>
+                                                    <th>Name</th>
+                                                    <th>Memory</th>
+                                                    <th>Instance memory</th>
+                                                    <th>Route</th>
+                                                    <th>Service instance</th>
+                                                    <th>Price</th>
+                                                    <th>Reserved route port</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="orgQuotaDefinitionList">
@@ -121,14 +121,14 @@
                                             <h3 class="box-title"></h3>
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
                                                 <div class="has-feedback">
-                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
+                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" placeholder="Search by name"/>
                                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                                 </div>
                                             </div>
 
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-title-text="공간 할당량 등록" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal">
-                                                    공간 할당량 등록
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-title-text="Add Space Quota" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal">
+                                                    Space Quota
                                                 </button>
                                             </div>
 
@@ -139,14 +139,14 @@
                                             <table class="table table-striped text-center" style="table-layout:fixed; word-break:break-all;">
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>메모리</th>
-                                                    <th>인스턴스 메모리</th>
-                                                    <th>라우트</th>
-                                                    <th>서비스 인스턴스</th>
-                                                    <th>가격</th>
-                                                    <th>예약 라우트 포트</th>
-                                                    <th>생성 조직명</th>
+                                                    <th>Name</th>
+                                                    <th>Memory</th>
+                                                    <th>Instance memory</th>
+                                                    <th>Route</th>
+                                                    <th>Service instance</th>
+                                                    <th>Price</th>
+                                                    <th>Reserved route port</th>
+                                                    <th>Created Organization Name</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="spaceQuotaDefinitionList">
@@ -156,18 +156,18 @@
                                                     <td>10G</td>
                                                     <td>1000</td>
                                                     <td>100</td>
-                                                    <td>무료</td>
+                                                    <td>Free</td>
                                                     <td>100</td>
                                                     <td>Org-target</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Space_quota</td>
                                                     <td>20G</td>
-                                                    <td>무제한</td>
+                                                    <td>Unlimited</td>
                                                     <td>2000</td>
                                                     <td>200</td>
-                                                    <td>유료</td>
-                                                    <td>무제한</td>
+                                                    <td>Paid</td>
+                                                    <td>Unlimited</td>
                                                     <td>Org-target</td>
                                                 </tr>
                                                 </tbody>
@@ -198,7 +198,7 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="title">조직 할당량 등록</div>
+                                <div id="title">Organization Quota</div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -212,16 +212,16 @@
                                     <div class="box-body" style="padding: 0px">
 
                                         <div class="form-group required has-feedback"><!-- has-success has-feedback --><!--has-error has-feedback -->
-                                            <label for="name" class="col-sm-3 control-label">이름</label>
+                                            <label for="name" class="col-sm-3 control-label">Name</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckStringOrg toCheckStringSpace" id="name" name="useCheck" placeholder="예시) 20G_quota"/>
+                                                <input type="text" class="form-control toCheckStringOrg toCheckStringSpace" id="name" name="useCheck" placeholder="Example) 20G_quota"/>
                                                 <input type="hidden" id="quotaId" class="toCheckString"/>
                                                 <span class="glyphicon form-control-feedback" ></span>
                                             </div>
                                         </div>
 
                                         <div class="form-group required" style="display: none;" id="organizationReg">
-                                            <label for="organization" class="col-xs-9 col-sm-3 control-label">생성 조직명</label>
+                                            <label for="organization" class="col-xs-9 col-sm-3 control-label">Created Organization Name</label>
                                             <div class="col-xs-9 col-sm-3">
 
                                                 <select class="form-control toCheckStringSpace" id="organization">
@@ -235,16 +235,16 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="memorySize" class="col-sm-3 control-label">메모리(MB)</label>
+                                            <label for="memorySize" class="col-sm-3 control-label">Memory(MB)</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control toCheckStringOrg toCheckStringSpace" type="number" id="memorySize" placeholder="예시) 1024, 10240"/>
+                                                <input class="form-control toCheckStringOrg toCheckStringSpace" type="number" id="memorySize" placeholder="Example) 1024, 10240"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="instanceMemorySize" class="col-sm-3 control-label">인스턴스 메모리(MB)</label>
+                                            <label for="instanceMemorySize" class="col-sm-3 control-label">Instance memory(MB)</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnMem" id="instanceMemorySize" placeholder="예시) 1024, 10240" data-toggle="popover" />
+                                                <input class="form-control" type="number" name="unlimitableOnMem" id="instanceMemorySize" placeholder="Example) 1024, 10240" data-toggle="popover" />
                                             </div>
                                             <div class="col-xs-3 col-sm-3">
                                                 <!-- <input type="text" class="form-control" id="password" placeholder="단위 : MB"/> -->
@@ -252,23 +252,23 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="routeCnt" class="col-sm-3 control-label">라우트</label>
+                                            <label for="routeCnt" class="col-sm-3 control-label">Route</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="routeCnt" placeholder="예시) 100" data-toggle="popover" />
+                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="routeCnt" placeholder="Example) 100" data-toggle="popover" />
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="serviceCnt" class="col-sm-3 control-label">서비스 인스턴스</label>
+                                            <label for="serviceCnt" class="col-sm-3 control-label">Service instance</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="serviceCnt" placeholder="예시) 100" data-toggle="popover" />
+                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="serviceCnt" placeholder="Example) 100" data-toggle="popover" />
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="appsCnt" class="col-xs-9 col-sm-3 control-label">APP 인스턴스</label>
+                                            <label for="appsCnt" class="col-xs-9 col-sm-3 control-label">APP instance</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="appsCnt" placeholder="예시) 100" data-toggle="popover" />
+                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="appsCnt" placeholder="Example) 100" data-toggle="popover" />
                                             </div>
                                             <div class="col-xs-3 col-sm-3">
                                                 <!-- <input type="text" class="form-control" id="password" placeholder="ex) admin"/> -->
@@ -276,7 +276,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="isFreeArea" class="col-sm-3 control-label">무료 여부</label>
+                                            <label for="isFreeArea" class="col-sm-3 control-label">Free or Not</label>
                                             <div class="col-sm-9">
 
                                                 <div id="isFreeArea" class="radio">
@@ -298,9 +298,9 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="reservedRouteCnt" class="col-sm-3 control-label">예약된 라우트 포트</label>
+                                            <label for="reservedRouteCnt" class="col-sm-3 control-label">Reserved route ports</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnRoute" id="reservedRouteCnt" placeholder="예시) 100" data-toggle="popover"/>
+                                                <input class="form-control" type="number" name="unlimitableOnRoute" id="reservedRouteCnt" placeholder="Example) 100" data-toggle="popover"/>
                                             </div>
                                         </div>
                                     </div>
@@ -309,10 +309,10 @@
 
                         </div>
                         <div class="modal-footer"><!--style="border-top: 0px"-->
-                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteQuotaDefinitionModal();">삭제</button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
-                            <button type="button" id="regBtn" class="btn btn-sm btn-primary" onClick="createQuotaDefinition()">등록</button>
-                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateQuotaDefinition();">저장</button>
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteQuotaDefinitionModal();">Delete</button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary" onClick="createQuotaDefinition()">Add</button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateQuotaDefinition();">Save</button>
 
                         </div>
                     </div>
@@ -334,7 +334,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"> 취소
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"> Cancel
                             </button>
                         </div>
                     </div>
@@ -436,7 +436,7 @@
 
             //var title = (ACTIVE_TAB == 'org') ? "조직 할당량 상세" : "공간 할당량 상세" ;
 
-            $('#title').text("조직 할당량 상세");
+            $('#title').text("Organizational Quota Details");
 
             $('#deleteBtn').show();
             $('#saveBtn').show();
@@ -450,7 +450,7 @@
         // 리스트 클릭시, 상세 팝업 설정
         $(document).on( 'click', '#spaceQuotaDefinitionList', function(){
 
-            $('#title').text("공간 할당량 상세");
+            $('#title').text("Space Quota Details");
 
             $('#deleteBtn').show();
             $('#saveBtn').show();
@@ -472,11 +472,11 @@
     //Pop-Over 설정
     function setPopover(){
         // 인스턴스 메모리
-        $('input[name=unlimitableOnMem]').data('content','값 입력하지 않을시 : 메모리 허용량 내 무제한으로 설정');
+        $('input[name=unlimitableOnMem]').data('content','If no value is entered: set to unlimited within the memory allowance');
         // 라우트, 서비스, APP
-        $('input[name=unlimitableOnOrg]').data('content','값 입력하지 않을시 : 조직 허용량 내 무제한으로 설정');
+        $('input[name=unlimitableOnOrg]').data('content','If no value is entered: set to unlimited within the organization tolerance');
         // 예약 라우트
-        $('input[name=unlimitableOnRoute]').data('content','값 입력하지 않을시 : 라우트 허용량 내 무제한으로 설정');
+        $('input[name=unlimitableOnRoute]').data('content','If no value is entered: set to unlimited within the route allowance');
 
         $('[data-toggle="popover"]').popover({container: "body",placement:"bottom",trigger:"hover"});
     };
@@ -551,7 +551,7 @@
         var regex = /^[0-9]*$/g;
 
         if(amount == -1){
-            return '무제한';
+            return 'Unlimited';
         }
 
         if(amount >= 1024){
@@ -577,11 +577,11 @@
 
     function convertDataToView(str){
         if(typeof(str) === 'boolean' && str == true){ // 무료/유료
-            return '무료';
+            return 'Free';
         }else if(typeof(str) === 'boolean' && str == false){
-            return '유료';
+            return 'Paid';
         }else if(str == -1){ // 화면 출력시 -1 '무제한' 출력
-            return '무제한'
+            return 'Unlimited'
         }else if(str.length == 0){
             return '';
         }else{
@@ -600,7 +600,7 @@
     // 수정 or 분리 필요
     function convertUnlimitStr(str){
         if(str == -1) {      // 화면 출력시 -1 '무제한' 출력
-            return '무제한';
+            return 'Unlimited';
         }else if(str.length == 0){ // 등록 수정 미입력시 -1 (무제한)
             return '-1';
         }else{
@@ -632,7 +632,7 @@
     // 조직 허용량 상세
     function getOrgQuotaDefinition(quotaId) {
         $('#form')[0].reset();
-        $('#quotaDefinitionFormModal .modal-title div').text("조직 할당량 상세");
+        $('#quotaDefinitionFormModal .modal-title div').text("Organizational Quota Details");
         $('#quotaDefinitionFormModal').modal('toggle');
         procCallAjax("/v2/orgs/quota-definitions/"+quotaId+"?key="+key, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
     }
@@ -640,7 +640,7 @@
     // 공간 허용량 정의 상세
     function getSpaceQuotaDefinition(quotaId) {
         $('#form')[0].reset();
-        $('#quotaDefinitionFormModal .modal-title div').text("공간 할당량 상세");
+        $('#quotaDefinitionFormModal .modal-title div').text("Space Quota Details");
         $('#quotaDefinitionFormModal').modal('toggle');
         procCallAjax("/v2/spaces/quota-definitions/"+quotaId+"?key="+key, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
     }
@@ -750,11 +750,11 @@
     // 조직/공간 할당량 정의 삭제 (confirm layer)
     function deleteQuotaDefinitionModal() {
 
-        var title = (ACTIVE_TAB == 'org') ? "조직 할당량 정의 삭제" : "공간 할당량 정의 삭제" ;
+        var title = (ACTIVE_TAB == 'org') ? "Delete Organization Quota Definitions" : "Delete space quota definitions" ;
 
         $("#popupTitle").html(title);
-        $("#popupMessage").html($("#name").val()+" "+/*[[#{delete.confirm.message('할당량')}]]*/ "");
-        $("#popupButtonText").text("삭제");
+        $("#popupMessage").html($("#name").val()+" "+/*[[#{delete.confirm.message('Quota')}]]*/ "");
+        $("#popupButtonText").text("Delete");
         $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "deleteQuotaDefinition();");
         $("#popupButtonText").show();

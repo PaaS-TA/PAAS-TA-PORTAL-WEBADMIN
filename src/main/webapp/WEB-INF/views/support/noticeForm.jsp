@@ -18,10 +18,10 @@
 <div id="statusTitle" class="col-sm-6 pt30">
     <c:choose>
         <c:when test="${INSERT_FLAG eq Constants.CUD_U}">
-        <h4 class="modify_h4 fwn">공지 상세</h4>
+        <h4 class="modify_h4 fwn">Notice details</h4>
         </c:when>
         <c:when test="${INSERT_FLAG eq Constants.CUD_C}">
-        <h4 class="modify_h4 fwn">공지 등록</h4>
+        <h4 class="modify_h4 fwn">Notice registration</h4>
         </c:when>
     </c:choose>
 </div>
@@ -34,30 +34,30 @@
         <%--<input type="hidden" id="thumb_image_path" value="${thumb_image_path}">--%>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="title">제목</label>
+            <label class="control-label col-sm-2" for="title">Title</label>
             <div class="col-sm-9">
                 <input type="text" maxlength="100" class="form-control toCheckString" id="title">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="classification">분류</label>
+            <label class="control-label col-sm-2" for="classification">Classification</label>
             <div class="col-sm-7">
                 <select class="form-control" id="classification" style="background:url(/resources/images/btn_down.png) no-repeat right; background-color:#fafafa;">
                     <%-- Category Area --%>
                 </select>
             </div>
             <div class="col-sm-2" style="padding-top: 15px">
-                <input type="checkbox" id="important"/> &nbsp; 중요 공지
+                <input type="checkbox" id="important"/> &nbsp; Important Notice
                 &nbsp;&nbsp;&nbsp;
-                <a href="#" data-toggle="tooltip" data-placement="bottom" title="중요 공지 체크시 최상단에 노출됩니다.">
+                <a href="#" data-toggle="tooltip" data-placement="bottom" title="When you check important notices, they are displayed at the top.">
                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                 </a>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="useYn">공개</label>
+            <label class="control-label col-sm-2" for="useYn">Show</label>
             <div class="col-sm-9 mt10">
                 <label class="radio-inline"><input type="radio" id="useYn" name="useYn" value="Y" checked="checked">Y</label>
                 <label class="radio-inline"><input type="radio" name="useYn" value="N">N</label>
@@ -65,21 +65,21 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="content">내용</label>
+            <label class="control-label col-sm-2" for="content">Contents</label>
             <div class="col-sm-9">
                 <textarea class="form-control" rows="5" id="content"></textarea>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="attachedFile">첨부 파일</label>
+            <label class="control-label col-sm-2" for="attachedFile">Attachment</label>
 
             <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="파일 첨부는 1개 파일만 가능합니다."  style="width: 102%; background: white; cursor: default" disabled>
+                <input type="text" class="form-control" placeholder="Only one file can be attached."  style="width: 102%; background: white; cursor: default" disabled>
             </div>
             <div class="col-sm-1">
                 <button type="button" id="attachedFile" class="btn btn-cancel btn-sm tar" style="margin-top:11px;margin-left:-5px;" onclick="$('#hiddenFile').click()">
-                    <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;파일찾기
+                    <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Find files
                 </button>
                 <input type="file" id="hiddenFile" style="display: none">
 
@@ -93,7 +93,7 @@
                     </div>
                     <div class="divImageInfo fl ml20">
                         <%--<label id="labelThumbName"></label>--%>
-                        <button id="delFIleImg" type="button" class="btn-del mt-30 ml3" aria-label="첨부파일 지우기">
+                        <button id="delFIleImg" type="button" class="btn-del mt-30 ml3" aria-label="Delete files">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -103,14 +103,14 @@
         </div>
 
         <%--<div class="form-group">
-            <label class="control-label col-sm-2" for="thumbnail">첨부파일</label>
+            <label class="control-label col-sm-2" for="thumbnail">Attachment</label>
 
             <div class="col-sm-8">
                 <input type="text" class="form-control" id="thumbnail" style="width: 102%; background: white; cursor: default" disabled>
             </div>
             <div class="col-sm-1">
                 <button type="button" class="btn btn-cancel btn-sm tar" style="margin-top:11px;margin-left:-5px;" onclick="$('#hiddenThumbnail').click()">
-                    <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;파일찾기
+                    <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Find files
                 </button>
                 <input type="file" id="hiddenThumbnail" style="display: none">
             </div>
@@ -128,7 +128,7 @@
                         </div>
                         <div class="divImageInfo fl ml20">
                             <label id="labelThumbName" style="padding-right: 20px"></label>
-                            <button id="btnResetImg" type="button" class="btn-del" aria-label="썸네일 지우기">
+                            <button id="btnResetImg" type="button" class="btn-del" aria-label="Clear Thumbnails">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                             </button>
                         </div>
@@ -141,7 +141,7 @@
 
 
         <div class="form-group">
-            <label class="control-label col-sm-2" >게시일</label>
+            <label class="control-label col-sm-2" >Date</label>
             <div class="col-sm-3">
                 <div class="input-group date" id="startDate" >
                     <input type="text" class="form-control" style="background:url(/resources/images/btn_cal.png) no-repeat right; background-color: white; border-radius: 5px 5px 5px 5px;" id="startDateInput"/>
@@ -172,13 +172,13 @@
                     <c:set var="checkCudU" value="<%= Constants.CUD_U %>" />
                     <c:choose>
                         <c:when test="${INSERT_FLAG eq CONSTANT_CUD}">
-                            <button type="button" class="btn btn_del2 fl ml-22" id="btnDelete">삭제</button>
-                            <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">취소</button>
-                            <button type="button" class="btn btn-save btn-sm" id="btnRegist">저장</button>
+                            <button type="button" class="btn btn_del2 fl ml-22" id="btnDelete">Delete</button>
+                            <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">Cancel</button>
+                            <button type="button" class="btn btn-save btn-sm" id="btnRegist">Save</button>
                         </c:when>
                         <c:otherwise>
-                            <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">취소</button>
-                            <button type="button" class="btn btn-save btn-sm" id="btnRegist">등록</button>
+                            <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">Cancel</button>
+                            <button type="button" class="btn btn-save btn-sm" id="btnRegist">Registration</button>
                         </c:otherwise>
                     </c:choose>
 
@@ -220,31 +220,31 @@
 <form class="form-horizontal" role="form" id="noticeForm" >
 
     <div class="form-group">
-        <label class="control-label col-sm-1" for="title">제목:</label>
+        <label class="control-label col-sm-1" for="title">Title:</label>
         <div class="col-sm-10">
             <input type="text" maxlength="100" class="form-control toCheckString" id="title"/>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-1" for="classification">분류:</label>
+        <label class="control-label col-sm-1" for="classification">Classification:</label>
         <div class="col-sm-8">
             <select class="form-control" id="classification">
-                               &lt;%&ndash; <option> 공지 </option>
-                                <option> 장애 </option>
-                                <option> 이벤트 </option>&ndash;%&gt;
+                               &lt;%&ndash; <option> Notice </option>
+                                <option> Error </option>
+                                <option> Event </option>&ndash;%&gt;
             </select>
         </div>
         <div class="col-sm-2">
-            <input type="checkbox" id="important"/> &nbsp; 중요 공지
+            <input type="checkbox" id="important"/> &nbsp; Important Notice
             &nbsp;&nbsp;&nbsp;
-            <a href="#" data-toggle="tooltip" data-placement="bottom" title="중요 공지 체크시 최상단에 노출됩니다.">
+            <a href="#" data-toggle="tooltip" data-placement="bottom" title="When you check important notices, they are displayed at the top.">
                 <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             </a>
         </div>
 
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-1" for="useYn">공개:</label>
+        <label class="control-label col-sm-1" for="useYn">Show:</label>
         <div class="col-sm-10">
             <label class="radio-inline"><input type="radio" id="useYn" name="useYn" value="Y" checked="checked">Y</label>
             <label class="radio-inline"><input type="radio" name="useYn" value="N">N</label>
@@ -252,16 +252,16 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-sm-1" for="content">내용:</label>
+        <label class="control-label col-sm-1" for="content">Contents:</label>
         <div class="col-sm-10">
             <textarea class="form-control" rows="5" id="content"></textarea>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label col-sm-1" for="attachedFile">첨부파일:</label>
+        <label class="control-label col-sm-1" for="attachedFile">Attachment:</label>
         <div class="col-sm-10">
-            <input type="file" class="filestyle" data-buttonName="btn-default btn-sm"  data-buttonText="파일 찾기" id="attachedFile"/>
+            <input type="file" class="filestyle" data-buttonName="btn-default btn-sm"  data-buttonText="Find files" id="attachedFile"/>
         </div>
     </div>
 
@@ -290,7 +290,7 @@
 
 
     <div class="form-group">
-        <label class="control-label col-sm-1" for="startDate">게시일 설정:</label>
+        <label class="control-label col-sm-1" for="startDate">Set Publish Date:</label>
         <div class="col-sm-4">
 
             <div class='input-group date' id='startDate' >
@@ -327,13 +327,13 @@
                 <CatalogController:set var="checkCudU" value="<%= Constants.CUD_U %>" />
                 <CatalogController:choose>
                     <CatalogController:when test="${insertFlag eq checkCudU}">
-                        <button type="button" class="btn btn-danger fl" id="btnDelete">삭제</button>
-                        <button type="button" class="btn btn-default" id="btnCancel">취소</button>
-                        <button type="button" class="btn btn-success" id="btnRegist">저장</button>
+                        <button type="button" class="btn btn-danger fl" id="btnDelete">Delete</button>
+                        <button type="button" class="btn btn-default" id="btnCancel">Cancel</button>
+                        <button type="button" class="btn btn-success" id="btnRegist">Save</button>
                     </CatalogController:when>
                     <CatalogController:otherwise>
-                        <button type="button" class="btn btn-default" id="btnCancel">취소</button>
-                        <button type="button" class="btn btn-success" id="btnRegist">등록</button>
+                        <button type="button" class="btn btn-default" id="btnCancel">Cancel</button>
+                        <button type="button" class="btn btn-success" id="btnRegist">Registration</button>
                     </CatalogController:otherwise>
                 </CatalogController:choose>
             </div>
@@ -397,7 +397,7 @@ SCRIPT BEGIN
 
     var CATEGORY_LIST_PROC_URL = "<c:url value='/commonCode/getCommonCode' />";
     var SUPPORT_NOTICE_ID = "<%= Constants.SUPPORT_NOTICE_ID %>";
-    var INIT_MESSAGE = "첨부된 파일이 없습니다.";
+    var INIT_MESSAGE = "No attachments found.";
 
     $(document).ready(function(){
 
@@ -515,7 +515,7 @@ SCRIPT BEGIN
             $('#attachedFileLabel').html(linkHtml);
 
         } else {
-            $('#attachedFileLabel').text('첨부파일없음');
+            $('#attachedFileLabel').text('No attachments');
         }
     };
 
@@ -995,7 +995,7 @@ SCRIPT BEGIN
 
     // BIND :: BUTTON EVENT
     $("#btnDelete").on("click", function() {
-        procPopup('공지', DELETE_MESSAGE, 'setDeleteFlag();');
+        procPopup('Notice', DELETE_MESSAGE, 'setDeleteFlag();');
     });
 
     function setDeleteFlag() {

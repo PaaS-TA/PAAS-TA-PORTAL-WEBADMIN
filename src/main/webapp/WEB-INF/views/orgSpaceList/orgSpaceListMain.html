@@ -9,7 +9,7 @@
     <div layout:fragment="content">
         <section class="content-header">
             <h3>
-                조직 및 공간 조회
+                Organization and space lookup
             </h3>
         </section>
         <section class="content">
@@ -33,13 +33,13 @@
                             <div class="col-md-3 col-sm-6 col-xs-12" style="width: 49%">
                                 <table class="table table-bordered table-striped dataTable" style="text-align: center; display: none" id="orgTable" >
                                 </table>
-                                <div id="noOrgMessage" class='box-header with-border' style="display: none">생성된 조직이 없습니다.</div>
-                                <div id="noSearchOrgMessage" class='box-header with-border' style="display: none">검색된 조직이 없습니다.</div>
+                                <div id="noOrgMessage" class='box-header with-border' style="display: none">No organization has been created.</div>
+                                <div id="noSearchOrgMessage" class='box-header with-border' style="display: none">No organizations were found.</div>
                             </div>
                             <div class="box-body table-responsive no-padding" style="width: 49%">
                                 <table class="table table-bordered table-striped dataTable" style="text-align: center; display: none" id="spaceTable" >
                                 </table>
-                                <div id="noSpaceMessage" class='box-header with-border' style="display: none">생성된 공간이 없습니다.</div>
+                                <div id="noSpaceMessage" class='box-header with-border' style="display: none">No space created.</div>
                             </div>
                         <!-- /.box-header -->
 
@@ -62,7 +62,7 @@
                         <p>One fine body…</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -151,8 +151,8 @@
             $("#orgTable").append(
                     "<tbody>"+
                     "<tr>"+
-                    "<th style='text-align: center'>번호</th>"+
-                    "<th style='text-align: center'>조직 이름</th>"+
+                    "<th style='text-align: center'>No</th>"+
+                    "<th style='text-align: center'>Organization name</th>"+
                     "</tr>"
 
             )
@@ -170,7 +170,7 @@
                 $("#orgTable").append (
                         "<tr id='orgSpaceViewArea-table-content-org-no" + (i + 1) + "' name='" + orgName[i].toString().toLowerCase() + "' >" +
                         "<td>" + (i + 1) + "</td>" +
-                        "<td><a style='color: black' href='#none' onClick=\"getSpacesForAdmin('" + idMap.get(orgName[i]) + "','" + orgName[i] + "','" + (i+1) + "')\">" + orgName[i] + "</a> &nbsp;<a href='#none' onClick=\"procGetOrgSummary('" + idMap.get(orgName[i]) + "','" +  QuotaMap.get(orgName[i]) + "')\" style='font-size:10px;' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
+                        "<td><a style='color: black' href='#none' onClick=\"getSpacesForAdmin('" + idMap.get(orgName[i]) + "','" + orgName[i] + "','" + (i+1) + "')\">" + orgName[i] + "</a> &nbsp;<a href='#none' onClick=\"procGetOrgSummary('" + idMap.get(orgName[i]) + "','" +  QuotaMap.get(orgName[i]) + "')\" style='font-size:10px;' data-toggle='modal' data-target='#modal-default'>[Details]</a></td>" +
                         "<label><input name='groupTable-checkbox' id='groupTable-checkbox-no-"+(i+1)+"' value='"+(i+1)+"' class='checkbox-inline' type='checkbox' style='display: none'></label>"+
                         "</tr>"
                 )
@@ -203,15 +203,15 @@
             $("#spaceTable").append(
                     "<tbody>"+
                     "<tr>"+
-                    "<th style='text-align: center'>번호</th>"+
-                    "<th style='text-align: center'>"+currentOrg+" 공간 이름</th>"+
+                    "<th style='text-align: center'>No</th>"+
+                    "<th style='text-align: center'>"+currentOrg+" Space name</th>"+
                     "</tr>"
             )
             $.each(data.spaceList.resources, function (eventId, space) {
                 $("#spaceTable").append (
                         "<tr id='orgSpaceViewArea-table-content-space-no"+(eventId+1)+"'>"+
                         "<td>"+(eventId+1)+"</td>"+
-                        "<td>" + space.entity.name + "&nbsp; <a href='#none' onClick=\"procGetSpaceSummary('"+ space.metadata.guid +"','" + space.entity.space_quota_definition_guid + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
+                        "<td>" + space.entity.name + "&nbsp; <a href='#none' onClick=\"procGetSpaceSummary('"+ space.metadata.guid +"','" + space.entity.space_quota_definition_guid + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[Details]</a></td>" +
                         "</tr>"
                 )
             });
@@ -224,8 +224,8 @@
 
     // GET ORG SUMMARY
     var procGetOrgSummary = function (orgid, quotaid) {
-        $("#modaltitle").html("조직 상세 정보");
-        $("#modalbody").html("데이터를 불러오고 있습니다.");
+        $("#modaltitle").html("Organization Details");
+        $("#modalbody").html("Data is being loaded.");
         OrgId = orgid;
         //procCallAjax2(V2_URL + "/orgs/"+quotaid+"/quota","GET", null, procCallbackGetOrgQuota);
         //procCallAjax2(V2_URL + "/orgs/"+orgid+"/quota","GET", null, procCallbackGetOrgQuota);
@@ -249,7 +249,7 @@
     // GET ORG SUMMARY CALLBACK
     var procCallbackGetOrgSummary = function(data, param) {
 
-        spaces = "없음";
+        spaces = "None";
         for (var i = 0; i < data.resource.length; i++) {
             if (i != 0) spaces += " , " + data.resource[i].name;
             else spaces = data.resource[i].name;
@@ -271,9 +271,9 @@
 
     // GET SPACE SUMMARY
     var procGetSpaceSummary = function (spaceId, spaceQuotaId) {
-        $("#modaltitle").html("영역 상세 정보");
-        $("#modalbody").html("데이터를 불러오고 있습니다.");
-        spaceQuotaText = "없음";
+        $("#modaltitle").html("Space Details");
+        $("#modalbody").html("Data is being loaded.");
+        spaceQuotaText = "None";
 
         if(spaceQuotaId != "null") {
             //procCallAjax2(V2_URL+"/spaces/quota-definitions/"+spaceQuotaId,"GET", null, procCallbackGetSpaceQuota);
@@ -310,13 +310,13 @@
     // GET ORG SUMMARY CALLBACK
     var procCallbackGetSpaceSummary = function(data, param) {
 
-        apps = "없음";
+        apps = "None";
         for (var i = 0; i < data.apps.length; i++) {
             if (i != 0) apps += " , " + data.apps[i].name;
             else apps = data.apps[i].name;
         }
 
-        services = "없음";
+        services = "None";
         for (var i = 0; i < data.services.length; i++) {
             if (i != 0) services += " , " + data.services[i].name;
             else services = data.services[i].name;

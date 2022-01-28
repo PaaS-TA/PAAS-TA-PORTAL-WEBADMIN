@@ -2,20 +2,20 @@
 <%@ include file="../common/common.jsp"%>
 
 <div class="col-sm-6 pt30">
-    <h4 class="modify_h4 fwn">지원 관리</h4>
+    <h4 class="modify_h4 fwn">Support management</h4>
 </div>
 
 <!--토글 탭-->
 <div class="panel content-box col-sm-12 col-md-12 mt-50 col-md-offset-13 w98">
     <ul class="nav nav-tabs">
         <li id="supportTabs_<%= Constants.TAB_NAME_NOTICE %>" class="active">
-            <a href="#<%= Constants.TAB_NAME_NOTICE %>" data-toggle="tab" onClick="procSelectTab('NOTICE')">공지</a>
+            <a href="#<%= Constants.TAB_NAME_NOTICE %>" data-toggle="tab" onClick="procSelectTab('NOTICE')">Notice</a>
         </li>
         <li id="supportTabs_<%= Constants.TAB_NAME_QNA %>">
-            <a href="#<%= Constants.TAB_NAME_QNA %>" data-toggle="tab" onClick="procSelectTab('QNA')">문의</a>
+            <a href="#<%= Constants.TAB_NAME_QNA %>" data-toggle="tab" onClick="procSelectTab('QNA')">Question</a>
         </li>
         <li id="supportTabs_<%= Constants.TAB_NAME_BOARD %>">
-            <a href="#<%= Constants.TAB_NAME_BOARD %>" data-toggle="tab" onClick="procSelectTab('BOARD')">게시판</a>
+            <a href="#<%= Constants.TAB_NAME_BOARD %>" data-toggle="tab" onClick="procSelectTab('BOARD')">Notice</a>
         </li>
     </ul>
 

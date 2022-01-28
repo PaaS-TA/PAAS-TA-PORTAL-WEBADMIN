@@ -14,7 +14,7 @@
 <%@ include file="../common/common.jsp"%>
 
 <div class="col-sm-6 pt30">
-    <h4 class="modify_h4 fwn"> 메뉴 관리 </h4>
+    <h4 class="modify_h4 fwn"> Menu management </h4>
 </div>
 
 <%--FOR TREE--%>
@@ -26,7 +26,7 @@
 
     <div class="col-sm-4 fl" style="display: block; position: relative;">
         <div class="fr">
-            <button type="button" class="btn btn-point btn-sm" id="btnAddMenuItem"> 메뉴 추가 </button>
+            <button type="button" class="btn btn-point btn-sm" id="btnAddMenuItem"> Add menu </button>
         </div>
         <div class="search_box" style="display: block; position: relative; padding: 20px; margin: 50px 0; border: solid 1px #dddddd; min-height: 600px; height: 600px; overflow: hidden;">
             <div id="treeBox"></div>
@@ -37,7 +37,7 @@
         <form id="menuForm" name="menuForm" role="form">
             <div id="menuDetailArea" style="display: none;">
                 <div class="form-group">
-                    <label class="control-label col-sm-2 pt10 pb10" for="menuName"> 메뉴 이름 </label>
+                    <label class="control-label col-sm-2 pt10 pb10" for="menuName"> Menu name </label>
                     <div class="col-sm-10 pt10 pb10">
                         <div class="col-sm-11 fl">
                             <input type="text" maxlength="100" class="form-control toCheckString" id="menuName" name="menuName">
@@ -45,20 +45,20 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2 pt10 pb10" for="menuPath"> 메뉴 URL </label>
+                    <label class="control-label col-sm-2 pt10 pb10" for="menuPath"> Menu URL </label>
                     <div class="col-sm-10 pt10 pb10">
                         <div class="col-sm-10 fl">
                             <input type="text" maxlength="200" class="form-control toCheckString" id="menuPath" name="menuPath">
                         </div>
                         <div class="col-sm-1 fl">
-                            <label for="openWindowYn"> 새 창 </label>
+                            <label for="openWindowYn"> New window </label>
                         </div><div class="col-sm-1 fr">
                             <input type="checkbox" class="form-control" id="openWindowYn" name="openWindowYn">
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2 pt10 pb10" for="sortNo"> 배치 순서 </label>
+                    <label class="control-label col-sm-2 pt10 pb10" for="sortNo"> Display order </label>
                     <div class="col-sm-10 pt10 pb10">
                         <div class="col-sm-11 fl">
                             <input type="text" maxlength="100" class="form-control toCheckString" id="sortNo" name="sortNo">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2 pt10 pb10" for="loginYn_Y"> 로그인 여부 </label>
+                    <label class="control-label col-sm-2 pt10 pb10" for="loginYn_Y"> Sign in </label>
                     <div class="col-sm-10 pt10 pb10">
                         <div class="col-sm-11 fl">
                             <label class="radio-inline">
@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2 pt10 pb10" for="useYn_Y"> 사용 여부 </label>
+                    <label class="control-label col-sm-2 pt10 pb10" for="useYn_Y"> Show or Hide </label>
                     <div class="col-sm-10 pt10 pb10">
                         <div class="col-sm-11 fl">
                             <label class="radio-inline">
@@ -94,8 +94,8 @@
                 <div class="form-group">
                     <div class="col-sm-12" align="right">
                         <div class="divButtons">
-                            <button type="button" class="btn btn_del2 btn-sm" id="btnDelete"> 삭제 </button>
-                            <button type="button" class="btn btn-save btn-sm" id="btnSave"> 저장 </button>
+                            <button type="button" class="btn btn_del2 btn-sm" id="btnDelete"> Delete </button>
+                            <button type="button" class="btn btn-save btn-sm" id="btnSave"> Save </button>
                         </div>
                     </div>
                 </div>
@@ -408,7 +408,7 @@ SCRIPT BEGIN
 
         var reqNo = document.getElementById('menuNo').value;
         if (0 < adminMenuTree.hasChildren(reqNo)) {
-            procAlert("danger", "하위 메뉴가 존재합니다. 하위 메뉴를 먼저 삭제하십시오.");
+            procAlert("danger", "A submenu exists. Delete the submenu first.");
         } else{
             procDelete(reqNo);
         }
@@ -493,7 +493,7 @@ SCRIPT BEGIN
 
     // BIND :: BUTTON EVENT
     $("#btnDelete").on("click", function() {
-        procPopup('메뉴', DELETE_MESSAGE, 'procCheckDelete();');
+        procPopup('Menu', DELETE_MESSAGE, 'procCheckDelete();');
 
     });
 

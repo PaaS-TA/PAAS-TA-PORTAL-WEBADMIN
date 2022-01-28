@@ -16,7 +16,7 @@
     <div layout:fragment="content">
         <section class="content-header">
             <h3>
-                권한 관리
+                Permission Management
             </h3>
         </section>
         <!-- Main content -->
@@ -30,10 +30,10 @@
                             <div style="width:100%; overflow: hidden; margin-top: 10px;margin-bottom: 10px">
                                 <div class="box-tools" >
                                 <button type="button" id="groupArea-create-group-btn" class="btn btn-primary btn-sm" style="float:right; margin-right: 15px;" onclick="showAddBox('createAuthorityGroupBox')">
-                                    그룹 생성
+                                    Create a group
                                 </button>
                                 <button type="button" id="groupArea-delete-group-btn" class="btn btn-primary btn-sm" style="float:right;margin-right: 15px;" disabled="true" onclick="clickDeleteAuthorityGroupBtn()">
-                                    그룹 삭제
+                                    Delete group
                                 </button>
                                     <div class="input-group input-group-sm" style="width: 550px; margin: 3px;">
                                         <input type="text" id="group-searchKeyword" name="table_search" class="form-control input-sm" placeholder="Search" onkeyup="searchAuthorituyGroup()"/>
@@ -47,7 +47,7 @@
                                 <div style="float: left; width: 70%;">
                                     <div class="form-group has-feedback has-feedback-right" style="margin: 7px">
                                         <input id="group-create-name-input" type="text"
-                                               class="form-control form-control-warning" placeholder="그룹 이름을 입력하세요."
+                                               class="form-control form-control-warning" placeholder="Enter a group name."
                                                onkeyup="createGroupValidation()" style="margin-top: -3px"/>
                                         <span id="group-create-name-input-icon" class="form-control-feedback glyphicon status-icon-warning"></span>
                                         <div id="group-create-name-input-statusMessage"
@@ -56,14 +56,14 @@
                                     </div>
                                 </div>
                                 <button type="button" id="group-create-name-input-save-btn" class="btn btn-primary btn-sm" style="margin: 7px; float: left; width: 10%;" disabled="true" onclick="clickCreateAuthorityGroupBtn()">
-                                    저장
+                                    Save
                                 </button>
                             </div>
 
                             <table class="table table-bordered table-striped dataTable" id="groupTable-contents">
                             </table>
-                            <div id="noGroupMessage" class='mainViewArea-message' style="display: none; ">생성된 그룹이 없습니다.</div>
-                            <div id="noSearchGroupMessage" class='mainViewArea-message' style="display: none;">검색된 그룹이 없습니다.</div>
+                            <div id="noGroupMessage" class='mainViewArea-message' style="display: none; ">No group has been created.</div>
+                            <div id="noSearchGroupMessage" class='mainViewArea-message' style="display: none;">No groups were found.</div>
 
                         </div>
 
@@ -76,10 +76,10 @@
                         <div style="width:100%; overflow: hidden; margin-top: 10px;margin-bottom: 10px">
                         <div class="box-tools" >
                             <button type="button" id="userArea-add-user-btn" class="btn btn-primary btn-sm" style="float:right; margin-right: 15px;" onclick="clickAddAuthorityGroupMembersBtn()">
-                                유저 등록
+                                Add User
                             </button>
                             <button type="button" id="userArea-delete-user-btn" class="btn btn-primary btn-sm" style="float:right; margin-right: 15px;" disabled="true" onclick="clickDeleteAuthorityGroupMembersBtn()">
-                                유저 삭제
+                                Delete user
                             </button>
                         </div>
                         </div>
@@ -88,7 +88,7 @@
                                 <div class="form-group has-feedback has-feedback-right" style="margin: 7px">
                                     <input id="user-add-name-input" type="hidden"
                                            class="form-control form-control-warning" style="margin-top: -3px"
-                                           placeholder="유저이름을 입력하세요."/>
+                                           placeholder="Please enter your username."/>
                                     <span id="user-add-name-input-icon" class="form-control-feedback glyphicon status-icon-warning"></span>
                                     <div id="userName-auto-complete-area" class="form-group">
                                     </div>
@@ -96,13 +96,13 @@
                             </div>
 
                             <button type="button" id="user-add-name-input-save-btn" class="btn btn-primary btn-sm" style="margin:7px; float: left; width: 10%;" onclick="clickAddUsersBtn()">
-                                저장
+                                Save
                             </button>
                         </div>
 
                         <table class="table table-bordered table-striped dataTable" id="userTable-contents">
                         </table>
-                        <div id="noUserMessage" style="width: 100%; text-align: center; overflow:hidden; display:none;"><h5>등록된 사용자가 없습니다.</h5></div>
+                        <div id="noUserMessage" style="width: 100%; text-align: center; overflow:hidden; display:none;"><h5>User not found</h5></div>
                     </div>
 
                     </div>
@@ -121,7 +121,7 @@
                             <p>One fine body…</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="modalButtonText" data-dismiss="modal">확인</button>
+                            <button type="button" class="btn btn-primary" id="modalButtonText" data-dismiss="modal">Confirm</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -139,8 +139,8 @@
     var AUTHORITY_GROUPS_URL = V2_URL+"/authority/group";
     var AUTHORITY_MEMBER_URL = V2_URL+"/authority/member";
     var GET_USER_INFO = V2_URL+"/users";
-    var authorityname = "권한그룹";
-    var authorityuser = "사용자";
+    var authorityname = "Permission group";
+    var authorityuser = "User";
     var userInfo;
     var autoCompleteIndex;
 
@@ -219,7 +219,7 @@
                 procAlert("danger", JSON.parse(xhr.responseText).message);
                 if(reqMethod == "POST" && reqUrl == AUTHORITY_MEMBER_URL+"?key="+key)
                 {
-                    procAlert("danger", "유저등록/삭제 할 수 있는 권한이 없습니다.");
+                    procAlert("danger", "You do not have permission to register/delete users.");
                 }
 
             },
@@ -450,8 +450,8 @@
             objName.focus();
             return false;
         }
-        authoritymodal("그룹 생성","UAA 권한 그룹을 생성합니다. "+reqName+"그룹을 생성 하시겠습니까?",
-            "createAuthorityGroup('"+reqName+"', refreshGroupArea)","저장")
+        authoritymodal("Create a group","Create a UAA permission group. "+reqName+"그룹을 생성 하시겠습니까?",
+            "createAuthorityGroup('"+reqName+"', refreshGroupArea)","Save")
 
     }
 
@@ -514,8 +514,8 @@
 
     function clickDeleteAuthorityGroupBtn(){
         if($(":checkbox[name='groupTable-checkbox']:checked").length === 1){
-            authoritymodal("그룹 삭제","UAA 권한 그룹을 삭제하면 문제가 생길 수 있습니다."+getCheckedGroup().val().groupName+"그룹을 삭제 하시겠습니까?",
-                "deleteAuthorityGroup()","삭제")
+            authoritymodal("Delete group","Deleting the UAA permission group can cause problems."+getCheckedGroup().val().groupName+"그룹을 삭제 하시겠습니까?",
+                "deleteAuthorityGroup()","Delete")
         }
     }
 
@@ -527,7 +527,7 @@
         if (procFunction == null) return false;
 
         var buttonText = null == reqButtonText || '' == reqButtonText ? reqMessage.split(' ')[0] : reqButtonText;
-        if(reqButtonText == "삭제")
+        if(reqButtonText == "Delete")
         {
             objButtonText.addClass("btn btn-sm btn-danger");
         }
@@ -577,10 +577,10 @@
     function errorMessageControl(element,status, errorDetail) {
         if(status == "error") {
             if(errorDetail === "duplicated"){
-                var errorMessage="이미 존재하는 그룹 이름입니다."
+                var errorMessage="A group name that already exists."
             }
             else if(errorDetail=="gtlted"){
-                var errorMessage="<, >는 입력할 수 없습니다."
+                var errorMessage="<, > cannot be entered."
             }
 
             if($("#"+element+"-statusMessage").is(":hidden")) {
@@ -701,8 +701,8 @@
     function clickDeleteAuthorityGroupMembersBtn(){
         if($(":checkbox[name='userTable-checkbox']:checked").length >= 1){
 
-            authoritymodal("유저 삭제","UAA 권한 그룹을 삭제하면 문제가 생길 수 있습니다. 유저를 삭제 하시겠습니까?",
-                "deleteAuthorityGroupMembers()","삭제")
+            authoritymodal("Delete user","Deleting the UAA permission group can cause problems. 유저를 삭제 하시겠습니까?",
+                "deleteAuthorityGroupMembers()","Delete")
         }
     }
 

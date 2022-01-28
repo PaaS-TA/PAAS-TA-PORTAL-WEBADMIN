@@ -14,7 +14,7 @@
     <div layout:fragment="content">
         <section class="content-header">
             <h3>
-                설정 정보
+                Setting information
             </h3>
         </section>
 
@@ -23,14 +23,14 @@
             <div class="box box-default">
                 <!-- /.box box-default-header -->
                 <div class="col-sm-6 pt5">
-                    <h3>인프라 설정</h3>
+                    <h3>Infrastructure setup</h3>
                 </div>
                 <div class="box-header">
                     <div class="pull-right" style="padding-right: 0px;">
                         <button type="button" class="btn btn-block btn-primary btn-sm" id="configBtn"
                                 name="configBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false"
                                 data-target="#configFormModal">
-                            인프라 등록
+                            Add Infrastructure
                         </button>
 
                     </div>
@@ -75,7 +75,7 @@
                             <span aria-hidden="true">×</span></button>
 
                         <h4 class="modal-title">
-                            <div id="serviceTitle" name="modalTitle">인프라 정보 등록</div>
+                            <div id="serviceTitle" name="modalTitle">Infrastructure information</div>
                         </h4>
                     </div>
                     <div class="modal-body">
@@ -120,7 +120,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="desc" class="col-sm-3 control-label">설명</label>
+                                        <label for="desc" class="col-sm-3 control-label">Explanation</label>
                                         <div class="col-sm-9">
                                             <textarea class="form-control" rows="5" id="desc"></textarea>
                                         </div>
@@ -148,16 +148,16 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="configDeleteBtn" name="modalDeleteBtn"
-                                class="btn btn-sm btn-danger pull-left" onClick="deleteConfig();">삭제
+                                class="btn btn-sm btn-danger pull-left" onClick="deleteConfig();">Delete
                         </button>
                         <button type="button" id="configUpdateBtn" name="modalSaveBtn"
-                                class="btn btn-sm btn-primary pull-right" onClick="updateInfra();">저장
+                                class="btn btn-sm btn-primary pull-right" onClick="updateInfra();">Save
                         </button>
                         <button type="button" id="configSaveBtn" name="modalSaveBtn"
-                                class="btn btn-sm btn-primary pull-right" onClick="addInfra();">저장
+                                class="btn btn-sm btn-primary pull-right" onClick="addInfra();">Save
                         </button>
                         <button type="button" id="configCloseBtn" class="btn btn-sm btn-default pull-left"
-                                data-dismiss="modal">취소
+                                data-dismiss="modal">Cancel
                         </button>
                     </div>
                 </div>

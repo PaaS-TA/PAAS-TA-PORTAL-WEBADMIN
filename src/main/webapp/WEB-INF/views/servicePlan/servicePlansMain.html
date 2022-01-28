@@ -13,7 +13,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                서비스 제어
+                Service control
             </h1>
         </section>
 
@@ -34,15 +34,15 @@
                                 <table class="table table-bordered table-striped dataTable">
                                     <thead>
                                     <tr>
-                                        <th>서비스</th>
-                                        <th width="150px">플랜</th>
-                                        <th width="100px">접근</th>
+                                        <th>Service</th>
+                                        <th width="150px">Plan</th>
+                                        <th width="100px">Access</th>
                                     </tr>
                                     </thead>
                                     <tbody id="servicePlanList" name="dataList">
                                     </tbody>
                                 </table>
-                                <div id="noPlanMessage" class='box-header with-border' style="display: none">생성된 Isolation Segments가 없습니다.</div>
+                                <div id="noPlanMessage" class='box-header with-border' style="display: none">No Isolation Segments have been created.</div>
                             </div>
                             <div class="box-body table-responsive no-padding" style="width: 39%; display:none;" id="orgDiv">
                                 <table class="table table-bordered table-striped dataTable">
@@ -78,7 +78,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
-                                    onclick="procClosePopup('clientConfirmModal');"> 취소
+                                    onclick="procClosePopup('clientConfirmModal');"> Cancel
                             </button>
                         </div>
                     </div>
@@ -376,13 +376,13 @@
             enableServiceAccess(true);
         } else if(serviceAccessOriginal == "none" && serviceAccessSelectBox =="limited") {
         } else if(serviceAccessOriginal == "limited" && (serviceAccessSelectBox =="all" || serviceAccessSelectBox =="none")) {
-            showServicePlanDeleteModal("Access 변경",serviceAccessMetaGuid, serviceAccessSelectBox, "변경");
+            showServicePlanDeleteModal("Access Change",serviceAccessMetaGuid, serviceAccessSelectBox, "변경");
         }
     };
 
     function showServicePlanDeleteModal(title, guid, serviceAccess, buttonText) {
         $("#popupTitle").html(title);
-        $("#popupMessage").html("연결된 모든 조직에 대한 접근이 해제됩니다. 실행하시겠습니까?");
+        $("#popupMessage").html("Access to all connected organizations is turned off. do you want to run");
         $("#popupButtonText").text(buttonText);
         $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "ServicePlanDelete('"+guid+"','"+serviceAccess+"');");

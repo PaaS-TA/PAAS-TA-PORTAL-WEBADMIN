@@ -14,7 +14,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                클라이언트 목록
+                Clients
             </h1>
         </section>
 
@@ -40,7 +40,7 @@
                                  style="position:static;padding-left: 0px;">
                                 <div class="has-feedback">
                                     <input type="text" class="form-control input-sm" id="searchKeyword"
-                                           onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
+                                           onkeyup="procSearchByKeyword(event);" placeholder="Search by name"/>
                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                                 <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn"
                                         name="registBtn" data-toggle="modal" data-backdrop="static"
                                         data-keyboard="false" data-target="#clientFormModal">
-                                    클라이언트 등록
+                                    Add Client
                                 </button>
                             </div>
 
@@ -59,7 +59,7 @@
                             <table class="table table-striped text-center"> <!-- table-responsive -->
                                 <thead>
                                 <tr>
-                                    <th>클라이언트 ID</th>
+                                    <th>Client ID</th>
                                 </tr>
                                 </thead>
                                 <tbody id="clientList" name="dataList">
@@ -84,7 +84,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title">클라이언트 등록</h4>
+                            <h4 class="modal-title">Client</h4>
                         </div>
                         <div class="modal-body">
 
@@ -95,7 +95,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="clientId" class="col-sm-3 control-label">클라이언트 아이디</label>
+                                            <label for="clientId" class="col-sm-3 control-label">Client ID</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="clientId"
                                                        placeholder="" />
@@ -103,7 +103,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="clientPwd" class="col-sm-3 control-label">클라이언트 패스워드</label>
+                                            <label for="clientPwd" class="col-sm-3 control-label">Client password</label>
                                             <div class="col-sm-9">
                                                 <input type="password" class="form-control toCheckString" id="clientPwd"
                                                        placeholder="" />
@@ -214,28 +214,28 @@
 <!--                                        </div>-->
 
                                         <div class="form-group">
-                                            <label for="optionGuide" class="col-sm-3 control-label">옵션 가이드</label>
+                                            <label for="optionGuide" class="col-sm-3 control-label">Options Guide</label>
                                             <div class="col-sm-9">
                         <textarea class="form-control" rows="13" id="optionGuide"
                                   style="cursor: text" readonly="true">
-새 클라이언트 등록시 옵션 설정 예제)
+Example) Setting options to register a new client
     --authorized_grant_types client_credentials
 
 ---------------------------------------------------------------------------------------------------------------------------
-클라이언트 주요 옵션 설명
+Description the main options of client
 
   --authorities
-                :       클라이언트에 대한 접근 권한 설정
-                        (참고 : https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-Security.md#security-metadata)
+                :       Set client access authority
+                        (Reference : https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-Security.md#security-metadata)
   --scope
-                :       유저의 역할에 대한 설정
-                        (참고 : https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-Security.md#token-scope-rules)
+                :       Set user role
+                        (Reference : https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-Security.md#token-scope-rules)
   --authorized_grant_types
-                :       OAuth2 grant type들의 목록. 클라이언트 등록시 필수 옵션
+                :       List of OAuth2 grant types. Required option for registration client
                         client_credentials, password, implicit, refresh_token, authorization_code
 
 
-클라이언트 등록시 사용 가능한 옵션 목록
+List of options available for registration client
 
    --scope &lt;list&gt;
    --authorized_grant_types &lt;list&gt;
@@ -255,7 +255,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
                                             </div>
                                         </div>
                                         <div id="modifyGuide" class="hide">
-                                            <h5><i class="fa fa-warning text-yellow"></i> 수정은 삭제 후, 재등록 하시기 바랍니다.</h5>
+                                            <h5><i class="fa fa-warning text-yellow"></i> Please re-register after deleting.</h5>
                                         </div>
                                     </div>
                                 </form>
@@ -265,14 +265,14 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
 
                         <div class="modal-footer">
                             <button type="button" id="clientDeleteBtn" name="modalDeleteBtn"
-                                    class="btn btn-sm btn-danger pull-left" onClick="deleteClientModal();">삭제
+                                    class="btn btn-sm btn-danger pull-left" onClick="deleteClientModal();">Delete
                             </button>
                             <!--<button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateClient();">저장</button>-->
                             <button type="button" id="clientRegBtn" name="modalRegBtn"
-                                    class="btn btn-sm btn-primary pull-right" onClick="createClient();">등록
+                                    class="btn btn-sm btn-primary pull-right" onClick="createClient();">Add
                             </button>
                             <button type="button" id="clientCloseBtn" class="btn btn-sm btn-default pull-left"
-                                    data-dismiss="modal">취소
+                                    data-dismiss="modal">Cancel
                             </button>
                         </div>
 
@@ -299,7 +299,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
                             </button>
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"
                                     id="popupCancelButtonText"
-                                    onclick="procClosePopup('clientConfirmModal');"> 취소
+                                    onclick="procClosePopup('clientConfirmModal');"> Cancel
                             </button>
                         </div>
                     </div>
@@ -340,7 +340,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
         // 등록 버튼 클릭시, 등록 팝업 이벤트 설정
         $(document).on("click", 'button[name=registBtn]', function (e) {
 
-            $('.modal-title').text("클라이언트 등록");
+            $('.modal-title').text("Client");
             $('#clientDeleteBtn').hide();
             $('#clientSaveBtn').hide();
             $('#clientRegBtn').show();
@@ -422,7 +422,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     // 클라리언트 조회
     function getClient(clientId) {
 
-        $('.modal-title').text("클라이언트 상세");
+        $('.modal-title').text("Client Details");
         $('#clientDeleteBtn').show();
         $('#clientSaveBtn').show();
         $('#clientRegBtn').hide();
@@ -654,19 +654,19 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
 
 
         if (authorized_grant_types === undefined || authorized_grant_types == '') {
-            notifyAlert("warning", "", "--client_id 옵션은 필수 입니다.");
+            notifyAlert("warning", "", "The --client_id option is required.");
             $("#clientId").focus();
             return false;
         }
 
         if (authorized_grant_types === undefined || authorized_grant_types == '') {
-            notifyAlert("warning", "", "--client_secret 옵션은 필수 입니다.");
+            notifyAlert("warning", "", "The --client_secret option is required.");
             $("#clientPwd").focus();
             return false;
         }
 
         if (authorized_grant_types === undefined || authorized_grant_types == '') {
-            notifyAlert("warning", "", "--authorized_grant_types 옵션은 필수 입니다.");
+            notifyAlert("warning", "", "The --authorized_grant_types option is required.");
             $("#authorized_grant_types").focus();
             return false;
         }
@@ -705,9 +705,9 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     // [클라이언트] 삭제 (confirm layer)
     function deleteClientModal() {
 
-        $("#popupTitle").html("클라이언트 삭제");
-        $("#popupMessage").html("" + $("#clientId").val() + " " + /*[[#{delete.confirm.message('클라이언트')}]]*/ "");
-        $("#popupButtonText").text("삭제");
+        $("#popupTitle").html("Delete client");
+        $("#popupMessage").html("" + $("#clientId").val() + " " + /*[[#{delete.confirm.message('Client')}]]*/ "");
+        $("#popupButtonText").text("Delete");
         $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "deleteClient();");
         $("#popupButtonText").show();

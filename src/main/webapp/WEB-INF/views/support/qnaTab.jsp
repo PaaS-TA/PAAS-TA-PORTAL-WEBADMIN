@@ -17,12 +17,12 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>번호</th>
-                <th>분류</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>게시일</th>
-                <th>답변</th>
+                <th>No</th>
+                <th>Classification</th>
+                <th>Title</th>
+                <th>Writer</th>
+                <th>Date</th>
+                <th>Answer</th>
             </tr>
             </thead>
             <tbody id="qnaList">

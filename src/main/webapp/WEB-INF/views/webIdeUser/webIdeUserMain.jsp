@@ -75,7 +75,7 @@
                             url = data.url;
                         }
 
-                        webIdeUrlOption = "<option value=''> -- URL선택 --</option>";
+                        webIdeUrlOption = "<option value=''> -- Select URL --</option>";
 
 
                         for(var i=0; webIdeUrl[i] != null; i++){
@@ -98,8 +98,8 @@
                                 "</select>"+
                                 "</td>" +
                                 "<td class='col-md-1' align='center'> " +
-                                        "<button type='button' class='btn btn-save btn-sm' onClick='updateUser(\""+ data.userId  +"\", \""+ data.orgName  +"\" , \"url"+ n +"\" , \"useYn"+ n +"\")'>저장</button>" +
-                                        "<button type='button' class='btn btn_del2' onClick='deleteWebIdeModal(\""+ data.orgName  +"\")'>삭제</button></td>" +
+                                        "<button type='button' class='btn btn-save btn-sm' onClick='updateUser(\""+ data.userId  +"\", \""+ data.orgName  +"\" , \"url"+ n +"\" , \"useYn"+ n +"\")'>Save</button>" +
+                                        "<button type='button' class='btn btn_del2' onClick='deleteWebIdeModal(\""+ data.orgName  +"\")'>Delete</button></td>" +
                                 "</tr>");
 
                     });
@@ -136,7 +136,7 @@
             contentType: "application/json",
             success: function(data){
                 if(data){
-                    procAlert("success", 'WEB IDE 유저 정보가 저장되었습니다.');
+                    procAlert("success", 'WEB IDE user information is saved.');
                 }
             }
         });
@@ -146,9 +146,9 @@
 
     function deleteWebIdeModal(orgName) {
 
-        $("#popupTitle").html("WEB IDE 유저 삭제");
-        $("#popupMessage").html(""+orgName+" 조직의 WEB IDE 유저를 삭제하시겠습니까?");
-        $("#popupButtonText").text("삭제");
+        $("#popupTitle").html("Delete WEB IDE user");
+        $("#popupMessage").html(""+"Are you sure you want to delete the WEB IDE user from the " + orgName +" organization?");
+        $("#popupButtonText").text("Delete");
         $("#popupButtonText").show();
         $('#popupButtonText').attr('onclick', "deleteUser('"+orgName+"');");
 
@@ -169,7 +169,7 @@
             contentType: "application/json",
             success: function(data){
                 if(data){
-                    procAlert('success',"WEB IDE 사용자가 삭제되었습니다.");
+                    procAlert('success',"The WEB IDE user has been deleted.");
                     $("#webIdeUserList").html("");
                     getConfigInfoValue();
                 }
@@ -187,7 +187,7 @@
 
 <%--
 <div class="search_box">
-    <h2>WEB IDE 유저 관리</h2>
+    <h2>WEB IDE user management</h2>
 
 </div>
 
@@ -197,10 +197,10 @@
         <table class="table table-striped table-hover t1" >
             <thead>
             <tr>
-                <th width="20%">아이디</th>
-                <th width="20%">조직</th>
+                <th width="20%">ID</th>
+                <th width="20%">Organization</th>
                 <th width="38%">URL</th>
-                <th width="10%">사용유무</th>
+                <th width="10%">Use or not</th>
                 <th width="12%"></th>
             </tr>
             </thead>
@@ -216,7 +216,7 @@
 
 <%--******************** WEB IDE 유저 관리 ********************--%>
 <div class="col-sm-6 pt30">
-    <h4 class="modify_h4 fwm"> WEB IDE 유저 관리 </h4>
+    <h4 class="modify_h4 fwm"> WEB IDE user management </h4>
 </div>
 
 <div class="panel content-box col-sm-12 col-md-12 mt-50 col-md-offset-13 w98" >
@@ -225,10 +225,10 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th width="20%">아이디</th>
-                <th width="20%">조직</th>
+                <th width="20%">ID</th>
+                <th width="20%">Organization</th>
                 <th width="38%">URL</th>
-                <th width="10%">사용유무</th>
+                <th width="10%">Use or not</th>
                 <th width="12%"></th>
             </tr>
             </thead>

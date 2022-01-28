@@ -16,7 +16,7 @@
 
 <div id="statusTitle" class="col-sm-6 pt30">
 
-    <h4 class="modify_h4 fwn">문의 상세</h4>
+    <h4 class="modify_h4 fwn">Question Details</h4>
 
 </div>
 
@@ -25,13 +25,13 @@
 <form class="form-horizontal" role="form" id="qnaForm" name="qnaForm">
 
     <div class="form-group">
-        <label class="control-label col-sm-2" for="title">제목:</label>
+        <label class="control-label col-sm-2" for="title">Title:</label>
         <div class="col-sm-9">
             <input type="text" maxlength="100" class="form-control" id="title" disabled="disabled">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="classification">분류:</label>
+        <label class="control-label col-sm-2" for="classification">Classification:</label>
         <div class="col-sm-9">
             <select class="form-control" id="classification" disabled="disabled">
 
@@ -39,12 +39,12 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="userId">작성자:</label>
+        <label class="control-label col-sm-2" for="userId">Writer:</label>
         <div class="col-sm-4" style="width: 29%">
             <input type="text" maxlength="100" class="form-control" id="userId" disabled="disabled">
         </div>
 
-        <label class="control-label col-sm-2" for="created">게시일:</label>
+        <label class="control-label col-sm-2" for="created">Date:</label>
         <div class="col-sm-4" style="width: 29%">
             <input type="text" maxlength="100" class="form-control" id="created" disabled="disabled">
         </div>
@@ -52,7 +52,7 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-sm-2" for="content">내용:</label>
+        <label class="control-label col-sm-2" for="content">Contents:</label>
         <div class="col-sm-9">
             <textarea class="form-control" rows="5" id="content" disabled="disabled"></textarea>
         </div>
@@ -84,12 +84,12 @@
         <c:set var="checkStatus" value="<%= Constants.STATUS_ANSWERED %>" />
         <c:choose>
             <c:when test="${REQUEST_STATUS eq checkStatus}">
-                <label class="control-label col-sm-2" for="answerer">답변자:</label>
+                <label class="control-label col-sm-2" for="answerer">Respondent:</label>
                 <div class="col-sm-4" style="width: 37.5%">
                     <input type="text" maxlength="100" class="form-control" id="answerer" disabled="disabled">
                 </div>
 
-                <label class="control-label col-sm-2" for="answer-created"> 답변 등록일:</label>
+                <label class="control-label col-sm-2" for="answer-created"> Date:</label>
                 <div class="col-sm-4" style="width: 37.5%">
                     <input type="text" maxlength="100" class="form-control" id="answer-created" disabled="disabled">
                 </div>
@@ -100,16 +100,16 @@
 
 
     <div class="form-group">
-        <label class="control-label col-sm-2" for="answer">답변:</label>
+        <label class="control-label col-sm-2" for="answer">Answer:</label>
         <div class="col-sm-9">
             <textarea class="form-control" rows="5" id="answer"></textarea>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label col-sm-2" for="attachedFile">파일첨부:</label>
+        <label class="control-label col-sm-2" for="attachedFile">Attachments:</label>
         <div class="col-sm-9" style="margin-top: 0px">
-            <input type="file" class="filestyle" data-buttonName="btn-default btn-sm"  data-buttonText="파일 찾기" id="attachedFile" >
+            <input type="file" class="filestyle" data-buttonName="btn-default btn-sm"  data-buttonText="Find files" id="attachedFile" >
         </div>
     </div>
 
@@ -147,13 +147,13 @@
 
                 <c:choose>
                     <c:when test="${REQUEST_STATUS eq checkStatus}">
-                        <button type="button" class="btn btn-danger fl" id="btnDelete">삭제</button>
-                        <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">취소</button>
-                        <button type="button" class="btn btn-save btn-sm" id="btnRegist">저장</button>
+                        <button type="button" class="btn btn-danger fl" id="btnDelete">Delete</button>
+                        <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">Cancel</button>
+                        <button type="button" class="btn btn-save btn-sm" id="btnRegist">Save</button>
                     </c:when>
                     <c:otherwise>
-                        <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">취소</button>
-                        <button type="button" class="btn btn-save btn-sm" id="btnRegist">등록</button>
+                        <button type="button" class="btn btn-cancel2 btn-sm" id="btnCancel">Cancel</button>
+                        <button type="button" class="btn btn-save btn-sm" id="btnRegist">Registration</button>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -260,7 +260,7 @@ SCRIPT BEGIN
         var filePath = data.info.filePath;
 /*
         if (fileName == null || fileName == '') {
-            $("#attachedFileLabel-question").text("첨부 파일 없음");
+            $("#attachedFileLabel-question").text("No attachments");
         }
         else {
             $("#attachedFileLabel-question").text(fileName);
@@ -291,7 +291,7 @@ SCRIPT BEGIN
             target.html(linkHtml);
 
         } else {
-            target.text('첨부파일없음');
+            target.text('No attachments');
         }
 
         //console.log('target ::: ' + target.html());
@@ -725,7 +725,7 @@ SCRIPT BEGIN
 
     // BIND :: BUTTON EVENT
     $("#btnDelete").on("click", function() {
-        procPopup('답변', DELETE_MESSAGE, 'setDeleteFlag();');
+        procPopup('Answer', DELETE_MESSAGE, 'setDeleteFlag();');
 
     });
 

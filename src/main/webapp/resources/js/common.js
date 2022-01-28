@@ -66,13 +66,13 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
                         case "PUT" :
-                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            notifyAlert('success',"",'Changed.');
                             break;
                         case "POST" :
-                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            notifyAlert('success',"",'Created.');
                             break;
                         case "DELETE" :
-                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            notifyAlert('success',"",'Deleted.');
                             break;
                         default :
                             break;
@@ -127,20 +127,20 @@ var procCallAjax5 = function(reqUrl, reqMethod, param, callback, $targetLoadingB
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
                         case "PUT" :
-                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            notifyAlert('success',"",'Changed.');
                             break;
                         case "POST" :
-                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            notifyAlert('success',"",'Created.');
                             break;
                         case "DELETE" :
-                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            notifyAlert('success',"",'Deleted.');
                             break;
                         default :
                             break;
                     }
                 }
             } else {
-                notifyAlert('danger','',"작업중에 오류가 발생하였습니다.");
+                notifyAlert('danger','',"An error occurred during operation.");
                 return false;
             }
         },
@@ -189,13 +189,13 @@ var procCallAjax4 = function(reqUrl, reqMethod, param, callback, $targetLoadingB
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
                         case "PUT" :
-                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            notifyAlert('success',"",'Changed.');
                             break;
                         case "POST" :
-                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            notifyAlert('success',"",'Created.');
                             break;
                         case "DELETE" :
-                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            notifyAlert('success',"",'Created.');
                             break;
                         default :
                             break;
@@ -256,13 +256,13 @@ var procCallAjaxAsyncFalse = function(reqUrl, reqMethod, param, callback, $targe
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
                         case "PUT" :
-                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            notifyAlert('success',"",'Changed.');
                             break;
                         case "POST" :
-                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            notifyAlert('success',"",'Created.');
                             break;
                         case "DELETE" :
-                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            notifyAlert('success',"",'Deleted.');
                             break;
                         default :
                             break;
@@ -322,7 +322,7 @@ var procCallAjaxForSyncDelete = function(reqUrl, reqMethod, param, callback, $ta
             if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                 $targetLoadingBarElement.addClass('hide');
             }
-            notifyAlert('success',"",'삭제 완료 되었습니다.');
+            notifyAlert('success',"",'Deleted.');
         }
     });
 };

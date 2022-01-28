@@ -7,7 +7,7 @@
 <body class="layout-boxed skin-blue sidebar-mini">
 <script th:inline="javascript" type="text/javascript" layout:fragment="common-script">
 
-    var WELCOME_MESSAGE = /*[[#{common.system.welcome.message}]]*/ "환영합니다. Open PaaS PaaS-TA 운영자 포탈입니다.";
+    var WELCOME_MESSAGE = /*[[#{common.system.welcome.message}]]*/ "Welcome to the operator portal for open cloud platform service(PaaS-TA).";
     var UPDATE_MESSAGE = /*[[#{common.info.popup.update.message}]]*/ "";
     var DELETE_MESSAGE = /*[[#{common.info.popup.delete.message}]]*/ "";
 
@@ -54,7 +54,7 @@
             <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
             <h4 style="font-size: 16px; text-align: left; padding: 7px 10px; margin-top: 7px;color: white;" id="notice">
                 <i class="fa fa-fw fa-volume-up"></i>
-                <span><b>알림사항</b></span>
+                <span><b>Notice</b></span>
                 <span id="alertMsg" th:text="#{common.system.welcome.message}"></span>
             </h4>
         </nav>
@@ -64,7 +64,7 @@
         <select class="form-control toCheckString" id="apiUrls" style="width:300px;margin-top: -3px; display: unset;text-align: right;" onchange="selectChange()">
             <span th:each="config : ${configs}">
                 <option th:if="${config.token != null}"  th:value="${config.key}" th:text="${config.infra_name}"></option>
-                <option th:if="${config.token == null}"  value="0" th:text="${config.infra_name + ' (로그인실패)'}"></option>
+                <option th:if="${config.token == null}"  value="0" th:text="${config.infra_name + ' (Login failed)'}"></option>
             </span>
         </select>
     </div>

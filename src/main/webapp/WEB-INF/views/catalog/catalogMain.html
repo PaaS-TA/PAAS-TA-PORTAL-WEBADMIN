@@ -18,7 +18,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                카탈로그 관리
+                Catalog Management
             </h1>
         </section>
         <!-- Main content -->
@@ -31,7 +31,7 @@
 
                             <div class="box box-default collapsed-box" style="margin-bottom: 8px; border-top-color: #ded6d2;"><!--box-solid-->
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">검색 조건</h3>
+                                    <h3 class="box-title">Search Condition</h3>
 
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
@@ -42,33 +42,33 @@
 
                                     <form class="form-horizontal" id="catalogSearch"><!--form-inline-->
                                         <div class="form-group col-sm-12">
-                                            <label for="searchUseYn" class="control-label col-sm-3 col-xs-12">공개 여부</label>
+                                            <label for="searchUseYn" class="control-label col-sm-3 col-xs-12">Show or Hide</label>
                                             <div class="checkbox col-sm-8 col-xs-5" id="searchUseYn">
                                                 <label class="col-sm-3">
                                                     <input type="checkbox" name="search" id="searchUseY" checked="checked"/>
-                                                    공개
+                                                    Show
                                                 </label>
                                                 <label class="col-sm-4">
                                                     <input type="checkbox" name="search" id="searchUseN" checked="checked"/>
-                                                    비공개
+                                                    Hide
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-12">
-                                            <label for="searchItem" class="control-label col-sm-3 col-xs-12">검색 항목</label>
+                                            <label for="searchItem" class="control-label col-sm-3 col-xs-12">Search item</label>
                                             <div class="checkbox col-sm-8 col-xs-5" id="searchItem">
                                                 <label class="col-sm-3">
                                                     <input type="checkbox" name="search" id="searchItemName" checked="checked"/>
-                                                    이름
+                                                    Name
                                                 </label>
                                                 <label class="col-sm-3">
                                                     <input type="checkbox" name="search" id="searchItemSummary" checked="checked"/>
-                                                    요약
+                                                    Summary
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-12">
-                                            <label for="searchValue" class="control-label col-sm-3 col-xs-12">검색어</label>
+                                            <label for="searchValue" class="control-label col-sm-3 col-xs-12">Search</label>
                                             <div class="has-feedback col-sm-4 col-xs-12">
                                                 <input type="text" id="searchValue" class="form-control"/>
                                                 <span class="glyphicon glyphicon-search form-control-feedback"></span>
@@ -83,9 +83,9 @@
 
                             <div class="nav-tabs-custom" style="margin-bottom:0px;">
                                 <ul class="nav nav-tabs">
-                                    <li class="header no-padding active"><a href="#starterTab" data-toggle="tab" aria-expanded="true"  data-tab-type="starter">앱 템플릿</a></li>
-                                    <li class="header no-padding"><a href="#devTab" data-toggle="tab" aria-expanded="false" data-tab-type="dev">앱 개발환경</a></li>
-                                    <li class="header no-padding"><a href="#serviceTab" data-toggle="tab" aria-expanded="false" data-tab-type="service">앱 서비스</a></li>
+                                    <li class="header no-padding active"><a href="#starterTab" data-toggle="tab" aria-expanded="true"  data-tab-type="starter">App template</a></li>
+                                    <li class="header no-padding"><a href="#devTab" data-toggle="tab" aria-expanded="false" data-tab-type="dev">App Development Environment</a></li>
+                                    <li class="header no-padding"><a href="#serviceTab" data-toggle="tab" aria-expanded="false" data-tab-type="service">App service</a></li>
                                 </ul>
                             </div>
 
@@ -101,7 +101,7 @@
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;"></div>
                                             <div class="pull-right" style="padding-right: 0px;">
                                                 <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#starterFormModal">
-                                                    앱 템플릿 등록
+                                                    Register App Template
                                                 </button>
                                             </div>
                                             <!--  -->
@@ -117,10 +117,10 @@
                                                 </colgroup>
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>요약</th>
-                                                    <th>분류</th>
-                                                    <th>공개</th>
+                                                    <th>Name</th>
+                                                    <th>Summary</th>
+                                                    <th>Classification</th>
+                                                    <th>Show</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="starterList" name="dataList">
@@ -138,7 +138,7 @@
                                         <div class="box-header">
                                             <div class="pull-right" style="padding-right: 0px;">
                                                 <button type="button" class="btn btn-block btn-primary btn-sm" id="devEnvRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#devEnvFormModal">
-                                                    앱 개발환경 등록
+                                                    Register App Development Environment
                                                 </button>
                                             </div>
                                         </div>
@@ -153,10 +153,10 @@
                                                 </colgroup>
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>요약</th>
-                                                    <th>분류</th>
-                                                    <th>공개</th>
+                                                    <th>Name</th>
+                                                    <th>Summary</th>
+                                                    <th>Classification</th>
+                                                    <th>Show</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="devList" name="dataList">
@@ -174,7 +174,7 @@
                                         <div class="box-header">
                                             <div class="pull-right" style="padding-right: 0px;">
                                                 <button type="button" class="btn btn-block btn-primary btn-sm" id="serviceRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceFormModal">
-                                                    앱 서비스 등록
+                                                    Register App Template
                                                 </button>
 
                                             </div>
@@ -190,10 +190,10 @@
                                                 </colgroup>
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>요약</th>
-                                                    <th>분류</th>
-                                                    <th>공개</th>
+                                                    <th>Name</th>
+                                                    <th>Summary</th>
+                                                    <th>Classification</th>
+                                                    <th>Show</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="serviceList" name="dataList">
@@ -243,7 +243,7 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="starterTitle" name="modalTitle">앱 템플릿 등록</div>
+                                <div id="starterTitle" name="modalTitle">Register App Template</div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -254,7 +254,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="starterName" class="col-sm-3 control-label">이름</label>
+                                            <label for="starterName" class="col-sm-3 control-label">Name</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkStarterForm" id="starterName" name="name" placeholder="" />
                                                 <input type="hidden" id="starterId" name="id"/>
@@ -262,7 +262,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="categoryList" class="col-sm-3 control-label">분류</label>
+                                            <label for="categoryList" class="col-sm-3 control-label">Classification</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control toCheckString" id="categoryList" style="width:auto;">
                                                     <option value=""></option>
@@ -271,7 +271,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="buildPackList" class="col-sm-3 control-label">앱 개발환경</label>
+                                            <label for="buildPackList" class="col-sm-3 control-label">App development environment</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control toCheckString" id="buildPackList" style="width:auto;">
                                                     <option value=""></option>
@@ -280,7 +280,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="servicePackList" class="col-sm-3 control-label">서비스</label>
+                                            <label for="servicePackList" class="col-sm-3 control-label">Service</label>
 
                                             <div class="col-sm-4"> <!--col-xs-4 -->
                                                 <select multiple="" class="form-control" id="servicePackList"
@@ -315,7 +315,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="starterThumbnail" class="col-sm-3 control-label">썸네일</label>
+                                            <label for="starterThumbnail" class="col-sm-3 control-label">Thumbnail</label>
 
                                             <div class="col-sm-9">
                                                 <input type="file" id="starterThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
@@ -344,7 +344,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="isFreeArea" class="col-sm-3 control-label">공개</label>
+                                            <label for="isFreeArea" class="col-sm-3 control-label">Show</label>
                                             <div class="col-sm-9">
 
                                                 <div id="isFreeArea" class="radio">
@@ -366,7 +366,7 @@
                                         </div>
 
                                         <div class="form-group" name="startertagParamForm" style="height:50px;">
-                                            <label for="startertagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="startertagParamInput" class="col-sm-3 col-xs-12 control-label">Tag</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" name="startertagParamInput" id="startertagParamInput">
                                                     <option value="paas-ta">paas-ta</option>
@@ -412,14 +412,14 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="summary" class="col-sm-3 control-label">요약</label>
+                                            <label for="summary" class="col-sm-3 control-label">Summary</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkStarterForm" id="summary" name="summary" placeholder=""/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="description" class="col-sm-3 control-label">설명</label>
+                                            <label for="description" class="col-sm-3 control-label">Description</label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" rows="5" id="description"></textarea>
                                                 <script th:inline="javascript" type="text/javascript">
@@ -438,10 +438,10 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="starterDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
-                            <button type="button" id="starterSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateStarter();">저장</button>
-                            <button type="button" id="starterRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createStarter();">등록</button>
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="starterDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">Delete</button>
+                            <button type="button" id="starterSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateStarter();">Save</button>
+                            <button type="button" id="starterRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createStarter();">Registration</button>
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -460,7 +460,7 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="devEnvTitle" name="modalTitle">앱 개발환경 등록</div>
+                                <div id="devEnvTitle" name="modalTitle">Register app development environment</div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -471,7 +471,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="devEnvName" class="col-sm-3 control-label">이름</label>
+                                            <label for="devEnvName" class="col-sm-3 control-label">Name</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkDevEnvForm" id="devEnvName" name="name" placeholder="" />
                                                 <input type="hidden" id="devEnvId" name="id"/>
@@ -479,7 +479,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="categoryDevEnvList" class="col-sm-3 control-label">분류</label>
+                                            <label for="categoryDevEnvList" class="col-sm-3 control-label">Classification</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkDevEnvForm" id="categoryDevEnvList" style="width:auto;">
                                                     <option value=""></option>
@@ -488,7 +488,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="buildPackDevEnvList" class="col-sm-3 control-label">앱 개발환경</label>
+                                            <label for="buildPackDevEnvList" class="col-sm-3 control-label">App development environment</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkDevEnvForm" id="buildPackDevEnvList" style="width:auto;">
                                                     <option value=""></option>
@@ -497,7 +497,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="devEnvThumbnail" class="col-sm-3 control-label">썸네일</label>
+                                            <label for="devEnvThumbnail" class="col-sm-3 control-label">Thumbnail</label>
 
                                             <div class="col-sm-9">
                                                 <input type="file" id="devEnvThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
@@ -526,11 +526,11 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="devEnvApp" class="col-sm-3 control-label">앱 샘플</label>
+                                            <label for="devEnvApp" class="col-sm-3 control-label">App sample</label>
 
                                             <div class="col-sm-9">
                                                 <input type="file" id="devEnvApp" name="appSample" class="filestyle" data-buttonText=""/>
-                                                <span class="help-block" style="font-size: 7px; font-weight: bold; margin-left: 5px;"> 파일 첨부는 1개 파일만 가능합니다.</span>
+                                                <span class="help-block" style="font-size: 7px; font-weight: bold; margin-left: 5px;"> Only one file can be attached.</span>
                                             </div>
 
                                             <div class="col-sm-3"></div>
@@ -547,14 +547,14 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="devEnvDocFileUrl" class="col-sm-3 control-label">문서 URL</label>
+                                            <label for="devEnvDocFileUrl" class="col-sm-3 control-label">Document URL</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkDevEnvForm" id="devEnvDocFileUrl" name="name" placeholder="http://" />
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="isFreeDevEnvArea" class="col-sm-3 control-label">공개</label>
+                                            <label for="isFreeDevEnvArea" class="col-sm-3 control-label">Show</label>
                                             <div class="col-sm-9">
 
                                                 <div id="isFreeDevEnvArea" class="radio">
@@ -576,7 +576,7 @@
                                         </div>
 
                                         <div class="form-group" name="devEnvtagParamForm" style="height:50px;">
-                                            <label for="devEnvtagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="devEnvtagParamInput" class="col-sm-3 col-xs-12 control-label">Tag</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="devEnvtagParamInput" name="devEnvtagParamInput">
                                                     <option value="paas-ta">paas-ta</option>
@@ -599,7 +599,7 @@
                                         </div>
 
                                         <div class="form-group" name="devEnvtagParamFormPaidFree" style="height:50px;">
-                                            <label for="devEnvtagParamInputPaidFree" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="devEnvtagParamInputPaidFree" class="col-sm-3 col-xs-12 control-label">Tag</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="devEnvtagParamInputPaidFree" name="devEnvtagParamInput">
                                                     <option value="pay">pay</option>
@@ -622,14 +622,14 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="devEnvSummary" class="col-sm-3 control-label">요약</label>
+                                            <label for="devEnvSummary" class="col-sm-3 control-label">Summary</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkDevEnvForm" id="devEnvSummary" name="summary" placeholder=""/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="devEnvDescription" class="col-sm-3 control-label">설명</label>
+                                            <label for="devEnvDescription" class="col-sm-3 control-label">Description</label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" rows="5" id="devEnvDescription"></textarea>
                                                 <script th:inline="javascript" type="text/javascript">
@@ -648,10 +648,10 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="devEnvDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
-                            <button type="button" id="devEnvSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateDevEnv();">저장</button>
-                            <button type="button" id="devEnvRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createDevEnv();">등록</button>
-                            <button type="button" id="devEnvCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="devEnvDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">Delete</button>
+                            <button type="button" id="devEnvSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateDevEnv();">Save</button>
+                            <button type="button" id="devEnvRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createDevEnv();">Registration</button>
+                            <button type="button" id="devEnvCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -670,7 +670,7 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="serviceTitle" name="modalTitle">앱 서비스 등록</div>
+                                <div id="serviceTitle" name="modalTitle">Register App Template</div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -681,7 +681,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="serviceName" class="col-sm-3 control-label">이름</label>
+                                            <label for="serviceName" class="col-sm-3 control-label">Name</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkServiceForm" id="serviceName" name="name" placeholder="" />
                                                 <input type="hidden" id="serviceId" name="id"/>
@@ -689,7 +689,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="categoryServiceList" class="col-sm-3 control-label">분류</label>
+                                            <label for="categoryServiceList" class="col-sm-3 control-label">Classification</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkServiceForm" id="categoryServiceList" style="width:auto;">
                                                     <option value=""></option>
@@ -698,7 +698,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="serviceServicePackList" class="col-sm-3 control-label">서비스</label>
+                                            <label for="serviceServicePackList" class="col-sm-3 control-label">Service</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkServiceForm" id="serviceServicePackList" style="width:auto;">
                                                     <option value=""></option>
@@ -707,7 +707,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="serviceThumbnail" class="col-sm-3 control-label">썸네일</label>
+                                            <label for="serviceThumbnail" class="col-sm-3 control-label">Thumbnail</label>
 
                                             <div class="col-sm-9">
                                                 <input type="file" id="serviceThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
@@ -736,7 +736,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="serviceDocFileUrl" class="col-sm-3 control-label">문서 URL</label>
+                                            <label for="serviceDocFileUrl" class="col-sm-3 control-label">Document URL</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkServiceForm" id="serviceDocFileUrl" name="name" placeholder="http://" />
                                             </div>
@@ -744,31 +744,31 @@
                                         <div class="form-group" name="serviceParamForm">
 
                                             <label for="serviceParamInput" class="col-sm-3 col-xs-12 control-label">&nbsp;</label>
-                                            <font color="red" size="1">자동 생성은 ORG_NAME,SPACE_NAME,OWNER(서비스 신청한 계정) 만 자동입력가능 합니다.</font>
+                                            <font color="red" size="1">For automatic creation, only ORG_NAME,SPACE_NAME,OWNER (the only account that reaquested for service) can be automatically input.</font>
                                         </div>
                                         <div class="form-group" name="serviceParamForm">
 
-                                            <label for="serviceParamInput" class="col-sm-3 col-xs-12 control-label">서비스 생성 파라미터</label>
+                                            <label for="serviceParamInput" class="col-sm-3 col-xs-12 control-label">Service creation parameters</label>
 
                                             <div class="col-sm-4 col-xs-3">
                                                 <input type="text" class="form-control" id="serviceParamInput" name="serviceParamInput"/>
                                             </div>
                                             <div class="col-sm-3 col-xs-6">
                                                 <select class="form-control" name="serviceParamType" style="width:auto;">
-                                                    <option value="text">텍스트형</option>
-                                                    <option value="password">패스워드</option>
-                                                    <option value="default">자동입력</option>
-                                                    <option value="userAppointed">관리자 지정</option>
+                                                    <option value="text">Text type</option>
+                                                    <option value="password">Password</option>
+                                                    <option value="default">Automatic input</option>
+                                                    <option value="userAppointed">Admin settings</option>
                                                 </select>
                                             </div>
 
                                             <div class="col-sm-2 col-xs-3">
-                                                <button type="button" class="btn btn-sm btn-primary" id="serviceParamAdd" name="serviceParamAdd">추가</button>
+                                                <button type="button" class="btn btn-sm btn-primary" id="serviceParamAdd" name="serviceParamAdd">Add</button>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="isFreeServiceArea" class="col-sm-3 control-label">앱 바인드 사용</label>
+                                            <label for="isFreeServiceArea" class="col-sm-3 control-label">Use app bind</label>
                                             <div class="col-sm-9">
 
                                                 <div id="isAppBindArea" class="radio">
@@ -789,25 +789,25 @@
                                         </div>
 
                                         <div class="form-group" name="appBindParamForm">
-                                            <label for="appBindParamInput" class="col-sm-3 col-xs-12 control-label">앱 바인드 파라미터</label>
+                                            <label for="appBindParamInput" class="col-sm-3 col-xs-12 control-label">App bind parameters</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <input type="text" class="form-control" id="appBindParamInput" name="appBindParamInput"/>
                                             </div>
                                             <div class="col-sm-3 col-xs-6">
                                                 <select class="form-control" name="appBindParamType" style="width:auto;">
-                                                    <option value="text">텍스트형</option>
-                                                    <option value="password">패스워드</option>
-                                                    <option value="default">자동입력</option>
-                                                    <option value="userAppointed">관리자 지정</option>
+                                                    <option value="text">Text type</option>
+                                                    <option value="password">Password</option>
+                                                    <option value="default">Automatic input</option>
+                                                    <option value="userAppointed">Admin settings</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-2 col-xs-3">
-                                                <button type="button" class="btn btn-sm btn-primary" id="appBindParamAdd" name="appBindParamAdd">추가</button>
+                                                <button type="button" class="btn btn-sm btn-primary" id="appBindParamAdd" name="appBindParamAdd">Add</button>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="isFreeServiceArea" class="col-sm-3 control-label">공개</label>
+                                            <label for="isFreeServiceArea" class="col-sm-3 control-label">Show</label>
                                             <div class="col-sm-9">
 
                                                 <div id="isFreeServiceArea" class="radio">
@@ -829,7 +829,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="isUseDashBoardArea" class="col-sm-3 control-label">대시보드 사용</label>
+                                            <label for="isUseDashBoardArea" class="col-sm-3 control-label">Use the dashboard</label>
                                             <div class="col-sm-9">
 
                                                 <div id="isUseDashBoardArea" class="radio">
@@ -852,7 +852,7 @@
 
 
                                         <div class="form-group">
-                                            <label for="isUseOnDemand" class="col-sm-3 control-label">온디멘드</label>
+                                            <label for="isUseOnDemand" class="col-sm-3 control-label">On demand</label>
                                             <div class="col-sm-9">
 
                                                 <div id="isUseOnDemand" class="radio">
@@ -875,7 +875,7 @@
 
 
                                         <div class="form-group" name="tagParamForm" style="height:50px;">
-                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">Tag</label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="tagParamInput" name="tagParamInput">
                                                     <option value="paas-ta" >paas-ta</option>
@@ -924,14 +924,14 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="serviceSummary" class="col-sm-3 control-label">요약</label>
+                                            <label for="serviceSummary" class="col-sm-3 control-label">Summary</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkServiceForm" id="serviceSummary" name="summary" placeholder=""/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="serviceDescription" class="col-sm-3 control-label">설명</label>
+                                            <label for="serviceDescription" class="col-sm-3 control-label">Description</label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" rows="5" id="serviceDescription"></textarea>
                                                 <script th:inline="javascript" type="text/javascript">
@@ -950,10 +950,10 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="serviceDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
-                            <button type="button" id="serviceSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateService();">저장</button>
-                            <button type="button" id="serviceRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createService();">등록</button>
-                            <button type="button" id="serviceCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="serviceDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">Delete</button>
+                            <button type="button" id="serviceSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateService();">Save</button>
+                            <button type="button" id="serviceRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createService();">Registration</button>
+                            <button type="button" id="serviceCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -975,7 +975,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"> 취소
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"> Cancel
                             </button>
                         </div>
                     </div>
@@ -1012,7 +1012,7 @@
     //var CLIENT_LIST = new Array();
 
     var THUMB_MAX_SIZE = 500; // KB
-    var NOT_FOUND_ATTACH_FILE_MESSAGE = "첨부된 파일이 없습니다.";
+    var NOT_FOUND_ATTACH_FILE_MESSAGE = "No attachments found.";
 
     // LIST DATA
     var STARTER_SOURCE_LIST;    // 앱 템플릿 리스트
@@ -1628,7 +1628,7 @@
     // [앱 템플릿] 상세
     var getStarter = function(id){
 
-        $('#starterTitle').text("앱 템플릿 상세");
+        $('#starterTitle').text("App Template Details");
         $('#starterDeleteBtn').show();
         $('#starterSaveBtn').show();
         $('#starterRegBtn').hide();
@@ -1724,7 +1724,7 @@
     // [앱 개발환경] 상세
     var getBuildPack = function(id){
 
-        $('#devEnvTitle').text("앱 개발환경 상세");
+        $('#devEnvTitle').text("App development environment details");
         $('#devEnvDeleteBtn').show();
         $('#devEnvSaveBtn').show();
         $('#devEnvRegBtn').hide();
@@ -1815,7 +1815,7 @@
     // [앱 서비스] 상세
     var getServicePack = function(id){
 
-        $('#serviceTitle').text("앱 서비스 상세");
+        $('#serviceTitle').text("App service details");
         $('#serviceDeleteBtn').show();
         $('#serviceSaveBtn').show();
         $('#serviceRegBtn').hide();
@@ -1984,7 +1984,7 @@
         var overlapCheck=false;
         $.each(STARTER_SOURCE_LIST, function (index, list_data) {
             if((starterParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning','',"The name already exists.");
                 overlapCheck=true;
             }
         });
@@ -2020,7 +2020,7 @@
         console.log(STARTER_SOURCE_LIST);
         $.each(STARTER_SOURCE_LIST, function (index, list_data) {
             if(no != list_data.no && (starterParam(FILE_INFO)).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning','',"The name already exists.");
                 overlapCheck=true;
             }
         });
@@ -2070,7 +2070,7 @@
             }
         }
 
-        notifyAlert('success',"","수정 완료 되었습니다.");
+        notifyAlert('success',"","Changed.");
     }
 
     // [앱 템플릿] 수정 (파일저장 후 처리)
@@ -2087,20 +2087,20 @@
         var title;
         var name;
         if(ACTIVE_TAB == 'starter'){
-            title = "앱 템플릿";
+            title = "App template";
             name = $('#starterName').val();
         }else if(ACTIVE_TAB == 'dev'){
-            title = "앱 개발환경";
+            title = "App development environment";
             name = $('#devEnvName').val();
         }else if(ACTIVE_TAB == 'service'){
-            title = "앱 서비스";
+            title = "App service";
             name  = $('#serviceName').val();
         }
         $('#popupButtonText').attr('onclick', "deleteItem();");
 
-        $("#popupTitle").html(title+" 삭제");
+        $("#popupTitle").html(title+" Delete");
         $("#popupMessage").html(name +/*[[#{delete.confirm.message('')}]]*/ "");
-        $("#popupButtonText").text("삭제");
+        $("#popupButtonText").text("Delete");
         $("#popupButtonText").addClass("pull-left");
         $("#popupButtonText").show();
 
@@ -2294,7 +2294,7 @@
         var overlapCheck=false;
         $.each(DEV_SOURCE_LIST, function (index, list_data) {
             if((devEnvParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning','',"The name already exists.");
                 overlapCheck=true;
             }
         });
@@ -2380,7 +2380,7 @@
         var overlapCheck=false;
         $.each(DEV_SOURCE_LIST, function (index, list_data) {
             if(no != list_data.no && (devEnvParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning','',"The name already exists.");
                 overlapCheck=true;
             }
         });
@@ -2511,7 +2511,7 @@
         var overlapCheck=false;
         $.each(SERVICE_SOURCE_LIST, function (index, list_data) {
             if((serviceParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning','',"The name already exists.");
                 overlapCheck=true;
             }
         });
@@ -2561,7 +2561,7 @@
         var overlapCheck=false;
         $.each(SERVICE_SOURCE_LIST, function (index, list_data) {
             if(no != list_data.no && (serviceParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning','',"The name already exists.");
                 overlapCheck=true;
             }
         });
@@ -2650,7 +2650,7 @@
             var ext = this_form.value.substring(pathMiddle + 1, pathEnd).toLowerCase();
 
             if (ext != "jpg" && ext != "png" && ext != "gif") {
-                notifyAlert('warning','','이미지 파일(jpg, png, gif)만 등록 가능합니다.');
+                notifyAlert('warning','','Only image files (jpg, png, gif) can be registered.');
                 //fileinput FileReader 참고
                 resetThumbnail();
                 return false;
@@ -2670,7 +2670,7 @@
             reader.onloadend = function (e) {
                 if (img_size > THUMB_MAX_SIZE) {
                     resetThumbnail();
-                    var alertMessage = '이미지 크기는 ' + THUMB_MAX_SIZE + 'Kb를 넘을 수 없습니다.';
+                    var alertMessage = 'Image size cannot exceed ' + THUMB_MAX_SIZE + 'Kb.';
                     notifyAlert('warning','',alertMessage);
 
                     return false;
@@ -2798,7 +2798,7 @@
         var limitFileSize = parseInt(limitFileSizeMb) << 20;
         var orgFileSize = reqFile[0].size;
         if (limitFileSize < orgFileSize) {
-            var alertMessage = '파일 크기는 ' + limitFileSizeMb + ' MB 를 넘을 수 없습니다.';
+            var alertMessage = 'File size cannot exceed ' + limitFileSizeMb + ' MB .';
             notifyAlert("danger","",alertMessage);
             return false;
         }
@@ -2891,7 +2891,7 @@
         var objSelectBox = $('#buildPackDevEnvList');
         objSelectBox.html('');
         //if(DEV_ENV_BUILDPACK_LIST.length==0){
-            objSelectBox.append("<option value='미설치 개발환경'>미설치 개발환경</option>");
+            objSelectBox.append("<option value='Uninstalled development environment'>미설치 개발환경</option>");
         //}
         //else{
             $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
@@ -2915,7 +2915,7 @@
         objSelectBox.html('');
 
         //if(SERVICE_SERVICE_LIST.length==0){
-            objSelectBox.append("<option value='미설치 서비스'>미설치 서비스</option>");
+            objSelectBox.append("<option value='Uninstalled service'>미설치 서비스</option>");
         //}
         //else {
             $.each(SERVICE_SERVICE_LIST, function (index, data) {
@@ -2969,15 +2969,15 @@
             +"       </div>"
             +"       <div class='col-sm-3 col-xs-6'>"
             +"           <select class='form-control' name='appBindParamType' style='width:auto;'>"
-            +"               <option value='text'>텍스트형</option>"
-            +"               <option value='password'>패스워드</option>"
-            +"               <option value='default'>자동입력</option>"
-            +"               <option value='userAppointed'>관리자 지정</option>"
+            +"               <option value='text'>Text type</option>"
+            +"               <option value='password'>Password</option>"
+            +"               <option value='default'>Automatic input</option>"
+            +"               <option value='userAppointed'>Admin settings</option>"
             +"           </select>"
             +"       </div>"
             +"   </div>"
             +"   <div class='col-sm-2 col-xs-3'>"
-            +"       <button type='button' class='btn btn-sm btn-danger' name='appBindParamRemove'>삭제</button>"
+            +"       <button type='button' class='btn btn-sm btn-danger' name='appBindParamRemove'>Delete</button>"
             +"   </div>"
             +" </div>";
 
@@ -3009,15 +3009,15 @@
             +"       </div>"
             +"       <div class='col-sm-3 col-xs-6'>"
             +"           <select class='form-control' name='serviceParamType' style='width:auto;'>"
-            +"               <option value='text'>텍스트형</option>"
-            +"               <option value='password'>패스워드</option>"
-            +"               <option value='default'>자동입력</option>"
-            +"               <option value='userAppointed'>관리자 지정</option>"
+            +"               <option value='text'>Text type</option>"
+            +"               <option value='password'>Password</option>"
+            +"               <option value='default'>Automatic input</option>"
+            +"               <option value='userAppointed'>Admin settings</option>"
             +"           </select>"
             +"       </div>"
             +"   </div>"
             +"   <div class='col-sm-2 col-xs-3'>"
-            +"       <button type='button' class='btn btn-sm btn-danger' name='serviceParamRemove'>삭제</button>"
+            +"       <button type='button' class='btn btn-sm btn-danger' name='serviceParamRemove'>Delete</button>"
             +"   </div>"
             +" </div>";
 
@@ -3332,7 +3332,7 @@
             }
 
             if($("#buildPackDevEnvList").val()===null){
-                $("#buildPackDevEnvList").val("미설치 개발환경");
+                $("#buildPackDevEnvList").val("Uninstalled development environment");
             }
             updateDevEnv();
         }, 200);
@@ -3348,7 +3348,7 @@
                 $('input:radio[name="serviceUseYn"][value="N"]').prop('checked', false);
             }
             if($("#serviceServicePackList").val()===null){
-                $("#serviceServicePackList").val("미설치 서비스");
+                $("#serviceServicePackList").val("Uninstalled service");
             }
             updateService();
         }, 200);

@@ -2,7 +2,7 @@
 <%@ include file="../common/common.jsp"%>
 
 <div class="col-sm-6 pt30">
-    <h4 class="modify_h4 fwn">문서 관리</h4>
+    <h4 class="modify_h4 fwn">Document</h4>
 </div>
 
 

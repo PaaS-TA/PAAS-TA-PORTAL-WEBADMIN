@@ -19,7 +19,7 @@
                          alt="User Image"/>
                 </div>
                 <div class="pull-left info">
-                    <p><span th:text="${#httpServletRequest.getUserPrincipal().getName()}"></span> 님</p>
+                    <p><span th:text="${#httpServletRequest.getUserPrincipal().getName()}"></span>  </p>
 
                     <a href="#" onclick="javascript:document.getElementById('logout').submit();">
                         <i class="fa fa-sign-out"></i> LogOut
@@ -49,60 +49,60 @@
                 -->
                 <li>
                     <a href="/dashboard">
-                        <i class="fa fa-dashboard"></i> <span>대시보드</span>
+                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-laptop"></i> <span>운영관리</span>
+                        <i class="fa fa-laptop"></i> <span>Operation management</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/orgspacelist"><i class="fa fa-circle-o"></i> 조직 및 공간 조회</a></li>
-                        <li><a href="/clientMain"><i class="fa fa-circle-o"></i> 클라이언트</a></li>
-                        <li><a href="/catalogs"><i class="fa fa-circle-o"></i> 카탈로그</a></li>
-                        <li><a href="/usermgnts"><i class="fa fa-circle-o"></i> 사용자 관리</a></li>
-                        <li><a href="/authority"><i class="fa fa-circle-o"></i> 권한 관리</a></li>
-                        <li><a href="/code"><i class="fa fa-circle-o"></i> 코드 관리</a></li>
-                        <li><a href="/quotadefinitions"><i class="fa fa-circle-o"></i> 할당량 관리</a></li>
-                        <li><a href="/isolationSegments"><i class="fa fa-circle-o"></i> 분할 관리</a></li>
+                        <li><a href="/orgspacelist"><i class="fa fa-circle-o"></i> Organization/Space</a></li>
+                        <li><a href="/clientMain"><i class="fa fa-circle-o"></i> Client</a></li>
+                        <li><a href="/catalogs"><i class="fa fa-circle-o"></i> Catalog</a></li>
+                        <li><a href="/usermgnts"><i class="fa fa-circle-o"></i> User Management</a></li>
+                        <li><a href="/authority"><i class="fa fa-circle-o"></i> Permission Management</a></li>
+                        <li><a href="/code"><i class="fa fa-circle-o"></i> code management</a></li>
+                        <li><a href="/quotadefinitions"><i class="fa fa-circle-o"></i> Quota Management</a></li>
+                        <li><a href="/isolationSegments"><i class="fa fa-circle-o"></i> Isolation Segment</a></li>
                     </ul>
                 </li>
 
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-edit"></i>
-                        <span>서비스 관리</span>
+                        <span>Service management</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/buildpacks"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
-                        <li><a href="/servicebrokers"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
-                        <li><a href="/serviceplans"><i class="fa fa-circle-o"></i> 서비스 제어</a></li>
+                        <li><a href="/buildpacks"><i class="fa fa-circle-o"></i> Build pack</a></li>
+                        <li><a href="/servicebrokers"><i class="fa fa-circle-o"></i> Service broker</a></li>
+                        <li><a href="/serviceplans"><i class="fa fa-circle-o"></i> Service control</a></li>
                     </ul>
                 </li>
 
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-lock"></i>
-                        <span>보안</span>
+                        <span>Security</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/securitygroups"><i class="fa fa-circle-o"></i> 시큐리티 그룹</a></li>
+                        <li><a href="/securitygroups"><i class="fa fa-circle-o"></i> Security group</a></li>
                     </ul>
                 </li>
 
                 <li class="treeview" id="market_head" >
                     <a href="#">
                         <i class="fa fa-cart-arrow-down"></i>
-                        <span>마켓플레이스</span>
+                        <span>Marketplace</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -114,13 +114,13 @@
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-gears"></i>
-                        <span>설정</span>
+                        <span>Setting</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/configInfos"><i class="fa fa-circle-o"></i>설정 정보</a></li>
+                        <li><a href="/configInfos"><i class="fa fa-circle-o"></i>Setting information</a></li>
                     </ul>
                 </li>
             </ul>

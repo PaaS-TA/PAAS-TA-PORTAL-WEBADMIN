@@ -68,7 +68,7 @@ var setPreView = function(objThumbnail) {
         var ext = thisForm.value.substring(pathMiddle + 1, pathEnd).toLowerCase();
 
         if (ext != "jpg" && ext != "png" && ext != "gif") {
-            procAlert('danger', '이미지 파일(jpg, png, gif)만 등록 가능합니다.');
+            procAlert('danger', 'Only image files (jpg, png, gif) can be added.');
             //jasny bootstrap fileinput을 이용함. 참고는 http://www.jasny.net/bootstrap/javascript/#fileinput 참조바람
             resetThumbnail();
             return false;
@@ -90,7 +90,7 @@ var setPreView = function(objThumbnail) {
             if (imgSize > MAX_SIZE) {
                 resetThumbnail();
 
-                var alertMessage = '이미지 크기는 ' + MAX_SIZE + 'Kb 를 넘을 수 없습니다.';
+                var alertMessage = 'Image size cannot exceed ' + MAX_SIZE + 'Kb.';
                 divPreviewMessage.text(alertMessage);
                 divPreviewMessage.attr('style', 'display: block;');
 

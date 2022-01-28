@@ -74,7 +74,7 @@
                                 url = data.url;
                             }
 
-                            webIdeUrlOption = "<option value=''> -- URL선택 --</option>";
+                            webIdeUrlOption = "<option value=''> -- Select URL --</option>";
 
 
                             for(var i=0; webIdeUrl[i] != null; i++){
@@ -97,8 +97,8 @@
                                 "</select>"+
                                 "</td>" +
                                 "<td> " +
-                                "<button type='button' class='btn btn-block btn-primary btn-sm' onClick='updateUser(\""+ data.userId  +"\", \""+ data.orgName  +"\" , \"url"+ n +"\" , \"useYn"+ n +"\")'>저장</button>" +
-                                "<button type='button' class='btn btn-block btn-danger btn-sm' onClick='deleteWebIdeModal(\""+ data.orgName  +"\")'>삭제</button></td>" +
+                                "<button type='button' class='btn btn-block btn-primary btn-sm' onClick='updateUser(\""+ data.userId  +"\", \""+ data.orgName  +"\" , \"url"+ n +"\" , \"useYn"+ n +"\")'>Save</button>" +
+                                "<button type='button' class='btn btn-block btn-danger btn-sm' onClick='deleteWebIdeModal(\""+ data.orgName  +"\")'>Delete</button></td>" +
                                 "</tr>");
 
                         });
@@ -134,7 +134,7 @@
                 contentType: "application/json",
                 success: function(data){
                     if(data){
-                        procAlert("success", 'WEB IDE 유저 정보가 저장되었습니다.');
+                        procAlert("success", 'WEB IDE user information is saved.');
                     }
                 }
             });
@@ -143,9 +143,9 @@
 
         function deleteWebIdeModal(orgName) {
 
-            $("#popupTitle").html("WEB IDE 유저 삭제");
-            $("#popupMessage").html(""+orgName+" 조직의 WEB IDE 유저를 삭제하시겠습니까?");
-            $("#popupButtonText").text("삭제");
+            $("#popupTitle").html("Delete WEB IDE user");
+            $("#popupMessage").html(""+"Are you sure you want to delete the WEB IDE user from the " + orgName +" organization?");
+            $("#popupButtonText").text("Delete");
             $("#popupButtonText").show();
             $('#popupButtonText').attr('onclick', "deleteUser('"+orgName+"');");
 
@@ -166,7 +166,7 @@
                 contentType: "application/json",
                 success: function(data){
                     if(data){
-                        procAlert('success',"WEB IDE 사용자가 삭제되었습니다.");
+                        procAlert('success',"The WEB IDE user has been deleted.");
                         $("#webIdeUserList").html("");
                         getConfigInfoValue();
                     }
@@ -189,7 +189,7 @@
         <div layout:fragment="content">
         <section class="content-header">
             <h1>
-                WEB IDE 유저 관리
+                WEB IDE user management
             </h1>
         </section>
 
@@ -201,10 +201,10 @@
                             <table class="table table-striped">
                                 <tbody id="webIdeUserList">
                                 <tr>
-                                    <th width="20%" style="text-align: left">아이디</th>
-                                    <th width="20%" style="text-align: left">조직</th>
+                                    <th width="20%" style="text-align: left">ID</th>
+                                    <th width="20%" style="text-align: left">Organization</th>
                                     <th width="38%">URL</th>
-                                    <th width="10%">사용유무</th>
+                                    <th width="10%">Use or not</th>
                                     <th width="12%"></th>
                                 </tr>
                                 </tbody>
