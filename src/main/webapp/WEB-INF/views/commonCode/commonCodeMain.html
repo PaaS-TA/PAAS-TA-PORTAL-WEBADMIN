@@ -157,7 +157,7 @@
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="name"
                                                        name="codeGroup" placeholder="ex) 앱 템플릿 카탈로그" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
-                                                <label id="validation_group_name" style="color: red;">특수 문자는 허용하지 않습니다.</label>
+                                                <label id="validation_group_name" style="color: red;">특수 문자 및 앞, 뒤 공백은 허용하지 않습니다.</label>
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +223,7 @@
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="value"
                                                        name="codeDetail" placeholder="Please enter your value" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
-                                                <label id="validation_group_value" style="color: red;">특수 문자는 허용하지 않습니다.</label>
+                                                <label id="validation_group_value" style="color: red;">특수 문자 및 앞, 뒤 공백은 허용하지 않습니다.</label>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
                                         </div>
@@ -532,20 +532,38 @@
     // CHECK VALID STRING SPACE : 'name' Unify = codeGroup
     function procCheckValidStringSpaceGroup(target) {
         var blank_pattern = /[\s]/g;
-        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?<>]/gi;
-        var special_value_pattern = /[`~!@#$%^&*|\\\'\";?<>]/gi;
+        var first_blank_pattern = /^[\s\uFEFF\xA0]+/gi;
+        var end_blank_pattern = /[\s\uFEFF\xA0]+$/gi;
+        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?<>]/g;
+        var special_value_pattern = /[`~!@#$%^&*|\\\'\";?<>]/g;
 
-        if(blank_pattern.test(target.value) == true){
+        if(blank_pattern.test(target.value)){
             if(target.id=="id") {
                 $("#validation_group").show();
+                isGroupValidation = false;
+                return false;
             }
             if(target.id=="key") {
                 $("#validation_group_key").show();
+                isGroupValidation = false;
+                return false;
             }
-            isGroupValidation = false;
-            return false;
         }
-        if(special_pattern.test(target.value) == true){
+
+        if(first_blank_pattern.test(target.value) || end_blank_pattern.test(target.value)) {
+            if(target.id=="name") {
+                $("#validation_group_name").show();
+                isGroupValidation = false;
+                return false;
+            }
+            if(target.id=="value") {
+                $("#validation_group_value").show();
+                isGroupValidation = false;
+                return false;
+            }
+        }
+
+        if(special_pattern.test(target.value)){
             if(target.id=="id") {
                 $("#validation_group").show();
             }
@@ -560,7 +578,7 @@
                 return false;
             } 
         }
-        if(special_value_pattern.test(target.value) == true){
+        if(special_value_pattern.test(target.value)){
             if(target.id=="value"){
                 $("#validation_group_value").show();
             }
