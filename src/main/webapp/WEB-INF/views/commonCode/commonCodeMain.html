@@ -149,7 +149,8 @@
                                                 <input type="text" class="form-control toCheckString" id="id"
                                                        name="codeGroup" placeholder="ex) STARTER_CATALOG" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
                                                 <!--<input type="hidden" id="id"/>-->
-                                                <label id="validation_group" style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
+                                                <label id="validation_group"
+                                                       style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
                                             </div>
                                         </div>
                                         <div class="form-group required">
@@ -158,6 +159,7 @@
                                                 <input type="text" class="form-control toCheckString" id="name"
                                                        name="codeGroup" placeholder="ex) 앱 템플릿 카탈로그" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
                                                 <label id="validation_group_name" style="color: red;">특수 문자 및 앞, 뒤 공백은 허용하지 않습니다.</label>
+<!--                                                <label id="validation_group_name2" style="color: red;">값을 입력해주세요.</label>-->
                                             </div>
                                         </div>
                                     </div>
@@ -534,68 +536,61 @@
         var blank_pattern = /[\s]/g;
         var first_blank_pattern = /^[\s\uFEFF\xA0]+/gi;
         var end_blank_pattern = /[\s\uFEFF\xA0]+$/gi;
-        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?<>]/g;
+        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?<>]/;
         var special_value_pattern = /[`~!@#$%^&*|\\\'\";?<>]/g;
 
-        if(blank_pattern.test(target.value)){
-            if(target.id=="id") {
-                $("#validation_group").show();
-                isGroupValidation = false;
-                return false;
-            }
-            if(target.id=="key") {
-                $("#validation_group_key").show();
-                isGroupValidation = false;
-                return false;
-            }
-        }
+        var value1;
+        var value2;
 
-        if(first_blank_pattern.test(target.value) || end_blank_pattern.test(target.value)) {
-            if(target.id=="name") {
-                $("#validation_group_name").show();
-                isGroupValidation = false;
-                return false;
-            }
-            if(target.id=="value") {
-                $("#validation_group_value").show();
-                isGroupValidation = false;
-                return false;
-            }
-        }
-
-        if(special_pattern.test(target.value)){
-            if(target.id=="id") {
-                $("#validation_group").show();
-            }
-            if(target.id=="name") {
-                $("#validation_group_name").show();
-            }
-            if(target.id=="key") {
-                $("#validation_group_key").show();
-            }
-            if(target.id!="value") {
-                isGroupValidation = false;
-                return false;
-            } 
-        }
-        if(special_value_pattern.test(target.value)){
-            if(target.id=="value"){
-                $("#validation_group_value").show();
-            }
-            isGroupValidation = false;
-            return false;
-        }
-        if(target.id=="id")
-            $("#validation_group").hide();
-        if(target.id=="name")
-            $("#validation_group_name").hide();
-        if(target.id=="key")
-            $("#validation_group_key").hide();
-        if(target.id=="value")
-            $("#validation_group_value").hide();
         isGroupValidation = true;
-    }
 
+        if(target.id == "id" || target.id == "name") {
+            value1 = $("#id").val();
+            value2 = $("#name").val();
+
+            if (blank_pattern.test(value1) || special_pattern.test(value1)) {
+                $("#validation_group").show();
+                isGroupValidation = false;
+            } else {
+                $("#validation_group").hide();
+            }
+
+            if (first_blank_pattern.test(value2) || end_blank_pattern.test(value2) || special_pattern.test(value2)) {
+                $("#validation_group_name").show();
+                isGroupValidation = false;
+            } else {
+                $("#validation_group_name").hide();
+            }
+
+            if (!isGroupValidation) {
+                return false;
+            }
+        }
+
+        if(target.id == "key" || target.id == "value") {
+            value1 = $("#key").val();
+            value2 = $("#value").val();
+
+            if (blank_pattern.test(value1) || special_pattern.test(value1)) {
+                $("#validation_group_key").show();
+                isGroupValidation = false;
+
+            } else {
+                $("#validation_group_key").hide();
+            }
+
+            if (first_blank_pattern.test(value2) || end_blank_pattern.test(value2) || special_value_pattern.test(value2)) {
+                $("#validation_group_value").show();
+                isGroupValidation = false;
+            } else {
+                $("#validation_group_value").hide();
+            }
+
+            if (!isGroupValidation) {
+                return false;
+            }
+        }
+    }
 
     // GET GroupList searchKeyword
     var getCodeGroupList = function (reqParam) {
