@@ -147,7 +147,7 @@
                                             <label for="id" class="col-sm-4 control-label">코드 ID</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="id"
-                                                       name="codeGroup" placeholder="ex) STARTER_CATALOG" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
+                                                       name="codeGroup" placeholder="ex) STARTER_CATALOG" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
                                                 <!--<input type="hidden" id="id"/>-->
                                                 <label id="validation_group"
                                                        style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
@@ -157,9 +157,8 @@
                                             <label for="name" class="col-sm-4 control-label">코드 이름</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="name"
-                                                       name="codeGroup" placeholder="ex) 앱 템플릿 카탈로그" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
+                                                       name="codeGroup" placeholder="ex) 앱 템플릿 카탈로그" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
                                                 <label id="validation_group_name" style="color: red;">특수 문자 및 앞, 뒤 공백은 허용하지 않습니다.</label>
-<!--                                                <label id="validation_group_name2" style="color: red;">값을 입력해주세요.</label>-->
                                             </div>
                                         </div>
                                     </div>
@@ -213,7 +212,7 @@
                                             <label for="key" class="col-sm-4 control-label">Key</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="key"
-                                                       name="codeDetail" placeholder="Please enter your key" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
+                                                       name="codeDetail" placeholder="Please enter your key" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
                                                 <label id="validation_group_key" style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
@@ -224,7 +223,7 @@
                                             <label for="value" class="col-sm-4 control-label">Value</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="value"
-                                                       name="codeDetail" placeholder="Please enter your value" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
+                                                       name="codeDetail" placeholder="Please enter your value" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
                                                 <label id="validation_group_value" style="color: red;">특수 문자 및 앞, 뒤 공백은 허용하지 않습니다.</label>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
@@ -532,7 +531,8 @@
 
     var isGroupValidation = false;
     // CHECK VALID STRING SPACE : 'name' Unify = codeGroup
-    function procCheckValidStringSpaceGroup(target) {
+    // function procCheckValidStringSpaceGroup(target) {
+    procCheckValidStringSpaceGroup = function (target) {
         var blank_pattern = /[\s]/g;
         var first_blank_pattern = /^[\s\uFEFF\xA0]+/gi;
         var end_blank_pattern = /[\s\uFEFF\xA0]+$/gi;
@@ -544,7 +544,7 @@
 
         isGroupValidation = true;
 
-        if(target.id == "id" || target.id == "name") {
+        if(target == "id" || target == "name") {
             value1 = $("#id").val();
             value2 = $("#name").val();
 
@@ -567,14 +567,13 @@
             }
         }
 
-        if(target.id == "key" || target.id == "value") {
+        if(target == "key" || target == "value") {
             value1 = $("#key").val();
             value2 = $("#value").val();
 
             if (blank_pattern.test(value1) || special_pattern.test(value1)) {
                 $("#validation_group_key").show();
                 isGroupValidation = false;
-
             } else {
                 $("#validation_group_key").hide();
             }
@@ -802,14 +801,17 @@
 
     //createGroup
     function createGroup() {
-       if($("#id").val()==""){
+        procCheckValidStringSpaceGroup("id");
+        procCheckValidStringSpaceGroup("name");
+
+        if($("#id").val()=="") {
             $("#validation_group").show();
         }
-       if($("#name").val()==""){
+       if($("#name").val()=="") {
             $("#validation_group_name").show();
         }
 
-        if (isGroupValidation == false || $("#id").val()=="" || $("#name").val()=="") {
+        if(!isGroupValidation || $("#id").val()=="" || $("#name").val()=="") {
             return false;
         }
 
@@ -863,10 +865,13 @@
 
     //updateGroup
     function updateGroup() {
-        if($("#id").val()==""){
+        procCheckValidStringSpaceGroup("id");
+        procCheckValidStringSpaceGroup("name");
+
+        if($("#id").val()=="") {
             $("#validation_group").show();
         }
-        if($("#name").val()==""){
+        if($("#name").val()=="") {
             $("#validation_group_name").show();
         }
 
@@ -919,6 +924,9 @@
 
     //createDetail
     function createDetail() {
+        procCheckValidStringSpaceGroup("key");
+        procCheckValidStringSpaceGroup("value");
+
         if ($("#key").val()=="") {
             $("#validation_group_key").show();
         }
@@ -989,6 +997,9 @@
 
     //updateDetail
     var updateDetail = function () {
+        procCheckValidStringSpaceGroup("key");
+        procCheckValidStringSpaceGroup("value");
+
         if ($("#key").val()=="") {
             $("#validation_group_key").show();
         }
