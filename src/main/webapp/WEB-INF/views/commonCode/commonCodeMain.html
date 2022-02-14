@@ -58,7 +58,7 @@
 
                                         <div class="b-group pull-right">
                                             <button type="button" id="GroupRegister" class="btn btn-sm btn-primary"
-                                                    data-toggle="modal" data-target="#codeGrouprModal" onclick="modalInitInsert()">등록
+                                                    data-toggle="modal" data-target="#codeGroupModal" onclick="modalInitInsert()">등록
                                             </button>
                                         </div>
                                         <br/>
@@ -94,15 +94,15 @@
                                     <label>Detail Table</label>
                                     <!--Table -->
                                     <div id="codeDetailMessageArea" class="table-responsive">
-                                        <table class="table table-striped">
+                                        <table class="table table-striped" style="word-wrap: break-word; word-break: break-all;">
                                             <tr>
-                                                <th style="width:200px">Key</th>
-                                                <th style="width:200px">Value</th>
-                                                <th style="width:200px">요약</th>
-                                                <th style="width:200px">사용</th>
+                                                <th style="width: 25%">Key</th>
+                                                <th style="width: 25%">Value</th>
+                                                <th style="width: 25%">요약</th>
+                                                <th style="width: 25%">사용</th>
                                             </tr>
                                             <tbody id="codeDetailGroupTableArea">
-                                            <td colspan="4" style="text-align: center;">선택된 GROUP이 없습니다.</td>
+                                                <td id="td message" colspan="4" style="text-align: center;" th:text="${#messages.msg('select.result.empty.req.data', 'GROUP')}"></td>
                                             </tbody>
                                         </table>
                                     </div> <!--Table -->
@@ -122,7 +122,7 @@
             </div>
 
             <!-- Modal Layer1 : Group-->
-            <div class="modal fade" id="codeGrouprModal" data-backdrop="static" data-keyboard="false">
+            <div class="modal fade" id="codeGroupModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -140,24 +140,25 @@
                                 <!--<div class="box-header"></div>-->
                                 <!-- /.box-header -->
                                 <!-- form start -->
-                                <form id="codeGrouprForm" class="form-horizontal">
+                                <form id="codeGroupForm" class="form-horizontal">
                                     <div class="box-body">
 
                                         <div class="form-group required">
                                             <label for="id" class="col-sm-4 control-label">코드 ID</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="id"
-                                                       name="codeGroup" placeholder="ex) STARTER_CATALOG" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
+                                                       name="codeGroup" placeholder="ex) STARTER_CATALOG" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
                                                 <!--<input type="hidden" id="id"/>-->
-                                                <label id="validation_group" style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
+                                                <label id="validation_group"
+                                                       style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
                                             </div>
                                         </div>
                                         <div class="form-group required">
                                             <label for="name" class="col-sm-4 control-label">코드 이름</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="name"
-                                                       name="codeGroup" placeholder="ex) 앱 템플릿 카탈로그" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
-                                                <label id="validation_group_name" style="color: red;">특수 문자는 허용하지 않습니다.</label>
+                                                       name="codeGroup" placeholder="ex) 앱 템플릿 카탈로그" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
+                                                <label id="validation_group_name" style="color: red;">특수 문자 및 앞, 뒤 공백은 허용하지 않습니다.</label>
                                             </div>
                                         </div>
                                     </div>
@@ -175,7 +176,7 @@
                             <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right"
                                     onClick="createGroup();">등록
                             </button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" onclick="modalInit()"
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left"
                                     data-dismiss="modal">닫기
                             </button>
                         </div>
@@ -211,7 +212,7 @@
                                             <label for="key" class="col-sm-4 control-label">Key</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="key"
-                                                       name="codeDetail" placeholder="Please enter your key" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
+                                                       name="codeDetail" placeholder="Please enter your key" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
                                                 <label id="validation_group_key" style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
@@ -222,8 +223,8 @@
                                             <label for="value" class="col-sm-4 control-label">Value</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="value"
-                                                       name="codeDetail" placeholder="Please enter your value" onkeypress="procCheckValidStringSpaceGroup(this)" onkeyup="procCheckValidStringSpaceGroup(this)"/>
-                                                <label id="validation_group_value" style="color: red;">특수 문자는 허용하지 않습니다.</label>
+                                                       name="codeDetail" placeholder="Please enter your value" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
+                                                <label id="validation_group_value" style="color: red;">특수 문자 및 앞, 뒤 공백은 허용하지 않습니다.</label>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
                                         </div>
@@ -343,12 +344,14 @@
     var LIST_DETAIL_PROC_URL = "/v2/codedetail"
     var groupId;
     var selectKey;
+    var isSelect;
     var no;
+    var CODE_GROUP_LIST;
+    var CODE_DETAIL_LIST;
     var SUCCESS_MSG = /*[[#{common.info.result.success}]]*/ '';
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
     var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
     var EMPTY_MSG = /*[[#{common.info.empty.data}]]*/ '';
-    var LIST_DETAIL_PROC_URL = "/v2/codedetail";
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
@@ -481,11 +484,13 @@
             key = $("#apiUrls").val();
         }
 
+        isSelect = false;
+
         codeInitMarketPlaceURL();
         getCodeGroupList();
         //$("#DetailRegister").hide();
 
-        $('#codeGrouprModal').modal('hide');
+        $('#codeGroupModal').modal('hide');
         $('#codeDetailModal').modal('hide');
     }
 
@@ -501,7 +506,7 @@
             if(data.list[i].groupId == "MARKET_ADMIN_URL" && data.list[i].useYn == "Y"){
                 market_html += "<li><a onclick=\"goMarketPlace('" + data.list[i].value + "')\" style='cursor: pointer'><i class=\"fa fa-circle-o\" style='cursor: pointer'></i>"+data.list[i].key+"</a></li>";
             }
-    }
+        }
         if(market_html == ""){
             $('#market_head').remove();
         }else{
@@ -511,6 +516,7 @@
 
 
     getSearchList = function () {
+        isSelect = false;
         getCodeGroupList();
         getCodeDetailList();
     }
@@ -525,63 +531,77 @@
 
     var isGroupValidation = false;
     // CHECK VALID STRING SPACE : 'name' Unify = codeGroup
-    function procCheckValidStringSpaceGroup(target) {
+    // function procCheckValidStringSpaceGroup(target) {
+    procCheckValidStringSpaceGroup = function (target) {
         var blank_pattern = /[\s]/g;
-        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?<>]/gi;
-        var special_value_pattern = /[`~!@#$%^&*|\\\'\";?<>]/gi;
+        var first_blank_pattern = /^[\s\uFEFF\xA0]+/gi;
+        var end_blank_pattern = /[\s\uFEFF\xA0]+$/gi;
+        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?<>]/;
+        var special_value_pattern = /[`~!@#$%^&*|\\\'\";?<>]/g;
 
-        if(blank_pattern.test(target.value) == true){
-            if(target.id=="id") {
-                $("#validation_group").show();
-            }
-            if(target.id=="key") {
-                $("#validation_group_key").show();
-            }
-            isGroupValidation = false;
-            return false;
-        }
-        if(special_pattern.test(target.value) == true){
-            if(target.id=="id") {
-                $("#validation_group").show();
-            }
-            if(target.id=="name") {
-                $("#validation_group_name").show();
-            }
-            if(target.id=="key") {
-                $("#validation_group_key").show();
-            }
-            if(target.id!="value") {
-                isGroupValidation = false;
-                return false;
-            } 
-        }
-        if(special_value_pattern.test(target.value) == true){
-            if(target.id=="value"){
-                $("#validation_group_value").show();
-            }
-            isGroupValidation = false;
-            return false;
-        }
-        if(target.id=="id")
-            $("#validation_group").hide();
-        if(target.id=="name")
-            $("#validation_group_name").hide();
-        if(target.id=="key")
-            $("#validation_group_key").hide();
-        if(target.id=="value")
-            $("#validation_group_value").hide();
+        var value1;
+        var value2;
+
         isGroupValidation = true;
-    };
 
+        if(target == "id" || target == "name") {
+            value1 = $("#id").val();
+            value2 = $("#name").val();
+
+            if (blank_pattern.test(value1) || special_pattern.test(value1)) {
+                $("#validation_group").show();
+                isGroupValidation = false;
+            } else {
+                $("#validation_group").hide();
+            }
+
+            if (first_blank_pattern.test(value2) || end_blank_pattern.test(value2) || special_pattern.test(value2)) {
+                $("#validation_group_name").show();
+                isGroupValidation = false;
+            } else {
+                $("#validation_group_name").hide();
+            }
+
+            if (!isGroupValidation) {
+                return false;
+            }
+        }
+
+        if(target == "key" || target == "value") {
+            value1 = $("#key").val();
+            value2 = $("#value").val();
+
+            if (blank_pattern.test(value1) || special_pattern.test(value1)) {
+                $("#validation_group_key").show();
+                isGroupValidation = false;
+            } else {
+                $("#validation_group_key").hide();
+            }
+
+            if (first_blank_pattern.test(value2) || end_blank_pattern.test(value2) || special_value_pattern.test(value2)) {
+                $("#validation_group_value").show();
+                isGroupValidation = false;
+            } else {
+                $("#validation_group_value").hide();
+            }
+
+            if (!isGroupValidation) {
+                return false;
+            }
+        }
+    }
 
     // GET GroupList searchKeyword
     var getCodeGroupList = function (reqParam) {
         var doc = document;
         var searchKeyword = document.getElementById('searchKeyword').value;
         var param = "";
-        if (null != searchKeyword && "" != searchKeyword) {
+
+        if(null != searchKeyword && "" !== searchKeyword) {
+            searchKeyword = searchKeyword.replace(/^\s+|\s+$/gm,'');
             param = {"searchKeyword": searchKeyword};
         }
+
         procCallAjax(LIST_GROUP_PROC_URL+"?key="+key, "GET", param, procCallbackGetCodeGroupList, $('#serviceModalLoadingBar'));
     };
 
@@ -593,6 +613,7 @@
         var param = "";
         if (null != searchKeyword && "" != searchKeyword) {
             param = {"searchKeyword": searchKeyword};
+            $("#DetailRegister").hide();
         }
         procCallAjax(LIST_DETAIL_PROC_URL+"?key="+key, "GET", param, procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
 
@@ -605,29 +626,34 @@
         var objTable = $("#codeGroupList");
         var objTableArea = $('#codeGroupTableArea');
         var objMessageArea = $('#codeGroupMessageArea');
+
+        var codeGroupList = data.list;
         var listLength = data.list.length;
         var htmlString = [];
+        var searchKeyword = $("#searchKeyword").val().toLowerCase();
 
         objTableArea.html('');
-        if (listLength < 1) {
-//            objMessageArea.append(EMPTY_MSG);
-            objMessageArea.show();
 
+        var isEmpty = (searchKeyword.replace(/\s/g, '').length === 0);
+
+        if (((listLength === 0 || isEmpty) && searchKeyword.length !== 0) || (listLength === 0 && searchKeyword.length === 0)) {
+            htmlString.push('<tr><td id="td message" colspan="4" style="text-align: center;">' + EMPTY_MSG +'</td></tr>');
         } else {
-            var codeGroupList = data.list;
 
             for (var i = 0; i < listLength; i++) {
                 htmlString.push('<tr style="cursor:pointer;" >'
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\',\'' +  "&key="+key+ '\')">' + codeGroupList[i].id + '</td>'
                     + '<td onclick="getCodeDetail(\'' + codeGroupList[i].id + '\',\'' +  "&key="+key + '\')">' + codeGroupList[i].name + '</td>'
                     + '<td>'
-                    + ' <span class="glyphicon glyphicon-list-alt" name="codeDetailBtn"onclick="getCodeGroup(\'' + codeGroupList[i].id+'\')" ></span>'
+                    + ' <span class="glyphicon glyphicon-list-alt" name="codeDetailBtn" onclick="getCodeGroup(\'' + codeGroupList[i].id+'\')" ></span>'
                     + '</td>'
                     + '</tr>');
             }
-            objTableArea.append(htmlString).trigger("create");
-
         }
+
+        objTableArea.append(htmlString).trigger("create");
+
+        CODE_GROUP_LIST = data.list;
     };
 
 
@@ -646,7 +672,7 @@
                     $("#name").val(data.list[0].name);
                 }
                 $("#id").attr("readonly", true);
-                $('#codeGrouprModal').modal('toggle');
+                $('#codeGroupModal').modal('toggle');
                 $("#validation_group").hide();
                 $("#validation_group_name").hide();
                 $("#validation_group_key").hide();
@@ -656,6 +682,7 @@
     }
 
     function getCodeDetail(key) {
+        isSelect = true;
         selectKey = key;
         isGroupValidation = true;
         $("#DetailRegister").show();
@@ -667,41 +694,69 @@
         procCallAjax("/v2/codedetail?groupId=" + key +"&key="+$("#apiUrls").val(), "GET", '', procCallbackGetCodeDetailList, $('#serviceModalLoadingBar'));
     };
 
+    function procSearchByKeyword(data, searchKeyword) {
+        var codeDetailList = data.list;
+        var listLength = codeDetailList.length;
+        var searchResult = new Array();
+        var newIdx = 0;
+
+        for (var i = 0; i < listLength; i++) {
+            if(codeDetailList[i].key.toLowerCase().includes(searchKeyword) || codeDetailList[i].value.toLowerCase().includes(searchKeyword) || (codeDetailList[i].summary != null && codeDetailList[i].summary.toLowerCase().includes(searchKeyword))) {
+                searchResult[newIdx++] = codeDetailList[i];
+            }
+        }
+
+        return searchResult;
+    }
+
     // GET LIST CALLBACK CodeDetailList
     var procCallbackGetCodeDetailList = function (data) {
 
         var objTable = $("#codeDetailList");
         var objTableArea = $('#codeDetailGroupTableArea');
-        var objMessageArea = $('#codeDetailMessageArea');
+
+        var codeDetailList = data.list;
         var listLength = data.list.length;
         var htmlString = [];
+        var searchKeyword = $("#searchKeyword").val().toLowerCase();
 
         objTableArea.html('');
 
-        if (listLength < 1) {
-            objMessageArea.append('<spring:message code="common.info.empty.data" />');
-            objMessageArea.show();
 
-        } else {
-            var codeDetailList = data.list;
+        var isEmpty = (searchKeyword.replace(/\s/g, '').length === 0);
 
+        if (!isEmpty) {
+            searchKeyword = searchKeyword.replace(/^\s+|\s+$/gm,'');
+            if (searchKeyword.length !== 0) {
+                codeDetailList = procSearchByKeyword(data, searchKeyword);
+                listLength = codeDetailList.length;
+            }
+        }
+
+        if((isSelect && listLength === 0) || (searchKeyword.length !== 0 && (isEmpty || listLength === 0))) {
+            htmlString.push('<tr><td id="td message" colspan="4" style="text-align: center;">' + EMPTY_MSG + '</td></tr>');
+        } else if((isSelect && listLength !== 0) || (!isSelect && searchKeyword.length !== 0 && !isEmpty)) {
             for (var i = 0; i < listLength; i++) {
-
-
                 htmlString.push('<tr style="cursor:pointer;" onclick="getCodeDetailTable(\'' + codeDetailList[i].no + '\')">');
-//                htmlString.push('<tr style="cursor:pointer;">'
                 htmlString.push('<td>' + codeDetailList[i].key + '</td>');
                 htmlString.push('<td>' + codeDetailList[i].value + '</td>');
-                if(codeDetailList[i].summary != null){
+                if (codeDetailList[i].summary != null && codeDetailList[i].summary.replace(/\s/g, '').length !== 0) {
                     htmlString.push('<td>' + codeDetailList[i].summary + '</td>');
-                }else{
+                } else {
                     htmlString.push('<td><i class="fa fa-fw fa-times"></i></td>');
                 }
                 htmlString.push('<td>' + codeDetailList[i].useYn + '</td>');
                 htmlString.push('</tr>');
             }
-            objTableArea.append(htmlString.toString()).trigger("create");
+        } else if(!isSelect && searchKeyword.length === 0) {
+                htmlString.push('<tr><td id="td message" colspan="4" style="text-align: center;">' + /*[[#{select.result.empty.req.data('GROUP')}]]*/ +'</td></tr>');
         }
+
+        objTableArea.append(htmlString.toString()).trigger("create");
+
+
+        CODE_DETAIL_LIST = codeDetailList;
+        isSelect == false;
     };
 
     function modalInitInsert() {
@@ -746,20 +801,40 @@
 
     //createGroup
     function createGroup() {
-       if($("#id").val()==""){
+        procCheckValidStringSpaceGroup("id");
+        procCheckValidStringSpaceGroup("name");
+
+        if($("#id").val()=="") {
             $("#validation_group").show();
         }
-       if($("#name").val()==""){
+       if($("#name").val()=="") {
             $("#validation_group_name").show();
         }
 
-        if (isGroupValidation == false || $("#id").val()=="" || $("#name").val()=="") {
+        if(!isGroupValidation || $("#id").val()=="" || $("#name").val()=="") {
             return false;
         }
+
+        var duplicated = false;
+
+        // 코드 중복 여부 확인
+        $.each(CODE_GROUP_LIST, function (index, list_data) {
+            if($("#id").val() == list_data.id){
+                notifyAlert('warning','', /*[[#{common.info.result.duplicate('ID')}]]*/);
+                duplicated = true;
+                return false;
+            }
+        });
+
+        if(duplicated) {
+            return false;
+        }
+
         var param = {
             id: $("#id").val(),
             name: $("#name").val(),
         }
+
         $.ajax({
             url: "/v2/codegroup" +"?key="+key,
             method: "POST",
@@ -767,25 +842,36 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                if (data) {
-                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
-                    init();
+                switch (data.RESULT) {
+                    case "DUPLICATED" :
+                        notifyAlert('warning', '', /*[[#{common.info.result.duplicate('ID')}]]*/);
+                        break;
+                    case "FAIL" :
+                        procAlert("danger", FAIL_MSG);
+                        break;
+                    default :
+                        procAlert("success", SUCCESS_MSG);
+                        notifyAlert('success', '', /*[[#{insert.result.success}]]*/);
+                        init();
+                        break;
                 }
             },
-            error: function (xhr, status, error) {
+            error: function (xhr, status, error, data) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
-
         });
         //modalInit();
     }
 
     //updateGroup
     function updateGroup() {
-        if($("#id").val()==""){
+        procCheckValidStringSpaceGroup("id");
+        procCheckValidStringSpaceGroup("name");
+
+        if($("#id").val()=="") {
             $("#validation_group").show();
         }
-        if($("#name").val()==""){
+        if($("#name").val()=="") {
             $("#validation_group_name").show();
         }
 
@@ -810,7 +896,8 @@
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
+                    procAlert("success", SUCCESS_MSG);
+                    notifyAlert('success', '', /*[[#{update.result.success}]]*/);
                     init();
                 }
             },
@@ -826,6 +913,7 @@
         var groupId = $("#groupId").val();
         procCallAjax("/v2/codegroup/" + groupId +"?key="+key, "DELETE", '', deleteGroup, $('#serviceModalLoadingBar'));
         getCodeGroupList();
+        getCodeDetail(selectKey);
         //modalInit();
     }
 
@@ -836,6 +924,9 @@
 
     //createDetail
     function createDetail() {
+        procCheckValidStringSpaceGroup("key");
+        procCheckValidStringSpaceGroup("value");
+
         if ($("#key").val()=="") {
             $("#validation_group_key").show();
         }
@@ -848,9 +939,23 @@
             return false;
         }
 
+        var duplicated = false;
+
+        // 코드 중복 여부 확인
+        $.each(CODE_DETAIL_LIST, function (index, list_data) {
+            if($("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
+                notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
+                duplicated = true;
+                return false;
+            }
+        });
+
+        if(duplicated) {
+            return false;
+        }
 
         var groupId = $('#groupId').val();
-        var reqUseYn = $("input:radio[id='useYn']:checked").val();
+        var reqUseYn = $("input:radio[name='RadiocodeDetail']:checked").val();
         var param = $("#codeDetailForm").serializeObject();
 
         var param = {
@@ -858,7 +963,7 @@
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
-            useYn: reqUseYn,
+            useYn: reqUseYn
         }
 
         $.ajax({
@@ -868,14 +973,22 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                if (data) {
-                    procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
-                    notifyAlert('success',"",'생성 완료 되었습니다.');
-                    init();
-                    getCodeDetail(selectKey);
+                switch (data.RESULT) {
+                    case "DUPLICATED" :
+                        notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
+                        break;
+                    case "FAIL" :
+                        notifyAlert('danger','', FAIL_MSG);
+                        break;
+                    default :
+                        procAlert("success", SUCCESS_MSG);
+                        notifyAlert('success', '', /*[[#{insert.result.success}]]*/);
+                        init();
+                        getCodeDetail(selectKey);
+                        break;
                 }
             },
-            error: function (xhr, status, error) {
+            error: function (xhr, status, error, data) {
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
         });
@@ -884,6 +997,9 @@
 
     //updateDetail
     var updateDetail = function () {
+        procCheckValidStringSpaceGroup("key");
+        procCheckValidStringSpaceGroup("value");
+
         if ($("#key").val()=="") {
             $("#validation_group_key").show();
         }
@@ -895,14 +1011,29 @@
             return false;
         }
 
+        var duplicated = false;
 
+        // 코드 중복 여부 확인
+        $.each(CODE_DETAIL_LIST, function (index, list_data) {
+            if($("#detailNo").val() != list_data.no && $("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
+                notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
+                duplicated = true;
+                return false;
+            }
+        });
+
+        if(duplicated) {
+            return false;
+        }
 
 
         var no = $('#detailNo').val();
+        var groupId = $('#groupId').val();
         var param = $("#codeDetailForm").serializeObject();
 
         var param = {
-            no:no,
+            groupId: groupId,
+            no: no,
             key: $("#key").val(),
             value: $("#value").val(),
             summary: $("#summary").val(),
@@ -916,14 +1047,23 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                if (data) {
-                    //procAlert("success", /*[[#{common.info.popup.update.success}]]*/ "");
-                    notifyAlert('success',"",'수정 완료 되었습니다.');
-                    init();
-                    getCodeDetail(selectKey);
+                switch (data.RESULT) {
+                    case "DUPLICATED" :
+                        notifyAlert('warning', '', /*[[#{common.info.result.duplicate('Key')}]]*/);
+                        break;
+                    case "FAIL" :
+                        notifyAlert('danger','', FAIL_MSG);
+                        break;
+                    default :
+                        notifyAlert('success','',/*[[#{update.result.success}]]*/);
+                        init();
+                        getCodeDetail(selectKey);
+                        break;
                 }
             },
-            error: function (xhr, status, error) {
+            error: function (xhr, status, error, data) {
+                //notifyAlert('warning', '', /*[[#{common.info.result.fail}]]*/);
+                notifyAlert('danger','', FAIL_MSG);
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
         });
