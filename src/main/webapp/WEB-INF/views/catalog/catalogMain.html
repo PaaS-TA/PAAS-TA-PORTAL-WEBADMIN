@@ -2891,7 +2891,7 @@
         var objSelectBox = $('#buildPackDevEnvList');
         objSelectBox.html('');
         //if(DEV_ENV_BUILDPACK_LIST.length==0){
-            objSelectBox.append("<option value='Uninstalled development environment'>미설치 개발환경</option>");
+            objSelectBox.append("<option value='Uninstalled development environment'>Uninstalled buildpack</option>");
         //}
         //else{
             $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
@@ -2915,7 +2915,7 @@
         objSelectBox.html('');
 
         //if(SERVICE_SERVICE_LIST.length==0){
-            objSelectBox.append("<option value='Uninstalled service'>미설치 서비스</option>");
+            objSelectBox.append("<option value='Uninstalled service'>Uninstalled service</option>");
         //}
         //else {
             $.each(SERVICE_SERVICE_LIST, function (index, data) {
