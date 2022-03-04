@@ -51,10 +51,10 @@ public class LoginController extends Common {
             mv.addObject("error", message);
         }
 
-        if (logout != null) {
-            message = messageSource.getMessage("index.logout.success.message", null, locale);
-            mv.addObject("message", message);
-        }
+//        if (logout != null) {
+//            message = messageSource.getMessage("index.logout.success.message", null, locale);
+//            mv.addObject("message", message);
+//        }
 
         LOGGER.info("ROLE_ADMIN : " + request.isUserInRole("ROLE_ADMIN"));
         if (!request.isUserInRole("ROLE_ADMIN")) {
