@@ -66,13 +66,13 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
                         case "PUT" :
-                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            notifyAlert('success',"", UPDATE_SUCCESS_MSG);
                             break;
                         case "POST" :
-                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            notifyAlert('success',"", INSERT_SUCCESS_MSG);
                             break;
                         case "DELETE" :
-                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            notifyAlert('success',"", DELETE_SUCCESS_MSG);
                             break;
                         default :
                             break;
@@ -100,6 +100,7 @@ var procCallAjax = function(reqUrl, reqMethod, param, callback, $targetLoadingBa
         }
     });
 };
+
 // Http Method , loadingBar Element Argument 추가
 var procCallAjax5 = function(reqUrl, reqMethod, param, callback, $targetLoadingBarElement) {
     var reqData = "";
@@ -110,37 +111,37 @@ var procCallAjax5 = function(reqUrl, reqMethod, param, callback, $targetLoadingB
     $.ajax({
         url: reqUrl,
         method: reqMethod,
+        async: false,
         data: reqData,
         dataType: 'json',
         contentType: "application/json",
-        beforeSend: function(){
-            if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
+        beforeSend: function () {
+            if ($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined) {
                 $targetLoadingBarElement.removeClass("hide");
             }
         },
         success: function(data) {
 
-
-            if (data.result == true) {
+            if (data.result) {
                 callback(data, param);
 
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
                         case "PUT" :
-                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            notifyAlert('success',"",UPDATE_SUCCESS_MSG);
                             break;
                         case "POST" :
-                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            notifyAlert('success',"",INSERT_SUCCESS_MSG);
                             break;
                         case "DELETE" :
-                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            notifyAlert('success',"",DELETE_SUCCESS_MSG);
                             break;
                         default :
                             break;
                     }
                 }
             } else {
-                notifyAlert('danger','',"작업중에 오류가 발생하였습니다.");
+                notifyAlert('danger','',RESULT_ERROR_MESSAGE);
                 return false;
             }
         },
@@ -189,13 +190,13 @@ var procCallAjax4 = function(reqUrl, reqMethod, param, callback, $targetLoadingB
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
                         case "PUT" :
-                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            notifyAlert('success',"",UPDATE_SUCCESS_MSG);
                             break;
                         case "POST" :
-                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            notifyAlert('success',"",INSERT_SUCCESS_MSG);
                             break;
                         case "DELETE" :
-                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            notifyAlert('success',"",DELETE_SUCCESS_MSG);
                             break;
                         default :
                             break;
@@ -256,13 +257,13 @@ var procCallAjaxAsyncFalse = function(reqUrl, reqMethod, param, callback, $targe
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
                         case "PUT" :
-                            notifyAlert('success',"",'수정 완료 되었습니다.');
+                            notifyAlert('success',"",UPDATE_SUCCESS_MSG);
                             break;
                         case "POST" :
-                            notifyAlert('success',"",'생성 완료 되었습니다.');
+                            notifyAlert('success',"",INSERT_SUCCESS_MSG);
                             break;
                         case "DELETE" :
-                            notifyAlert('success',"",'삭제 완료 되었습니다.');
+                            notifyAlert('success',"",DELETE_SUCCESS_MSG);
                             break;
                         default :
                             break;
@@ -322,7 +323,7 @@ var procCallAjaxForSyncDelete = function(reqUrl, reqMethod, param, callback, $ta
             if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                 $targetLoadingBarElement.addClass('hide');
             }
-            notifyAlert('success',"",'삭제 완료 되었습니다.');
+            notifyAlert('success',"",DELETE_SUCCESS_MSG);
         }
     });
 };
@@ -369,7 +370,8 @@ var procCallAjax2 = function(reqUrl, reqMethod, param, callback) {
 };
 
 // AJAX 전처리 Argument 추가 - beforeProc
-var procCallAjax3 = function(reqUrl, reqMethod, param, beforeProc, callback, $targetLoadingBarElement) {
+var procCallAjax3 = function(reqUrl, reqMethod, param,
+                             beforeProc, callback, $targetLoadingBarElement) {
     var reqData = "";
 
     if (param != null) {
@@ -739,6 +741,29 @@ function SelectSort(SelList)
             }
         }
     }
+}
+
+function translateMsg(msgCode, inputStr) {
+    var result;
+    var replaceMsg = msgCode.replaceAll('.', '-');
+    var replaceArg = inputStr.replaceAll('.', '--');
+
+    $.ajax({
+        url: "/getMessageProperties?msgCode=" + replaceMsg + "&inputStr=" + replaceArg,
+        method: "GET",
+        async: false,
+        dataType: 'json',
+        contentType: "application/json",
+        error : function(xhr, error) {
+            console.log("ERROR :: error :: ", error);
+            notifyAlert('danger' , '', RESULT_ERROR_MESSAGE);
+        },
+        success : function(data) {
+            result = data.RESULT;
+        }
+    });
+
+    return result;
 }
 
 var LIST_DETAIL_PROC_URL = "/v2/codedetail";

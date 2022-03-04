@@ -13,9 +13,7 @@
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                코드관리
-            </h1>
+            <h1 th:text="#{code.title}"></h1>
         </section>
 
         <!-- Main content -->
@@ -58,8 +56,7 @@
 
                                         <div class="b-group pull-right">
                                             <button type="button" id="GroupRegister" class="btn btn-sm btn-primary"
-                                                    data-toggle="modal" data-target="#codeGroupModal" onclick="modalInitInsert()">등록
-                                            </button>
+                                                    data-toggle="modal" data-target="#codeGroupModal" onclick="modalInitInsert()" th:text="#{code.button.add}"></button>
                                         </div>
                                         <br/>
                                         <i class="fa fa-fw fa-th-list"></i>
@@ -68,8 +65,8 @@
                                         <div id="codeGroupMessageArea" class="table-responsive">
                                             <table class="table table-striped">
                                                 <tr>
-                                                    <th style="width:200px">코드 ID</th>
-                                                    <th style="width:200px">코드 이름</th>
+                                                    <th style="width:200px" th:text="#{code.group.table.id}"></th>
+                                                    <th style="width:200px" th:text="#{code.group.table.name}"></th>
                                                     <th style="width:50px"><i class="fa fa-fw fa-ellipsis-v"></i></th>
                                                 </tr>
                                                 <tbody id="codeGroupTableArea">
@@ -86,8 +83,7 @@
                                     <!-- /.form-group -->
                                     <div class="b-group pull-right">
                                         <button type="button" id="DetailRegister" class="btn btn-sm btn-primary"
-                                                data-toggle="modal" data-target="#codeDetailModal" onclick="modalInitInsert()" style="display: none">등록
-                                        </button>
+                                                data-toggle="modal" data-target="#codeDetailModal" onclick="modalInitInsert()" style="display: none" th:text="#{code.button.add}"></button>
                                     </div>
                                     <br/>
                                     <i class="fa fa-fw fa-th-list"></i>
@@ -98,8 +94,8 @@
                                             <tr>
                                                 <th style="width: 25%">Key</th>
                                                 <th style="width: 25%">Value</th>
-                                                <th style="width: 25%">요약</th>
-                                                <th style="width: 25%">사용</th>
+                                                <th style="width: 25%" th:text="#{code.detail.table.summary}"></th>
+                                                <th style="width: 25%" th:text="#{code.detail.table.use}"></th>
                                             </tr>
                                             <tbody id="codeDetailGroupTableArea">
                                                 <td id="td message" colspan="4" style="text-align: center;" th:text="${#messages.msg('select.result.empty.req.data', 'GROUP')}"></td>
@@ -130,8 +126,8 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="titleReg">코드 등록</div>
-                                <div id="titleDetail">코드 상세</div>
+                                <div id="titleReg" th:text="#{code.group.add.modal.header.title}"></div>
+                                <div id="titleDetail" th:text="#{code.common.modal.header.title}"></div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -144,21 +140,21 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="id" class="col-sm-4 control-label">코드 ID</label>
+                                            <label for="id" class="col-sm-4 control-label" th:text="#{code.group.modal.body.id}"></label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="id"
                                                        name="codeGroup" placeholder="ex) STARTER_CATALOG" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
                                                 <!--<input type="hidden" id="id"/>-->
                                                 <label id="validation_group"
-                                                       style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
+                                                       style="color: red;" th:text="#{code.modal.body.valid1}"></label>
                                             </div>
                                         </div>
                                         <div class="form-group required">
-                                            <label for="name" class="col-sm-4 control-label">코드 이름</label>
+                                            <label for="name" class="col-sm-4 control-label" th:text="#{code.group.modal.body.name}"></label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="name"
-                                                       name="codeGroup" placeholder="ex) 앱 템플릿 카탈로그" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
-                                                <label id="validation_group_name" style="color: red;">특수 문자 및 앞, 뒤 공백은 허용하지 않습니다.</label>
+                                                       name="codeGroup" th:placeholder="#{code.group.modal.body.placeholder}" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
+                                                <label id="validation_group_name" style="color: red;" th:text="#{code.modal.body.valid2}"></label>
                                             </div>
                                         </div>
                                     </div>
@@ -168,17 +164,13 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left"
-                                    onClick="deleteGroupModal();">삭제
-                            </button>
+                                    onClick="deleteGroupModal();" th:text="#{code.button.delete}"></button>
                             <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right"
-                                    onClick="updateGroup();">저장
-                            </button>
+                                    onClick="updateGroup();" th:text="#{code.button.save}"></button>
                             <button type="button" id="regBtn" class="btn btn-sm btn-primary pull-right"
-                                    onClick="createGroup();">등록
-                            </button>
+                                    onClick="createGroup();" th:text="#{code.button.add}"></button>
                             <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left"
-                                    data-dismiss="modal">닫기
-                            </button>
+                                    data-dismiss="modal" th:text="#{code.button.close}"></button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -195,8 +187,8 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="titleReg2">코드 상세 등록</div>
-                                <div id="titleDetail2">코드 상세</div>
+                                <div id="titleReg2" th:text="#{code.detail.add.modal.header.title}"></div>
+                                <div id="titleDetail2" th:text="#{code.common.modal.header.title}"></div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -213,7 +205,7 @@
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="key"
                                                        name="codeDetail" placeholder="Please enter your key" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
-                                                <label id="validation_group_key" style="color: red;">특수 문자 및 공백은 허용하지 않습니다.</label>
+                                                <label id="validation_group_key" style="color: red;" th:text="#{code.modal.body.valid1}"></label>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
                                         </div>
@@ -224,14 +216,14 @@
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control toCheckString" id="value"
                                                        name="codeDetail" placeholder="Please enter your value" onkeypress="procCheckValidStringSpaceGroup(this.id)" onkeyup="procCheckValidStringSpaceGroup(this.id)"/>
-                                                <label id="validation_group_value" style="color: red;">특수 문자 및 앞, 뒤 공백은 허용하지 않습니다.</label>
+                                                <label id="validation_group_value" style="color: red;" th:text="#{code.modal.body.valid2}"></label>
                                                 <!--<input type="hidden" id="id"/>-->
                                             </div>
                                         </div>
 
 
                                         <div class="form-group">
-                                            <label for="summary" class="col-sm-4 control-label">요약</label>
+                                            <label for="summary" class="col-sm-4 control-label" th:text="#{code.detail.modal.body.summary}"></label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control" id="summary"
                                                        name="codeDetail" placeholder="Please enter your summary"/>
@@ -240,7 +232,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label">사용</label>
+                                            <label class="col-sm-4 control-label" th:text="#{code.detail.modal.body.use}"></label>
                                             <div class="col-sm-8">
                                                     <label class="radio-inline">
                                                         <input type="radio" id="useYn" name="RadiocodeDetail" th:checked="${true}"
@@ -259,17 +251,13 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" id="deleteBtn2" class="btn btn-sm btn-danger pull-left"
-                                    onClick="deleteDetailModal();">삭제
-                            </button>
+                                    onClick="deleteDetailModal();" th:text="#{code.button.delete}"></button>
                             <button type="button" id="saveBtn2" class="btn btn-sm btn-primary pull-right"
-                                    onClick="updateDetail();">저장
-                            </button>
+                                    onClick="updateDetail();" th:text="#{code.button.save}"></button>
                             <button type="button" id="regBtn2" class="btn btn-sm btn-primary pull-right"
-                                    onClick="createDetail();">등록
-                            </button>
+                                    onClick="createDetail();" th:text="#{code.button.add}"></button>
                             <button type="button" id="closeBtn2" class="btn btn-sm btn-default pull-left"
-                                    data-dismiss="modal">닫기
-                            </button>
+                                    data-dismiss="modal" th:text="#{code.button.close}"></button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -295,7 +283,7 @@
                             </button>
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"
                                     id="popupCancelButtonText"
-                                    onclick="procClosePopup('codeGroupConfirmModal');"> 취소
+                                    onclick="procClosePopup('codeGroupConfirmModal');" th:text="#{code.button.cancel}">
                             </button>
                         </div>
                     </div>
@@ -319,7 +307,7 @@
                             </button>
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"
                                     id="popupCancelButtonText2"
-                                    onclick="procClosePopup('codeDetailConfirmModal');"> 취소
+                                    onclick="procClosePopup('codeDetailConfirmModal');" th:text="#{code.button.cancel}">
                             </button>
                         </div>
                     </div>

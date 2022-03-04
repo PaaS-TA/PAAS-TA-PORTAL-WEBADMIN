@@ -13,9 +13,7 @@
 
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <h1>
-          빌드팩
-        </h1>
+        <h1 th:text="#{buildpack.title}"></h1>
       </section>
 
       <!-- Main content -->
@@ -31,11 +29,11 @@
                 <table class="table table-striped text-center"> <!-- table-responsive --> <!-- table-bordered --> <!-- table-striped -->
                   <thead>
                   <tr>
-                    <th width="30%">이름</th>
-                    <th width="30%">파일명</th>
-                    <th width="13%">순서</th>
-                    <th width="13%">사용유무</th>
-                    <th width="13%">Lock유무</th>
+                    <th width="30%" th:text="#{buildpack.table.name}"></th>
+                    <th width="30%" th:text="#{buildpack.table.file}"></th>
+                    <th width="13%" th:text="#{buildpack.table.order}"></th>
+                    <th width="13%" th:text="#{buildpack.table.use}"></th>
+                    <th width="13%" th:text="#{buildpack.table.lock}"></th>
                   </tr>
                   </thead>
                   <tbody id="buildPackList" th:remove="body">

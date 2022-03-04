@@ -13,9 +13,7 @@
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                클라이언트 목록
-            </h1>
+            <h1 th:text="#{clientMain.title}"></h1>
         </section>
 
         <!-- Main content -->
@@ -40,7 +38,7 @@
                                  style="position:static;padding-left: 0px;">
                                 <div class="has-feedback">
                                     <input type="text" class="form-control input-sm" id="searchKeyword"
-                                           onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
+                                           onkeyup="procSearchByKeyword(event);" th:placeholder="#{clientMain.search.placeholder}"/>
                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
                             </div>
@@ -48,9 +46,7 @@
                             <div class="pull-right" style="padding-right: 0px;">
                                 <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn"
                                         name="registBtn" data-toggle="modal" data-backdrop="static"
-                                        data-keyboard="false" data-target="#clientFormModal">
-                                    클라이언트 등록
-                                </button>
+                                        data-keyboard="false" data-target="#clientFormModal" th:text="#{clientMain.button.register}"></button>
                             </div>
 
                         </div>
@@ -59,7 +55,7 @@
                             <table class="table table-striped text-center"> <!-- table-responsive -->
                                 <thead>
                                 <tr>
-                                    <th>클라이언트 ID</th>
+                                    <th th:text="#{clientMain.table.id}"></th>
                                 </tr>
                                 </thead>
                                 <tbody id="clientList" name="dataList">
@@ -84,7 +80,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title">클라이언트 등록</h4>
+                            <h4 class="modal-title" th:text="#{clientMain.modal.add.header.title}"></h4>
                         </div>
                         <div class="modal-body">
 
@@ -95,7 +91,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="clientId" class="col-sm-3 control-label">클라이언트 아이디</label>
+                                            <label for="clientId" class="col-sm-3 control-label" th:text="#{clientMain.modal.body.id}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString" id="clientId"
                                                        placeholder="" />
@@ -103,7 +99,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="clientPwd" class="col-sm-3 control-label">클라이언트 패스워드</label>
+                                            <label for="clientPwd" class="col-sm-3 control-label" th:text="#{clientMain.modal.body.passwd}"></label>
                                             <div class="col-sm-9">
                                                 <input type="password" class="form-control toCheckString" id="clientPwd"
                                                        placeholder="" />
@@ -214,65 +210,33 @@
 <!--                                        </div>-->
 
                                         <div class="form-group">
-                                            <label for="optionGuide" class="col-sm-3 control-label">옵션 가이드</label>
+                                            <label for="optionGuide" class="col-sm-3 control-label" th:text="#{clientMain.modal.body.optionGuide}"></label>
                                             <div class="col-sm-9">
                         <textarea class="form-control" rows="13" id="optionGuide"
-                                  style="cursor: text" readonly="true">
-새 클라이언트 등록시 옵션 설정 예제)
-    --authorized_grant_types client_credentials
+                                  style="cursor: text" readonly="true" th:utext="#{clientMain.modal.optionGuide.text}"></textarea>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div id="modifyGuide" class="hide">
+                                                                                            <h5>
+                                                                                                <i class="fa fa-warning text-yellow"></i> <span th:text="#{clientMain.modal.detail.body.modifyGuide}"></span>
+                                                                                            </h5>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
 
----------------------------------------------------------------------------------------------------------------------------
-클라이언트 주요 옵션 설명
+                                                                        </div>
 
-  --authorities
-                :       클라이언트에 대한 접근 권한 설정
-                        (참고 : https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-Security.md#security-metadata)
-  --scope
-                :       유저의 역할에 대한 설정
-                        (참고 : https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-Security.md#token-scope-rules)
-  --authorized_grant_types
-                :       OAuth2 grant type들의 목록. 클라이언트 등록시 필수 옵션
-                        client_credentials, password, implicit, refresh_token, authorization_code
-
-
-클라이언트 등록시 사용 가능한 옵션 목록
-
-   --scope &lt;list&gt;
-   --authorized_grant_types &lt;list&gt;
-   --authorities &lt;list&gt;
-   --access_token_validity &lt;seconds&gt;
-   --refresh_token_validity &lt;&lt;seconds&gt;
-   --redirect_uri &lt;list&gt;
-   --token_salt &lt;token salt&gt;
-   --autoapprove &lt;list&gt;
-   --allowedproviders &lt;list&gt;
-
----------------------------------------------------------------------------------------------------------------------------
-
-More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/content/en/Security/registering_client_in_uaa.html
-                   # https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-APIs.rst#id85
-                        </textarea>
-                                            </div>
-                                        </div>
-                                        <div id="modifyGuide" class="hide">
-                                            <h5><i class="fa fa-warning text-yellow"></i> 수정은 삭제 후, 재등록 하시기 바랍니다.</h5>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" id="clientDeleteBtn" name="modalDeleteBtn"
-                                    class="btn btn-sm btn-danger pull-left" onClick="deleteClientModal();">삭제
-                            </button>
-                            <!--<button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateClient();">저장</button>-->
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" id="clientDeleteBtn" name="modalDeleteBtn"
+                                                                                    class="btn btn-sm btn-danger pull-left" onClick="deleteClientModal();" th:text="#{clientMain.modal.button.delete}">
+                                                                            </button>
+                                                                            <!--<button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateClient();">저장</button>-->
                             <button type="button" id="clientRegBtn" name="modalRegBtn"
-                                    class="btn btn-sm btn-primary pull-right" onClick="createClient();">등록
+                                    class="btn btn-sm btn-primary pull-right" onClick="createClient();" th:text="#{clientMain.modal.button.register}">
                             </button>
                             <button type="button" id="clientCloseBtn" class="btn btn-sm btn-default pull-left"
-                                    data-dismiss="modal">취소
+                                    data-dismiss="modal" th:text="#{clientMain.modal.button.cancel}">
                             </button>
                         </div>
 
@@ -299,7 +263,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
                             </button>
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"
                                     id="popupCancelButtonText"
-                                    onclick="procClosePopup('clientConfirmModal');"> 취소
+                                    onclick="procClosePopup('clientConfirmModal');" th:text="#{clientMain.modal.button.cancel}">
                             </button>
                         </div>
                     </div>
@@ -340,7 +304,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
         // 등록 버튼 클릭시, 등록 팝업 이벤트 설정
         $(document).on("click", 'button[name=registBtn]', function (e) {
 
-            $('.modal-title').text("클라이언트 등록");
+            $('.modal-title').text(/*[[#{clientMain.modal.add.header.title}]]*/ "");
             $('#clientDeleteBtn').hide();
             $('#clientSaveBtn').hide();
             $('#clientRegBtn').show();
@@ -397,7 +361,7 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     var procCallbackGetClientList = function (data) {
         CLIENT_LIST = data.resources;
         printData(CLIENT_LIST);
-    }
+    };
 
     // 클라이언트 리스트 출력
     function printData(dataList) {
@@ -416,13 +380,13 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
             objTable.append('<tr><td>' +/*[[#{common.info.empty.data}]]*/ "" + '</td></tr>');
         }
 
-    };
+    }
 
 
     // 클라리언트 조회
     function getClient(clientId) {
 
-        $('.modal-title').text("클라이언트 상세");
+        $('.modal-title').text(/*[[#{clientMain.modal.detail.title}]]*/ "");
         $('#clientDeleteBtn').show();
         $('#clientSaveBtn').show();
         $('#clientRegBtn').hide();
@@ -652,24 +616,24 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
         // var clone = $("#clone").val();
 
 
-
-        if (authorized_grant_types === undefined || authorized_grant_types == '') {
-            notifyAlert("warning", "", "--client_id 옵션은 필수 입니다.");
-            $("#clientId").focus();
-            return false;
-        }
-
-        if (authorized_grant_types === undefined || authorized_grant_types == '') {
-            notifyAlert("warning", "", "--client_secret 옵션은 필수 입니다.");
-            $("#clientPwd").focus();
-            return false;
-        }
-
-        if (authorized_grant_types === undefined || authorized_grant_types == '') {
-            notifyAlert("warning", "", "--authorized_grant_types 옵션은 필수 입니다.");
-            $("#authorized_grant_types").focus();
-            return false;
-        }
+        /* common.js에서 따로 처리*/
+        // if (authorized_grant_types === undefined || authorized_grant_types == '') {
+        //     notifyAlert("warning", "", "--client_id 옵션은 필수 입니다.");
+        //     $("#clientId").focus();
+        //     return false;
+        // }
+        //
+        // if (authorized_grant_types === undefined || authorized_grant_types == '') {
+        //     notifyAlert("warning", "", "--client_secret 옵션은 필수 입니다.");
+        //     $("#clientPwd").focus();
+        //     return false;
+        // }
+        //
+        // if (authorized_grant_types === undefined || authorized_grant_types == '') {
+        //     notifyAlert("warning", "", "--authorized_grant_types 옵션은 필수 입니다.");
+        //     $("#authorized_grant_types").focus();
+        //     return false;
+        // }
 
         var param = {
             client_id: clientId,
@@ -705,9 +669,12 @@ More Information : # https://sks.gitbooks.io/my-road-2-industrial-applications/c
     // [클라이언트] 삭제 (confirm layer)
     function deleteClientModal() {
 
-        $("#popupTitle").html("클라이언트 삭제");
-        $("#popupMessage").html("" + $("#clientId").val() + " " + /*[[#{delete.confirm.message('클라이언트')}]]*/ "");
-        $("#popupButtonText").text("삭제");
+        var clientId = $("#clientId").val();
+        var message = translateMsg("clientMain.popup.delete.confirm.message", clientId);
+
+        $("#popupTitle").html(/*[[#{clientMain.modal.delete.title}]]*/ "");
+        $("#popupMessage").html(message);
+        $("#popupButtonText").text(/*[[#{clientMain.modal.button.delete}]]*/ "");
         $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "deleteClient();");
         $("#popupButtonText").show();
