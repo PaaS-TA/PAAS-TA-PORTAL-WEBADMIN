@@ -1,21 +1,18 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
-import org.openpaas.paasta.portal.web.admin.common.User;
-import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
 import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Locale;
 
 /**
  * Login Controller
@@ -47,12 +44,16 @@ public class LoginController extends Common {
 
         ModelAndView mv = new ModelAndView();
 
+        String message = "";
+
         if (error != null) {
-            mv.addObject("error", "아이디 또는 비밀번호가 맞지 않습니다.");
+            message = messageSource.getMessage("index.login.error.message", null, locale);
+            mv.addObject("error", message);
         }
 
         if (logout != null) {
-            mv.addObject("message", "성공적으로 로그아웃 되었습니다.");
+            message = messageSource.getMessage("index.logout.success.message", null, locale);
+            mv.addObject("message", message);
         }
 
         LOGGER.info("ROLE_ADMIN : " + request.isUserInRole("ROLE_ADMIN"));

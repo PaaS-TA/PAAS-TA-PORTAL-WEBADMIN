@@ -1,10 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%--
+  =================================================================
   Created by IntelliJ IDEA.
   User: YJKim
   Date: 2016-08-10
   Time: 오전 11:29
   To change this template use File | Settings | File Templates.
+  =================================================================
+  Date: 2022.02.25
+  Deprecated
+  =================================================================
 --%>
 <div class="content-box2 col-md-12 col-md-offset-13">
 
