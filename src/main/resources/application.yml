@@ -27,6 +27,8 @@ spring:
       max-file-size: ${spring.http.multipart.max-file-size}
       max-request-size: ${spring.http.multipart.max-request-size}
       location: ${spring.http.multipart.location}
+  messages:
+    fallback-to-system-locale: false
 
 # HTTP Server
 server:
