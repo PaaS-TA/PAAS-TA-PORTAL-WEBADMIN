@@ -32,6 +32,9 @@
     <!-- Bootstrap 3.3.7 -->
     <script src="../../resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
+    <script src="/resources/dist/js/bootstrap-notify.min.js"></script>
+    <script src="../../resources/js/common.js"></script>
+
     <link href="../../resources/dist/css/common.css" rel="stylesheet"/>
 
     <!-- Google Font -->
@@ -108,6 +111,11 @@
             $("#warning").text('');
         }
     });
+
+    var logout = /*[[${message}]]*/ "";
+    if(logout != null) {
+        notifyAlert('success', "", logout);
+    }
 
 </script>
 

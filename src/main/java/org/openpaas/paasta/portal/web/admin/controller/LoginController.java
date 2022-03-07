@@ -47,14 +47,14 @@ public class LoginController extends Common {
         String message = "";
 
         if (error != null) {
-            message = messageSource.getMessage("index.login.error.message", null, locale);
+            message = messageSource.getMessage("index.alert.message.loginError", null, locale);
             mv.addObject("error", message);
         }
 
-//        if (logout != null) {
-//            message = messageSource.getMessage("index.logout.success.message", null, locale);
-//            mv.addObject("message", message);
-//        }
+        if (logout != null) {
+            message = messageSource.getMessage("index.alert.message.logoutSuccess", null, locale);
+            mv.addObject("message", message);
+        }
 
         LOGGER.info("ROLE_ADMIN : " + request.isUserInRole("ROLE_ADMIN"));
         if (!request.isUserInRole("ROLE_ADMIN")) {
