@@ -121,25 +121,26 @@ var procCallAjax5 = function(reqUrl, reqMethod, param, callback, $targetLoadingB
             }
         },
         success: function(data) {
-
             if (data.result) {
                 callback(data, param);
 
+                // callback.then(() => {
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
-                        case "PUT" :
-                            notifyAlert('success',"",UPDATE_SUCCESS_MSG);
-                            break;
-                        case "POST" :
-                            notifyAlert('success',"",INSERT_SUCCESS_MSG);
-                            break;
-                        case "DELETE" :
-                            notifyAlert('success',"",DELETE_SUCCESS_MSG);
-                            break;
-                        default :
-                            break;
+                            case "PUT" :
+                                notifyAlert('success',"",UPDATE_SUCCESS_MSG);
+                                break;
+                            case "POST" :
+                                notifyAlert('success',"",INSERT_SUCCESS_MSG);
+                                break;
+                            case "DELETE" :
+                                notifyAlert('success',"",DELETE_SUCCESS_MSG);
+                                break;
+                            default :
+                                break;
+                        }
                     }
-                }
+                // });
             } else {
                 notifyAlert('danger','',RESULT_ERROR_MESSAGE);
                 return false;
@@ -180,9 +181,6 @@ var procCallAjax4 = function(reqUrl, reqMethod, param, callback, $targetLoadingB
             }
         },
         success: function(data) {
-            console.log("DATA :: " + data);
-            console.log("DATA2 :: " + data.result);
-
 
             if (data.result == true) {
                 callback(data, param);

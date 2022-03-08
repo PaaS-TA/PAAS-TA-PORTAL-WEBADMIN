@@ -44,7 +44,7 @@
                             <td width="17.5%" style="vertical-align: middle">CaaS_Authorization</td>
                         </tr>
                         </thead>
-                        <tbody name="dataList">
+                        <tbody name="dataList" id="configList">
                         <tr th:each="infra_info : ${infra_infos}" style="cursor:pointer;" th:attr="data-id=${infra_info.key}">
                             <td th:text="${infra_info.name}"></td>
                             <td th:text="${infra_info.apiUri}"></td>
@@ -305,12 +305,26 @@
         $("#caas_authorization").val(caas_authorization);
     }
 
-    // Refresh Page
-    var refresh = function () {
-        location.reload();
+    var printConfigList = function (data) {
+        var objTable = $("#configList");
+        objTable.html('');
+
+        $.each(data, function (id, data) {
+            objTable.append('<tr style="cursor:pointer;" data-id="' + data.key + '">'
+                + '<td>' + data.name + '</td>'
+                + '<td>' + data.apiUri + '</td>'
+                + '<td>' + data.uaaUri + '</td>'
+                + '<td>' + data.authorization + '</td>'
+                + '<td>' + data.caas_apiUri + '</td>'
+                + '<td>' + data.caas_authorization + '</td>'
+                + '</tr>');
+        });
     }
 
-
+    // Refresh Page
+    var refresh = function () {
+        $('.modal').modal('hide');
+    }
 
 
     // GET Infra_info

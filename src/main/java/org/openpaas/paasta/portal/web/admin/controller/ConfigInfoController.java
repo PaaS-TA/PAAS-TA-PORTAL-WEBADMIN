@@ -44,6 +44,11 @@ public class ConfigInfoController extends Common {
         }}.addObject("infra_infos",configService.getConfigs());
     }
 
+    @GetMapping(V2_URL + "/configInfos")
+    @ResponseBody
+    public List<ConfigEntity> getConfigInfoList() {
+        return configService.configsAll();
+    }
 
     /**
      * 설정 정보를 조회한다.
