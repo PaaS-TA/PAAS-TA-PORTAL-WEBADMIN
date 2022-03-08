@@ -124,7 +124,6 @@ var procCallAjax5 = function(reqUrl, reqMethod, param, callback, $targetLoadingB
             if (data.result) {
                 callback(data, param);
 
-                // callback.then(() => {
                 if($targetLoadingBarElement !== null && $targetLoadingBarElement !== undefined){
                     switch (reqMethod) {
                             case "PUT" :
@@ -138,9 +137,8 @@ var procCallAjax5 = function(reqUrl, reqMethod, param, callback, $targetLoadingB
                                 break;
                             default :
                                 break;
-                        }
                     }
-                // });
+                }
             } else {
                 notifyAlert('danger','',RESULT_ERROR_MESSAGE);
                 return false;
