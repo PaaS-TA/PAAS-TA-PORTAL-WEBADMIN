@@ -324,6 +324,7 @@
     // Refresh Page
     var refresh = function () {
         $('.modal').modal('hide');
+        procCallAjax(REST_URL, "GET", null, printConfigList, $('#configModalLoadingBar'));
     }
 
 
