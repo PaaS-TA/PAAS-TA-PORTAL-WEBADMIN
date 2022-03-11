@@ -1,13 +1,9 @@
 package org.openpaas.paasta.portal.web.admin.exception;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.tomcat.jni.Local;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.LocaleResolver;
-
-import java.util.Locale;
 
 /**
  * org.openpaas.paasta.portal.web.admin.exception
