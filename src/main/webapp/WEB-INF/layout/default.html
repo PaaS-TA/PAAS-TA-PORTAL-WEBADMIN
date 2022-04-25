@@ -30,6 +30,8 @@
     var UPDATE_SUCCESS_MSG = /*[[#{update.result.success}]]*/ "";
     var DELETE_SUCCESS_MSG = /*[[#{delete.result.success}]]*/ "";
 
+    //var dataList = getLanguageConfig();
+ 
     function noticeAnimation() {
         $("#notice")
     }
@@ -38,7 +40,7 @@
         document.cookie = "lang=" + lang;
         location.reload();
     }
-
+    
     $(document).ready(function () {
 
     });
@@ -113,6 +115,19 @@
     /*<![CDATA[*/
     $(document.body).ready(function() {
         procSetLeftMenu();
+
+	var dataList = getLanguageConfig();
+        var objList = $("#langConfigList");
+        objList.html('');
+
+        $.each(dataList, function(id, data) {
+            var item = translateMsg("lang." + data , data);
+
+	    var str = "<li><a href='javascript:void(0);' onClick='changeLang(#{data})'><i class='fa fa-circle-o'></i>" + item + "</a></li>";
+	    str = str.replace(/#{data}/gi, '"' + data + '"');
+	    
+	    objList.append(str);
+        });
     });
     /*]]>*/
 </script>

@@ -762,6 +762,27 @@ function translateMsg(msgCode, inputStr) {
     return result;
 }
 
+function getLanguageConfig() {
+    var result;
+
+    $.ajax({
+        url: "/getLanguageList",
+        method: "GET",
+        async: false,
+        dataType: 'json',
+        contentType: "application/json",
+        error : function(xhr, error) {
+            console.log("ERROR :: error :: ", error);
+            notifyAlert('danger' , '', RESULT_ERROR_MESSAGE);
+        },
+        success : function(data) {
+            result = data;
+        }
+    });
+
+    return result;
+}
+
 var LIST_DETAIL_PROC_URL = "/v2/codedetail";
 
 
