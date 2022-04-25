@@ -1,15 +1,14 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
 import org.openpaas.paasta.portal.web.admin.common.Common;
+import org.openpaas.paasta.portal.web.admin.config.LanguageConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 다국어 처리 컨트롤러
@@ -20,6 +19,9 @@ import java.util.Objects;
  */
 @Controller
 public class MessageController extends Common {
+
+    @Autowired
+    LanguageConfig languageConfig;
 
     @RequestMapping(value = {"/getMessageProperties"})
     @ResponseBody
@@ -40,4 +42,9 @@ public class MessageController extends Common {
         return responseBody;
     }
 
+    @RequestMapping(value = {"/getLanguageList"})
+    @ResponseBody
+    public List<String> getLanguageList() throws Exception {
+        return languageConfig.getLanguageList();
+    }
 }

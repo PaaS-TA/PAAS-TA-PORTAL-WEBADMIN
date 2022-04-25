@@ -23,3 +23,5 @@ applications:
       paasta_portal_storageapi_type: swift
 
       logging_level_org.openpaas.paasta.portal.web.admin.exception.GlobalControllerExceptionHandler: DEBUG
+
+      languageList: <PORTAL_USE_LANG>

@@ -60,6 +60,7 @@ logging:
   level:
     org.openpaas.paasta.portal.web.admin.exception.GlobalControllerExceptionHandler: DEBUG
 
+languageList: <PORTAL_USE_LANG>
 #Spring config setting (current version not used)
 #  boot:
 #    #Spring boot admin settings
