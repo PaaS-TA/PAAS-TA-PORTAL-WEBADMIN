@@ -18,7 +18,7 @@ import java.util.*;
  * @since 2022.3.3 최초작성
  */
 @Controller
-public class MessageController extends Common {
+public class MultilingualController extends Common {
 
     @Autowired
     LanguageConfig languageConfig;
