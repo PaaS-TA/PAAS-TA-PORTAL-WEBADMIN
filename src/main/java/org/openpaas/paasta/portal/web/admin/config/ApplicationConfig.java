@@ -6,6 +6,8 @@ import org.apache.tomcat.jni.Local;
 import org.openpaas.paasta.portal.web.admin.config.security.CustomIntercepter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,6 +36,9 @@ import java.util.Locale;
 public class ApplicationConfig extends WebMvcConfigurerAdapter {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
+
+    @Autowired
+    LanguageConfig languageConfig;
 
     /**
      * View resolver internal resource view resolver.
@@ -51,7 +57,8 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
     @Bean
     public LocaleResolver localeResolver() {
         CookieLocaleResolver resolver = new CookieLocaleResolver();
-        resolver.setDefaultLocale(Locale.KOREAN);
+        String defaultLang = languageConfig.getLanguageList().get(0);
+        resolver.setDefaultLocale(new Locale(defaultLang));
         resolver.setCookieName("lang");
         return resolver;
     }
