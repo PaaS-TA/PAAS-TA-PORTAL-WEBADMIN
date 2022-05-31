@@ -740,7 +740,6 @@ function SelectSort(SelList)
 }
 
 function translateMsg(msgCode, inputStr) {
-    console.log("inputstr print --> " + inputStr);
     var result;
     var replaceMsg = msgCode.replaceAll('.', '-');
     var replaceArg = inputStr.replaceAll('.', '--');
@@ -777,7 +776,6 @@ function getLanguageConfig() {
             notifyAlert('danger' , '', RESULT_ERROR_MESSAGE);
         },
         success : function(data) {
-	        console.log("getLanguageConfig return data check --> " + data);
             result = data;
         }
     });
