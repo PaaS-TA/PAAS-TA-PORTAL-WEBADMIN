@@ -92,6 +92,9 @@
     // ON LOAD
     $(document.body).ready(function() {
 
+        var defaultLang = /*[[${language}]]*/ "";
+        document.cookie = "lang=" + defaultLang;
+
         $('#id').focus();
 
         var loginBtn = /*[[#{index.button.login}]]*/ '';

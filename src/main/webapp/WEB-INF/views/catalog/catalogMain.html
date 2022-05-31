@@ -421,6 +421,18 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group required">
+                                            <label for="starterCodeDetailList" class="col-sm-3 control-label" th:text="#{catalogMain.modal.body.codeDetail.label}"></label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control checkStarterForm" id="starterCodeDetailList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="starterLanguage">
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -629,6 +641,18 @@
                                                     /*]]>*/
                                                 </script>
                                             </div>
+                                        </div>
+
+                                        <div class="form-group required">
+                                            <label for="devCodeDetailList" class="col-sm-3 control-label" th:text="#{catalogMain.modal.body.codeDetail.label}"></label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control checkDevEnvForm" id="devCodeDetailList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="devEnvLanguage">
                                         </div>
 
                                     </div>
@@ -933,6 +957,18 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group required">
+                                            <label for="serviceCodeDetailList" class="col-sm-3 control-label" th:text="#{catalogMain.modal.body.codeDetail.label}"></label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control checkServiceForm" id="serviceCodeDetailList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="serviceLanguage">
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -996,7 +1032,18 @@
     var BUILD_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).BUILD_PACK_CATALOG_ID}]]*/ "";
     var SERVICE_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CATALOG_ID}]]*/ "";
 
+    var STARTER_CLASSIFICATION_CODE_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CLASSIFICATION_CODE_ID}]]*/ "";
+    var BUILD_PACK_CLASSIFICATION_CODE_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).BUILD_PACK_CLASSIFICATION_CODE_ID}]]*/ "";
+    var SERVICE_PACK_CLASSIFICATION_CODE_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CLASSIFICATION_CODE_ID}]]*/ "";
+
     var CATEGORY_LIST_PROC_URL = "/v2/codedetail";
+    var CATEGORY_GROUP_LIST_PROC_URL = "/v2/codegroup";
+
+    var CODE_GROUP_NO;  // 코드 그룹 번호
+    var CODE_GROUP_ID;
+    var USE_CODE_DETAIL_NO_LIST = [];   // 사용중인 카탈로그 코드 번호 목록
+    var USE_CODE_DETAIL_LIST = [];    // 사용중인 카탈로그 코드 목록
+    var CODE_DETAIL_VALUE_LIST = [];
 
     //var CLIENT_LIST = new Array();
 
@@ -1004,6 +1051,7 @@
     var NOT_FOUND_ATTACH_FILE_MESSAGE = /*[[#{catalogMain.alert.message.notfound}]]*/ '';
 
     // LIST DATA
+    var CODE_DETAIL_LIST = [];
     var STARTER_SOURCE_LIST;    // 앱 템플릿 리스트
     var DEV_SOURCE_LIST;        // 앱 개발환경 리스트
     var SERVICE_SOURCE_LIST;    // 앱 서비스 리스트
@@ -1012,12 +1060,24 @@
     var STARTER_CATEGORY_LIST;  // 앱 템플릿 상세 [분류]
     var STARTER_DEV_ENV_LIST;   // 앱 템플릿 상세 [앱 개발환경]
     var STARTER_SERVICE_LIST;   // 앱 템플릿 상세 [서비스]
+    var STARTER_CD_LIST = [];
+    var STARTER_USE_CD_LIST = [];
+    var STARTER_CD_NO_LIST;
+    var STARTER_CD_KEY_LIST;
 
     var DEV_ENV_CATEGORY_LIST;  // 앱 개발환경 상세 [분류]
     var DEV_ENV_BUILDPACK_LIST; // 앱 개발환경 상세 [앱 개발환경]
+    var DEV_ENV_CD_LIST = [];
+    var DEV_ENV_USE_CD_LIST = [];
+    var DEV_ENV_CD_NO_LIST;
+    var DEV_ENV_CD_KEY_LIST;
 
     var SERVICE_CATEGORY_LIST;  // 앱 서비스 상세 [분류]
     var SERVICE_SERVICE_LIST;   // 앱 서비스 상세 [서비스]
+    var SERVICE_CD_LIST = [];
+    var SERVICE_USE_CD_LIST = [];
+    var SERVICE_CD_NO_LIST;
+    var SERVICE_CD_KEY_LIST;
 
     var ACTIVE_TAB = 'starter'; // 활성화 TAB
 
@@ -1029,10 +1089,14 @@
     var BEFORE_SAMPLE_APP_LABEL_NAME; //샘플앱 파일명
     var BEFORE_SAMPLE_APP_SIZE; // 샘플앱 크기
 
+    var USE_LANGUAGE;
+
     $( "#apiUrls" ).change(function() {
         //key 값 저장
         key = $("#apiUrls").val();
         $.cookie("api_key",key);
+
+        USE_LANGUAGE = $.cookie('lang');
 
         // GET StarterList
         getStarterList(key);
@@ -1040,6 +1104,10 @@
         getBuildPackList(key);
         // GET ServicePackList
         getServicePackList(key);
+
+        // GET CodeGroupNo
+        getCodeGroupNo(STARTER_CATALOG_ID);
+
         //[앱 템플릿] 컴포넌트
         procCallAjax(DEVELOP_PACK_PROC_URL+"?key="+key, "GET", null, procCallbackStarterDevEnvList, null);
         //[앱 개발환경] 컴포넌트
@@ -1078,10 +1146,19 @@
             key = $("#apiUrls").val();
         }
 
+        if ($.cookie('lang') != null) {
+            USE_LANGUAGE = $.cookie('lang');
+        } else {
+            var languageList = getLanguageConfig();
+            USE_LANGUAGE = languageList[0];
+        }
+
         getInitMarketPlaceURL();
         getStarterList();
         getBuildPackList();
         getServicePackList();
+
+        getCodeGroupNo(STARTER_CATALOG_ID);
 
         // 활성화 탭 체크
         $('.nav-tabs li').each(function(){
@@ -1090,16 +1167,24 @@
 
                 // 조건 검색 초기화 추가
                 $("#catalogSearch")[0].reset();
+
+                var groupId = "";
+
                 if(ACTIVE_TAB == 'starter'){
                     //getStarterList(); // 탭클릭시 API재조회는 해당 항목 사용
+                    groupId = STARTER_CATALOG_ID;
                     printStarterList(STARTER_SOURCE_LIST);
                 }else if(ACTIVE_TAB == 'dev'){
                     //getBuildPackList();
+                    groupId = BUILD_PACK_CATALOG_ID;
                     printDevEnvList(DEV_SOURCE_LIST);
                 }else if(ACTIVE_TAB == 'service'){
                     //getServicePackList();
+                    groupId = SERVICE_PACK_CATALOG_ID;
                     printServiceList(SERVICE_SOURCE_LIST);
                 }
+
+                getCodeGroupNo(groupId);
 
             });
         });
@@ -1166,6 +1251,8 @@
             $('button[name=modalDeleteBtn]').hide();
             $('button[name=modalSaveBtn]').hide();
             $('button[name=modalRegBtn]').show();
+
+
 
             initModal();
         });
@@ -1395,6 +1482,68 @@
 
     });
 
+    // [앱 템플릿][앱 개발환경][앱 서비스][카탈로그 구분 코드] 셀렉트 리스트
+    var getCodeDetailList = function (groupId) {
+        switch(groupId) {
+            case STARTER_CLASSIFICATION_CODE_ID :
+                procCallAjax(CATEGORY_LIST_PROC_URL+"?groupId="+groupId+"&key="+key, "GET", null, procCallbackGetStarterClassificationCodeList, null);
+                break;
+            case BUILD_PACK_CLASSIFICATION_CODE_ID :
+                procCallAjax(CATEGORY_LIST_PROC_URL+"?groupId="+groupId+"&key="+key, "GET", null, procCallbackGetDevEnvClassificationCodeList, null);
+                break;
+            case SERVICE_PACK_CLASSIFICATION_CODE_ID:
+                procCallAjax(CATEGORY_LIST_PROC_URL+"?groupId="+groupId+"&key="+key, "GET", null, procCallbackGetServiceClassificationCodeList, null);
+        }
+    }
+
+    var procCallbackGetStarterClassificationCodeList = function(data) {
+        var codeDetailList = data.list;
+        STARTER_CD_LIST = [];
+        STARTER_USE_CD_LIST = [];
+
+        $.each(codeDetailList, function(index, data) {
+            if(!STARTER_CD_NO_LIST.includes(data.no)) {
+                STARTER_CD_LIST.push(data);
+            } else {
+                STARTER_USE_CD_LIST.push(data);
+            }
+        });
+
+        defaultAppClassificationCodeList(STARTER_CLASSIFICATION_CODE_ID);
+    }
+
+    var procCallbackGetDevEnvClassificationCodeList = function(data) {
+        var codeDetailList = data.list;
+        DEV_ENV_CD_LIST = [];
+        DEV_ENV_USE_CD_LIST = [];
+
+        $.each(codeDetailList, function(index, data) {
+            if(!DEV_ENV_CD_NO_LIST.includes(data.no)) {
+                DEV_ENV_CD_LIST.push(data);
+            } else {
+                DEV_ENV_USE_CD_LIST.push(data);
+            }
+        });
+
+        defaultAppClassificationCodeList(BUILD_PACK_CLASSIFICATION_CODE_ID);
+    }
+
+    var procCallbackGetServiceClassificationCodeList = function(data) {
+        var codeDetailList = data.list;
+        SERVICE_CD_LIST = [];
+        SERVICE_USE_CD_LIST = [];
+
+        $.each(codeDetailList, function(index, data) {
+            if(!SERVICE_CD_NO_LIST.includes(data.no)) {
+                SERVICE_CD_LIST.push(data);
+            } else {
+                SERVICE_USE_CD_LIST.push(data);
+            }
+        });
+
+        defaultAppClassificationCodeList(SERVICE_PACK_CLASSIFICATION_CODE_ID);
+    }
+
     // [앱 템플릿][분류] 셀렉트 리스트
     var procCallbackStarterCategoryList = function(data){
         STARTER_CATEGORY_LIST = data.list;
@@ -1508,6 +1657,17 @@
     //        //procGetSearchList();
     //    });
 
+    // GET CodeGroupNo
+    var getCodeGroupNo = function (groupId) {
+        procCallAjax(CATEGORY_GROUP_LIST_PROC_URL+"/"+groupId+"?key="+key, "GET", null, procCallbackGetCodeGroupNo, null);
+    };
+
+    // GET LIST CALLBACK CodeGroupNo
+    var procCallbackGetCodeGroupNo = function (data) {
+        CODE_GROUP_NO = data.list[0].no;
+    };
+
+
     // GET StarterList
     var getStarterList = function () {
         $('.modal').modal('hide');
@@ -1533,6 +1693,16 @@
     // GET LIST CALLBACK StarterList
     var procCallbackGetStarterList = function (data) {
         STARTER_SOURCE_LIST = data.list;
+        STARTER_CD_NO_LIST = [];
+        STARTER_CD_KEY_LIST = [];
+
+        $.each(STARTER_SOURCE_LIST, function(index, data) {
+            STARTER_CD_NO_LIST.push(data.codeDetailNo);
+            STARTER_CD_KEY_LIST.push(data.classificationCode);
+            // CODE_DETAIL_VALUE_LIST.push(data.classificationCode);
+        });
+
+        getCodeDetailList(STARTER_CLASSIFICATION_CODE_ID);
         printStarterList(STARTER_SOURCE_LIST);
     };
 
@@ -1560,6 +1730,19 @@
     // GET LIST CALLBACK BuildPackList
     var procCallbackGetBuildPackList = function (data) {
         DEV_SOURCE_LIST = data.list;
+        // if (ACTIVE_TAB == 'dev') {
+        //     USE_CODE_DETAIL_NO_LIST = [];
+        //     CODE_DETAIL_VALUE_LIST = [];
+        DEV_ENV_CD_NO_LIST = [];
+        DEV_ENV_CD_KEY_LIST = [];
+
+            $.each(DEV_SOURCE_LIST, function(index, data) {
+                DEV_ENV_CD_NO_LIST.push(data.codeDetailNo);
+                DEV_ENV_CD_KEY_LIST.push(data.classificationCode);
+            });
+
+            getCodeDetailList(BUILD_PACK_CLASSIFICATION_CODE_ID);
+        // }
         printDevEnvList(DEV_SOURCE_LIST);
     };
 
@@ -1587,6 +1770,19 @@
     // GET LIST CALLBACK ServicePackList
     var procCallbackGetServicePackList = function (data) {
         SERVICE_SOURCE_LIST = data.list;
+        // if (ACTIVE_TAB == 'service') {
+        //     USE_CODE_DETAIL_NO_LIST = [];
+        //     CODE_DETAIL_VALUE_LIST = [];
+        SERVICE_CD_NO_LIST = [];
+        SERVICE_CD_KEY_LIST = [];
+
+            $.each(SERVICE_SOURCE_LIST, function(index, data) {
+                SERVICE_CD_NO_LIST.push(data.codeDetailNo);
+                SERVICE_CD_KEY_LIST.push(data.classificationCode);
+            });
+
+            getCodeDetailList(SERVICE_PACK_CLASSIFICATION_CODE_ID);
+        // }
         printServiceList(SERVICE_SOURCE_LIST);
     };
 
@@ -1624,15 +1820,15 @@
         $('#starterFormModal').modal('toggle');
 
         // Starter 상세조회
-        procCallAjax(STARTER_PACK_PROC_URL + "/" + id +"?key="+key, "GET", null, procCallbackGetStarter, $('#starterModalLoadingBar '));
+        procCallAjax(STARTER_PACK_PROC_URL+"/"+id+"?key="+key, "GET", null, procCallbackGetStarter, $('#starterModalLoadingBar '));
     }
 
     var procCallbackGetStarter = function(data){
 
         var entity = data.info;
-        console.log(entity);
 
         if(entity){
+
             $("#starterId").val(entity.no);
             //이름
             $("#starterName").val(entity.name);
@@ -1705,9 +1901,29 @@
             //요약
             $("#summary").val(entity.summary);
             //설명
-            $("#description").val(entity.description);
+            CKEDITOR.instances.description.setData(entity.description);
+
+            //카탈로그 구분 코드
+            for(var i=0; i<STARTER_CD_LIST.length; i++) {
+                if(STARTER_CD_NO_LIST.includes(STARTER_CD_LIST[i].no)) {
+                    STARTER_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+
+            var classificationCode = '';
+            $.each(STARTER_USE_CD_LIST, function(index, data) {
+               if(entity.classificationCode == data.key) {
+                   STARTER_CD_LIST.push(data);
+                   defaultAppClassificationCodeList(STARTER_CLASSIFICATION_CODE_ID);
+                   classificationCode = data.key;
+                   return false;
+               }
+            });
+
+            $("#starterCodeDetailList").val(classificationCode);
         }
-    }
+    };
 
 
     // [앱 개발환경] 상세
@@ -1796,6 +2012,26 @@
             CKEDITOR.instances.devEnvDescription.setData(entity.description);
             //문서URL
             $('#devEnvDocFileUrl').val(entity.docFileUrl);
+
+            //카탈로그 구분 코드
+            for(var i=0; i<DEV_ENV_CD_LIST.length; i++) {
+                if(DEV_ENV_CD_NO_LIST.includes(DEV_ENV_CD_LIST[i].no)) {
+                    DEV_ENV_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+
+            var classificationCode = '';
+            $.each(DEV_ENV_USE_CD_LIST, function(index, data) {
+                if(entity.classificationCode == data.key) {
+                    DEV_ENV_CD_LIST.push(data);
+                    defaultAppClassificationCodeList(BUILD_PACK_CLASSIFICATION_CODE_ID);
+                    classificationCode = data.key;
+                    return false;
+                }
+            });
+
+            $("#devCodeDetailList").val(classificationCode);
         }
     }
 
@@ -1916,6 +2152,26 @@
 
             //문서URL
             $('#serviceDocFileUrl').val(entity.docFileUrl);
+
+            //앱 구분 코드
+            for(var i=0; i<SERVICE_CD_LIST.length; i++) {
+                if(SERVICE_CD_NO_LIST.includes(SERVICE_CD_LIST[i].no)) {
+                    SERVICE_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+
+            var classificationCode = '';
+            $.each(SERVICE_USE_CD_LIST, function(index, data) {
+                if(entity.classificationCode == data.key) {
+                    SERVICE_CD_LIST.push(data);
+                    defaultAppClassificationCodeList(SERVICE_PACK_CLASSIFICATION_CODE_ID);
+                    classificationCode = data.key;
+                    return false;
+                }
+            });
+
+            $("#serviceCodeDetailList").val(classificationCode);
         }
 
     }
@@ -2059,7 +2315,7 @@
             }
         }
 
-        notifyAlert('success', "", /*[[#{catalogMain.alert.message.update.success}]]*/);
+        notifyAlert('success', "", /*[[#{update.result.success}]]*/);
     }
 
     // [앱 템플릿] 수정 (파일저장 후 처리)
@@ -2132,7 +2388,8 @@
         }
         // SAMPLE APP 파일 삭제
         if(BEFORE_SAMPLE_APP_NAME != ""){
-            uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_SAMPLE_APP_NAME+"?key="+key, null);
+            // uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_SAMPLE_APP_NAME+"?key="+key, null);
+            uploadFile(null,"DELETE","/v2/appsample/"+ BEFORE_SAMPLE_APP_NAME+"?key="+key, null);
         }
 
         // 리스트 삭제
@@ -2161,16 +2418,29 @@
             }
         });
 
+        var codeDetailKey = $("#starterCodeDetailList").val();
+        var codeDetailNo;
+
+        $.each(STARTER_CD_LIST, function (index, data) {
+            if(codeDetailKey == data.key) {
+                codeDetailNo = data.no;
+                return false;
+            }
+        });
+
         var param = {
             name                        : $("#starterName").val(),
             classification              : $("#categoryList").val(),
             useYn                       : $("input[name=starterUseYn]:checked").val(),
             pay                         : $("input[name=starterpayYn]:checked").val(),
             summary                     : $("#summary").val(),
-            description                 : $("#description").val(),
+            description                 : CKEDITOR.instances.description.getData(),
             buildPackCategoryNo         : $("#buildPackList").val(),
             servicePackCategoryNoList   : selectedServicePackList,
-            tagsParam                   : JSON.stringify(inputTagParamJson)
+            tagsParam                   : JSON.stringify(inputTagParamJson),
+            codeGroupNo                 : CODE_GROUP_NO,
+            codeDetailNo                : codeDetailNo,
+            language                    : USE_LANGUAGE
         };
 
 
@@ -2184,7 +2454,6 @@
 
     // [앱 개발환경] 등록/수정 FORM PARAM
     var devEnvParam= function(fileInfo){
-
         // 태그
         var inputTagParamJson = new Object();
 
@@ -2196,6 +2465,16 @@
             }
         });
 
+        var codeDetailKey = $("#devCodeDetailList").val();
+        var codeDetailNo;
+
+        $.each(DEV_ENV_CD_LIST, function (index, data) {
+            if(codeDetailKey == data.key) {
+                codeDetailNo = data.no;
+                return false;
+            }
+        })
+
         var param = {
             name                : $("#devEnvName").val(),
             classification      : $("#categoryDevEnvList").val(),
@@ -2205,7 +2484,10 @@
             summary             : $("#devEnvSummary").val(),
             description         : CKEDITOR.instances.devEnvDescription.getData(),
             docFileUrl          : $("#devEnvDocFileUrl").val(),
-            tagsParam           : JSON.stringify(inputTagParamJson)
+            tagsParam           : JSON.stringify(inputTagParamJson),
+            codeGroupNo         : CODE_GROUP_NO,
+            codeDetailNo        : codeDetailNo,
+            language            : USE_LANGUAGE
         };
 
         if(fileInfo){
@@ -2251,16 +2533,22 @@
             }
         });
 
-        var serviceServicePackList = 'NONE';
-        if($("#serviceServicePackList").val() != '' && $("#serviceServicePackList").val() != null && $("#serviceServicePackList").val() != 'null' && $("#serviceServicePackList").val() != 'undefined'){
-            serviceServicePackList = $("#serviceServicePackList").val();
-        }
+        var codeDetailKey = $("#serviceCodeDetailList").val();
+        var codeDetailNo;
+
+        $.each(SERVICE_CD_LIST, function (index, data) {
+            if(codeDetailKey == data.key) {
+                codeDetailNo = data.no;
+                return false;
+            }
+        })
 
         var param = {
             name                        : $("#serviceName").val(),
             classification              : $("#categoryServiceList").val(),
             classificationValue         : $("#categoryServiceList option:selected").text(),
-            servicePackName             : serviceServicePackList,
+            // servicePackName             : serviceServicePackList,
+            servicePackName             : $("#serviceServicePackList").val(),
             parameter                   : JSON.stringify(inputParamJson),
             appBindYn                   : $("input[name=appBindUseYn]:checked").val(),
             appBindParameter            : JSON.stringify(inputAppBindParamJson),
@@ -2271,7 +2559,10 @@
             summary                     : $("#serviceSummary").val(),
             description                 : CKEDITOR.instances.serviceDescription.getData(),
             docFileUrl                  : $("#serviceDocFileUrl").val(),
-            tagsParam                   : JSON.stringify(inputTagParamJson)
+            tagsParam                   : JSON.stringify(inputTagParamJson),
+            codeGroupNo                 : CODE_GROUP_NO,
+            codeDetailNo                : codeDetailNo,
+            language                    : USE_LANGUAGE
         };
 
         if(fileInfo){
@@ -2454,7 +2745,7 @@
         if(data != null){
             FILE_INFO.appSampleFileName  = data.filename;
             FILE_INFO.appSampleFilePath  = data.fileURL;
-            FILE_INFO.appSampleFileSize  = data.length;;
+            FILE_INFO.appSampleFileSize  = data.length;
         }
         modifyDevEnv();
     }
@@ -2485,9 +2776,13 @@
                 // 신규 앱샘플 파일 추가
                 uploadFile(formData,"POST","/v2/thumbnail"+"?key="+key, updateAppFileInfo);
             }else{ // 첨부 없음
-                FILE_INFO.appSampleFileName  = BEFORE_SAMPLE_APP_LABEL_NAME;
-                FILE_INFO.appSampleFilePath  = BEFORE_SAMPLE_APP_PATH;
-                FILE_INFO.appSampleFileSize  = BEFORE_SAMPLE_APP_SIZE;
+                // FILE_INFO.appSampleFileName  = BEFORE_SAMPLE_APP_LABEL_NAME;
+                // FILE_INFO.appSampleFilePath  = BEFORE_SAMPLE_APP_PATH;
+                // FILE_INFO.appSampleFileSize  = BEFORE_SAMPLE_APP_SIZE;
+
+                FILE_INFO.appSampleFileName  = "";
+                FILE_INFO.appSampleFilePath  = "";
+                FILE_INFO.appSampleFileSize  = "";
 
                 updateAppFileInfo(null);
             }
@@ -2507,7 +2802,7 @@
 
         if (!procCheckValidStringSpaceClass('checkServiceForm')){
             return false;
-        };
+        }
         var overlapCheck=false;
         $.each(SERVICE_SOURCE_LIST, function (index, list_data) {
             if((serviceParam()).name == list_data.name){
@@ -2713,13 +3008,33 @@
     // Modal 초기화
     var initModal = function(){
         // 등록/수정/삭제 시 새로고침한 데이터를 다시 셀렉트 컴포넌트에 적용(default method)
+
+        var target = '';
+        var labelText = /*[[#{catalogMain.modal.body.language.label}]]*/ "";
+        var curLang = translateMsg("lang." + USE_LANGUAGE, "");
+        var langHtml = '';
+
         if(ACTIVE_TAB == 'starter'){
 
             // [앱 템플릿]
+            target = $('#starterLanguage');
+            langHtml = '<label for="language" class="col-sm-3 control-label">' + labelText + '</label>' +
+                '<div class="col-sm-9">' +
+                '<span class="form-control" name="language" style="border: none;">' + curLang + '</span>' +
+                '</div>';
+            target.html(langHtml);
 
             defaultStarterCategoryOptionList();
             defaultStarterDevEnvOptionList();
             defaultStarterServiceOptionList();
+
+            for(var i=0; i<STARTER_CD_LIST.length; i++) {
+                if(STARTER_CD_NO_LIST.includes(STARTER_CD_LIST[i].no)) {
+                    STARTER_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+            defaultAppClassificationCodeList(STARTER_CLASSIFICATION_CODE_ID);
 
             //초기화
             $('select[id=startertagParamInput]').val("paas-ta");
@@ -2736,9 +3051,23 @@
         }else if(ACTIVE_TAB == 'dev'){
 
             // [앱 개발환경]
+            target = $('#devEnvLanguage');
+            langHtml = '<label for="language" class="col-sm-3 control-label">' + labelText + '</label>' +
+                '<div class="col-sm-9">' +
+                '<span class="form-control" name="language" style="border: none;">' + curLang + '</span>' +
+                '</div>';
+            target.html(langHtml);
 
             defaultDevEnvCategoryOptionList();
             defaultDevEnvBuildpackOptionList();
+
+            for(var i=0; i<DEV_ENV_CD_LIST.length; i++) {
+                if(DEV_ENV_CD_NO_LIST.includes(DEV_ENV_CD_LIST[i].no)) {
+                    DEV_ENV_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+            defaultAppClassificationCodeList(BUILD_PACK_CLASSIFICATION_CODE_ID);
 
             //초기화
             $('select[id=devEnvtagParamInput]').val("paas-ta");
@@ -2754,8 +3083,23 @@
         }else if(ACTIVE_TAB == 'service'){
 
             // [앱 서비스]
+            target = $('#serviceLanguage');
+            langHtml = '<label for="language" class="col-sm-3 control-label">' + labelText + '</label>' +
+                '<div class="col-sm-9">' +
+                '<span class="form-control" name="language" style="border: none;">' + curLang + '</span>' +
+                '</div>';
+            target.html(langHtml);
+
             defaultServiceCategoryOptionList();
             defaultServiceServiceOptionList();
+
+            for(var i=0; i<SERVICE_CD_LIST.length; i++) {
+                if(SERVICE_CD_NO_LIST.includes(SERVICE_CD_LIST[i].no)) {
+                    SERVICE_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+            defaultAppClassificationCodeList(SERVICE_PACK_CLASSIFICATION_CODE_ID);
 
             $('input:radio[name=serviceUseYn]:input[value="Y"]').prop('checked', true); // 공개 여부
             $('input:radio[name=appBindUseYn]:input[value="Y"]').prop('checked', true); // 앱 바인드 파라미터 사용
@@ -2844,6 +3188,31 @@
         var num = Math.round(reqNumber * digits) / digits;
         return num.toFixed(reqPosition);
     };
+
+
+    // [앱 템플릿][앱 개발환경[앱 서비스] 상세 - 앱 구분 코드 초기값
+    function defaultAppClassificationCodeList (groupId){
+        var objSelectBox = "";
+        var codeDetailList = [];
+
+        if(groupId == STARTER_CLASSIFICATION_CODE_ID) {
+            objSelectBox = $('#starterCodeDetailList');
+            codeDetailList = STARTER_CD_LIST;
+        } else if (groupId == BUILD_PACK_CLASSIFICATION_CODE_ID) {
+            objSelectBox = $('#devCodeDetailList');
+            codeDetailList = DEV_ENV_CD_LIST;
+        } else if (groupId == SERVICE_PACK_CLASSIFICATION_CODE_ID) {
+            objSelectBox = $('#serviceCodeDetailList');
+            codeDetailList = SERVICE_CD_LIST;
+        }
+
+        objSelectBox.html('');
+        $.each(codeDetailList, function (index, data) {
+            if(data.useYn == "Y") {
+                objSelectBox.append("<option value='" + data.key + "'> " + data.value + " </option>");
+            }
+        });
+    }
 
     // [앱 템플릿] 상세 - 서비스 셀렉트 박스 초기값
     function defaultStarterServiceOptionList(){
@@ -3089,42 +3458,6 @@
         }
     }
 
-    // [앱 템플릿] 상세 - [Tag PaidFree 파라미터] 템플릿
-    function appStarterTagParamAdd(index, type, type2){
-        var tempHtml =
-            "<div class='form-group tag-param-added' name='startertagParamFormPaidFree'>"
-            +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
-            +"   <div name='paramArea'>"
-            +"       <div class='col-sm-4 col-xs-3'>"
-            +"           <select class='form-control' name='startertagParamInput' id='startertagParamInputPaidFree'>"
-            +"               <option value='pay'>pay</option>"
-            +"               <option value='free'>free</option>"
-            +"           </select>"
-            +"       </div>"
-            +"       <div class='col-sm-2 col-xs-3'>"
-            +"           <select class='form-control' name='startertagParamType' style='width:auto;'>"
-            +"               <option value='colors1'>tag1</option>"
-            +"               <option value='colors2'>tag2</option>"
-            +"               <option value='colors3'>tag3</option>"
-            +"               <option value='colors4'>tag4</option>"
-            +"               <option value='colors5'>tag5</option>"
-            +"               <option value='colors6'>tag6</option>"
-            +"       </div>"
-            +"   </div>"
-            +"   <div class='col-sm-1 col-xs-3'>"
-            +"          <button class='user_btn colors1 hide' name='startertagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
-            +"   </div>"
-            +" </div>";
-
-        $('div[name=startertagParamForm]:last').after(tempHtml);
-
-        if(type !== undefined){
-            eval("$('button[name=startertagPreview]:eq("+index+")').text('"+type+"')");
-            eval("$('button[name=startertagPreview]:eq("+index+")').addClass('"+type2+"')");
-            eval("$('button[name=startertagPreview]:eq("+index+")').removeClass('hide')");
-            setStarterTagParam(index, type, type2);
-        }
-    }
 
     // [앱 템플릿] 상세 - [앱 Tag] 셋팅
     function setStarterTagParam(index, type, type2){

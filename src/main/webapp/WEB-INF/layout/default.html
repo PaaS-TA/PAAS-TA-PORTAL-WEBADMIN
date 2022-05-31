@@ -116,17 +116,16 @@
     $(document.body).ready(function() {
         procSetLeftMenu();
 
-	var dataList = getLanguageConfig();
+        var dataList = getLanguageConfig();
         var objList = $("#langConfigList");
         objList.html('');
 
-        $.each(dataList, function(id, data) {
+        $.each(dataList, function(idx, data) {
             var item = translateMsg("lang." + data , data);
-
-	    var str = "<li><a href='javascript:void(0);' onClick='changeLang(#{data})'><i class='fa fa-circle-o'></i>" + item + "</a></li>";
-	    str = str.replace(/#{data}/gi, '"' + data + '"');
+	        var str = "<li><a href='javascript:void(0);' onClick='changeLang(#{data})'><i class='fa fa-circle-o'></i>" + item + "</a></li>";
+	        str = str.replace(/#{data}/gi, '"' + data + '"');
 	    
-	    objList.append(str);
+	        objList.append(str);
         });
     });
     /*]]>*/

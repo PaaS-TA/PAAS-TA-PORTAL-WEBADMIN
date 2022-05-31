@@ -56,6 +56,8 @@ public class LoginController extends Common {
             mv.addObject("message", message);
         }
 
+        mv.addObject("language", locale.getLanguage());
+
         LOGGER.info("ROLE_ADMIN : " + request.isUserInRole("ROLE_ADMIN"));
         if (!request.isUserInRole("ROLE_ADMIN")) {
             mv.setViewName("/index");

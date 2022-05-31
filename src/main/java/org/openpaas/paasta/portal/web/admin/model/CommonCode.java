@@ -19,6 +19,7 @@ public class CommonCode {
     private String key;
     private String orgKey;
     private String value;
+    private int groupNo;
     private String groupId;
     //private String group_id;
     private String useYn;
@@ -34,6 +35,8 @@ public class CommonCode {
     private String searchKeyword;
     private String reqCud;
     private List<CommonCode> commonCodeList;
+    private String language;
+    private List<String> languageList;
 
     /**
      * GETTER 아이디
@@ -149,6 +152,24 @@ public class CommonCode {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * GETTER 그룹 아이디
+     *
+     * @return 그룹 아이디
+     */
+    public int getGroupNo() {
+        return groupNo;
+    }
+
+    /**
+     * SETTER 그룹 아이디
+     *
+     * @param groupNo 그룹 아이디
+     */
+    public void setGroupNo(int groupNo) {
+        this.groupNo = groupNo;
     }
 
     /**
@@ -403,6 +424,42 @@ public class CommonCode {
         this.commonCodeList = commonCodeList;
     }
 
+    /**
+     * GETTER 포탈 지원 언어
+     *
+     * @return 포탈 지원 언어
+     */
+    public String getLanguage() {
+        return language;
+    }
+
+    /**
+     * SETTER 포탈 지원 언어
+     *
+     * @param language 포탈 지원 언어
+     */
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    /**
+     * GETTER 포탈 지원 언어 목록
+     *
+     * @return 포탈 지원 언어 목록
+     */
+    public List<String> getLanguageList() {
+        return languageList;
+    }
+
+    /**
+     * SETTER 포탈 지원 언어 목록
+     *
+     * @param languageList 포탈 지원 언어 목록
+     */
+    public void setLanguageList(List<String> languageList) {
+        this.languageList = languageList;
+    }
+
 
 
     @Override
@@ -415,6 +472,7 @@ public class CommonCode {
                 ", key='" + key + '\'' +
                 ", orgKey='" + orgKey + '\'' +
                 ", value='" + value + '\'' +
+                ", groupNo='" + groupNo + '\'' +
                 ", groupId='" + groupId + '\'' +
                 ", useYn='" + useYn + '\'' +
                 ", order=" + order +
@@ -428,7 +486,9 @@ public class CommonCode {
                 ", searchType='" + searchType + '\'' +
                 ", searchKeyword='" + searchKeyword + '\'' +
                 ", reqCud='" + reqCud + '\'' +
+                ", language=" + language + '\'' +
                 ", commonCodeList=" + commonCodeList +
+                ", languageList=" + languageList +
                 '}';
     }
 }

@@ -429,6 +429,49 @@ public class CommonService extends Common {
         return resultMap;
     }
 
+    /**
+     * REST TEMPLATE 처리 - CommonApi
+     *
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
+     * @param useLang    the language
+     * @return map map
+     */
+    public Map<String, Object> procCommonApiRestTemplate(int key, String reqUrl, HttpMethod httpMethod, Object obj, String useLang) {
+
+        LOGGER.info("> Init");
+
+        Map map = getServerInfo(key);
+        String apiUri = map.get("apiuri").toString();
+        String authorization = map.get("authorization").toString();
+        String token = map.get("token").toString();
+
+        restTemplate = new RestTemplate();
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, authorization);
+        LOGGER.info(authorization);
+
+        if (null != useLang) {
+            reqHeaders.set("useLang", useLang);
+        }
+
+        if (null != token && !"".equals(token)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, token);
+        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+
+        LOGGER.info("> apiUricommonApiUrl[key] : " + apiUri + "/commonapi" + reqUrl);
+
+        ResponseEntity<Map> resEntity = restTemplate.exchange(apiUri + "/commonapi" + reqUrl, httpMethod, reqEntity, Map.class);
+        Map<String, Object> resultMap = resEntity.getBody();
+
+        LOGGER.info("> resEntity : " +resEntity);
+
+        if (resultMap != null) {
+            LOGGER.info("procCfApiRestTemplate reqUrl :: {} ", reqUrl);
+        }
+        return resultMap;
+    }
+
 
     /**
      * REST TEMPLATE 처리 - StorageApi

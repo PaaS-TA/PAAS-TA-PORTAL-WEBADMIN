@@ -340,6 +340,11 @@
     var FAIL_MSG = /*[[#{common.info.result.fail}]]*/ '';
     var ERROR_MSG = /*[[#{common.system.error.message}]]*/ '';
     var EMPTY_MSG = /*[[#{common.info.empty.data}]]*/ '';
+    var INSERT_SUCCESS_MGS = /*[[#{insert.result.success}]]*/ '';
+    var UPDATE_SUCCESS_MGS = /*[[#{update.result.success}]]*/ '';
+    var STARTER_CLASSIFICATION_CODE_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CLASSIFICATION_CODE_ID}]]*/ "";
+    var BUILD_PACK_CLASSIFICATION_CODE_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).BUILD_PACK_CLASSIFICATION_CODE_ID}]]*/ "";
+    var SERVICE_PACK_CLASSIFICATION_CODE_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CLASSIFICATION_CODE_ID}]]*/ "";
 
     $( "#apiUrls" ).change(function() {
         key = $("#apiUrls").val();
@@ -927,11 +932,29 @@
             return false;
         }
 
+        var groupId = $('#groupId').val();
+        var groupNo;
+
+        var languageList = [];
+
+        $.each(CODE_GROUP_LIST, function (index, list_data) {
+            if(groupId == list_data.id) {
+                groupNo = list_data.no;
+                if (groupId == STARTER_CLASSIFICATION_CODE_ID || groupId == BUILD_PACK_CLASSIFICATION_CODE_ID || groupId == SERVICE_PACK_CLASSIFICATION_CODE_ID){
+                    languageList = getLanguageConfig();
+                } else {
+                    languageList.push($.cookie("lang"));
+                }
+                return false;
+            }
+        });
+
         var duplicated = false;
 
         // 코드 중복 여부 확인
         $.each(CODE_DETAIL_LIST, function (index, list_data) {
-            if($("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
+            // if($("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
+            if(groupNo === list_data.groupNo && $("#key").val() == list_data.key && languageList.length === 1) {
                 notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
                 duplicated = true;
                 return false;
@@ -942,46 +965,30 @@
             return false;
         }
 
-        var groupId = $('#groupId').val();
         var reqUseYn = $("input:radio[name='RadiocodeDetail']:checked").val();
         var param = $("#codeDetailForm").serializeObject();
 
-        var param = {
-            groupId: groupId,
-            key: $("#key").val(),
-            value: $("#value").val(),
-            summary: $("#summary").val(),
-            useYn: reqUseYn
+        var param = '';
+        var length = languageList.length;
+        var lastIdx = false;
+        for(var i = 0; i< length; i++) {
+            param = {
+                "groupId": groupId,
+                "key": $("#key").val(),
+                "value": $("#value").val(),
+                "summary": $("#summary").val(),
+                "useYn": reqUseYn,
+                "language": languageList[i]
+            };
+
+            if(i == length-1) {
+                lastIdx = true;
+            }
+
+            procAjaxCodeDetail("/v2/codedetail"+ "?key="+key, "POST", param, lastIdx, INSERT_SUCCESS_MGS);
         }
 
-        $.ajax({
-            url: "/v2/codedetail"+ "?key="+key,
-            method: "POST",
-            data: JSON.stringify(param),
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                switch (data.RESULT) {
-                    case "DUPLICATED" :
-                        notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
-                        break;
-                    case "FAIL" :
-                        notifyAlert('danger','', FAIL_MSG);
-                        break;
-                    default :
-                        procAlert("success", SUCCESS_MSG);
-                        notifyAlert('success', '', /*[[#{insert.result.success}]]*/);
-                        init();
-                        getCodeDetail(selectKey);
-                        break;
-                }
-            },
-            error: function (xhr, status, error, data) {
-                procAlert('warning', JSON.parse(xhr.responseText).message);
-            }
-        });
-
-    }
+    }   //createDetail 끝
 
     //updateDetail
     var updateDetail = function () {
@@ -999,11 +1006,30 @@
             return false;
         }
 
+        var groupId = $('#groupId').val();
+        var groupNo;
+        var languageList = [];
+
+        $.each(CODE_GROUP_LIST, function (index, list_data) {
+            if(groupId == list_data.id) {
+                groupNo = list_data.no;
+                if (groupId == STARTER_CLASSIFICATION_CODE_ID || groupId == BUILD_PACK_CLASSIFICATION_CODE_ID || groupId == SERVICE_PACK_CLASSIFICATION_CODE_ID){
+                    languageList = getLanguageConfig();
+                } else {
+                    languageList.push($.cookie("lang"));
+                }
+                return false;
+            }
+        });
+
         var duplicated = false;
+        var no = $("#detailNo").val();
+        var keyVal = $("#key").val();
 
         // 코드 중복 여부 확인
         $.each(CODE_DETAIL_LIST, function (index, list_data) {
-            if($("#detailNo").val() != list_data.no && $("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
+            // if($("#detailNo").val() != list_data.no && $("#groupId").val() == list_data.groupId && $("#key").val() == list_data.key) {
+            if(no != list_data.no && groupNo == list_data.groupNo && keyVal == list_data.key) {
                 notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
                 duplicated = true;
                 return false;
@@ -1014,9 +1040,6 @@
             return false;
         }
 
-
-        var no = $('#detailNo').val();
-        var groupId = $('#groupId').val();
         var param = $("#codeDetailForm").serializeObject();
 
         var param = {
@@ -1026,49 +1049,79 @@
             value: $("#value").val(),
             summary: $("#summary").val(),
             useYn: $("#useYn").is(":checked") ? 'Y' : 'N',
-        }
+            languageList: languageList
+        };
 
+        procAjaxCodeDetail("/v2/codedetail/"+ no + "?key="+key, "PUT", param, true, UPDATE_SUCCESS_MGS);
+
+    }   //updateDetail 끝
+
+    //deleteDetail
+    function deleteDetailModal() {
+        var no = $("#detailNo").val();
+        var groupId = $('#groupId').val();
+        var groupNo;
+        var languageList = [];
+
+        $.each(CODE_GROUP_LIST, function (index, list_data) {
+            if(groupId == list_data.id) {
+                groupNo = list_data.no;
+                if (groupId == STARTER_CLASSIFICATION_CODE_ID || groupId == BUILD_PACK_CLASSIFICATION_CODE_ID || groupId == SERVICE_PACK_CLASSIFICATION_CODE_ID){
+                    languageList = getLanguageConfig();
+                } else {
+                    languageList.push($.cookie("lang"));
+                }
+                return false;
+            }
+        });
+
+        var length = languageList.length;
+        var lastIdx = false;
+        for(var i = 0; i< length; i++) {
+            if(i == length-1) {
+                lastIdx = true;
+            }
+            procAjaxCodeDetail("/v2/codedetail/" + no + "?key="+key, "DELETE", param, lastIdx, DELETE_SUCCESS_MSG);
+        }
+        // procCallAjax(reqUrl, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
+    }
+
+    // var deleteDetail = function (data) {
+    //
+    //     init();
+    //     getCodeDetail(selectKey);
+    // }
+
+    var procAjaxCodeDetail = function (reqUrl, reqMethod, param, lastIdx, msg) {
         $.ajax({
-            url: "/v2/codedetail/"+ no + "?key="+key,
-            method: "PUT",
+            url: reqUrl,
+            method: reqMethod,
             data: JSON.stringify(param),
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
                 switch (data.RESULT) {
                     case "DUPLICATED" :
-                        notifyAlert('warning', '', /*[[#{common.info.result.duplicate('Key')}]]*/);
+                        notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
                         break;
                     case "FAIL" :
                         notifyAlert('danger','', FAIL_MSG);
                         break;
                     default :
-                        notifyAlert('success','',/*[[#{update.result.success}]]*/);
-                        init();
-                        getCodeDetail(selectKey);
+                        procAlert("success", SUCCESS_MSG);
+                        if (lastIdx) {
+                            notifyAlert('success', '', msg);
+                            init();
+                            getCodeDetail(selectKey);
+                        }
                         break;
                 }
             },
             error: function (xhr, status, error, data) {
-                //notifyAlert('warning', '', /*[[#{common.info.result.fail}]]*/);
                 notifyAlert('danger','', FAIL_MSG);
                 procAlert('warning', JSON.parse(xhr.responseText).message);
             }
         });
-    };
-
-    //deleteGroup
-    function deleteDetailModal() {
-        var no = $("#detailNo").val();
-        procCallAjax("/v2/codedetail/" + no + "?key="+key, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
-
-
-    }
-
-    var deleteDetail = function (data) {
-
-        init();
-        getCodeDetail(selectKey);
     }
 
 
