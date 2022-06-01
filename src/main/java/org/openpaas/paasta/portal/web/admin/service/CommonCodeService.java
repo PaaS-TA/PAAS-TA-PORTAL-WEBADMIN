@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Service
@@ -152,8 +153,12 @@ public class CommonCodeService {
      * @param id
      * * @return Map(자바클래스)
      */
-    public Map<String,Object> deleteCommonGroup(int key, String id, String useLang) {
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup/" + id, HttpMethod.DELETE, null, useLang);
+    public Map<String,Object> deleteCommonGroup(int key, String id, String useLang, String isCatalog) {
+        String reqUrl = Constants.V2_URL + "/codegroup/" + id;
+        if(isCatalog.equals("yes")) {
+            reqUrl += "?isCatalog=yes";
+        }
+            return commonService.procCommonApiRestTemplate(key, reqUrl, HttpMethod.DELETE, null, useLang);
     }
 
 
@@ -163,9 +168,12 @@ public class CommonCodeService {
      * @param no
      * @return Map(자바클래스)
      */
-    public Map<String,Object> deleteCommonDetail(int key, int no) {
-        String param = "";
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + no, HttpMethod.DELETE, null);
+    public Map<String,Object> deleteCommonDetail(int key, int no, String isCatalog) {
+        String reqUrl = Constants.V2_URL + "/codedetail/" + no;
+        if(isCatalog.equals("yes")) {
+            reqUrl += "?isCatalog=yes";
+        }
+        return commonService.procCommonApiRestTemplate(key,reqUrl, HttpMethod.DELETE, null);
     }
 
 }

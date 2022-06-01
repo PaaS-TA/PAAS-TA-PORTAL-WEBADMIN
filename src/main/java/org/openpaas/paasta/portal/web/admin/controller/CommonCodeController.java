@@ -15,6 +15,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 코드 목록 조회, 등록, 삭제 등 코드 관리의 API 를 호출 하는 컨트롤러이다.
@@ -143,12 +144,13 @@ public class CommonCodeController extends Common {
     @ResponseBody
     public Map<String, Object> deleteCommonGroup(@CookieValue(value = "lang", required = false) Cookie cookie, HttpServletRequest request, @PathVariable String id) {
         String key = request.getParameter("key");
+        String isCatalog = request.getParameter("isCatalog");
         String useLang = languageConfig.getLanguageList().get(0);
         if(cookie.getValue() != null && !cookie.getValue().isEmpty()) {
             useLang = cookie.getValue();
         }
         LOGGER.info("########## " + id);
-        return commonCodeService.deleteCommonGroup(Integer.parseInt(key), id, useLang);
+        return commonCodeService.deleteCommonGroup(Integer.parseInt(key), id, useLang, isCatalog);
     }
 
 
@@ -228,7 +230,8 @@ public class CommonCodeController extends Common {
     @ResponseBody
     public Map<String, Object> deleteCommonDetail(HttpServletRequest request, @PathVariable int no) {
         String key = request.getParameter("key");
-        return commonCodeService.deleteCommonDetail(Integer.parseInt(key), no);
+        String isCatalog = request.getParameter("isCatalog");
+        return commonCodeService.deleteCommonDetail(Integer.parseInt(key), no, isCatalog);
     }
 
     @ModelAttribute("configs")

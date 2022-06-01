@@ -904,14 +904,63 @@
     //deleteGroup
     function deleteGroupModal() {
         var groupId = $("#groupId").val();
-        procCallAjax("/v2/codegroup/" + groupId +"?key="+key, "DELETE", '', deleteGroup, $('#serviceModalLoadingBar'));
-        getCodeGroupList();
-        getCodeDetail(selectKey);
+        var languageList = [];
+
+        if (groupId == STARTER_CLASSIFICATION_CODE_ID || groupId == BUILD_PACK_CLASSIFICATION_CODE_ID || groupId == SERVICE_PACK_CLASSIFICATION_CODE_ID){
+            languageList = getLanguageConfig();
+        } else {
+            languageList.push($.cookie("lang"));
+        }
+
+        var length = languageList.length;
+        var reqUrl = "/v2/codegroup/" + groupId +"?key="+key;
+
+        if(languageList.length > 0) {
+            reqUrl += "&isCatalog=yes";
+        }
+
+        procAjaxGroup(reqUrl, "DELETE", '', true, DELETE_SUCCESS_MSG);
+        // procCallAjax("/v2/codegroup/" + groupId +"?key="+key, "DELETE", '', deleteGroup, $('#serviceModalLoadingBar'));
+        // getCodeGroupList();
+        // getCodeDetail(selectKey);
         //modalInit();
     }
 
     var deleteGroup = function (data) {
         init();
+    }
+
+    var procAjaxGroup = function (reqUrl, reqMethod, param, lastIdx, msg) {
+        $.ajax({
+            url: reqUrl,
+            method: reqMethod,
+            data: JSON.stringify(param),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                switch (data.RESULT) {
+                    case "DUPLICATED" :
+                        notifyAlert('warning','', /*[[#{common.info.result.duplicate('Key')}]]*/);
+                        break;
+                    case "FAIL" :
+                        notifyAlert('danger','', FAIL_MSG);
+                        break;
+                    default :
+                        procAlert("success", SUCCESS_MSG);
+                        if (lastIdx) {
+                            notifyAlert('success', '', msg);
+                            init();
+                            getCodeGroupList();
+                            getCodeDetail(selectKey);
+                        }
+                        break;
+                }
+            },
+            error: function (xhr, status, error, data) {
+                notifyAlert('danger','', FAIL_MSG);
+                procAlert('warning', JSON.parse(xhr.responseText).message);
+            }
+        });
     }
 
 
@@ -1076,13 +1125,13 @@
         });
 
         var length = languageList.length;
-        var lastIdx = false;
-        for(var i = 0; i< length; i++) {
-            if(i == length-1) {
-                lastIdx = true;
-            }
-            procAjaxCodeDetail("/v2/codedetail/" + no + "?key="+key, "DELETE", param, lastIdx, DELETE_SUCCESS_MSG);
+        var reqUrl = "/v2/codedetail/" + no + "?key="+key;
+
+        if(languageList.length > 0) {
+            reqUrl += "&isCatalog=yes";
         }
+
+        procAjaxCodeDetail(reqUrl, "DELETE", '', true, DELETE_SUCCESS_MSG);
         // procCallAjax(reqUrl, "DELETE", '', deleteDetail, $('#serviceModalLoadingBar'));
     }
 
