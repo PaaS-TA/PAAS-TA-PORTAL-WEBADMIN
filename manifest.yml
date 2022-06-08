@@ -4,7 +4,7 @@ applications:
     instances: 1
     buildpacks:
     - paketo-buildpacks/java
-    path: build/libs/paas-ta-portal-webadmin.war
+    #path: build/libs/paas-ta-portal-webadmin.war
     env:
       server_port: 8080
 
