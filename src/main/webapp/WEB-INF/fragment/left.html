@@ -4,6 +4,8 @@
       layout:decorator="../layout/default">
 <head></head>
 <body>
+<!--<script th:inline="javascript" type="text/javascript">-->
+<!--</script>-->
 <div>
     <header></header>
     <!-- Left side column. contains the logo and sidebar -->
@@ -19,13 +21,13 @@
                          alt="User Image"/>
                 </div>
                 <div class="pull-left info">
-                    <p><span th:text="${#httpServletRequest.getUserPrincipal().getName()}"></span> 님</p>
+                    <p><span th:text="${#httpServletRequest.getUserPrincipal().getName()} + ' ' + #{common.nav.user}"></span></p>
 
                     <a href="#" onclick="javascript:document.getElementById('logout').submit();">
                         <i class="fa fa-sign-out"></i> LogOut
                     </a>
                     <form id="logout" action="/logout" method="post">
-                        <input type="hidden" name="" value=""/>
+                        <input type="hidden" name="" value="yes"/>
                     </form>
                     <!--
                     <a href="#">
@@ -49,78 +51,153 @@
                 -->
                 <li>
                     <a href="/dashboard">
-                        <i class="fa fa-dashboard"></i> <span>대시보드</span>
+                        <i class="fa fa-dashboard"></i> <span th:text="#{common.nav.category.dashboard}"></span>
                     </a>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-laptop"></i> <span>운영관리</span>
+                        <i class="fa fa-laptop"></i> <span th:text="#{common.nav.category.operation}"></span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/orgspacelist"><i class="fa fa-circle-o"></i> 조직 및 공간 조회</a></li>
-                        <li><a href="/clientMain"><i class="fa fa-circle-o"></i> 클라이언트</a></li>
-                        <li><a href="/catalogs"><i class="fa fa-circle-o"></i> 카탈로그</a></li>
-                        <li><a href="/usermgnts"><i class="fa fa-circle-o"></i> 사용자 관리</a></li>
-                        <li><a href="/authority"><i class="fa fa-circle-o"></i> 권한 관리</a></li>
-                        <li><a href="/code"><i class="fa fa-circle-o"></i> 코드 관리</a></li>
-                        <li><a href="/quotadefinitions"><i class="fa fa-circle-o"></i> 할당량 관리</a></li>
-                        <li><a href="/isolationSegments"><i class="fa fa-circle-o"></i> 분할 관리</a></li>
+                        <li>
+                            <a href="/orgspacelist" >
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.operation.orgSpace}"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/clientMain">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.operation.client}"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/catalogs">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.operation.catalog}"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/usermgnts">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.operation.usermgnt}"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/authority">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.operation.auth}"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/code">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.operation.code}"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/quotadefinitions">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.operation.quotamgnt}"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/isolationSegments">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.operation.isolSegmgnt}"></span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-edit"></i>
-                        <span>서비스 관리</span>
+                        <span th:text="#{common.nav.category.service}"></span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/buildpacks"><i class="fa fa-circle-o"></i> 빌드팩</a></li>
-                        <li><a href="/servicebrokers"><i class="fa fa-circle-o"></i> 서비스 브로커</a></li>
-                        <li><a href="/serviceplans"><i class="fa fa-circle-o"></i> 서비스 제어</a></li>
+                        <li>
+                            <a href="/buildpacks">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.service.buildpack}"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/servicebrokers">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.service.broker}"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/serviceplans">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.service.plan}"></span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-lock"></i>
-                        <span>보안</span>
+                        <span th:text="#{common.nav.category.security}"></span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/securitygroups"><i class="fa fa-circle-o"></i> 시큐리티 그룹</a></li>
+                        <li>
+                            <a href="/securitygroups">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.security.group}"></span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
-                <li class="treeview" id="market_head" >
+                <!-- 2022.02.25 deprecated -->
+                <!--<li class="treeview" id="market_head" >
                     <a href="#">
                         <i class="fa fa-cart-arrow-down"></i>
-                        <span>마켓플레이스</span>
+                        <span th:text="#{common.nav.category.marketplace}"></span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu" id = "market_place">
                     </ul>
-                </li>
+                </li>-->
 
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-gears"></i>
-                        <span>설정</span>
+                        <span th:text="#{common.nav.category.setting}"></span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/configInfos"><i class="fa fa-circle-o"></i>설정 정보</a></li>
+                        <li>
+                            <a href="/configInfos">
+                                <i class="fa fa-circle-o"></i> <span th:text=" #{common.nav.category.setting.info}"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-globe"></i>
+                        <span th:text="#{lang.title}"></span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" id="langConfigList">
+<!--                        <li>-->
+<!--                            <a href="javascript:void(0);" id="lang_ko" onclick="changeLang('ko')">-->
+<!--                                <i class="fa fa-circle-o"></i> <span th:text="#{lang.ko}"></span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <a href="javascript:void(0);" id="lang_en" onclick="changeLang('en')">-->
+<!--                                <i class="fa fa-circle-o"></i> <span th:text="#{lang.en}"></span>-->
+<!--                            </a>-->
+<!--                        </li>-->
                     </ul>
                 </li>
             </ul>

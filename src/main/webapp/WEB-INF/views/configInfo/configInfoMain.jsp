@@ -1,6 +1,10 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ include file="../common/common.jsp"%>
 
+<%--
+  Date: 2022.03.03
+  Deprecated
+--%>
 
 <script type="text/javascript">
 
@@ -69,7 +73,7 @@
             contentType: "application/json",
             success: function(data){
                 if(data){
-                    procAlert("success", '설정이 저장되었습니다.');
+                    procAlert("success", <spring:message code='setting.alert.message.save' />);
                 }
             }
         });

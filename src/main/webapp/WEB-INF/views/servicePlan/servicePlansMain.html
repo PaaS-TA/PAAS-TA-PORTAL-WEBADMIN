@@ -12,9 +12,7 @@
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                서비스 제어
-            </h1>
+            <h1 th:text="#{plan.title}"></h1>
         </section>
 
         <!-- Main content -->
@@ -34,15 +32,15 @@
                                 <table class="table table-bordered table-striped dataTable">
                                     <thead>
                                     <tr>
-                                        <th>서비스</th>
-                                        <th width="150px">플랜</th>
-                                        <th width="100px">접근</th>
+                                        <th th:text="#{plan.table.service}"></th>
+                                        <th width="150px" th:text="#{plan.table.plan}"></th>
+                                        <th width="100px" th:text="#{plan.table.access}"></th>
                                     </tr>
                                     </thead>
                                     <tbody id="servicePlanList" name="dataList">
                                     </tbody>
                                 </table>
-                                <div id="noPlanMessage" class='box-header with-border' style="display: none">생성된 Isolation Segments가 없습니다.</div>
+                                <div id="noPlanMessage" class='box-header with-border' style="display: none" th:text="#{plan.empty.data}"></div>
                             </div>
                             <div class="box-body table-responsive no-padding" style="width: 39%; display:none;" id="orgDiv">
                                 <table class="table table-bordered table-striped dataTable">
@@ -78,7 +76,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"
-                                    onclick="procClosePopup('clientConfirmModal');"> 취소
+                                    onclick="procClosePopup('clientConfirmModal');" th:text="#{plan.button.cancel}">
                             </button>
                         </div>
                     </div>
@@ -169,7 +167,7 @@
     // 조직 전체 목록 리스트:[동기화]
     function getOrgs() {
         procCallAjaxAsyncFalse("/v2/orgs"+"?key="+$("#apiUrls").val(), "GET", null, procCallbackGetOrgs, null);
-    };
+    }
 
     var procCallbackGetOrgs = function(data) {
         $.each(data.resources, function (index, data) {
@@ -181,7 +179,7 @@
     // 서비스 제어전체 목록 리스트:[동기화]
     function getServicePlanList(){
         procCallAjax("/v2/servicepacks"+"?key="+$("#apiUrls").val(), "GET", null, procCallbackGetServiceList, $('#servicePlansLoadingBar'));
-    };
+    }
 
 
     var procCallbackGetServiceList = function(data){
@@ -189,13 +187,13 @@
 
         SERVICE_LIST= data;
         printData(SERVICE_LIST);
-    }
+    };
 
     // 서비스제어 리스트 출력: [동기화]
     function printData(dataList) {
         $("#servicePlanList").html("");
         procCallAjaxAsyncFalse("/v2/catalogs/serviceplan-admin"+"?key="+$("#apiUrls").val(), "GET", null, procCallbackGetServicePlan, $('#servicePlansLoadingBar'));
-    };
+    }
 
     var procCallbackGetServicePlan = function(data){
 
@@ -203,38 +201,46 @@
         var cnt = 0;
 
         SERVICE_PLAN_LIST = data;
+        var len = Object.keys(SERVICE_PLAN_LIST).length;
+        var emptyMsg = /*[[#{plan.empty.data}]]*/ "";
 
-        $.each(data.RESULT, function (index, data2) {
-            $.each(data2.Plan.resources, function (index2, resource) {
-                var accessSelectBoxHtml = "";
-                var serviceAccessType = "";
+        if(len == 0) {
+            serviceAccessList += "<tr>";
+            serviceAccessList += "<td colspan='4' style='text-align: center;'>" + emptyMsg + "</td>";
+            serviceAccessList += "</tr>"
+        } else {
+            $.each(data.RESULT, function (index, data2) {
+                $.each(data2.Plan.resources, function (index2, resource) {
+                    var accessSelectBoxHtml = "";
+                    var serviceAccessType = "";
 
-                accessSelectBoxHtml += "<select id='service_access_"+resource.metadata.guid+"' onchange='changeServiceAccess(\""+resource.metadata.guid+"\", this.value,\""+"key="+$("#apiUrls").val()+"\")'>";
-                if(resource.entity.public) {
-                    accessSelectBoxHtml += "    <option value='none'>NONE</option>";
-                    accessSelectBoxHtml += "    <option value='all' selected='selected'>ALL</option>";
-                    serviceAccessType = "all";
-                } else {
-                    accessSelectBoxHtml += "    <option value='none' selected='selected'>NONE</option>";
-                    accessSelectBoxHtml += "    <option value='all'>ALL</option>";
-                    serviceAccessType = "none";
-                }
-                accessSelectBoxHtml += "    <option value='limited'>LIMITED</option>";
-                accessSelectBoxHtml += "</select>";
+                    accessSelectBoxHtml += "<select id='service_access_"+resource.metadata.guid+"' onchange='changeServiceAccess(\""+resource.metadata.guid+"\", this.value,\""+"key="+$("#apiUrls").val()+"\")'>";
+                    if(resource.entity.public) {
+                        accessSelectBoxHtml += "    <option value='none'>NONE</option>";
+                        accessSelectBoxHtml += "    <option value='all' selected='selected'>ALL</option>";
+                        serviceAccessType = "all";
+                    } else {
+                        accessSelectBoxHtml += "    <option value='none' selected='selected'>NONE</option>";
+                        accessSelectBoxHtml += "    <option value='all'>ALL</option>";
+                        serviceAccessType = "none";
+                    }
+                    accessSelectBoxHtml += "    <option value='limited'>LIMITED</option>";
+                    accessSelectBoxHtml += "</select>";
 
-                serviceAccessList += "<tr id='servicePlan_"+(cnt+1)+"\'>";
-                serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\", \""+"key="+$("#apiUrls").val()+"\");'  style='cursor:pointer;'>"+data2.Service.entity.label+"</td> ";
-                serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\", \""+"key="+$("#apiUrls").val()+"\");'  style='cursor:pointer;'>"+resource.entity.name+"</td> ";
-                serviceAccessList += "    <td>"+accessSelectBoxHtml+"</td> ";
-                // serviceAccessList += "    <input type='hidden' id='hidden_org_guid_"+resource.metadata.guid+"'/>";
-                serviceAccessList += "    <input type='hidden' id='service_access_type_"+resource.metadata.guid+"' value='"+serviceAccessType+"'/>";
-                serviceAccessList += "    <input type='hidden' id='service_plan_meta_guid_"+resource.metadata.guid+"' value=''/>";
-                serviceAccessList += "    <input type='hidden' id='apiUrls_"+"key="+$("#apiUrls").val()+"' value=''/>";
-                serviceAccessList += "</tr> ";
+                    serviceAccessList += "<tr id='servicePlan_"+(cnt+1)+"\'>";
+                    serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\", \""+"key="+$("#apiUrls").val()+"\");'  style='cursor:pointer;'>"+data2.Service.entity.label+"</td> ";
+                    serviceAccessList += "    <td onclick='getServicePlanOrgs(\"servicePlan_"+(cnt+1)+"\", \""+resource.entity.unique_id+"\", \""+"key="+$("#apiUrls").val()+"\");'  style='cursor:pointer;'>"+resource.entity.name+"</td> ";
+                    serviceAccessList += "    <td>"+accessSelectBoxHtml+"</td> ";
+                    // serviceAccessList += "    <input type='hidden' id='hidden_org_guid_"+resource.metadata.guid+"'/>";
+                    serviceAccessList += "    <input type='hidden' id='service_access_type_"+resource.metadata.guid+"' value='"+serviceAccessType+"'/>";
+                    serviceAccessList += "    <input type='hidden' id='service_plan_meta_guid_"+resource.metadata.guid+"' value=''/>";
+                    serviceAccessList += "    <input type='hidden' id='apiUrls_"+"key="+$("#apiUrls").val()+"' value=''/>";
+                    serviceAccessList += "</tr> ";
 
-                cnt++;
+                    cnt++;
+                });
             });
-        });
+        }
 
         $("#servicePlanList").append(serviceAccessList);
 
@@ -292,7 +298,7 @@
         });
 
         setAddOrgSelectBox();
-    };
+    }
 
     function setAddOrgSelectBox() {
         SELECT_DELETE_ORG_GUID = "";
@@ -328,7 +334,7 @@
         if($("#service_access_"+SELECT_SERVICE_PLAN_GUID).val() == "limited") {
             $("#orgDiv").show();
         }
-    };
+    }
 
     // 서비스 조직 추가
     function changeSelectOrgs() {
@@ -340,7 +346,7 @@
         }
 
         procCallAjax("/v2/serviceplanvisibilities/"+ SELECT_SERVICE_PLAN_UNIQUE_ID +"?key="+$("#apiUrls").val(), "PUT", JSON.stringify(param), procCallbackChangeSelectOrgs, $('#servicePlansLoadingBar'));
-    };
+    }
 
     var procCallbackChangeSelectOrgs = function(data) {
         synchronousInit();
@@ -351,7 +357,7 @@
         SELECT_DELETE_ORG_GUID = organizationGuid;
 
         procCallAjaxForSyncDelete("/v2/serviceplanvisibilities/"+selectMetaGuid+"?key="+$("#apiUrls").val(), "DELETE", null, procCallbackDeleteServicePlanVisibility, $('#servicePlansLoadingBar'));
-    };
+    }
 
     var procCallbackDeleteServicePlanVisibility = function(data) {
         synchronousInit();
@@ -376,13 +382,14 @@
             enableServiceAccess(true);
         } else if(serviceAccessOriginal == "none" && serviceAccessSelectBox =="limited") {
         } else if(serviceAccessOriginal == "limited" && (serviceAccessSelectBox =="all" || serviceAccessSelectBox =="none")) {
-            showServicePlanDeleteModal("Access 변경",serviceAccessMetaGuid, serviceAccessSelectBox, "변경");
+            var button = /*[[#{plan.button.change}]]*/ ""
+            showServicePlanDeleteModal(/*[[#{plan.access.popup.change.title}]]*/ "", serviceAccessMetaGuid, serviceAccessSelectBox, button);
         }
-    };
+    }
 
     function showServicePlanDeleteModal(title, guid, serviceAccess, buttonText) {
         $("#popupTitle").html(title);
-        $("#popupMessage").html("연결된 모든 조직에 대한 접근이 해제됩니다. 실행하시겠습니까?");
+        $("#popupMessage").html(/*[[#{plan.access.popup.change.message}]]*/ "");
         $("#popupButtonText").text(buttonText);
         $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "ServicePlanDelete('"+guid+"','"+serviceAccess+"');");
@@ -410,7 +417,7 @@
         }
 
         procCallAjaxAsyncFalse("/v2/serviceplans/"+guid +"?key="+$("#apiUrls").val(), "PUT", JSON.stringify(param), synchronousInit, $('#servicePlansLoadingBar'));
-    };
+    }
 
     /*]]>*/
 </script>

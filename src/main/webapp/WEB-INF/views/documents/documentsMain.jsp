@@ -1,6 +1,11 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ include file="../common/common.jsp"%>
 
+<%--
+  Date: 2022.02.25
+  Deprecated
+--%>
+
 <div class="col-sm-6 pt30">
     <h4 class="modify_h4 fwn">문서 관리</h4>
 </div>

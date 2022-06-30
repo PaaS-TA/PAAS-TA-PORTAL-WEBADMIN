@@ -27,6 +27,8 @@ spring:
       max-file-size: ${spring.http.multipart.max-file-size}
       max-request-size: ${spring.http.multipart.max-request-size}
       location: ${spring.http.multipart.location}
+  messages:
+    fallback-to-system-locale: false
 
 # HTTP Server
 server:
@@ -58,6 +60,7 @@ logging:
   level:
     org.openpaas.paasta.portal.web.admin.exception.GlobalControllerExceptionHandler: DEBUG
 
+languageList: <PORTAL_USE_LANG>
 #Spring config setting (current version not used)
 #  boot:
 #    #Spring boot admin settings

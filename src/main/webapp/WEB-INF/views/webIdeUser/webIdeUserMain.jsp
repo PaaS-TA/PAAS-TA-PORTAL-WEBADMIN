@@ -1,6 +1,10 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ include file="../common/common.jsp"%>
 
+<%--
+  Date: 2022.02.25
+  Deprecated
+--%>
 
 <script type="text/javascript">
 

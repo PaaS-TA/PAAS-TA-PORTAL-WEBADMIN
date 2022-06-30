@@ -52,6 +52,7 @@ var procCallbackUploadFile = function(data, reqProcFunction) {
 };
 
 
+/* 2022.03.04 deprecated */
 // PREVIEW
 var setPreView = function(objThumbnail) {
     var thisForm = objThumbnail[0];

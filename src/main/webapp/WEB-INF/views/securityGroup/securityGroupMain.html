@@ -13,9 +13,7 @@
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                시큐리티 그룹
-            </h1>
+            <h1 th:text="#{security.title}"></h1>
         </section>
 
         <!-- Main content -->
@@ -31,23 +29,21 @@
                                  style="position:static;padding-left: 0px;">
                                 <div class="has-feedback">
                                     <input type="text" class="form-control input-sm" id="searchKeyword"
-                                           onkeyup="viewSearchKeyWord();" placeholder="이름으로 검색"/>
+                                           onkeyup="viewSearchKeyWord();" th:placeholder="#{security.search.placeholder}"/>
                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
                             </div>
                             <select class="form-control toCheckString" id="access"
                                     style="width:150px;margin-top: -5px; display: unset;"
                                     onchange="selectGroupChange()">
-                                <option value="All" selected="true">전체보기</option>
+                                <option value="All" selected="true" th:text="#{security.view.option}"></option>
                                 <option value="Staging">Staging default</option>
                                 <option value="Running">Running default</option>
                             </select>
                             <div class="pull-right" style="padding-right: 0px;">
                                 <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn"
                                         name="registBtn" data-toggle="modal" data-backdrop="static"
-                                        data-keyboard="false" data-target="#securityGroupFormModal">
-                                    시큐리티 그룹 등록
-                                </button>
+                                        data-keyboard="false" data-target="#securityGroupFormModal" th:text="#{security.button.register}"></button>
                             </div>
 
                         </div>
@@ -56,7 +52,7 @@
                             <table class="table table-striped text-center"> <!-- table-responsive -->
                                 <thead>
                                 <tr>
-                                    <th>시큐리티 그룹</th>
+                                    <th th:text="#{security.table.group}"></th>
                                 </tr>
                                 </thead>
                                 <tbody id="securityGroupList" name="dataList">
@@ -77,7 +73,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title">시큐리티 그룹 생성</h4>
+                            <h4 class="modal-title" th:text="#{security.create.modal.header.title}"></h4>
                         </div>
                         <div class="modal-body">
 
@@ -88,23 +84,21 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="securityGroupName" class="col-sm-3 control-label">이름</label>
+                                            <label for="securityGroupName" class="col-sm-3 control-label" th:text="#{security.modal.body.name.label}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control toCheckString toCheckSecurityForm"
                                                        id="securityGroupName" placeholder=""/>
                                             </div>
                                         </div>
                                         <div class="form-group required">
-                                            <label for="securityGroupName" class="col-sm-3 control-label">staging
-                                                default 설정</label>
+                                            <label for="securityGroupName" class="col-sm-3 control-label" th:text="#{security.modal.body.stagingDefault.label}"></label>
                                             <div class="col-sm-9" style="margin-top : 5px">
                                                 <input name="isEnabled" type="checkbox" checked=""
                                                        id="securityStagingDefault"/>
                                             </div>
                                         </div>
                                         <div class="form-group required">
-                                            <label for="securityGroupName" class="col-sm-3 control-label">running
-                                                default 설정</label>
+                                            <label for="securityGroupName" class="col-sm-3 control-label" th:text="#{security.modal.body.runningDefault.label}"></label>
                                             <div class="col-sm-9" style="margin-top : 5px">
                                                 <input name="isEnabled" type="checkbox" checked=""
                                                        id="securityRunningDefault"/>
@@ -128,36 +122,36 @@
                                                 <div id="tab-1" class="">
                                                     <div class="form-group" style="margin-top: 10px;" id="securityGroupCodeDiv_1">
                                                         <label for="securityGroupCode_1"
-                                                               class="col-sm-3 control-label">코드</label>
+                                                               class="col-sm-3 control-label" th:text="#{security.modal.body.code.label}"></label>
                                                         <div class="col-sm-9">
                                                             <input type="number" class="form-control"
                                                                    id="securityGroupCode_1"
-                                                                   placeholder="icmp에 대한 코드 제어 신호" onkeyup="limtenumber(1, 'Code')"/>
+                                                                   th:placeholder="#{security.modal.body.code.placeholder}" onkeyup="limtenumber(1, 'Code')"/>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group" style="margin-top: 10px;" id="securityDescriptionDiv_1">
                                                         <label for="securityDescription_1"
-                                                               class="col-sm-3 control-label">설명</label>
+                                                               class="col-sm-3 control-label" th:text="#{security.modal.body.explain.label}"></label>
                                                         <div class="col-sm-9">
                                                             <input type="text" class="form-control"
                                                                    id="securityDescription_1"
-                                                                   placeholder="규칙 설명"></input>
+                                                                   th:placeholder="#{security.modal.body.explain.placeholder}" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group required" id="securityDestinationDiv_1">
                                                         <label for="securityDestination_1"
-                                                               class="col-sm-3 control-label">규칙</label>
+                                                               class="col-sm-3 control-label" th:text="#{security.modal.body.rule}"></label>
                                                         <div class="col-sm-9">
                                                             <input type="text" class="form-control toCheckString toCheckSecurityForm"
-                                                                   id="securityDestination_1" placeholder="규칙"></input>
+                                                                   id="securityDestination_1" th:placeholder="#{security.modal.body.rule}" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group" id="securityLogDiv_1">
                                                         <label for="securityLog_1"
-                                                               class="col-sm-3 control-label" >로그</label>
+                                                               class="col-sm-3 control-label" th:text="#{security.modal.body.log.label}"></label>
                                                         <div class="col-sm-9">
                                                             <select class="form-control toCheckString"
                                                             id="securityLog_1">
@@ -170,18 +164,18 @@
 
                                                     <div class="form-group" id="securityPortsDiv_1">
                                                         <label for="securityPorts_1"
-                                                               class="col-sm-3 control-label">포트</label>
+                                                               class="col-sm-3 control-label" th:text="#{security.modal.body.port}"></label>
                                                         <div class="col-sm-9">
                                                             <input type="text" class="form-control" id="securityPorts_1"
-                                                                   placeholder="포트"></input>
+                                                                   th:placeholder="#{security.modal.body.port}" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group required" id="securityProtocolDiv_1">
-                                                        <label for="securityProtocol_1" class="col-sm-3 control-label">프로토콜</label>
+                                                        <label for="securityProtocol_1" class="col-sm-3 control-label" th:text="#{security.modal.body.protocol}"></label>
                                                         <div class="col-sm-9">
                                                             <select class="form-control toCheckString"
-                                                            id="securityProtocol_1" placeholder="프로토콜" onchange="protocolChange(1);">
+                                                            id="securityProtocol_1" onchange="protocolChange(1);">
                                                             <option value="all" selected="selected">all</option>
                                                             <option value="tcp">tcp</option>
                                                             <option value="icmp">icmp</option>
@@ -192,17 +186,17 @@
 
                                                     <div class="form-group" id="securityTypeDiv_1">
                                                         <label for="securityGroupType_1"
-                                                               class="col-sm-3 control-label">타입</label>
+                                                               class="col-sm-3 control-label" th:text="#{security.modal.body.type.label}"></label>
                                                         <div class="col-sm-9">
                                                             <input type="number" class="form-control"
                                                                    id="securityGroupType_1"
-                                                                   placeholder="icmp에 대한 유형 제어 신호" onkeyup="limtenumber(1, 'Type')"></input>
+                                                                   th:placeholder="#{security.modal.body.type.placeholder}" onkeyup="limtenumber(1, 'Type')" />
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <button type="button" id="securityGroupTapDelete_1"
                                                                 class="btn btn-sm btn-danger pull-right"
-                                                                style="margin-right: 15px;" onclick="tapDelete(1)">탭 삭제
+                                                                style="margin-right: 15px;" onclick="tapDelete(1)" th:text="#{security.modal.body.button.delete.tab}">
                                                         </button>
                                                     </div>
 
@@ -218,13 +212,11 @@
                                             <button type="button" id="securityGroupReadFile"
                                                     class="btn btn-sm btn-primary pull-right"
                                                     style="margin-right: 15px; margin-top :10px;"
-                                                    onclick="ruleLoader();">파일 불러오기
-                                            </button>
+                                                    onclick="ruleLoader();" th:text="#{security.modal.body.button.import.file}"></button>
                                             <button type="button" id="securityGroupWriteFile"
                                                     class="btn btn-sm btn-primary pull-right"
                                                     style="margin-right: 15px; margin-top :10px;"
-                                                    onclick="ruleWrite();">파일 내보내기
-                                            </button>
+                                                    onclick="ruleWrite();" th:text="#{security.modal.body.button.export.file}"></button>
                                             <input type="file" id="fileLoader" onchange="loadFile();"
                                                    style="display: none;"/>
                                         </div>
@@ -248,19 +240,15 @@
                         <div class="modal-footer">
                             <button type="button" id="securityGroupDeleteBtn" name="modalDeleteBtn"
                                     class="btn btn-sm btn-danger pull-left" onClick="deleteSecurityGroup();"
-                                    data-dismiss="modal">삭제
-                            </button>
+                                    data-dismiss="modal" th:text="#{security.button.delete}"></button>
                             <button type="button" id="clientSaveBtn" name="modalSaveBtn"
                                     class="btn btn-sm btn-primary pull-right" onClick="createSecurityGroup();"
-                                    >등록
-                            </button>
+                                    th:text="#{security.button.add}"></button>
                             <button type="button" id="securityGroupRegBtn" name="modalRegBtn"
                                     class="btn btn-sm btn-primary pull-right" onClick="updateSecurityGroup();"
-                                    hidden="hidden">수정
-                            </button>
+                                    hidden="hidden" th:text="#{security.button.change}"></button>
                             <button type="button" id="securityGroupCloseBtn" class="btn btn-sm btn-default pull-left"
-                                    data-dismiss="modal">취소
-                            </button>
+                                    data-dismiss="modal" th:text="#{security.button.cancel}"></button>
                         </div>
 
                     </div>
@@ -286,8 +274,7 @@
                             </button>
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"
                                     id="popupCancelButtonText"
-                                    onclick="procClosePopup('clientConfirmModal');"> 취소
-                            </button>
+                                    onclick="procClosePopup('clientConfirmModal');" th:text="#{security.button.cancel}"></button>
                         </div>
                     </div>
                 </div>
@@ -355,7 +342,7 @@
         $('#securityGroupFormModal').html(INIT_SECURITY_RULE_HTML);
         settingOrgListSpaceList();
         $('#clientSaveBtn').show();
-        $('.modal-title').text("시큐리티 그룹 등록");
+        $('.modal-title').text(/*[[#{security.register.modal.header.title}]]*/ "");
         $('#securityGroupDeleteBtn').hide();
         $('#securityGroupSaveBtn').hide();
         $('#securityGroupRegBtn').hide();
@@ -410,38 +397,52 @@
 
     function getsecurityListTapHtml(_idx, length) {
         var result = '';
+
+        var codeLabel = /*[[#{security.modal.body.code.label}]]*/ "";
+        var codePlaceholder = /*[[#{security.modal.body.code.placeholder}]]*/ "";
+        var explainLabel = /*[[#{security.modal.body.explain.label}]]*/ "";
+        var explainPlaceholder = /*[[#{security.modal.body.explain.placeholder}]]*/ "";
+        var rule = /*[[#{security.modal.body.rule}]]*/ "";
+        var logLabel = /*[[#{security.modal.body.log.label}]]*/ "";
+        var port = /*[[#{security.modal.body.port}]]*/ "";
+        var protocol = /*[[#{security.modal.body.protocol}]]*/ "";
+        var typeLabel = /*[[#{security.modal.body.type.label}]]*/ "";
+        var typePlaceholder = /*[[#{security.modal.body.type.placeholder}]]*/ "";
+        var btn = /*[[#{security.modal.body.button.delete.tab}]]*/ "";
+
         for (idx = _idx; idx < length; idx++) {
             result += '<div class="tab-pane fade" id="securityplus_' + idx + '">' +
                 '<div id="tab-' + idx + '" class="">' +
                 '<div class="form-group" style="margin-top: 10px;" id="securityGroupCodeDiv_' + idx + '">' +
                 '<label for="securityGroupCode_' + idx + '"' +
-                'class="col-sm-3 control-label">코드</label>' +
+                'class="col-sm-3 control-label">' + codeLabel + '</label>' +
                 '<div class="col-sm-9">' +
                 '<input type="number" class="form-control"' +
                 'id="securityGroupCode_' + idx + '"' +
-                'placeholder="icmp에 대한 코드 제어 신호" onkeyup="limtenumber('+ idx + ' , '+"'Code'"+')"/>' +
+                'placeholder="' + codePlaceholder + '"' +
+                'onkeyup="limtenumber('+ idx + ' , '+"'Code'"+')"/>' +
                 '</div>' +
                 '</div>' +
 
                 '<div class="form-group" style="margin-top: 10px;" id="securityDescriptionDiv_' + idx + '">' +
-                '<label for="securityDescription_' + idx + '" class="col-sm-3 control-label">설명</label>' +
+                '<label for="securityDescription_' + idx + '" class="col-sm-3 control-label">' + explainLabel + '</label>' +
                 '<div class="col-sm-9">' +
                 '<input type="text" class="form-control"' +
-                'id="securityDescription_' + idx + '" placeholder="규칙 설명"></input>' +
+                'id="securityDescription_' + idx + '" placeholder="' + explainPlaceholder + '"' + '/>' +
                 '</div>' +
                 '</div>' +
 
                 '<div class="form-group required" id="securityDestinationDiv_' + idx + '">' +
-                '<label for="securityDestination_' + idx + '" class="col-sm-3 control-label">규칙</label>' +
+                '<label for="securityDestination_' + idx + '" class="col-sm-3 control-label">' + rule + '</label>' +
                 '<div class="col-sm-9">' +
                 '<input type="text" class="form-control toCheckString toCheckSecurityForm"' +
-                'id="securityDestination_' + idx + '" placeholder="규칙"></input>' +
+                'id="securityDestination_' + idx + '" placeholder="' + rule + '"' + '/>' +
                 '</div>' +
                 '</div>' +
 
                 '<div class="form-group" id="securityLogDiv_' + idx + '">' +
                 '<label for="securityLog_' + idx + '"' +
-                'class="col-sm-3 control-label">로그</label>' +
+                'class="col-sm-3 control-label">' + logLabel + '</label>' +
                 '<div class="col-sm-9">' +
                 '<select class="form-control toCheckString"' +
                 'id="securityLog_' + idx + '">' +
@@ -454,18 +455,18 @@
 
                 '<div class="form-group" id="securityPortsDiv_' + idx + '">' +
                 '<label for="securityPorts_' + idx + '"' +
-                'class="col-sm-3 control-label">포트</label>' +
+                'class="col-sm-3 control-label">' + port + '</label>' +
                 '<div class="col-sm-9">' +
                 '<input type="text" class="form-control" id="securityPorts_' + idx + '"' +
-                'placeholder="포트"></input>' +
+                'placeholder="' + port + '"' + '/>' +
                 '</div>' +
                 '</div>' +
 
                 '<div class="form-group required" id="securityProtocolDiv_' + idx + '">' +
-                '<label for="securityProtocol_' + idx + '" class="col-sm-3 control-label">프로토콜</label>' +
+                '<label for="securityProtocol_' + idx + '" class="col-sm-3 control-label">' + protocol + '</label>' +
                 '<div class="col-sm-9">' +
                 '<select class="form-control toCheckString"' +
-                'id="securityProtocol_' + idx + '" placeholder="프로토콜" onchange="protocolChange('+ idx + ');">' +
+                'id="securityProtocol_' + idx + '" placeholder="' + protocol + '"' + ' onchange="protocolChange('+ idx + ');">' +
                 '<option value="all" selected="selected">all</option>'+
                 '<option value="tcp">tcp</option>'+
                 '<option value="icmp">icmp</option>'+
@@ -476,15 +477,15 @@
 
                 '<div class="form-group" id="securityTypeDiv_' + idx + '">' +
                 '<label for="securityGroupType_' + idx + '"' +
-                'class="col-sm-3 control-label">타입</label>' +
+                'class="col-sm-3 control-label">' + typeLabel + '</label>' +
                 '<div class="col-sm-9">' +
                 '<input type="number" class="form-control" id="securityGroupType_' + idx + '"' +
-                'placeholder="icmp에 대한 유형 제어 신호" onkeyup="limtenumber('+ idx + ' , '+"'Type'"+')"/>' +
+                'placeholder="' + typePlaceholder + '"' + ' onkeyup="limtenumber('+ idx + ' , '+"'Type'"+')"/>' +
                 '</div>' +
                 '</div>' +
 
                 '<div class="form-group">' +
-                '<button type="button" id="securityGroupTapDelete_' + idx + '"' + 'class="btn btn-sm btn-danger pull-right" style="margin-right: 15px;" onclick="tapDelete(' + idx + ');">탭 삭제</button>' +
+                '<button type="button" id="securityGroupTapDelete_' + idx + '"' + 'class="btn btn-sm btn-danger pull-right" style="margin-right: 15px;" onclick="tapDelete(' + idx + ');">' + btn + '</button>' +
                 '</div>' +
 
                 '</div>' +
@@ -569,7 +570,7 @@
 
     function getSecurityGroups(clientId) {
 
-        $('.modal-title').text("시큐리티 그룹 상세");
+        $('.modal-title').text(/*[[#{security.detail.modal.header.title}]]*/ "");
         $('#securityGroupDeleteBtn').show();
         $('#securityGroupSaveBtn').show();
         $('#clientSaveBtn').hide();
@@ -654,7 +655,7 @@
         };
         procCallAjax2('/v2/securitygroup/' + servicename +"?key="+key, "POST", param, setCreateDefaultStagingSetting, $('#modalLoadingBar'));
         $('#securityGroupFormModal').modal("hide");
-    };
+    }
 
     function updateSecurityGroup() {
         var param = getRules();
@@ -671,7 +672,7 @@
             procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/spaces/' + data +"?key="+key, "DELETE", data, bindResult);
         });
         $('#securityGroupFormModal').modal("hide");
-    };
+    }
 
     function bindResult(data) {
         sltUnBindSpaceData = [];
@@ -680,7 +681,7 @@
 
     function deleteSecurityGroup() {
         procCallAjax('/v2/securitygroup/' + sltSecurityGuid +"?key="+key, "DELETE", null, getInitGroupList, $('#modalLoadingBar'));
-    };
+    }
 
     function getRules() {
         var param = '['
@@ -717,7 +718,7 @@
         });
         param += '\r\n]';
         return param;
-    };
+    }
 
     function getOrgs() {
         procCallAjax('/v2/orgs' +"?key="+key, "GET", null, serSecurityOrgsList, $('#modalLoadingBar'));
@@ -795,14 +796,14 @@
             '   <td id="tdAdd"></td>' +
             '</tr>'
         );
-    };
+    }
 
     function selectSpace() {
         var orgId = $("#selectOrg").val();
         if (orgId != "") {
             procCallAjax('/v2/orgs/' + orgId + '/spaces' +"?key="+key, "GET", "", callbackSelectSpace, $('#modalLoadingBar'));
         }
-    };
+    }
 
     var callbackSelectSpace = function (data) {
         var spaces = data.spaceList.resources;
@@ -835,12 +836,11 @@
     };
 
     function addSpaceSecurity() {
-
         if ($('#tdAdd') != null) {
             $('#tdAdd').remove();
         }
         var addButton = '';
-        addButton += '<button type="button" class="btn btn-sm btn-primary pull-center" onClick="AddBindSpace()">등록</button>'
+        addButton += '<button type="button" class="btn btn-sm btn-primary pull-center" onClick="AddBindSpace()">' + /*[[#{security.button.add}]]*/ "" + '</button>';
         var objTable = $("#selectBody");
         objTable.append('<td id="tdAdd">' + addButton + '</td>');
     }
@@ -930,7 +930,8 @@
                     });
                 }).done(function () {
                 }).fail(function (jqXHR, textStatus, errorThrown) {
-                    notifyAlert('danger', "", "JSON 형식 오류 : " + textStatus);
+                    var message = /*[[#{security.alert.message.jsonError}]]*/ '';
+                    notifyAlert('danger', "", message + " : " + textStatus);
                 });
 
                 //getsecurityListTapHtml(tapLenght, (data.entity.rules.length + 1));
@@ -990,7 +991,7 @@
     var setCreateDefaultStagingSetting = function (data) {
 
         if (data.RESULT == "SUCCESS") {
-            notifyAlert('success', "", '생성 완료 되었습니다.');
+            notifyAlert('success', "", /*[[#{insert.result.success}]]*/);
             sltSecurityGuid = data.DATA.metadata.guid;
             if ($('input:checkbox[id="securityStagingDefault"]').is(":checked")) {
                 procCallAjax2('/v2/securitygroup/' + sltSecurityGuid + '/staging' +"?key="+key, "PUT", "", bindResult, $('#modalLoadingBar'));

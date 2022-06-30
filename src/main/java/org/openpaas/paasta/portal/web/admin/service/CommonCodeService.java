@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Service
@@ -23,7 +24,7 @@ public class CommonCodeService {
      * @param param CommonCode
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getCodeDetailList(int key, CommonCode param) {
+    public Map<String,Object> getCodeDetailList(int key, CommonCode param, String useLang) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
@@ -33,7 +34,7 @@ public class CommonCodeService {
             search = "?";
             search += "groupId=" + param.getGroupId();
         }
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + search, HttpMethod.GET, param, useLang);
     }
 
 
@@ -43,8 +44,8 @@ public class CommonCodeService {
      * @param no CommonCode
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getCodeDetail(int key, int no) {
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + no , HttpMethod.GET, null);
+    public Map<String,Object> getCodeDetail(int key, int no, String useLang) {
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + no , HttpMethod.GET, null, useLang);
     }
 
 
@@ -54,7 +55,7 @@ public class CommonCodeService {
      * @param param CodeGroup(아이디)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getGroupDetailList(int key, CommonCode param) {
+    public Map<String,Object> getGroupDetailList(int key, CommonCode param, String useLang) {
         String search = "";
 
         if (param.getSearchKeyword() != null) {
@@ -62,7 +63,7 @@ public class CommonCodeService {
             search += "searchKeyword=" + param.getSearchKeyword();
         }
 
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup" + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup/" + search, HttpMethod.GET, param, useLang);
     }
 
 
@@ -73,13 +74,13 @@ public class CommonCodeService {
      * @param param CodeGroup(아이디)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> getGroupDetail(int key, String id, CommonCode param) {
+    public Map<String,Object> getGroupDetail(int key, String id, CommonCode param, String useLang) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/codegroup/" + id + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/codegroup/" + id + search, HttpMethod.GET, param, useLang);
     }
 
 
@@ -105,9 +106,9 @@ public class CommonCodeService {
      * @param param CodeGroup (모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> insertDetailGroup(int key, CommonCode param) {
+    public Map<String,Object> insertDetailGroup(int key, CommonCode param, String useLang) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup", HttpMethod.POST, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup", HttpMethod.POST, param, useLang);
     }
 
     /**
@@ -128,9 +129,9 @@ public class CommonCodeService {
      * @param param CodeGroup (모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String,Object> updateCommonGroup(int key, String id, CommonCode param) {
+    public Map<String,Object> updateCommonGroup(int key, String id, CommonCode param, String useLang) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup/" + id, HttpMethod.PUT, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup/" + id, HttpMethod.PUT, param, useLang);
     }
 
 
@@ -142,7 +143,7 @@ public class CommonCodeService {
      */
     public Map<String,Object> updateCommonDetail(int key, int no, CommonCode param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + no, HttpMethod.PUT, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + no , HttpMethod.PUT, param);
     }
 
 
@@ -152,8 +153,12 @@ public class CommonCodeService {
      * @param id
      * * @return Map(자바클래스)
      */
-    public Map<String,Object> deleteCommonGroup(int key, String id) {
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codegroup/" + id, HttpMethod.DELETE, null);
+    public Map<String,Object> deleteCommonGroup(int key, String id, String useLang, String isCatalog) {
+        String reqUrl = Constants.V2_URL + "/codegroup/" + id;
+        if(isCatalog.equals("yes")) {
+            reqUrl += "?isCatalog=yes";
+        }
+            return commonService.procCommonApiRestTemplate(key, reqUrl, HttpMethod.DELETE, null, useLang);
     }
 
 
@@ -163,8 +168,12 @@ public class CommonCodeService {
      * @param no
      * @return Map(자바클래스)
      */
-    public Map<String,Object> deleteCommonDetail(int key, int no) {
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/codedetail/" + no, HttpMethod.DELETE, null);
+    public Map<String,Object> deleteCommonDetail(int key, int no, String isCatalog) {
+        String reqUrl = Constants.V2_URL + "/codedetail/" + no;
+        if(isCatalog.equals("yes")) {
+            reqUrl += "?isCatalog=yes";
+        }
+        return commonService.procCommonApiRestTemplate(key,reqUrl, HttpMethod.DELETE, null);
     }
 
 }

@@ -13,9 +13,7 @@
     <!-- Content Header (Page header) -->
     <div layout:fragment="content">
         <section class="content-header">
-            <h3>
-                설정 정보
-            </h3>
+            <h3 th:text="#{setting.title}"></h3>
         </section>
 
         <!-- Main content -->
@@ -23,15 +21,13 @@
             <div class="box box-default">
                 <!-- /.box box-default-header -->
                 <div class="col-sm-6 pt5">
-                    <h3>인프라 설정</h3>
+                    <h3 th:text="#{setting.infra.title}"></h3>
                 </div>
                 <div class="box-header">
                     <div class="pull-right" style="padding-right: 0px;">
                         <button type="button" class="btn btn-block btn-primary btn-sm" id="configBtn"
                                 name="configBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false"
-                                data-target="#configFormModal">
-                            인프라 등록
-                        </button>
+                                data-target="#configFormModal" th:text="#{setting.infra.button.add}"></button>
 
                     </div>
                 </div>
@@ -48,7 +44,7 @@
                             <td width="17.5%" style="vertical-align: middle">CaaS_Authorization</td>
                         </tr>
                         </thead>
-                        <tbody name="dataList">
+                        <tbody name="dataList" id="configList">
                         <tr th:each="infra_info : ${infra_infos}" style="cursor:pointer;" th:attr="data-id=${infra_info.key}">
                             <td th:text="${infra_info.name}"></td>
                             <td th:text="${infra_info.apiUri}"></td>
@@ -75,7 +71,7 @@
                             <span aria-hidden="true">×</span></button>
 
                         <h4 class="modal-title">
-                            <div id="serviceTitle" name="modalTitle">인프라 정보 등록</div>
+                            <div id="serviceTitle" name="modalTitle" th:text="#{setting.infra.modal.header.title}"></div>
                         </h4>
                     </div>
                     <div class="modal-body">
@@ -120,7 +116,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="desc" class="col-sm-3 control-label">설명</label>
+                                        <label for="desc" class="col-sm-3 control-label" th:text="#{setting.infra.modal.body.explain.label}"></label>
                                         <div class="col-sm-9">
                                             <textarea class="form-control" rows="5" id="desc"></textarea>
                                         </div>
@@ -148,17 +144,13 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="configDeleteBtn" name="modalDeleteBtn"
-                                class="btn btn-sm btn-danger pull-left" onClick="deleteConfig();">삭제
-                        </button>
+                                class="btn btn-sm btn-danger pull-left" onClick="deleteConfig();" th:text="#{setting.button.delete}"></button>
                         <button type="button" id="configUpdateBtn" name="modalSaveBtn"
-                                class="btn btn-sm btn-primary pull-right" onClick="updateInfra();">저장
-                        </button>
+                                class="btn btn-sm btn-primary pull-right" onClick="updateInfra();" th:text="#{setting.button.addSave}"></button>
                         <button type="button" id="configSaveBtn" name="modalSaveBtn"
-                                class="btn btn-sm btn-primary pull-right" onClick="addInfra();">저장
-                        </button>
+                                class="btn btn-sm btn-primary pull-right" onClick="addInfra();" th:text="#{setting.button.addSave}"></button>
                         <button type="button" id="configCloseBtn" class="btn btn-sm btn-default pull-left"
-                                data-dismiss="modal">취소
-                        </button>
+                                data-dismiss="modal" th:text="#{setting.button.cancel}"></button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -313,12 +305,27 @@
         $("#caas_authorization").val(caas_authorization);
     }
 
+    var printConfigList = function (data) {
+        var objTable = $("#configList");
+        objTable.html('');
+
+        $.each(data, function (id, data) {
+            objTable.append('<tr style="cursor:pointer;" data-id="' + data.key + '">'
+                + '<td>' + data.name + '</td>'
+                + '<td>' + data.apiUri + '</td>'
+                + '<td>' + data.uaaUri + '</td>'
+                + '<td>' + data.authorization + '</td>'
+                + '<td>' + data.caas_apiUri + '</td>'
+                + '<td>' + data.caas_authorization + '</td>'
+                + '</tr>');
+        });
+    }
+
     // Refresh Page
     var refresh = function () {
-        location.reload();
-    };
-
-
+        $('.modal').modal('hide');
+        procCallAjax(REST_URL, "GET", null, printConfigList, $('#configModalLoadingBar'));
+    }
 
 
     // GET Infra_info

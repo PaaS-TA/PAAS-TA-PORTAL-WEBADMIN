@@ -4,396 +4,399 @@
       layout:decorator="../layout/default">
 <head></head>
 <body>
-<div class="wrapper">
-    <header></header>
-    <div layout:fragment="content">
-        <section class="content-header">
-            <h3>
-                조직 및 공간 조회
-            </h3>
-        </section>
-        <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title"></h3>
+    <div class="wrapper">
+        <header></header>
+        <div layout:fragment="content">
+            <section class="content-header">
+                <h3 th:text="#{orgSpaceList.title}"></h3>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title"></h3>
 
-                            <div class="box-tools">
-                                <div class="input-group input-group-sm" style="width: 450px;">
-                                    <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="org-searchKeyword" onkeyup="searchOrg()"/>
-                                    <div class="input-group-btn" >
-                                        <button type="submit"  class="btn btn-default" onclick="searchOrg()"><i class="fa fa-search"></i></button>
+                                <div class="box-tools">
+                                    <div class="input-group input-group-sm" style="width: 450px;">
+                                        <input type="text"  name="table_search" class="form-control pull-right" placeholder="Search" id="org-searchKeyword" onkeyup="searchOrg()"/>
+                                        <div class="input-group-btn" >
+                                            <button type="submit"  class="btn btn-default" onclick="searchOrg()"><i class="fa fa-search"></i></button>
+                                        </div>
                                     </div>
                                 </div>
+                                <div style="height: 10px"></div>
+                                <div class="col-md-3 col-sm-6 col-xs-12" style="width: 49%">
+                                    <table class="table table-bordered table-striped dataTable" style="text-align: center; display: none" id="orgTable"></table>
+                                    <div id="noOrgMessage" class='box-header with-border' style="display: none" th:text="#{orgSpaceList.empty.data.org}"></div>
+                                    <div id="noSearchOrgMessage" class='box-header with-border' style="display: none" th:text="#{orgSpaceList.result.empty.org}"></div>
+                                </div>
+                                <div class="box-body table-responsive no-padding" style="width: 49%">
+                                    <table class="table table-bordered table-striped dataTable" style="text-align: center; display: none" id="spaceTable"></table>
+                                    <div id="noSpaceMessage" class='box-header with-border' style="display: none" th:text="#{orgSpaceList.empty.data.space}"></div>
+                                </div>
+                            <!-- /.box-header -->
 
+                            <!-- /.box-body -->
                             </div>
-                                <div style="height: 10px">
-                            </div>
-                            <div class="col-md-3 col-sm-6 col-xs-12" style="width: 49%">
-                                <table class="table table-bordered table-striped dataTable" style="text-align: center; display: none" id="orgTable" >
-                                </table>
-                                <div id="noOrgMessage" class='box-header with-border' style="display: none">생성된 조직이 없습니다.</div>
-                                <div id="noSearchOrgMessage" class='box-header with-border' style="display: none">검색된 조직이 없습니다.</div>
-                            </div>
-                            <div class="box-body table-responsive no-padding" style="width: 49%">
-                                <table class="table table-bordered table-striped dataTable" style="text-align: center; display: none" id="spaceTable" >
-                                </table>
-                                <div id="noSpaceMessage" class='box-header with-border' style="display: none">생성된 공간이 없습니다.</div>
-                            </div>
-                        <!-- /.box-header -->
+                        <!-- /.box -->
+                        </div>
 
-                        <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
-                </div>
-
-            </div>
-            </div>
-            <div class="modal fade" id="modal-default" style="display: none;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="modaltitle">Default Modal</h4>
-                    </div>
-                    <div class="modal-body" id="modalbody">
-                        <p>One fine body…</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
                     </div>
                 </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
+                <div class="modal fade" id="modal-default" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span></button>
+                                <h4 class="modal-title" id="modaltitle">Default Modal</h4>
+                            </div>
+                            <div class="modal-body" id="modalbody">
+                                <p>One fine body…</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" th:text="#{orgSpaceList.button.confirm}"></button>
+                            </div>
+                        </div>
+                    <!-- /.modal-content -->
+                    </div>
+                <!-- /.modal-dialog -->
+                </div>
+
+
+            </section>
         </div>
-
-
-</section>
+        <footer></footer>
     </div>
-    <footer></footer>
-</div>
-<script layout:fragment="custom-script">
-    var V2_URL = "/v2";
-    var GET_ORGS_FOR_ADMIN_URL = V2_URL + "/orgs";
-    var OrgAndSpace = "/OrgAndSpace";
-    var Space = "/Space";
-    var domainNames;
-    var currentOrg;
-    var spaces;
-    var quotaName;
-    var totalRoutes;
-    var paidServices;
-    var totalServices;
-    var MemoryLimit;
-    var OrgId;
-    var quotaNameSpace;
-    var totalRoutesSpace;
-    var paidServicesSpace;
-    var spaceQuotaText;
+    <script th:inline="javascript" type="text/javascript" layout:fragment="custom-script">
+        /*<![CDATA[*/
 
-    $(document).ready(function(){
-        if($.cookie("api_key") != null){
-            key = $.cookie("api_key");
-            $("#apiUrls").val(key);
-        }else{
+        var V2_URL = "/v2";
+        var GET_ORGS_FOR_ADMIN_URL = V2_URL + "/orgs";
+        var OrgAndSpace = "/OrgAndSpace";
+        var Space = "/Space";
+        var domainNames;
+        var currentOrg;
+        var spaces;
+        var quotaName;
+        var totalRoutes;
+        var paidServices;
+        var totalServices;
+        var MemoryLimit;
+        var OrgId;
+        var quotaNameSpace;
+        var totalRoutesSpace;
+        var paidServicesSpace;
+        var spaceQuotaText;
+        var EMPTY_MSG = /*[[#{orgSpaceList.empty.req.data}]]*/ "";
+
+        $(document).ready(function(){
+            if($.cookie("api_key") != null){
+                key = $.cookie("api_key");
+                $("#apiUrls").val(key);
+            }else{
+                key = $("#apiUrls").val();
+            }
+            getInitMarketPlaceURL();
+            procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"?key="+key,"GET",null ,procCallbackGetOrgs);
+            getDomains(key);
+        });
+
+        $("#apiUrls").change(function() {
             key = $("#apiUrls").val();
-        }
-        getInitMarketPlaceURL();
-        procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"?key="+key,"GET",null ,procCallbackGetOrgs);
-        getDomains(key);
-    });
+            $.cookie("api_key",key);
 
-    $( "#apiUrls" ).change(function() {
-        key = $("#apiUrls").val();
-        $.cookie("api_key",key);
+            $("#orgTable *").remove();
+            $("#spaceTable *").remove();
 
-        $("#orgTable *").remove();
-        $("#spaceTable *").remove();
+            procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"?key="+key,"GET",null ,procCallbackGetOrgs);
+            getDomains(key);
+        });
 
-        procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"?key="+key,"GET",null ,procCallbackGetOrgs);
-        getDomains(key);
-    });
-
-
-    /*<![CDATA[*/
-    function getDomains(key) {
-
-
-        $.ajax({
-            url: V2_URL+ "/domains/shared/"+"?key="+key,
-            method: "GET",
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                if (data) {
-                    domainNames = "";
-                    for (var i = 0; i < data.resources.length; i++) {
-                        if (i != 0) domainNames += " , ";
-                        domainNames += data.resources[i].entity.name;
+        function getDomains(key) {
+            $.ajax({
+                url: V2_URL+ "/domains/shared/"+"?key="+key,
+                method: "GET",
+                dataType: 'json',
+                contentType: "application/json",
+                success: function (data) {
+                    if (data) {
+                        domainNames = "";
+                        for (var i = 0; i < data.resources.length; i++) {
+                            if (i != 0) domainNames += " , ";
+                            domainNames += data.resources[i].entity.name;
+                        }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
 
+        var procCallbackGetOrgs = function (data, param) {
+            $("#orgTable").hide();
+            $("#noSpaceMessage").hide();
 
+            var no = /*[[#{orgSpaceList.table.no}]]*/ "";
+            var name = /*[[#{orgSpaceList.table.org.name}]]*/ "";
+            var detail = /*[[#{orgSpaceList.table.detail}]]*/ "";
 
-    var procCallbackGetOrgs = function (data, param) {
-        $("#orgTable").hide();
-        $("#noSpaceMessage").hide();
-
-        if(data.resources.length === 0){
-            $("#noOrgMessage").show();
-        } else {
-            $("#orgTable").append(
+            if(data.resources.length === 0){
+                $("#noOrgMessage").show();
+            } else {
+                $("#orgTable").append(
                     "<tbody>"+
                     "<tr>"+
-                    "<th style='text-align: center'>번호</th>"+
-                    "<th style='text-align: center'>조직 이름</th>"+
+                    "<th style='text-align: center'>" + no + "</th>"+
+                    "<th style='text-align: center'>" + name + "</th>"+
                     "</tr>"
+                );
 
-            )
-
-            var orgName = new Array();
-            var idMap = new Map();
-            var QuotaMap = new Map();
-            for (var i = 0; i < data.resources.length; i++) {
-                orgName[i] = data.resources[i].entity.name;
-                idMap.set(orgName[i],data.resources[i].metadata.guid);
-                QuotaMap.set(orgName[i],data.resources[i].entity.quotaDefinitionId);
-            }
-            orgName.sort();
-            for (var i = 0; i < data.resources.length; i++) {
-                $("#orgTable").append (
+                var orgName = new Array();
+                var idMap = new Map();
+                var QuotaMap = new Map();
+                for (var i = 0; i < data.resources.length; i++) {
+                    orgName[i] = data.resources[i].entity.name;
+                    idMap.set(orgName[i],data.resources[i].metadata.guid);
+                    QuotaMap.set(orgName[i],data.resources[i].entity.quotaDefinitionId);
+                }
+                orgName.sort();
+                for (var i = 0; i < data.resources.length; i++) {
+                    $("#orgTable").append (
                         "<tr id='orgSpaceViewArea-table-content-org-no" + (i + 1) + "' name='" + orgName[i].toString().toLowerCase() + "' >" +
                         "<td>" + (i + 1) + "</td>" +
-                        "<td><a style='color: black' href='#none' onClick=\"getSpacesForAdmin('" + idMap.get(orgName[i]) + "','" + orgName[i] + "','" + (i+1) + "')\">" + orgName[i] + "</a> &nbsp;<a href='#none' onClick=\"procGetOrgSummary('" + idMap.get(orgName[i]) + "','" +  QuotaMap.get(orgName[i]) + "')\" style='font-size:10px;' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
+                        "<td><a style='color: black' href='#none' onClick=\"getSpacesForAdmin('" + idMap.get(orgName[i]) + "','" + orgName[i] + "','" + (i+1) + "')\">" + orgName[i] + "</a> &nbsp;<a href='#none' onClick=\"procGetOrgSummary('" + idMap.get(orgName[i]) + "','" +  QuotaMap.get(orgName[i]) + "')\" style='font-size:10px;' data-toggle='modal' data-target='#modal-default'>[" + detail + "]</a></td>" +
                         "<label><input name='groupTable-checkbox' id='groupTable-checkbox-no-"+(i+1)+"' value='"+(i+1)+"' class='checkbox-inline' type='checkbox' style='display: none'></label>"+
                         "</tr>"
-                )
+                    );
+                }
+                $("#orgTable").append (
+                        "</tbody>"
+                );
+                changeTableContentColor("org");
+                $("#orgTable").show();
+                getSpacesForAdmin(idMap.get(orgName[0]),orgName[0], 1);
             }
-            $("#orgTable").append (
-                    "</tbody>"
-            )
-            changeTableContentColor("org")
-            $("#orgTable").show();
-            getSpacesForAdmin(idMap.get(orgName[0]),orgName[0], 1);
+        };
+
+        function getSpacesForAdmin(orgid, orgName, orgNum){
+            $("#spaceTable").hide();
+            $("#noSpaceMessage").hide();
+            currentOrg = orgName;
+            procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"/"+orgid+"/spaces"+"?key="+key,"GET" ,null ,procCallbackGetSpace);
+            contentSelectControl("group", orgNum);
         }
-    }
 
-    function getSpacesForAdmin(orgid, orgName, orgNum){
-        $("#spaceTable").hide();
-        $("#noSpaceMessage").hide();
-        currentOrg = orgName;
-        procCallAjax2(GET_ORGS_FOR_ADMIN_URL+"/"+orgid+"/spaces"+"?key="+key,"GET" ,null ,procCallbackGetSpace)
-        contentSelectControl("group", orgNum);
-    }
+        var procCallbackGetSpace = function(data, param) {
+            $("#spaceTable *").remove();
+            $("#spaceTable").hide();
+            $("#noSpaceMessage").hide();
 
-    var procCallbackGetSpace = function(data, param) {
-        $("#spaceTable *").remove();
-        $("#spaceTable").hide();
-        $("#noSpaceMessage").hide();
+            var no = /*[[#{orgSpaceList.table.no}]]*/ "";
+            var name = /*[[#{orgSpaceList.table.space.name}]]*/ "";
+            var detail = /*[[#{orgSpaceList.table.detail}]]*/ "";
 
-        if(data.spaceList.resources.length === 0){
-            $("#noSpaceMessage").show();
-        } else {
-            $("#spaceTable").append(
+            if(data.spaceList.resources.length === 0){
+                $("#noSpaceMessage").show();
+            } else {
+                $("#spaceTable").append(
                     "<tbody>"+
                     "<tr>"+
-                    "<th style='text-align: center'>번호</th>"+
-                    "<th style='text-align: center'>"+currentOrg+" 공간 이름</th>"+
+                    "<th style='text-align: center'>" + no + "</th>"+
+                    "<th style='text-align: center'>" + currentOrg + " " + name + "</th>"+
                     "</tr>"
-            )
-            $.each(data.spaceList.resources, function (eventId, space) {
-                $("#spaceTable").append (
+                );
+                $.each(data.spaceList.resources, function (eventId, space) {
+                    $("#spaceTable").append (
                         "<tr id='orgSpaceViewArea-table-content-space-no"+(eventId+1)+"'>"+
                         "<td>"+(eventId+1)+"</td>"+
-                        "<td>" + space.entity.name + "&nbsp; <a href='#none' onClick=\"procGetSpaceSummary('"+ space.metadata.guid +"','" + space.entity.space_quota_definition_guid + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[상세정보]</a></td>" +
+                        "<td>" + space.entity.name + "&nbsp; <a href='#none' onClick=\"procGetSpaceSummary('"+ space.metadata.guid +"','" + space.entity.space_quota_definition_guid + "')\" style='font-size:10px' data-toggle='modal' data-target='#modal-default'>[" + detail + "]</a></td>" +
                         "</tr>"
-                )
-            });
-            $("#orgTable").append (
-                    "</tbody>"
-            )
-            $("#spaceTable").show();
-        }
-    }
-
-    // GET ORG SUMMARY
-    var procGetOrgSummary = function (orgid, quotaid) {
-        $("#modaltitle").html("조직 상세 정보");
-        $("#modalbody").html("데이터를 불러오고 있습니다.");
-        OrgId = orgid;
-        //procCallAjax2(V2_URL + "/orgs/"+quotaid+"/quota","GET", null, procCallbackGetOrgQuota);
-        //procCallAjax2(V2_URL + "/orgs/"+orgid+"/quota","GET", null, procCallbackGetOrgQuota);
-        procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary"+"?key="+key, "GET",null, procCallbackGetOrgSummary);
-    };
-
-    // GET ORG SUMMARY CALLBACK
-    var procCallbackGetOrgQuota = function(data, param) {
-        quotaName = data.entity.name;
-        totalRoutes = data.entity.totalRoutes;
-        totalServices = data.entity.totalServices;
-        MemoryLimit = data.entity.memoryLimit;
-        if (data.entity.nonBasicServicesAllowed) {
-            paidServices = "paid services allowed";
-        } else {
-            paidServices = "paid services disallowed";
-        }
-        procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary"+"?key="+key, "GET",null, procCallbackGetOrgSummary);
-    }
-
-    // GET ORG SUMMARY CALLBACK
-    var procCallbackGetOrgSummary = function(data, param) {
-
-        spaces = "없음";
-        for (var i = 0; i < data.resource.length; i++) {
-            if (i != 0) spaces += " , " + data.resource[i].name;
-            else spaces = data.resource[i].name;
-        }
-        $("#modalbody").html("<b>Domains</b> : " + domainNames +
-                 "<br><b>Quota</b> : " + data.quota.name + " (" + (data.quota.memoryLimit==(-1)?"unlimited":data.quota.memoryLimit+"M") + " memory limit, " + (data.quota.totalRoutes==(-1)?"unlimited":data.quota.totalRoutes) + " routes, " +  (data.quota.totalServices==(-1)?"unlimited":data.all_serviceTotal + "/" + data.quota.totalServices) + " services)" +
-                 "<br><b>Spaces</b> : " + spaces);
-        // if(data.quota.totalServices==(-1)){
-        //     $("#modalbody").html("<b>Domains</b> : " + domainNames +
-        //         "<br><b>Quota</b> : " + data.quota.name + " (" + data.quota.memoryLimit + "M memory limit, " + data.quota.totalRoutes + " routes, " + "unlimited services)" +
-        //         "<br><b>Spaces</b> : " + spaces);
-        // }else {
-        //     $("#modalbody").html("<b>Domains</b> : " + domainNames +
-        //         "<br><b>Quota</b> : " + data.quota.name + " (" + data.quota.memoryLimit + "M memory limit, " + data.quota.totalRoutes + " routes, " + data.all_serviceTotal + "/" + data.quota.totalServices + " services)" +
-        //         "<br><b>Spaces</b> : " + spaces);
-        // }
-    }
-
-
-    // GET SPACE SUMMARY
-    var procGetSpaceSummary = function (spaceId, spaceQuotaId) {
-        $("#modaltitle").html("영역 상세 정보");
-        $("#modalbody").html("데이터를 불러오고 있습니다.");
-        spaceQuotaText = "없음";
-
-        if(spaceQuotaId != "null") {
-            //procCallAjax2(V2_URL+"/spaces/quota-definitions/"+spaceQuotaId,"GET", null, procCallbackGetSpaceQuota);
-            // To-Be : Quota 정보 관리 추가
-        }
-
-        procCallAjax2(V2_URL + "/spaces/"+spaceId+"/summary"+"?key="+key,"GET", null, procCallbackGetSpaceSummary);
-    };
-
-
-    // GET ORG SUMMARY CALLBACK
-    var procCallbackGetSpaceQuota = function(data, param) {
-
-        if (data.spaceQuota != null) {
-            var spaceQuota = JSON.parse(data.spaceQuota);
-            quotaNameSpace = spaceQuota.entity.name;
-            totalRoutesSpace = spaceQuota.entity.total_routes;
-            totalServicesSpace = spaceQuota.entity.total_services;
-            if (spaceQuota.entity.non_basic_services_allowed) {
-                paidServicesSpace = "paid services allowed";
-            } else {
-                paidServicesSpace = "paid services disallowed";
+                    );
+                });
+                $("#orgTable").append (
+                        "</tbody>"
+                );
+                $("#spaceTable").show();
             }
-            spaceQuotaText = quotaNameSpace + " (" + spaceQuota.entity.memory_limit + "M memory limit, " + totalRoutesSpace + " routes, " + totalServicesSpace + " services, " + paidServicesSpace + ")";
-        } else {
-            spaceQuotaText = "";
-        }
+        };
 
-        $("#modalbody").html("<b>Domains</b> : " + domainNames +
-                "<br><b>Quota</b> : " + quotaName + " (" + MemoryLimit + "M memory limit, " + totalRoutes + " routes, " + totalServices + " services, " + paidServices + ")" +
-                "<br><b>Spaces</b> : " + spaces);
-    }
+        // GET ORG SUMMARY
+        var procGetOrgSummary = function (orgid, quotaid) {
+            var title = /*[[#{orgSpaceList.modal.org.title}]]*/ "";
+            var body = /*[[#{orgSpaceList.modal.body}]]*/ "";
+            $("#modaltitle").html(title);
+            $("#modalbody").html(body);
+            OrgId = orgid;
+            //procCallAjax2(V2_URL + "/orgs/"+quotaid+"/quota","GET", null, procCallbackGetOrgQuota);
+            //procCallAjax2(V2_URL + "/orgs/"+orgid+"/quota","GET", null, procCallbackGetOrgQuota);
+            procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary"+"?key="+key, "GET",null, procCallbackGetOrgSummary);
+        };
 
-    // GET ORG SUMMARY CALLBACK
-    var procCallbackGetSpaceSummary = function(data, param) {
+        // GET ORG SUMMARY CALLBACK
+        var procCallbackGetOrgQuota = function(data, param) {
+            quotaName = data.entity.name;
+            totalRoutes = data.entity.totalRoutes;
+            totalServices = data.entity.totalServices;
+            MemoryLimit = data.entity.memoryLimit;
+            if (data.entity.nonBasicServicesAllowed) {
+                paidServices = "paid services allowed";
+            } else {
+                paidServices = "paid services disallowed";
+            }
+            procCallAjax2(V2_URL + "/orgs/"+OrgId+"/summary"+"?key="+key, "GET",null, procCallbackGetOrgSummary);
+        };
 
-        apps = "없음";
-        for (var i = 0; i < data.apps.length; i++) {
-            if (i != 0) apps += " , " + data.apps[i].name;
-            else apps = data.apps[i].name;
-        }
+        // GET ORG SUMMARY CALLBACK
+        var procCallbackGetOrgSummary = function(data, param) {
 
-        services = "없음";
-        for (var i = 0; i < data.services.length; i++) {
-            if (i != 0) services += " , " + data.services[i].name;
-            else services = data.services[i].name;
-        }
+            spaces = EMPTY_MSG;
+            for (var i = 0; i < data.resource.length; i++) {
+                if (i != 0) spaces += " , " + data.resource[i].name;
+                else spaces = data.resource[i].name;
+            }
+            $("#modalbody").html("<b>Domains</b> : " + domainNames +
+                     "<br><b>Quota</b> : " + data.quota.name + " (" + (data.quota.memoryLimit==(-1)?"unlimited":data.quota.memoryLimit+"M") + " memory limit, " + (data.quota.totalRoutes==(-1)?"unlimited":data.quota.totalRoutes) + " routes, " +  (data.quota.totalServices==(-1)?"unlimited":data.all_serviceTotal + "/" + data.quota.totalServices) + " services)" +
+                     "<br><b>Spaces</b> : " + spaces);
+            // if(data.quota.totalServices==(-1)){
+            //     $("#modalbody").html("<b>Domains</b> : " + domainNames +
+            //         "<br><b>Quota</b> : " + data.quota.name + " (" + data.quota.memoryLimit + "M memory limit, " + data.quota.totalRoutes + " routes, " + "unlimited services)" +
+            //         "<br><b>Spaces</b> : " + spaces);
+            // }else {
+            //     $("#modalbody").html("<b>Domains</b> : " + domainNames +
+            //         "<br><b>Quota</b> : " + data.quota.name + " (" + data.quota.memoryLimit + "M memory limit, " + data.quota.totalRoutes + " routes, " + data.all_serviceTotal + "/" + data.quota.totalServices + " services)" +
+            //         "<br><b>Spaces</b> : " + spaces);
+            // }
+        };
 
-        $("#modalbody").html(
-                "<b>Org</b> : " + currentOrg +
-                "<br><b>Space</b> : " + data.name +
-                "<br><b>Apps</b> : " + apps +
-                "<br><b>Domains</b> : " + domainNames +
-                "<br><b>Services</b> : " + services +
-                "<br><b>Quota</b> : " + spaceQuotaText);
-    }
+
+        // GET SPACE SUMMARY
+        var procGetSpaceSummary = function (spaceId, spaceQuotaId) {
+            var title = /*[[#{orgSpaceList.modal.space.title}]]*/ "";
+            var body = /*[[#{orgSpaceList.modal.body}]]*/ "";
+            $("#modaltitle").html(title);
+            $("#modalbody").html(body);
+            spaceQuotaText = EMPTY_MSG;
+
+            if(spaceQuotaId != "null") {
+                //procCallAjax2(V2_URL+"/spaces/quota-definitions/"+spaceQuotaId,"GET", null, procCallbackGetSpaceQuota);
+                // To-Be : Quota 정보 관리 추가
+            }
+
+            procCallAjax2(V2_URL + "/spaces/"+spaceId+"/summary"+"?key="+key,"GET", null, procCallbackGetSpaceSummary);
+        };
+
+
+        // GET ORG SUMMARY CALLBACK
+        var procCallbackGetSpaceQuota = function(data, param) {
+
+            if (data.spaceQuota != null) {
+                var spaceQuota = JSON.parse(data.spaceQuota);
+                quotaNameSpace = spaceQuota.entity.name;
+                totalRoutesSpace = spaceQuota.entity.total_routes;
+                totalServicesSpace = spaceQuota.entity.total_services;
+                if (spaceQuota.entity.non_basic_services_allowed) {
+                    paidServicesSpace = "paid services allowed";
+                } else {
+                    paidServicesSpace = "paid services disallowed";
+                }
+                spaceQuotaText = quotaNameSpace + " (" + spaceQuota.entity.memory_limit + "M memory limit, " + totalRoutesSpace + " routes, " + totalServicesSpace + " services, " + paidServicesSpace + ")";
+            } else {
+                spaceQuotaText = "";
+            }
+
+            $("#modalbody").html("<b>Domains</b> : " + domainNames +
+                    "<br><b>Quota</b> : " + quotaName + " (" + MemoryLimit + "M memory limit, " + totalRoutes + " routes, " + totalServices + " services, " + paidServices + ")" +
+                    "<br><b>Spaces</b> : " + spaces);
+        };
+
+        // GET ORG SUMMARY CALLBACK
+        var procCallbackGetSpaceSummary = function(data, param) {
+
+            apps = EMPTY_MSG;
+            for (var i = 0; i < data.apps.length; i++) {
+                if (i != 0) apps += " , " + data.apps[i].name;
+                else apps = data.apps[i].name;
+            }
+
+            services = EMPTY_MSG;
+            for (var i = 0; i < data.services.length; i++) {
+                if (i != 0) services += " , " + data.services[i].name;
+                else services = data.services[i].name;
+            }
+
+            $("#modalbody").html(
+                    "<b>Org</b> : " + currentOrg +
+                    "<br><b>Space</b> : " + data.name +
+                    "<br><b>Apps</b> : " + apps +
+                    "<br><b>Domains</b> : " + domainNames +
+                    "<br><b>Services</b> : " + services +
+                    "<br><b>Quota</b> : " + spaceQuotaText
+            );
+        };
 
 
 
 
-    function searchOrg() {
-        $(".bg-aqua").removeClass('bg-aqua disabled color-palette');
-        $('#spaceTable').hide();
-        $('#noSpaceMessage').hide();
+        function searchOrg() {
+            $(".bg-aqua").removeClass('bg-aqua disabled color-palette');
+            $('#spaceTable').hide();
+            $('#noSpaceMessage').hide();
 
-        var input = $("#org-searchKeyword").val().toLowerCase();
+            var input = $("#org-searchKeyword").val().toLowerCase();
 
-        if(input === ""){
-            $('#noSearchOrgMessage').hide();
-            $('#orgTable').show();
-            $('#orgTable tr[id*="orgSpaceViewArea-table-content-org-no"]').show();
-
-        } else{
-            $('#orgTable tr[id*="orgSpaceViewArea-table-content-org-no"]').hide();
-
-            if($('#orgTable tr[name*="'+input+'"]').length > 0){
+            if(input === ""){
                 $('#noSearchOrgMessage').hide();
                 $('#orgTable').show();
-                $('#orgTable tr[name*="'+input+'"]').show();
+                $('#orgTable tr[id*="orgSpaceViewArea-table-content-org-no"]').show();
 
             } else{
-                $('#orgTable').hide();
-                $('#noSearchOrgMessage').show();
+                $('#orgTable tr[id*="orgSpaceViewArea-table-content-org-no"]').hide();
+
+                if($('#orgTable tr[name*="'+input+'"]').length > 0){
+                    $('#noSearchOrgMessage').hide();
+                    $('#orgTable').show();
+                    $('#orgTable tr[name*="'+input+'"]').show();
+
+                } else{
+                    $('#orgTable').hide();
+                    $('#noSearchOrgMessage').show();
+                }
             }
         }
-    }
 
-    function changeTableContentColor(orgOrSpace) {
-        var listToShow = $('#orgTable tr[id*="orgSpaceViewArea-table-content-org-no"]:not([style*="display: none"])')
-        $.each(listToShow, function (eventId, eventData) {
-            document.getElementById(eventData.id).className = "";
-        });
-    }
-
-    function contentSelectControl(table, elementNo){
-        if($("#"+table+"Table-checkbox-no-"+elementNo).is(":checked") === true) {
-            $("#"+table+"Table-checkbox-no-"+elementNo).prop ("checked", false)
-            if(table === "user"){
-                var contentId = table+"Table-"+table+"-no-"+elementNo
-                contentClassNameCategorize(elementNo ,contentId)
-            } else {
-                changeTableContentColor(table);
-            }
-
-        } else if($("#"+table+"Table-checkbox-no-"+elementNo).is(":checked") === false) {
-            if(table === "group") {
-                $(":checkbox[name='"+table+"Table-checkbox']").prop("checked", false);
-                changeTableContentColor(table);
-            }
-            $("#"+table+"Table-checkbox-no-"+elementNo).prop ("checked",true)
-            document.getElementById("orgSpaceViewArea-table-content-org-no"+elementNo).className = "bg-aqua disabled color-palette";
+        function changeTableContentColor(orgOrSpace) {
+            var listToShow = $('#orgTable tr[id*="orgSpaceViewArea-table-content-org-no"]:not([style*="display: none"])');
+            $.each(listToShow, function (eventId, eventData) {
+                document.getElementById(eventData.id).className = "";
+            });
         }
 
-    }
-    function contentClassNameCategorize(contentNo, contnetId) {
-        document.getElementById(contnetId).className = "";
-    }
+        function contentSelectControl(table, elementNo){
+            if($("#"+table+"Table-checkbox-no-"+elementNo).is(":checked") === true) {
+                $("#"+table+"Table-checkbox-no-"+elementNo).prop("checked", false);
+                if(table === "user"){
+                    var contentId = table+"Table-"+table+"-no-"+elementNo;
+                    contentClassNameCategorize(elementNo ,contentId);
+                } else {
+                    changeTableContentColor(table);
+                }
+
+            } else if($("#"+table+"Table-checkbox-no-"+elementNo).is(":checked") === false) {
+                if(table === "group") {
+                    $(":checkbox[name='"+table+"Table-checkbox']").prop("checked", false);
+                    changeTableContentColor(table);
+                }
+                $("#"+table+"Table-checkbox-no-"+elementNo).prop("checked",true);
+                document.getElementById("orgSpaceViewArea-table-content-org-no"+elementNo).className = "bg-aqua disabled color-palette";
+            }
+
+        }
+        function contentClassNameCategorize(contentNo, contnetId) {
+            document.getElementById(contnetId).className = "";
+        }
 
 
-    /*]]>*/
-</script>
+        /*]]>*/
+    </script>
 </body>
 </html>

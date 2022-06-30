@@ -28,13 +28,13 @@ public class CatalogService {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getStarterPacksList(int key, Catalog param) {
+    public Map<String, Object> getStarterPacksList(int key, Catalog param, String useLang) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/starterpacks" + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/starterpacks" + search, HttpMethod.GET, param, useLang);
     }
 
     /**
@@ -49,7 +49,7 @@ public class CatalogService {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/starterpacks/" + no + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/starterpacks/" + no + search, HttpMethod.GET, param, null);
     }
 
 
@@ -59,13 +59,13 @@ public class CatalogService {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getStarterPackCount(int key, Catalog param) {
+    public Map<String, Object> getStarterPackCount(int key, Catalog param, String useLang) {
         String search = "";
         if (param.getName() != null) {
             search = "?";
             search += "name=" + param.getName();
         }
-        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/starterpacks/count" + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/starterpacks/count" + search, HttpMethod.GET, param, useLang);
     }
 
     /**
@@ -76,7 +76,7 @@ public class CatalogService {
      */
     public Map<String, Object> insertStarterPack(int key, Catalog param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/starterpacks", HttpMethod.POST, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/starterpacks", HttpMethod.POST, param, null);
     }
 
     /**
@@ -86,9 +86,8 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
     public Map<String, Object> updateStarterPack(int key, int no, Catalog param) {
-
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/starterpacks/" + no, HttpMethod.PUT, param);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/starterpacks/" + no, HttpMethod.PUT, param, null);
     }
 
     /**
@@ -98,7 +97,7 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
     public Map<String, Object> deleteStarterPack(int key, int no) {
-        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/starterpacks/" + no, HttpMethod.DELETE,null);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/starterpacks/" + no, HttpMethod.DELETE,null, null);
     }
 
 
@@ -108,13 +107,13 @@ public class CatalogService {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getDevelopPackCatalogList(int key, Catalog param) {
+    public Map<String, Object> getDevelopPackCatalogList(int key, Catalog param, String useLang) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks" + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks" + search, HttpMethod.GET, param, useLang);
     }
 
 
@@ -130,7 +129,8 @@ public class CatalogService {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks/" + no + search, HttpMethod.GET, param);
+
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks/" + no + search, HttpMethod.GET, param, null);
     }
 
 
@@ -141,9 +141,9 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
 
-    public Map<String, Object> getDevelopPackCatalogCount(int key, Catalog param) {
+    public Map<String, Object> getDevelopPackCatalogCount(int key, Catalog param, String useLang) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks/count", HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks/count", HttpMethod.GET, param, useLang);
     }
 
     /**
@@ -164,7 +164,7 @@ public class CatalogService {
      */
     public Map<String, Object> insertDevelopPackCatalog(int key, Catalog param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/developpacks", HttpMethod.POST, param);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/developpacks", HttpMethod.POST, param, null);
     }
 
     /**
@@ -175,7 +175,7 @@ public class CatalogService {
      */
     public Map<String, Object> updateDevelopPackCatalog(int key, int no, Catalog param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks/" + no, HttpMethod.PUT, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks/" + no, HttpMethod.PUT, param, null);
     }
 
     /**
@@ -185,7 +185,7 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
     public Map<String, Object> deleteBuildPackCatalog(int key, int no) {
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks/" + no, HttpMethod.DELETE, null);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/developpacks/" + no, HttpMethod.DELETE, null, null);
     }
 
 
@@ -201,7 +201,7 @@ public class CatalogService {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/servicepacks/" + no + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/servicepacks/" + no + search, HttpMethod.GET, param, null);
     }
 
     /**
@@ -210,13 +210,13 @@ public class CatalogService {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getServicePackCatalogList(int key, Catalog param) {
+    public Map<String, Object> getServicePackCatalogList(int key, Catalog param, String useLang) {
         String search = "";
         if (param.getSearchKeyword() != null) {
             search = "?";
             search += "searchKeyword=" + param.getSearchKeyword();
         }
-        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/servicepacks" + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/servicepacks" + search, HttpMethod.GET, param, useLang);
     }
 
     /**
@@ -225,13 +225,13 @@ public class CatalogService {
      * @param param Catalog(모델클래스)
      * @return Map(자바클래스)
      */
-    public Map<String, Object> getServicePackCatalogCount(int key, Catalog param) {
+    public Map<String, Object> getServicePackCatalogCount(int key, Catalog param, String useLang) {
         String search = "";
         if (param.getName() != null) {
             search = "?";
             search += "name=" + param.getName();
         }
-        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/servicepacks/count" + search, HttpMethod.GET, param);
+        return commonService.procCommonApiRestTemplate(key,Constants.V2_URL + "/servicepacks/count" + search, HttpMethod.GET, param, useLang);
     }
 
 
@@ -243,7 +243,7 @@ public class CatalogService {
      */
     public Map<String, Object> insertServicePackCatalog(int key, Catalog param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/servicepacks", HttpMethod.POST, param);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/servicepacks", HttpMethod.POST, param, null);
     }
 
     /**
@@ -254,7 +254,7 @@ public class CatalogService {
      */
     public Map<String, Object> updateServicePackCatalog(int key, int no, Catalog param) {
         param.setUserId(commonService.getUserId());
-        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/servicepacks/" + no, HttpMethod.PUT, param);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/servicepacks/" + no, HttpMethod.PUT, param, null);
     }
 
     /**
@@ -264,6 +264,6 @@ public class CatalogService {
      * @return Map(자바클래스)
      */
     public Map<String, Object> deleteServicePackCatalog(int key, int no) {
-        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/servicepacks/" + no, HttpMethod.DELETE, null);
+        return commonService.procCommonApiRestTemplate(key, Constants.V2_URL + "/servicepacks/" + no, HttpMethod.DELETE, null, null);
     }
 }

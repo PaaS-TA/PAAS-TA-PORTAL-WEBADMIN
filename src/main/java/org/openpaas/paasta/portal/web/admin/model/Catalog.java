@@ -16,6 +16,7 @@ public class Catalog {
     private String classification;
     private String classificationValue;
     private String classificationSummary;
+    private String classificationCode;
     private String summary;
     private String description;
     private String thumbImgName;
@@ -29,6 +30,8 @@ public class Catalog {
     private int starterCategoryNo;
     private int servicePackCategoryNo;
     private int buildPackCategoryNo;
+    private int codeGroupNo;
+    private int codeDetailNo;
     private String searchKeyword;
     private String searchTypeColumn;
     private String searchTypeUseYn;
@@ -60,6 +63,8 @@ public class Catalog {
     private String dashboardUseYn;
     private String tagsParam;
     private String onDemandYn;
+    private String language;
+    private String isCatalog;
 
     /**
      * GETTER 카탈로그 번호
@@ -149,6 +154,24 @@ public class Catalog {
      */
     public void setClassificationSummary(String classificationSummary) {
         this.classificationSummary = classificationSummary;
+    }
+
+    /**
+     * GETTER 카탈로그 분류 코드
+     *
+     * @return 구분 요약
+     */
+    public String getClassificationCode() {
+        return this.classificationSummary;
+    }
+
+    /**
+     * SETTER 카탈로그 분류 코드
+     *
+     * @param classificationCode 구분 요약
+     */
+    public void setClassificationCode(String classificationCode) {
+        this.classificationCode = classificationCode;
     }
 
     /**
@@ -399,6 +422,42 @@ public class Catalog {
      */
     public void setBuildPackCategoryNo(int buildPackCategoryNo) {
         this.buildPackCategoryNo = buildPackCategoryNo;
+    }
+
+    /**
+     * GETTER 공통 코드 그룹 번호
+     *
+     * @return 공통 코드 그룹 번호
+     */
+    public int getCodeGroupNo() {
+        return this.codeGroupNo;
+    }
+
+    /**
+     * SETTER 공통 코드 그룹 번호
+     *
+     * @param codeGroupNo 공통 코드 그룹 번호
+     */
+    public void setCodeGroupNo(int codeGroupNo) {
+        this.codeGroupNo = codeGroupNo;
+    }
+
+    /**
+     * GETTER 공통 코드 번호
+     *
+     * @return 공통 코드 번호
+     */
+    public int getCodeDetailNo() {
+        return this.codeDetailNo;
+    }
+
+    /**
+     * SETTER 공통 코드 번호
+     *
+     * @param codeDetailNo 공통 코드 번호
+     */
+    public void setCodeDetailNo(int codeDetailNo) {
+        this.codeDetailNo = codeDetailNo;
     }
 
     /**
@@ -911,6 +970,27 @@ public class Catalog {
 
     public void setOnDemandYn(String onDemandYn) { this.onDemandYn = onDemandYn; }
 
+
+    /**
+     * GETTER 언어 설정
+     *
+     * @return 언어
+     */
+    public String getLanguage() {
+        return this.language;
+    }
+
+    /**
+     * SETTER 언어 설정
+     *
+     * @param language 언어
+     */
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+
+
     @Override
     public String toString() {
         return "Catalog{" +
@@ -919,6 +999,7 @@ public class Catalog {
                 ", classification='" + classification + '\'' +
                 ", classificationValue='" + classificationValue + '\'' +
                 ", classificationSummary='" + classificationSummary + '\'' +
+                ", classificationCode='" + classificationCode + '\'' +
                 ", summary='" + summary + '\'' +
                 ", description='" + description + '\'' +
                 ", thumbImgName='" + thumbImgName + '\'' +
@@ -932,6 +1013,8 @@ public class Catalog {
                 ", starterCategoryNo=" + starterCategoryNo +
                 ", servicePackCategoryNo=" + servicePackCategoryNo +
                 ", buildPackCategoryNo=" + buildPackCategoryNo +
+                ", codeGroupNo=" + codeGroupNo +
+                ", codeDetailNo=" + codeDetailNo +
                 ", searchKeyword='" + searchKeyword + '\'' +
                 ", searchTypeColumn='" + searchTypeColumn + '\'' +
                 ", searchTypeUseYn='" + searchTypeUseYn + '\'' +
@@ -961,6 +1044,7 @@ public class Catalog {
                 ", diskSize=" + diskSize +
                 ", MemorySize=" + MemorySize +
                 ", dashboardUseYn='" + dashboardUseYn + '\'' +
+		        ", language='" + language + '\'' +
                 '}';
     }
 }

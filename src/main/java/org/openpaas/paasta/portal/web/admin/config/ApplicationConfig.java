@@ -2,9 +2,12 @@ package org.openpaas.paasta.portal.web.admin.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.jni.Local;
 import org.openpaas.paasta.portal.web.admin.config.security.CustomIntercepter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +16,16 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.context.request.async.TimeoutCallableProcessingInterceptor;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * The type Application config.
@@ -28,6 +36,9 @@ import java.util.List;
 public class ApplicationConfig extends WebMvcConfigurerAdapter {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
+
+    @Autowired
+    LanguageConfig languageConfig;
 
     /**
      * View resolver internal resource view resolver.
@@ -41,6 +52,15 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
         viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".jsp");
         return viewResolver;
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        CookieLocaleResolver resolver = new CookieLocaleResolver();
+        String defaultLang = languageConfig.getLanguageList().get(0);
+        resolver.setDefaultLocale(new Locale(defaultLang));
+        resolver.setCookieName("lang");
+        return resolver;
     }
 
     @Bean

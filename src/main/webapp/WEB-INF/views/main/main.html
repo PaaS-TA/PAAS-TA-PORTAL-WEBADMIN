@@ -13,9 +13,7 @@
 
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <h1>
-          대시보드
-        </h1>
+        <h1 th:text="#{main.dashboard.title}"></h1>
       </section>
 
       <!-- Main content -->
@@ -29,7 +27,7 @@
               <div class="inner" data-trigger-type="">
                 <h3 id="organizationCount">&nbsp;</h3>
 
-                <p>조직 수</p>
+                <p th:text="#{main.dashboard.count.org}"></p>
               </div>
               <div class="icon">
                 <i class="ion ion-ios-people"></i>
@@ -46,7 +44,7 @@
               <div class="inner" data-trigger-type="">
                 <h3 id="spaceCount">&nbsp;</h3>
 
-                <p>공간 수</p>
+                <p th:text="#{main.dashboard.count.space}"></p>
               </div>
               <div class="icon">
                 <i class="ion ion-ios-pie-outline"></i>
@@ -64,7 +62,7 @@
               <div class="inner" data-trigger-type="">
                 <h3 id="applicationCount">&nbsp;</h3>
 
-                <p>APP 수</p>
+                <p th:text="#{main.dashboard.count.app}"></p>
               </div>
               <div class="icon">
                 <i class="ion ion-cube"></i>
@@ -81,7 +79,7 @@
               <div class="inner" data-trigger-type="">
                 <h3 id="userCount">&nbsp;</h3>
 
-                <p>사용자 수</p>
+                <p th:text="#{main.dashboard.count.user}"></p>
               </div>
               <div class="icon">
                 <i class="ion ion-man"></i>
@@ -159,9 +157,9 @@
   var TOTAL_COUNT_LIST_PROC_URL = "/v2/statistics";
   var TOTAL_ORGANIZATION_LIST_PROC_URL = "/v2/statistics/organizations";
 
-  var SPACE_LABEL = "공간";
+  var SPACE_LABEL = /*[[#{main.dashboard.label.space}]]*/ '';
   var APP_LABEL   = "APP";
-  var USER_LABEL  = "사용자";
+  var USER_LABEL  = /*[[#{main.dashboard.label.user}]]*/ '';
 
   $( "#apiUrls" ).change(function() {
 
@@ -188,7 +186,7 @@
     }else{
       key = $("#apiUrls").val();
     }
-      getInitMarketPlaceURL();
+    getInitMarketPlaceURL();
     getTotalCountList(key);  // 조직 / 공간 / 앱 /사용자 수 조회
     getChartList(key);       // 조직 / 공간 차트 조회
     setBoardEvent();      // Board Event Listener Setting
@@ -481,7 +479,7 @@
      - Chart Legend 이벤트와 트리거 연결
   */
   var setBoardEvent = function(){
-    var ORGANIZATION_LABEL = "조직";
+    var ORGANIZATION_LABEL = /*[[#{main.dashboard.label.org}]]*/ '';
     var $innnerElem = $('section .inner');
 
     // 차트의 Legend 항목 관련, 버튼 순서 변경시 아래 확인 필요
