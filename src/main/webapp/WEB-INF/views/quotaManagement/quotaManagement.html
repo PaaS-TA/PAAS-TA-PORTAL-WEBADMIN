@@ -13,9 +13,7 @@
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                할당량 관리
-            </h1>
+            <h1 th:text="#{quota.title}"></h1>
         </section>
 
         <!-- Main content -->
@@ -30,8 +28,8 @@
                             <div class="nav-tabs-custom" style="margin-bottom:0px;">
                                 <ul class="nav nav-tabs">
 
-                                    <li class="header no-padding active"><a href="#orgTab" data-toggle="tab" aria-expanded="true"  data-tab-type="org">조직 할당량</a></li>
-                                    <li class="header no-padding"><a href="#spaceTab" data-toggle="tab" aria-expanded="false" data-tab-type="space">공간 할당량</a></li>
+                                    <li class="header no-padding active"><a href="#orgTab" data-toggle="tab" aria-expanded="true"  data-tab-type="org" th:text="#{quota.org.title}"></a></li>
+                                    <li class="header no-padding"><a href="#spaceTab" data-toggle="tab" aria-expanded="false" data-tab-type="space" th:text="#{quota.space.title}"></a></li>
 
                                 </ul>
                             </div>
@@ -47,15 +45,13 @@
 
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
                                                 <div class="has-feedback">
-                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
+                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" th:placeholder="#{quota.search.placeholder}"/>
                                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                                 </div>
                                             </div>
 
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-title-text="조직 할당량 등록" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal">
-                                                    조직 할당량 등록
-                                                </button>
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" th:attr="data-title-text=#{quota.org.button.add}" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal" th:text="#{quota.org.button.add}"></button>
                                             </div>
 
                                         </div>
@@ -65,17 +61,17 @@
                                             <table class="table table-striped text-center" style="table-layout:fixed; word-break:break-all;"> <!-- table-responsive -->
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>메모리</th>
-                                                    <th>인스턴스 메모리</th>
-                                                    <th>라우트</th>
-                                                    <th>서비스 인스턴스</th>
-                                                    <th>가격</th>
-                                                    <th>예약 라우트 포트</th>
+                                                    <th th:text="#{quota.table.name}"></th>
+                                                    <th th:text="#{quota.table.memory}"></th>
+                                                    <th th:utext="#{quota.table.instanceMemory}"></th>
+                                                    <th th:text="#{quota.table.route}"></th>
+                                                    <th th:text="#{quota.table.serviceInstance}"></th>
+                                                    <th th:text="#{quota.table.price}"></th>
+                                                    <th th:utext="#{quota.table.reservedRoutePort}"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="orgQuotaDefinitionList">
-                                                <tr>
+                                                <!--<tr>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -102,7 +98,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                </tr>
+                                                </tr>-->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -121,15 +117,13 @@
                                             <h3 class="box-title"></h3>
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;">
                                                 <div class="has-feedback">
-                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" placeholder="이름으로 검색"/>
+                                                    <input type="text" class="form-control input-sm" onkeyup="procSearchByKeyword(event);" th:placeholder="#{quota.search.placeholder}"/>
                                                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                                 </div>
                                             </div>
 
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" data-title-text="공간 할당량 등록" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal">
-                                                    공간 할당량 등록
-                                                </button>
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" name="registBtn" th:attr="data-title-text=#{quota.space.button.add}" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#quotaDefinitionFormModal" th:text="#{quota.space.button.add}"></button>
                                             </div>
 
                                         </div>
@@ -139,37 +133,37 @@
                                             <table class="table table-striped text-center" style="table-layout:fixed; word-break:break-all;">
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>메모리</th>
-                                                    <th>인스턴스 메모리</th>
-                                                    <th>라우트</th>
-                                                    <th>서비스 인스턴스</th>
-                                                    <th>가격</th>
-                                                    <th>예약 라우트 포트</th>
-                                                    <th>생성 조직명</th>
+                                                    <th th:text="#{quota.table.name}"></th>
+                                                    <th th:text="#{quota.table.memory}"></th>
+                                                    <th th:utext="#{quota.table.instanceMemory}"></th>
+                                                    <th th:text="#{quota.table.route}"></th>
+                                                    <th th:text="#{quota.table.serviceInstance}"></th>
+                                                    <th th:text="#{quota.table.price}"></th>
+                                                    <th th:utext="#{quota.table.reservedRoutePort}"></th>
+                                                    <th th:utext="#{quota.table.createdOrgName}"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="spaceQuotaDefinitionList">
-                                                <tr>
+                                                <!-- <tr>
                                                     <td>Default</td>
                                                     <td>10G</td>
                                                     <td>10G</td>
                                                     <td>1000</td>
                                                     <td>100</td>
-                                                    <td>무료</td>
+                                                    <td th:text="#{quota.data.free}"></td>
                                                     <td>100</td>
                                                     <td>Org-target</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Space_quota</td>
                                                     <td>20G</td>
-                                                    <td>무제한</td>
+                                                    <td th:text="#{quota.data.unlimited}"></td>
                                                     <td>2000</td>
                                                     <td>200</td>
-                                                    <td>유료</td>
-                                                    <td>무제한</td>
+                                                    <td th:text="#{quota.data.paid}"></td>
+                                                    <td th:text="#{quota.data.unlimited}"></td>
                                                     <td>Org-target</td>
-                                                </tr>
+                                                </tr> -->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -198,7 +192,7 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="title">조직 할당량 등록</div>
+                                <div id="title" th:text="#{quota.org.add.modal.header.title}"></div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -212,16 +206,16 @@
                                     <div class="box-body" style="padding: 0px">
 
                                         <div class="form-group required has-feedback"><!-- has-success has-feedback --><!--has-error has-feedback -->
-                                            <label for="name" class="col-sm-3 control-label">이름</label>
+                                            <label for="name" class="col-sm-3 control-label" th:text="#{quota.modal.body.name.label}"></label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control toCheckStringOrg toCheckStringSpace" id="name" name="useCheck" placeholder="예시) 20G_quota"/>
+                                                <input type="text" class="form-control toCheckStringOrg toCheckStringSpace" id="name" name="useCheck" th:placeholder="#{quota.modal.body.name.placeholder}"/>
                                                 <input type="hidden" id="quotaId" class="toCheckString"/>
                                                 <span class="glyphicon form-control-feedback" ></span>
                                             </div>
                                         </div>
 
                                         <div class="form-group required" style="display: none;" id="organizationReg">
-                                            <label for="organization" class="col-xs-9 col-sm-3 control-label">생성 조직명</label>
+                                            <label for="organization" class="col-xs-9 col-sm-3 control-label" th:text="#{quota.modal.body.orgName.label}"></label>
                                             <div class="col-xs-9 col-sm-3">
 
                                                 <select class="form-control toCheckStringSpace" id="organization">
@@ -235,16 +229,16 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="memorySize" class="col-sm-3 control-label">메모리(MB)</label>
+                                            <label for="memorySize" class="col-sm-3 control-label" th:text="#{quota.modal.body.memory.label}"></label>
                                             <div class="col-sm-9">
-                                                <input class="form-control toCheckStringOrg toCheckStringSpace" type="number" id="memorySize" placeholder="예시) 1024, 10240"/>
+                                                <input class="form-control toCheckStringOrg toCheckStringSpace" type="number" id="memorySize" th:placeholder="#{quota.modal.body.placeholder1}"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="instanceMemorySize" class="col-sm-3 control-label">인스턴스 메모리(MB)</label>
+                                            <label for="instanceMemorySize" class="col-sm-3 control-label" th:text="#{quota.modal.body.instanceMemory.label}"></label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnMem" id="instanceMemorySize" placeholder="예시) 1024, 10240" data-toggle="popover" />
+                                                <input class="form-control" type="number" name="unlimitableOnMem" id="instanceMemorySize" th:placeholder="#{quota.modal.body.placeholder1}" data-toggle="popover" />
                                             </div>
                                             <div class="col-xs-3 col-sm-3">
                                                 <!-- <input type="text" class="form-control" id="password" placeholder="단위 : MB"/> -->
@@ -252,23 +246,23 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="routeCnt" class="col-sm-3 control-label">라우트</label>
+                                            <label for="routeCnt" class="col-sm-3 control-label" th:text="#{quota.modal.body.route.label}"></label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="routeCnt" placeholder="예시) 100" data-toggle="popover" />
+                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="routeCnt" th:placeholder="#{quota.modal.body.placeholder2}" data-toggle="popover" />
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="serviceCnt" class="col-sm-3 control-label">서비스 인스턴스</label>
+                                            <label for="serviceCnt" class="col-sm-3 control-label" th:text="#{quota.modal.body.serviceInstance.label}"></label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="serviceCnt" placeholder="예시) 100" data-toggle="popover" />
+                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="serviceCnt" th:placeholder="#{quota.modal.body.placeholder2}" data-toggle="popover" />
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="appsCnt" class="col-xs-9 col-sm-3 control-label">APP 인스턴스</label>
+                                            <label for="appsCnt" class="col-xs-9 col-sm-3 control-label" th:text="#{quota.modal.body.appInstance.label}"></label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="appsCnt" placeholder="예시) 100" data-toggle="popover" />
+                                                <input class="form-control" type="number" name="unlimitableOnOrg" id="appsCnt" th:placeholder="#{quota.modal.body.placeholder2}" data-toggle="popover" />
                                             </div>
                                             <div class="col-xs-3 col-sm-3">
                                                 <!-- <input type="text" class="form-control" id="password" placeholder="ex) admin"/> -->
@@ -276,7 +270,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="isFreeArea" class="col-sm-3 control-label">무료 여부</label>
+                                            <label for="isFreeArea" class="col-sm-3 control-label" th:text="#{quota.modal.body.isFree.label}"></label>
                                             <div class="col-sm-9">
 
                                                 <div id="isFreeArea" class="radio">
@@ -298,9 +292,9 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="reservedRouteCnt" class="col-sm-3 control-label">예약된 라우트 포트</label>
+                                            <label for="reservedRouteCnt" class="col-sm-3 control-label" th:text="#{quota.modal.body.reservedRoutePort.label}"></label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" type="number" name="unlimitableOnRoute" id="reservedRouteCnt" placeholder="예시) 100" data-toggle="popover"/>
+                                                <input class="form-control" type="number" name="unlimitableOnRoute" id="reservedRouteCnt" th:placeholder="#{quota.modal.body.placeholder2}" data-toggle="popover"/>
                                             </div>
                                         </div>
                                     </div>
@@ -309,10 +303,10 @@
 
                         </div>
                         <div class="modal-footer"><!--style="border-top: 0px"-->
-                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteQuotaDefinitionModal();">삭제</button>
-                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
-                            <button type="button" id="regBtn" class="btn btn-sm btn-primary" onClick="createQuotaDefinition()">등록</button>
-                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateQuotaDefinition();">저장</button>
+                            <button type="button" id="deleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteQuotaDefinitionModal();" th:text="#{quota.button.delete}"></button>
+                            <button type="button" id="closeBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal" th:text="#{quota.button.cancel}"></button>
+                            <button type="button" id="regBtn" class="btn btn-sm btn-primary" onClick="createQuotaDefinition()" th:text="#{quota.button.add}"></button>
+                            <button type="button" id="saveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateQuotaDefinition();" th:text="#{quota.button.save}"></button>
 
                         </div>
                     </div>
@@ -334,7 +328,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"> 취소
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText" th:text="#{quota.button.cancel}">
                             </button>
                         </div>
                     </div>
@@ -435,8 +429,9 @@
         $(document).on( 'click', '#orgQuotaDefinitionList', function(){
 
             //var title = (ACTIVE_TAB == 'org') ? "조직 할당량 상세" : "공간 할당량 상세" ;
+            var title = /*[[#{quota.org.detail.modal.header.title}]]*/ '';
 
-            $('#title').text("조직 할당량 상세");
+            $('#title').text(title);
 
             $('#deleteBtn').show();
             $('#saveBtn').show();
@@ -450,7 +445,9 @@
         // 리스트 클릭시, 상세 팝업 설정
         $(document).on( 'click', '#spaceQuotaDefinitionList', function(){
 
-            $('#title').text("공간 할당량 상세");
+            var title = /*[[#{quota.space.detail.modal.header.title}]]*/ '';
+
+            $('#title').text(title);
 
             $('#deleteBtn').show();
             $('#saveBtn').show();
@@ -472,11 +469,11 @@
     //Pop-Over 설정
     function setPopover(){
         // 인스턴스 메모리
-        $('input[name=unlimitableOnMem]').data('content','값 입력하지 않을시 : 메모리 허용량 내 무제한으로 설정');
+        $('input[name=unlimitableOnMem]').data('content', /*[[#{quota.popup.message.unlimitMem}]]*/ "");
         // 라우트, 서비스, APP
-        $('input[name=unlimitableOnOrg]').data('content','값 입력하지 않을시 : 조직 허용량 내 무제한으로 설정');
+        $('input[name=unlimitableOnOrg]').data('content', /*[[#{quota.popup.message.unlimitOrg}]]*/ "");
         // 예약 라우트
-        $('input[name=unlimitableOnRoute]').data('content','값 입력하지 않을시 : 라우트 허용량 내 무제한으로 설정');
+        $('input[name=unlimitableOnRoute]').data('content',/*[[#{quota.popup.message.unlimitRoute}]]*/ "");
 
         $('[data-toggle="popover"]').popover({container: "body",placement:"bottom",trigger:"hover"});
     };
@@ -549,9 +546,10 @@
     function convertUnit(amount){
         var unit;
         var regex = /^[0-9]*$/g;
+        var value = /*[[#{quota.data.unlimited}]]*/ '';
 
         if(amount == -1){
-            return '무제한';
+            return value;
         }
 
         if(amount >= 1024){
@@ -576,12 +574,17 @@
     };
 
     function convertDataToView(str){
+        var value;
+
         if(typeof(str) === 'boolean' && str == true){ // 무료/유료
-            return '무료';
+            value = /*[[#{quota.data.free}]]*/ '';
+            return value;
         }else if(typeof(str) === 'boolean' && str == false){
-            return '유료';
+            value = /*[[#{quota.data.paid}]]*/ '';
+            return value;
         }else if(str == -1){ // 화면 출력시 -1 '무제한' 출력
-            return '무제한'
+            value = /*[[#{quota.data.unlimited}]]*/ '';
+            return value;
         }else if(str.length == 0){
             return '';
         }else{
@@ -599,8 +602,10 @@
 
     // 수정 or 분리 필요
     function convertUnlimitStr(str){
+        var value = /*[[#{quota.data.unlimited}]]*/ '';
+
         if(str == -1) {      // 화면 출력시 -1 '무제한' 출력
-            return '무제한';
+            return value;
         }else if(str.length == 0){ // 등록 수정 미입력시 -1 (무제한)
             return '-1';
         }else{
@@ -631,16 +636,20 @@
 
     // 조직 허용량 상세
     function getOrgQuotaDefinition(quotaId) {
+        var title = /*[[#{quota.org.detail.modal.header.title}]]*/ '';
+
         $('#form')[0].reset();
-        $('#quotaDefinitionFormModal .modal-title div').text("조직 할당량 상세");
+        $('#quotaDefinitionFormModal .modal-title div').text(title);
         $('#quotaDefinitionFormModal').modal('toggle');
         procCallAjax("/v2/orgs/quota-definitions/"+quotaId+"?key="+key, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
     }
 
     // 공간 허용량 정의 상세
     function getSpaceQuotaDefinition(quotaId) {
+        var title = /*[[#{quota.space.detail.modal.header.title}]]*/ '';
+
         $('#form')[0].reset();
-        $('#quotaDefinitionFormModal .modal-title div').text("공간 할당량 상세");
+        $('#quotaDefinitionFormModal .modal-title div').text(title);
         $('#quotaDefinitionFormModal').modal('toggle');
         procCallAjax("/v2/spaces/quota-definitions/"+quotaId+"?key="+key, "GET", null, procCallbackGetQuotaDefinition, $('#modalLoadingBar'));
     }
@@ -750,11 +759,22 @@
     // 조직/공간 할당량 정의 삭제 (confirm layer)
     function deleteQuotaDefinitionModal() {
 
-        var title = (ACTIVE_TAB == 'org') ? "조직 할당량 정의 삭제" : "공간 할당량 정의 삭제" ;
+        var title;
+        var message;
+        var text;
+
+        if (ACTIVE_TAB == 'org') {
+            title = /*[[#{quota.org.delete.modal.header.title}]]*/ '';
+        } else {
+            title = /*[[#{quota.space.delete.modal.header.title}]]*/ '';
+        }
+
+        message = translateMsg("quota.delete.confirm.message", $("#name").val());
+        text = /*[[#{quota.button.delete}]]*/ '';
 
         $("#popupTitle").html(title);
-        $("#popupMessage").html($("#name").val()+" "+/*[[#{delete.confirm.message('할당량')}]]*/ "");
-        $("#popupButtonText").text("삭제");
+        $("#popupMessage").html(message);
+        $("#popupButtonText").text(text);
         $("#popupButtonText").addClass('pull-left');
         $('#popupButtonText').attr('onclick', "deleteQuotaDefinition();");
         $("#popupButtonText").show();

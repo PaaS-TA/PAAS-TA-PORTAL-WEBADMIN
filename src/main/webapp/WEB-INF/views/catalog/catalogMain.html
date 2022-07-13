@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html"
       layout:decorator="../layout/default">
 <head>
     <script layout:fragment="ext_inc_script" type="text/javascript" src="/resources/bower_components/ckeditor/ckeditor.js"
             th:src="@{../../resources/bower_components/ckeditor/ckeditor.js}"></script>
-
 
 </head>
 <body>
@@ -17,9 +17,7 @@
         <!--<input type="hidden" id="tabName" value="STARTER"/>-->
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                카탈로그 관리
-            </h1>
+            <h1 th:text="#{catalogMain.title}"></h1>
         </section>
         <!-- Main content -->
         <section class="content">
@@ -31,7 +29,7 @@
 
                             <div class="box box-default collapsed-box" style="margin-bottom: 8px; border-top-color: #ded6d2;"><!--box-solid-->
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">검색 조건</h3>
+                                    <h3 class="box-title" th:text="#{catalogMain.search.title}"></h3>
 
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
@@ -42,33 +40,29 @@
 
                                     <form class="form-horizontal" id="catalogSearch"><!--form-inline-->
                                         <div class="form-group col-sm-12">
-                                            <label for="searchUseYn" class="control-label col-sm-3 col-xs-12">공개 여부</label>
+                                            <label for="searchUseYn" class="control-label col-sm-3 col-xs-12" th:text="#{catalogMain.search.useYn.label}"></label>
                                             <div class="checkbox col-sm-8 col-xs-5" id="searchUseYn">
                                                 <label class="col-sm-3">
-                                                    <input type="checkbox" name="search" id="searchUseY" checked="checked"/>
-                                                    공개
+                                                    <input type="checkbox" name="search" id="searchUseY" checked="checked" th:text="#{catalogMain.search.useYn.check.show}"/>
                                                 </label>
                                                 <label class="col-sm-4">
-                                                    <input type="checkbox" name="search" id="searchUseN" checked="checked"/>
-                                                    비공개
+                                                    <input type="checkbox" name="search" id="searchUseN" checked="checked" th:text="#{catalogMain.search.useYn.check.hide}"/>
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-12">
-                                            <label for="searchItem" class="control-label col-sm-3 col-xs-12">검색 항목</label>
+                                            <label for="searchItem" class="control-label col-sm-3 col-xs-12" th:text="#{catalogMain.search.item.label}"></label>
                                             <div class="checkbox col-sm-8 col-xs-5" id="searchItem">
                                                 <label class="col-sm-3">
-                                                    <input type="checkbox" name="search" id="searchItemName" checked="checked"/>
-                                                    이름
+                                                    <input type="checkbox" name="search" id="searchItemName" checked="checked" th:text="#{catalogMain.search.item.check.name}"/>
                                                 </label>
                                                 <label class="col-sm-3">
-                                                    <input type="checkbox" name="search" id="searchItemSummary" checked="checked"/>
-                                                    요약
+                                                    <input type="checkbox" name="search" id="searchItemSummary" checked="checked" th:text="#{catalogMain.search.item.check.summary}"/>
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-12">
-                                            <label for="searchValue" class="control-label col-sm-3 col-xs-12">검색어</label>
+                                            <label for="searchValue" class="control-label col-sm-3 col-xs-12" th:text="#{catalogMain.search.value.label}"></label>
                                             <div class="has-feedback col-sm-4 col-xs-12">
                                                 <input type="text" id="searchValue" class="form-control"/>
                                                 <span class="glyphicon glyphicon-search form-control-feedback"></span>
@@ -83,9 +77,10 @@
 
                             <div class="nav-tabs-custom" style="margin-bottom:0px;">
                                 <ul class="nav nav-tabs">
-                                    <li class="header no-padding active"><a href="#starterTab" data-toggle="tab" aria-expanded="true"  data-tab-type="starter">앱 템플릿</a></li>
-                                    <li class="header no-padding"><a href="#devTab" data-toggle="tab" aria-expanded="false" data-tab-type="dev">앱 개발환경</a></li>
-                                    <li class="header no-padding"><a href="#serviceTab" data-toggle="tab" aria-expanded="false" data-tab-type="service">앱 서비스</a></li>
+                                    <li class="header no-padding active">
+                                        <a href="#starterTab" data-toggle="tab" aria-expanded="true"  data-tab-type="starter" th:text="#{catalogMain.starter}"></a></li>
+                                    <li class="header no-padding"><a href="#devTab" data-toggle="tab" aria-expanded="false" data-tab-type="dev" th:text="#{catalogMain.dev}"></a></li>
+                                    <li class="header no-padding"><a href="#serviceTab" data-toggle="tab" aria-expanded="false" data-tab-type="service" th:text="#{catalogMain.service}"></a></li>
                                 </ul>
                             </div>
 
@@ -100,9 +95,7 @@
                                             <h3 class="box-title"></h3>
                                             <div class="box-tools col-xs-6 col-sm-3 pull-left" style="position:static;padding-left: 0px;"></div>
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#starterFormModal">
-                                                    앱 템플릿 등록
-                                                </button>
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="starterRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#starterFormModal" th:text="#{catalogMain.starter.button.register}"></button>
                                             </div>
                                             <!--  -->
                                         </div>
@@ -117,10 +110,10 @@
                                                 </colgroup>
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>요약</th>
-                                                    <th>분류</th>
-                                                    <th>공개</th>
+                                                    <th th:text="#{catalogMain.table.name}"></th>
+                                                    <th th:text="#{catalogMain.table.summary}"></th>
+                                                    <th th:text="#{catalogMain.table.classification}"></th>
+                                                    <th th:text="#{catalogMain.table.show}"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="starterList" name="dataList">
@@ -137,9 +130,7 @@
                                         <div id="devTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
                                         <div class="box-header">
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="devEnvRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#devEnvFormModal">
-                                                    앱 개발환경 등록
-                                                </button>
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="devEnvRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#devEnvFormModal" th:text="#{catalogMain.dev.button.register}"></button>
                                             </div>
                                         </div>
 
@@ -153,10 +144,10 @@
                                                 </colgroup>
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>요약</th>
-                                                    <th>분류</th>
-                                                    <th>공개</th>
+                                                    <th th:text="#{catalogMain.table.name}"></th>
+                                                    <th th:text="#{catalogMain.table.summary}"></th>
+                                                    <th th:text="#{catalogMain.table.classification}"></th>
+                                                    <th th:text="#{catalogMain.table.show}"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="devList" name="dataList">
@@ -173,9 +164,7 @@
                                         <div id="serviceTabLoadingBar" class="overlay hide"><i class="fa fa-refresh fa-spin"></i></div>
                                         <div class="box-header">
                                             <div class="pull-right" style="padding-right: 0px;">
-                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="serviceRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceFormModal">
-                                                    앱 서비스 등록
-                                                </button>
+                                                <button type="button" class="btn btn-block btn-primary btn-sm" id="serviceRegistBtn" name="registBtn" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#serviceFormModal" th:text="#{catalogMain.service.button.register}"></button>
 
                                             </div>
                                         </div>
@@ -190,10 +179,10 @@
                                                 </colgroup>
                                                 <thead>
                                                 <tr class="text-center">
-                                                    <th>이름</th>
-                                                    <th>요약</th>
-                                                    <th>분류</th>
-                                                    <th>공개</th>
+                                                    <th th:text="#{catalogMain.table.name}"></th>
+                                                    <th th:text="#{catalogMain.table.summary}"></th>
+                                                    <th th:text="#{catalogMain.table.classification}"></th>
+                                                    <th th:text="#{catalogMain.table.show}"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="serviceList" name="dataList">
@@ -243,7 +232,7 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="starterTitle" name="modalTitle">앱 템플릿 등록</div>
+                                <div id="starterTitle" name="modalTitle" th:text="#{catalogMain.starter.modal.header.register.title}"></div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -254,7 +243,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="starterName" class="col-sm-3 control-label">이름</label>
+                                            <label for="starterName" class="col-sm-3 control-label" th:text="#{catalogMain.starter.modal.body.name.label}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkStarterForm" id="starterName" name="name" placeholder="" />
                                                 <input type="hidden" id="starterId" name="id"/>
@@ -262,7 +251,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="categoryList" class="col-sm-3 control-label">분류</label>
+                                            <label for="categoryList" class="col-sm-3 control-label" th:text="#{catalogMain.starter.modal.body.classification.label}"></label>
                                             <div class="col-sm-9">
                                                 <select class="form-control toCheckString" id="categoryList" style="width:auto;">
                                                     <option value=""></option>
@@ -271,7 +260,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="buildPackList" class="col-sm-3 control-label">앱 개발환경</label>
+                                            <label for="buildPackList" class="col-sm-3 control-label" th:text="#{catalogMain.starter.modal.body.buildPack.label}"></label>
                                             <div class="col-sm-9">
                                                 <select class="form-control toCheckString" id="buildPackList" style="width:auto;">
                                                     <option value=""></option>
@@ -280,7 +269,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="servicePackList" class="col-sm-3 control-label">서비스</label>
+                                            <label for="servicePackList" class="col-sm-3 control-label" th:text="#{catalogMain.starter.modal.body.service.label}"></label>
 
                                             <div class="col-sm-4"> <!--col-xs-4 -->
                                                 <select multiple="" class="form-control" id="servicePackList"
@@ -315,7 +304,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="starterThumbnail" class="col-sm-3 control-label">썸네일</label>
+                                            <label for="starterThumbnail" class="col-sm-3 control-label" th:text="#{catalogMain.starter.modal.body.thumbnail.label}"></label>
 
                                             <div class="col-sm-9">
                                                 <input type="file" id="starterThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
@@ -344,7 +333,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="isFreeArea" class="col-sm-3 control-label">공개</label>
+                                            <label for="isFreeArea" class="col-sm-3 control-label" th:text="#{catalogMain.starter.modal.body.show.label}"></label>
                                             <div class="col-sm-9">
 
                                                 <div id="isFreeArea" class="radio">
@@ -366,7 +355,7 @@
                                         </div>
 
                                         <div class="form-group" name="startertagParamForm" style="height:50px;">
-                                            <label for="startertagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="startertagParamInput" class="col-sm-3 col-xs-12 control-label" th:text="#{catalogMain.starter.modal.body.tag.label}"></label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" name="startertagParamInput" id="startertagParamInput">
                                                     <option value="paas-ta">paas-ta</option>
@@ -412,14 +401,14 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="summary" class="col-sm-3 control-label">요약</label>
+                                            <label for="summary" class="col-sm-3 control-label" th:text="#{catalogMain.starter.modal.body.summary.label}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkStarterForm" id="summary" name="summary" placeholder=""/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="description" class="col-sm-3 control-label">설명</label>
+                                            <label for="description" class="col-sm-3 control-label" th:text="#{catalogMain.starter.modal.body.description.label}"></label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" rows="5" id="description"></textarea>
                                                 <script th:inline="javascript" type="text/javascript">
@@ -432,16 +421,28 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group required">
+                                            <label for="starterCodeDetailList" class="col-sm-3 control-label" th:text="#{catalogMain.modal.body.codeDetail.label}"></label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control checkStarterForm" id="starterCodeDetailList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="starterLanguage">
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="starterDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
-                            <button type="button" id="starterSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateStarter();">저장</button>
-                            <button type="button" id="starterRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createStarter();">등록</button>
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="starterDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();" th:text="#{catalogMain.modal.button.delete}"></button>
+                            <button type="button" id="starterSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateStarter();" th:text="#{catalogMain.modal.button.save}"></button>
+                            <button type="button" id="starterRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createStarter();" th:text="#{catalogMain.modal.button.registration}"></button>
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal" th:text="#{catalogMain.modal.button.cancel}"></button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -460,7 +461,7 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="devEnvTitle" name="modalTitle">앱 개발환경 등록</div>
+                                <div id="devEnvTitle" name="modalTitle" th:text="#{catalogMain.dev.modal.header.register.title}"></div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -471,7 +472,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="devEnvName" class="col-sm-3 control-label">이름</label>
+                                            <label for="devEnvName" class="col-sm-3 control-label" th:text="#{catalogMain.dev.modal.body.name.label}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkDevEnvForm" id="devEnvName" name="name" placeholder="" />
                                                 <input type="hidden" id="devEnvId" name="id"/>
@@ -479,7 +480,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="categoryDevEnvList" class="col-sm-3 control-label">분류</label>
+                                            <label for="categoryDevEnvList" class="col-sm-3 control-label" th:text="#{catalogMain.dev.modal.body.classification.label}"></label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkDevEnvForm" id="categoryDevEnvList" style="width:auto;">
                                                     <option value=""></option>
@@ -488,7 +489,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="buildPackDevEnvList" class="col-sm-3 control-label">앱 개발환경</label>
+                                            <label for="buildPackDevEnvList" class="col-sm-3 control-label" th:text="#{catalogMain.dev.modal.body.devEnv.label}"></label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkDevEnvForm" id="buildPackDevEnvList" style="width:auto;">
                                                     <option value=""></option>
@@ -497,7 +498,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="devEnvThumbnail" class="col-sm-3 control-label">썸네일</label>
+                                            <label for="devEnvThumbnail" class="col-sm-3 control-label" th:text="#{catalogMain.dev.modal.body.thumbnail.label}"></label>
 
                                             <div class="col-sm-9">
                                                 <input type="file" id="devEnvThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
@@ -526,11 +527,11 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="devEnvApp" class="col-sm-3 control-label">앱 샘플</label>
+                                            <label for="devEnvApp" class="col-sm-3 control-label" th:text="#{catalogMain.dev.modal.body.sample.label}"></label>
 
                                             <div class="col-sm-9">
                                                 <input type="file" id="devEnvApp" name="appSample" class="filestyle" data-buttonText=""/>
-                                                <span class="help-block" style="font-size: 7px; font-weight: bold; margin-left: 5px;"> 파일 첨부는 1개 파일만 가능합니다.</span>
+                                                <span class="help-block" style="font-size: 7px; font-weight: bold; margin-left: 5px;" th:text="#{catalogMain.dev.modal.body.sample.help}"></span>
                                             </div>
 
                                             <div class="col-sm-3"></div>
@@ -547,14 +548,14 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="devEnvDocFileUrl" class="col-sm-3 control-label">문서 URL</label>
+                                            <label for="devEnvDocFileUrl" class="col-sm-3 control-label" th:text="#{catalogMain.dev.modal.body.docURL.label}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkDevEnvForm" id="devEnvDocFileUrl" name="name" placeholder="http://" />
                                             </div>
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="isFreeDevEnvArea" class="col-sm-3 control-label">공개</label>
+                                            <label for="isFreeDevEnvArea" class="col-sm-3 control-label" th:text="#{catalogMain.dev.modal.body.show.label}"></label>
                                             <div class="col-sm-9">
 
                                                 <div id="isFreeDevEnvArea" class="radio">
@@ -576,7 +577,7 @@
                                         </div>
 
                                         <div class="form-group" name="devEnvtagParamForm" style="height:50px;">
-                                            <label for="devEnvtagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="devEnvtagParamInput" class="col-sm-3 col-xs-12 control-label" th:text="#{catalogMain.dev.modal.body.tag.label}"></label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="devEnvtagParamInput" name="devEnvtagParamInput">
                                                     <option value="paas-ta">paas-ta</option>
@@ -599,7 +600,7 @@
                                         </div>
 
                                         <div class="form-group" name="devEnvtagParamFormPaidFree" style="height:50px;">
-                                            <label for="devEnvtagParamInputPaidFree" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="devEnvtagParamInputPaidFree" class="col-sm-3 col-xs-12 control-label" th:text="#{catalogMain.dev.modal.body.tag.label}"></label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="devEnvtagParamInputPaidFree" name="devEnvtagParamInput">
                                                     <option value="pay">pay</option>
@@ -622,14 +623,14 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="devEnvSummary" class="col-sm-3 control-label">요약</label>
+                                            <label for="devEnvSummary" class="col-sm-3 control-label" th:text="#{catalogMain.dev.modal.body.summary.label}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkDevEnvForm" id="devEnvSummary" name="summary" placeholder=""/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="devEnvDescription" class="col-sm-3 control-label">설명</label>
+                                            <label for="devEnvDescription" class="col-sm-3 control-label" th:text="#{catalogMain.dev.modal.body.description.label}"></label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" rows="5" id="devEnvDescription"></textarea>
                                                 <script th:inline="javascript" type="text/javascript">
@@ -642,16 +643,28 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group required">
+                                            <label for="devCodeDetailList" class="col-sm-3 control-label" th:text="#{catalogMain.modal.body.codeDetail.label}"></label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control checkDevEnvForm" id="devCodeDetailList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="devEnvLanguage">
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="devEnvDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
-                            <button type="button" id="devEnvSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateDevEnv();">저장</button>
-                            <button type="button" id="devEnvRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createDevEnv();">등록</button>
-                            <button type="button" id="devEnvCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="devEnvDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();" th:text="#{catalogMain.modal.button.delete}"></button>
+                            <button type="button" id="devEnvSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateDevEnv();" th:text="#{catalogMain.modal.button.save}"></button>
+                            <button type="button" id="devEnvRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createDevEnv();" th:text="#{catalogMain.modal.button.registration}"></button>
+                            <button type="button" id="devEnvCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal" th:text="#{catalogMain.modal.button.cancel}"></button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -670,7 +683,7 @@
                                 <span aria-hidden="true">×</span></button>
 
                             <h4 class="modal-title">
-                                <div id="serviceTitle" name="modalTitle">앱 서비스 등록</div>
+                                <div id="serviceTitle" name="modalTitle" th:text="#{catalogMain.service.modal.header.register.title}"></div>
                             </h4>
                         </div>
                         <div class="modal-body">
@@ -681,7 +694,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group required">
-                                            <label for="serviceName" class="col-sm-3 control-label">이름</label>
+                                            <label for="serviceName" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.name.label}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkServiceForm" id="serviceName" name="name" placeholder="" />
                                                 <input type="hidden" id="serviceId" name="id"/>
@@ -689,7 +702,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="categoryServiceList" class="col-sm-3 control-label">분류</label>
+                                            <label for="categoryServiceList" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.classification.label}"></label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkServiceForm" id="categoryServiceList" style="width:auto;">
                                                     <option value=""></option>
@@ -698,7 +711,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="serviceServicePackList" class="col-sm-3 control-label">서비스</label>
+                                            <label for="serviceServicePackList" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.service.label}"></label>
                                             <div class="col-sm-9">
                                                 <select class="form-control checkServiceForm" id="serviceServicePackList" style="width:auto;">
                                                     <option value=""></option>
@@ -707,7 +720,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="serviceThumbnail" class="col-sm-3 control-label">썸네일</label>
+                                            <label for="serviceThumbnail" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.thumbnail.label}"></label>
 
                                             <div class="col-sm-9">
                                                 <input type="file" id="serviceThumbnail" name="thumbnail" class="filestyle" data-buttonText=""/>
@@ -736,7 +749,7 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="serviceDocFileUrl" class="col-sm-3 control-label">문서 URL</label>
+                                            <label for="serviceDocFileUrl" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.docURL.label}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkServiceForm" id="serviceDocFileUrl" name="name" placeholder="http://" />
                                             </div>
@@ -744,31 +757,31 @@
                                         <div class="form-group" name="serviceParamForm">
 
                                             <label for="serviceParamInput" class="col-sm-3 col-xs-12 control-label">&nbsp;</label>
-                                            <font color="red" size="1">자동 생성은 ORG_NAME,SPACE_NAME,OWNER(서비스 신청한 계정) 만 자동입력가능 합니다.</font>
+                                            <font color="red" size="1" th:text="#{catalogMain.service.modal.body.docURL.help}"></font>
                                         </div>
                                         <div class="form-group" name="serviceParamForm">
 
-                                            <label for="serviceParamInput" class="col-sm-3 col-xs-12 control-label">서비스 생성 파라미터</label>
+                                            <label for="serviceParamInput" class="col-sm-3 col-xs-12 control-label" th:text="#{catalogMain.service.modal.body.serviceParam.label}"></label>
 
                                             <div class="col-sm-4 col-xs-3">
                                                 <input type="text" class="form-control" id="serviceParamInput" name="serviceParamInput"/>
                                             </div>
                                             <div class="col-sm-3 col-xs-6">
                                                 <select class="form-control" name="serviceParamType" style="width:auto;">
-                                                    <option value="text">텍스트형</option>
-                                                    <option value="password">패스워드</option>
-                                                    <option value="default">자동입력</option>
-                                                    <option value="userAppointed">관리자 지정</option>
+                                                    <option value="text" th:text="#{catalogMain.modal.body.param.type.text}"></option>
+                                                    <option value="password" th:text="#{catalogMain.modal.body.param.type.passwd}"></option>
+                                                    <option value="default" th:text="#{catalogMain.modal.body.param.type.default}"></option>
+                                                    <option value="userAppointed" th:text="#{catalogMain.modal.body.param.type.userAppointed}"></option>
                                                 </select>
                                             </div>
 
                                             <div class="col-sm-2 col-xs-3">
-                                                <button type="button" class="btn btn-sm btn-primary" id="serviceParamAdd" name="serviceParamAdd">추가</button>
+                                                <button type="button" class="btn btn-sm btn-primary" id="serviceParamAdd" name="serviceParamAdd" th:text="#{catalogMain.service.modal.body.button.add}"></button>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="isFreeServiceArea" class="col-sm-3 control-label">앱 바인드 사용</label>
+                                            <label for="isFreeServiceArea" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.useAppBind.label}"></label>
                                             <div class="col-sm-9">
 
                                                 <div id="isAppBindArea" class="radio">
@@ -789,25 +802,25 @@
                                         </div>
 
                                         <div class="form-group" name="appBindParamForm">
-                                            <label for="appBindParamInput" class="col-sm-3 col-xs-12 control-label">앱 바인드 파라미터</label>
+                                            <label for="appBindParamInput" class="col-sm-3 col-xs-12 control-label" th:text="#{catalogMain.service.modal.body.bindParam.label}"></label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <input type="text" class="form-control" id="appBindParamInput" name="appBindParamInput"/>
                                             </div>
                                             <div class="col-sm-3 col-xs-6">
                                                 <select class="form-control" name="appBindParamType" style="width:auto;">
-                                                    <option value="text">텍스트형</option>
-                                                    <option value="password">패스워드</option>
-                                                    <option value="default">자동입력</option>
-                                                    <option value="userAppointed">관리자 지정</option>
+                                                    <option value="text" th:text="#{catalogMain.modal.body.param.type.text}"></option>
+                                                    <option value="password" th:text="#{catalogMain.modal.body.param.type.passwd}"></option>
+                                                    <option value="default" th:text="#{catalogMain.modal.body.param.type.default}"></option>
+                                                    <option value="userAppointed" th:text="#{catalogMain.modal.body.param.type.userAppointed}"></option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-2 col-xs-3">
-                                                <button type="button" class="btn btn-sm btn-primary" id="appBindParamAdd" name="appBindParamAdd">추가</button>
+                                                <button type="button" class="btn btn-sm btn-primary" id="appBindParamAdd" name="appBindParamAdd" th:text="#{catalogMain.service.modal.body.button.add}"></button>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="isFreeServiceArea" class="col-sm-3 control-label">공개</label>
+                                            <label for="isFreeServiceArea" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.show.label}"></label>
                                             <div class="col-sm-9">
 
                                                 <div id="isFreeServiceArea" class="radio">
@@ -829,7 +842,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="isUseDashBoardArea" class="col-sm-3 control-label">대시보드 사용</label>
+                                            <label for="isUseDashBoardArea" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.useDashBoard.label}"></label>
                                             <div class="col-sm-9">
 
                                                 <div id="isUseDashBoardArea" class="radio">
@@ -852,7 +865,7 @@
 
 
                                         <div class="form-group">
-                                            <label for="isUseOnDemand" class="col-sm-3 control-label">온디멘드</label>
+                                            <label for="isUseOnDemand" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.onDemand.label}"></label>
                                             <div class="col-sm-9">
 
                                                 <div id="isUseOnDemand" class="radio">
@@ -875,7 +888,7 @@
 
 
                                         <div class="form-group" name="tagParamForm" style="height:50px;">
-                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label">태그</label>
+                                            <label for="tagParamInput" class="col-sm-3 col-xs-12 control-label" th:text="#{catalogMain.service.modal.body.tag.label}"></label>
                                             <div class="col-sm-4 col-xs-3">
                                                 <select class="form-control" id="tagParamInput" name="tagParamInput">
                                                     <option value="paas-ta" >paas-ta</option>
@@ -924,14 +937,14 @@
                                         </div>
 
                                         <div class="form-group required">
-                                            <label for="serviceSummary" class="col-sm-3 control-label">요약</label>
+                                            <label for="serviceSummary" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.summary.label}"></label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control checkServiceForm" id="serviceSummary" name="summary" placeholder=""/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="serviceDescription" class="col-sm-3 control-label">설명</label>
+                                            <label for="serviceDescription" class="col-sm-3 control-label" th:text="#{catalogMain.service.modal.body.description.label}"></label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" rows="5" id="serviceDescription"></textarea>
                                                 <script th:inline="javascript" type="text/javascript">
@@ -944,16 +957,28 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group required">
+                                            <label for="serviceCodeDetailList" class="col-sm-3 control-label" th:text="#{catalogMain.modal.body.codeDetail.label}"></label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control checkServiceForm" id="serviceCodeDetailList" style="width:auto;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="serviceLanguage">
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="serviceDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();">삭제</button>
-                            <button type="button" id="serviceSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateService();">저장</button>
-                            <button type="button" id="serviceRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createService();">등록</button>
-                            <button type="button" id="serviceCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                            <button type="button" id="serviceDeleteBtn" name="modalDeleteBtn" class="btn btn-sm btn-danger pull-left" onClick="deleteModal();" th:text="#{catalogMain.modal.button.delete}"></button>
+                            <button type="button" id="serviceSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="updateService();" th:text="#{catalogMain.modal.button.save}"></button>
+                            <button type="button" id="serviceRegBtn" name="modalRegBtn" class="btn btn-sm btn-primary pull-right" onClick="createService();" th:text="#{catalogMain.modal.button.registration}"></button>
+                            <button type="button" id="serviceCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal" th:text="#{catalogMain.modal.button.cancel}"></button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -968,14 +993,14 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span></button>
-                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"> TITLE </h1>
+                            <h1 id="popupTitle" class="modal-title" style="font-size:25px"></h1>
                         </div>
                         <div class="modal-body">
                             <p id="popupMessage"> MESSAGE </p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="popupButtonText"> SAVE CHANGES </button>
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText"> 취소
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" id="popupCancelButtonText" th:text="#{catalogMain.modal.button.cancel}">
                             </button>
                         </div>
                     </div>
@@ -1007,14 +1032,26 @@
     var BUILD_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).BUILD_PACK_CATALOG_ID}]]*/ "";
     var SERVICE_PACK_CATALOG_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CATALOG_ID}]]*/ "";
 
+    var STARTER_CLASSIFICATION_CODE_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).STARTER_CLASSIFICATION_CODE_ID}]]*/ "";
+    var BUILD_PACK_CLASSIFICATION_CODE_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).BUILD_PACK_CLASSIFICATION_CODE_ID}]]*/ "";
+    var SERVICE_PACK_CLASSIFICATION_CODE_ID = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).SERVICE_PACK_CLASSIFICATION_CODE_ID}]]*/ "";
+
     var CATEGORY_LIST_PROC_URL = "/v2/codedetail";
+    var CATEGORY_GROUP_LIST_PROC_URL = "/v2/codegroup";
+
+    var CODE_GROUP_NO;  // 코드 그룹 번호
+    var CODE_GROUP_ID;
+    var USE_CODE_DETAIL_NO_LIST = [];   // 사용중인 카탈로그 코드 번호 목록
+    var USE_CODE_DETAIL_LIST = [];    // 사용중인 카탈로그 코드 목록
+    var CODE_DETAIL_VALUE_LIST = [];
 
     //var CLIENT_LIST = new Array();
 
     var THUMB_MAX_SIZE = 500; // KB
-    var NOT_FOUND_ATTACH_FILE_MESSAGE = "첨부된 파일이 없습니다.";
+    var NOT_FOUND_ATTACH_FILE_MESSAGE = /*[[#{catalogMain.alert.message.notfound}]]*/ '';
 
     // LIST DATA
+    var CODE_DETAIL_LIST = [];
     var STARTER_SOURCE_LIST;    // 앱 템플릿 리스트
     var DEV_SOURCE_LIST;        // 앱 개발환경 리스트
     var SERVICE_SOURCE_LIST;    // 앱 서비스 리스트
@@ -1023,12 +1060,24 @@
     var STARTER_CATEGORY_LIST;  // 앱 템플릿 상세 [분류]
     var STARTER_DEV_ENV_LIST;   // 앱 템플릿 상세 [앱 개발환경]
     var STARTER_SERVICE_LIST;   // 앱 템플릿 상세 [서비스]
+    var STARTER_CD_LIST = [];
+    var STARTER_USE_CD_LIST = [];
+    var STARTER_CD_NO_LIST;
+    var STARTER_CD_KEY_LIST;
 
     var DEV_ENV_CATEGORY_LIST;  // 앱 개발환경 상세 [분류]
     var DEV_ENV_BUILDPACK_LIST; // 앱 개발환경 상세 [앱 개발환경]
+    var DEV_ENV_CD_LIST = [];
+    var DEV_ENV_USE_CD_LIST = [];
+    var DEV_ENV_CD_NO_LIST;
+    var DEV_ENV_CD_KEY_LIST;
 
     var SERVICE_CATEGORY_LIST;  // 앱 서비스 상세 [분류]
     var SERVICE_SERVICE_LIST;   // 앱 서비스 상세 [서비스]
+    var SERVICE_CD_LIST = [];
+    var SERVICE_USE_CD_LIST = [];
+    var SERVICE_CD_NO_LIST;
+    var SERVICE_CD_KEY_LIST;
 
     var ACTIVE_TAB = 'starter'; // 활성화 TAB
 
@@ -1040,10 +1089,14 @@
     var BEFORE_SAMPLE_APP_LABEL_NAME; //샘플앱 파일명
     var BEFORE_SAMPLE_APP_SIZE; // 샘플앱 크기
 
+    var USE_LANGUAGE;
+
     $( "#apiUrls" ).change(function() {
         //key 값 저장
         key = $("#apiUrls").val();
         $.cookie("api_key",key);
+
+        USE_LANGUAGE = $.cookie('lang');
 
         // GET StarterList
         getStarterList(key);
@@ -1051,6 +1104,10 @@
         getBuildPackList(key);
         // GET ServicePackList
         getServicePackList(key);
+
+        // GET CodeGroupNo
+        getCodeGroupNo(STARTER_CATALOG_ID);
+
         //[앱 템플릿] 컴포넌트
         procCallAjax(DEVELOP_PACK_PROC_URL+"?key="+key, "GET", null, procCallbackStarterDevEnvList, null);
         //[앱 개발환경] 컴포넌트
@@ -1089,10 +1146,19 @@
             key = $("#apiUrls").val();
         }
 
+        if ($.cookie('lang') != null) {
+            USE_LANGUAGE = $.cookie('lang');
+        } else {
+            var languageList = getLanguageConfig();
+            USE_LANGUAGE = languageList[0];
+        }
+
         getInitMarketPlaceURL();
         getStarterList();
         getBuildPackList();
         getServicePackList();
+
+        getCodeGroupNo(STARTER_CATALOG_ID);
 
         // 활성화 탭 체크
         $('.nav-tabs li').each(function(){
@@ -1101,16 +1167,24 @@
 
                 // 조건 검색 초기화 추가
                 $("#catalogSearch")[0].reset();
+
+                var groupId = "";
+
                 if(ACTIVE_TAB == 'starter'){
                     //getStarterList(); // 탭클릭시 API재조회는 해당 항목 사용
+                    groupId = STARTER_CATALOG_ID;
                     printStarterList(STARTER_SOURCE_LIST);
                 }else if(ACTIVE_TAB == 'dev'){
                     //getBuildPackList();
+                    groupId = BUILD_PACK_CATALOG_ID;
                     printDevEnvList(DEV_SOURCE_LIST);
                 }else if(ACTIVE_TAB == 'service'){
                     //getServicePackList();
+                    groupId = SERVICE_PACK_CATALOG_ID;
                     printServiceList(SERVICE_SOURCE_LIST);
                 }
+
+                getCodeGroupNo(groupId);
 
             });
         });
@@ -1177,6 +1251,8 @@
             $('button[name=modalDeleteBtn]').hide();
             $('button[name=modalSaveBtn]').hide();
             $('button[name=modalRegBtn]').show();
+
+
 
             initModal();
         });
@@ -1406,6 +1482,68 @@
 
     });
 
+    // [앱 템플릿][앱 개발환경][앱 서비스][카탈로그 구분 코드] 셀렉트 리스트
+    var getCodeDetailList = function (groupId) {
+        switch(groupId) {
+            case STARTER_CLASSIFICATION_CODE_ID :
+                procCallAjax(CATEGORY_LIST_PROC_URL+"?groupId="+groupId+"&key="+key, "GET", null, procCallbackGetStarterClassificationCodeList, null);
+                break;
+            case BUILD_PACK_CLASSIFICATION_CODE_ID :
+                procCallAjax(CATEGORY_LIST_PROC_URL+"?groupId="+groupId+"&key="+key, "GET", null, procCallbackGetDevEnvClassificationCodeList, null);
+                break;
+            case SERVICE_PACK_CLASSIFICATION_CODE_ID:
+                procCallAjax(CATEGORY_LIST_PROC_URL+"?groupId="+groupId+"&key="+key, "GET", null, procCallbackGetServiceClassificationCodeList, null);
+        }
+    }
+
+    var procCallbackGetStarterClassificationCodeList = function(data) {
+        var codeDetailList = data.list;
+        STARTER_CD_LIST = [];
+        STARTER_USE_CD_LIST = [];
+
+        $.each(codeDetailList, function(index, data) {
+            if(!STARTER_CD_NO_LIST.includes(data.no)) {
+                STARTER_CD_LIST.push(data);
+            } else {
+                STARTER_USE_CD_LIST.push(data);
+            }
+        });
+
+        defaultAppClassificationCodeList(STARTER_CLASSIFICATION_CODE_ID);
+    }
+
+    var procCallbackGetDevEnvClassificationCodeList = function(data) {
+        var codeDetailList = data.list;
+        DEV_ENV_CD_LIST = [];
+        DEV_ENV_USE_CD_LIST = [];
+
+        $.each(codeDetailList, function(index, data) {
+            if(!DEV_ENV_CD_NO_LIST.includes(data.no)) {
+                DEV_ENV_CD_LIST.push(data);
+            } else {
+                DEV_ENV_USE_CD_LIST.push(data);
+            }
+        });
+
+        defaultAppClassificationCodeList(BUILD_PACK_CLASSIFICATION_CODE_ID);
+    }
+
+    var procCallbackGetServiceClassificationCodeList = function(data) {
+        var codeDetailList = data.list;
+        SERVICE_CD_LIST = [];
+        SERVICE_USE_CD_LIST = [];
+
+        $.each(codeDetailList, function(index, data) {
+            if(!SERVICE_CD_NO_LIST.includes(data.no)) {
+                SERVICE_CD_LIST.push(data);
+            } else {
+                SERVICE_USE_CD_LIST.push(data);
+            }
+        });
+
+        defaultAppClassificationCodeList(SERVICE_PACK_CLASSIFICATION_CODE_ID);
+    }
+
     // [앱 템플릿][분류] 셀렉트 리스트
     var procCallbackStarterCategoryList = function(data){
         STARTER_CATEGORY_LIST = data.list;
@@ -1519,6 +1657,17 @@
     //        //procGetSearchList();
     //    });
 
+    // GET CodeGroupNo
+    var getCodeGroupNo = function (groupId) {
+        procCallAjax(CATEGORY_GROUP_LIST_PROC_URL+"/"+groupId+"?key="+key, "GET", null, procCallbackGetCodeGroupNo, null);
+    };
+
+    // GET LIST CALLBACK CodeGroupNo
+    var procCallbackGetCodeGroupNo = function (data) {
+        CODE_GROUP_NO = data.list[0].no;
+    };
+
+
     // GET StarterList
     var getStarterList = function () {
         $('.modal').modal('hide');
@@ -1544,6 +1693,16 @@
     // GET LIST CALLBACK StarterList
     var procCallbackGetStarterList = function (data) {
         STARTER_SOURCE_LIST = data.list;
+        STARTER_CD_NO_LIST = [];
+        STARTER_CD_KEY_LIST = [];
+
+        $.each(STARTER_SOURCE_LIST, function(index, data) {
+            STARTER_CD_NO_LIST.push(data.codeDetailNo);
+            STARTER_CD_KEY_LIST.push(data.classificationCode);
+            // CODE_DETAIL_VALUE_LIST.push(data.classificationCode);
+        });
+
+        getCodeDetailList(STARTER_CLASSIFICATION_CODE_ID);
         printStarterList(STARTER_SOURCE_LIST);
     };
 
@@ -1571,6 +1730,19 @@
     // GET LIST CALLBACK BuildPackList
     var procCallbackGetBuildPackList = function (data) {
         DEV_SOURCE_LIST = data.list;
+        // if (ACTIVE_TAB == 'dev') {
+        //     USE_CODE_DETAIL_NO_LIST = [];
+        //     CODE_DETAIL_VALUE_LIST = [];
+        DEV_ENV_CD_NO_LIST = [];
+        DEV_ENV_CD_KEY_LIST = [];
+
+            $.each(DEV_SOURCE_LIST, function(index, data) {
+                DEV_ENV_CD_NO_LIST.push(data.codeDetailNo);
+                DEV_ENV_CD_KEY_LIST.push(data.classificationCode);
+            });
+
+            getCodeDetailList(BUILD_PACK_CLASSIFICATION_CODE_ID);
+        // }
         printDevEnvList(DEV_SOURCE_LIST);
     };
 
@@ -1598,6 +1770,19 @@
     // GET LIST CALLBACK ServicePackList
     var procCallbackGetServicePackList = function (data) {
         SERVICE_SOURCE_LIST = data.list;
+        // if (ACTIVE_TAB == 'service') {
+        //     USE_CODE_DETAIL_NO_LIST = [];
+        //     CODE_DETAIL_VALUE_LIST = [];
+        SERVICE_CD_NO_LIST = [];
+        SERVICE_CD_KEY_LIST = [];
+
+            $.each(SERVICE_SOURCE_LIST, function(index, data) {
+                SERVICE_CD_NO_LIST.push(data.codeDetailNo);
+                SERVICE_CD_KEY_LIST.push(data.classificationCode);
+            });
+
+            getCodeDetailList(SERVICE_PACK_CLASSIFICATION_CODE_ID);
+        // }
         printServiceList(SERVICE_SOURCE_LIST);
     };
 
@@ -1628,22 +1813,22 @@
     // [앱 템플릿] 상세
     var getStarter = function(id){
 
-        $('#starterTitle').text("앱 템플릿 상세");
+        $('#starterTitle').text(/*[[#{catalogMain.starter.modal.header.detail.title}]]*/ "");
         $('#starterDeleteBtn').show();
         $('#starterSaveBtn').show();
         $('#starterRegBtn').hide();
         $('#starterFormModal').modal('toggle');
 
         // Starter 상세조회
-        procCallAjax(STARTER_PACK_PROC_URL + "/" + id +"?key="+key, "GET", null, procCallbackGetStarter, $('#starterModalLoadingBar '));
+        procCallAjax(STARTER_PACK_PROC_URL+"/"+id+"?key="+key, "GET", null, procCallbackGetStarter, $('#starterModalLoadingBar '));
     }
 
     var procCallbackGetStarter = function(data){
 
         var entity = data.info;
-        console.log(entity);
 
         if(entity){
+
             $("#starterId").val(entity.no);
             //이름
             $("#starterName").val(entity.name);
@@ -1716,15 +1901,35 @@
             //요약
             $("#summary").val(entity.summary);
             //설명
-            $("#description").val(entity.description);
+            CKEDITOR.instances.description.setData(entity.description);
+
+            //카탈로그 구분 코드
+            for(var i=0; i<STARTER_CD_LIST.length; i++) {
+                if(STARTER_CD_NO_LIST.includes(STARTER_CD_LIST[i].no)) {
+                    STARTER_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+
+            var classificationCode = '';
+            $.each(STARTER_USE_CD_LIST, function(index, data) {
+               if(entity.classificationCode == data.key) {
+                   STARTER_CD_LIST.push(data);
+                   defaultAppClassificationCodeList(STARTER_CLASSIFICATION_CODE_ID);
+                   classificationCode = data.key;
+                   return false;
+               }
+            });
+
+            $("#starterCodeDetailList").val(classificationCode);
         }
-    }
+    };
 
 
     // [앱 개발환경] 상세
     var getBuildPack = function(id){
 
-        $('#devEnvTitle').text("앱 개발환경 상세");
+        $('#devEnvTitle').text(/*[[#{catalogMain.dev.modal.header.detail.title}]]*/ "");
         $('#devEnvDeleteBtn').show();
         $('#devEnvSaveBtn').show();
         $('#devEnvRegBtn').hide();
@@ -1807,6 +2012,26 @@
             CKEDITOR.instances.devEnvDescription.setData(entity.description);
             //문서URL
             $('#devEnvDocFileUrl').val(entity.docFileUrl);
+
+            //카탈로그 구분 코드
+            for(var i=0; i<DEV_ENV_CD_LIST.length; i++) {
+                if(DEV_ENV_CD_NO_LIST.includes(DEV_ENV_CD_LIST[i].no)) {
+                    DEV_ENV_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+
+            var classificationCode = '';
+            $.each(DEV_ENV_USE_CD_LIST, function(index, data) {
+                if(entity.classificationCode == data.key) {
+                    DEV_ENV_CD_LIST.push(data);
+                    defaultAppClassificationCodeList(BUILD_PACK_CLASSIFICATION_CODE_ID);
+                    classificationCode = data.key;
+                    return false;
+                }
+            });
+
+            $("#devCodeDetailList").val(classificationCode);
         }
     }
 
@@ -1815,7 +2040,7 @@
     // [앱 서비스] 상세
     var getServicePack = function(id){
 
-        $('#serviceTitle').text("앱 서비스 상세");
+        $('#serviceTitle').text(/*[[#{catalogMain.service.modal.header.detail.title}]]*/ "");
         $('#serviceDeleteBtn').show();
         $('#serviceSaveBtn').show();
         $('#serviceRegBtn').hide();
@@ -1927,6 +2152,26 @@
 
             //문서URL
             $('#serviceDocFileUrl').val(entity.docFileUrl);
+
+            //앱 구분 코드
+            for(var i=0; i<SERVICE_CD_LIST.length; i++) {
+                if(SERVICE_CD_NO_LIST.includes(SERVICE_CD_LIST[i].no)) {
+                    SERVICE_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+
+            var classificationCode = '';
+            $.each(SERVICE_USE_CD_LIST, function(index, data) {
+                if(entity.classificationCode == data.key) {
+                    SERVICE_CD_LIST.push(data);
+                    defaultAppClassificationCodeList(SERVICE_PACK_CLASSIFICATION_CODE_ID);
+                    classificationCode = data.key;
+                    return false;
+                }
+            });
+
+            $("#serviceCodeDetailList").val(classificationCode);
         }
 
     }
@@ -1979,12 +2224,12 @@
 
         if (!procCheckValidStringSpaceClass('checkStarterForm')){
             return false;
-        };
+        }
 
         var overlapCheck=false;
         $.each(STARTER_SOURCE_LIST, function (index, list_data) {
             if((starterParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning','', /*[[#{catalogMain.alert.message.duplicate}]]*/);
                 overlapCheck=true;
             }
         });
@@ -2020,7 +2265,7 @@
         console.log(STARTER_SOURCE_LIST);
         $.each(STARTER_SOURCE_LIST, function (index, list_data) {
             if(no != list_data.no && (starterParam(FILE_INFO)).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning', '', /*[[#{catalogMain.alert.message.duplicate}]]*/);
                 overlapCheck=true;
             }
         });
@@ -2070,7 +2315,7 @@
             }
         }
 
-        notifyAlert('success',"","수정 완료 되었습니다.");
+        notifyAlert('success', "", /*[[#{update.result.success}]]*/);
     }
 
     // [앱 템플릿] 수정 (파일저장 후 처리)
@@ -2085,22 +2330,33 @@
     function deleteModal() {
 
         var title;
+        var titleMsg;
+        var message;
         var name;
+
         if(ACTIVE_TAB == 'starter'){
-            title = "앱 템플릿";
+            title = translateMsg("catalogMain.starter", "");
             name = $('#starterName').val();
         }else if(ACTIVE_TAB == 'dev'){
-            title = "앱 개발환경";
+            title = translateMsg("catalogMain.starter", "");
             name = $('#devEnvName').val();
         }else if(ACTIVE_TAB == 'service'){
-            title = "앱 서비스";
+            title = translateMsg("catalogMain.service", "");
             name  = $('#serviceName').val();
         }
+
+        titleMsg = translateMsg("catalogMain.popup.delete", title);
+        message = translateMsg("delete.confirm.message", name);
+
         $('#popupButtonText').attr('onclick', "deleteItem();");
 
-        $("#popupTitle").html(title+" 삭제");
-        $("#popupMessage").html(name +/*[[#{delete.confirm.message('')}]]*/ "");
-        $("#popupButtonText").text("삭제");
+        $("#popupTitle").html(titleMsg);
+        $("#popupMessage").html(message);
+        $("#popupButtonText").text(/*[[#{catalogMain.modal.button.delete}]]*/ "");
+
+        // hasclass 확인 후 removeclass
+        //$("#popupButtonText").hasClass("pull-left");
+
         $("#popupButtonText").addClass("pull-left");
         $("#popupButtonText").show();
 
@@ -2132,7 +2388,8 @@
         }
         // SAMPLE APP 파일 삭제
         if(BEFORE_SAMPLE_APP_NAME != ""){
-            uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_SAMPLE_APP_NAME+"?key="+key, null);
+            // uploadFile(null,"DELETE","/v2/thumbnail/"+ BEFORE_SAMPLE_APP_NAME+"?key="+key, null);
+            uploadFile(null,"DELETE","/v2/appsample/"+ BEFORE_SAMPLE_APP_NAME+"?key="+key, null);
         }
 
         // 리스트 삭제
@@ -2161,16 +2418,29 @@
             }
         });
 
+        var codeDetailKey = $("#starterCodeDetailList").val();
+        var codeDetailNo;
+
+        $.each(STARTER_CD_LIST, function (index, data) {
+            if(codeDetailKey == data.key) {
+                codeDetailNo = data.no;
+                return false;
+            }
+        });
+
         var param = {
             name                        : $("#starterName").val(),
             classification              : $("#categoryList").val(),
             useYn                       : $("input[name=starterUseYn]:checked").val(),
             pay                         : $("input[name=starterpayYn]:checked").val(),
             summary                     : $("#summary").val(),
-            description                 : $("#description").val(),
+            description                 : CKEDITOR.instances.description.getData(),
             buildPackCategoryNo         : $("#buildPackList").val(),
             servicePackCategoryNoList   : selectedServicePackList,
-            tagsParam                   : JSON.stringify(inputTagParamJson)
+            tagsParam                   : JSON.stringify(inputTagParamJson),
+            codeGroupNo                 : CODE_GROUP_NO,
+            codeDetailNo                : codeDetailNo,
+            language                    : USE_LANGUAGE
         };
 
 
@@ -2184,7 +2454,6 @@
 
     // [앱 개발환경] 등록/수정 FORM PARAM
     var devEnvParam= function(fileInfo){
-
         // 태그
         var inputTagParamJson = new Object();
 
@@ -2196,6 +2465,16 @@
             }
         });
 
+        var codeDetailKey = $("#devCodeDetailList").val();
+        var codeDetailNo;
+
+        $.each(DEV_ENV_CD_LIST, function (index, data) {
+            if(codeDetailKey == data.key) {
+                codeDetailNo = data.no;
+                return false;
+            }
+        })
+
         var param = {
             name                : $("#devEnvName").val(),
             classification      : $("#categoryDevEnvList").val(),
@@ -2205,7 +2484,10 @@
             summary             : $("#devEnvSummary").val(),
             description         : CKEDITOR.instances.devEnvDescription.getData(),
             docFileUrl          : $("#devEnvDocFileUrl").val(),
-            tagsParam           : JSON.stringify(inputTagParamJson)
+            tagsParam           : JSON.stringify(inputTagParamJson),
+            codeGroupNo         : CODE_GROUP_NO,
+            codeDetailNo        : codeDetailNo,
+            language            : USE_LANGUAGE
         };
 
         if(fileInfo){
@@ -2251,16 +2533,22 @@
             }
         });
 
-        var serviceServicePackList = 'NONE';
-        if($("#serviceServicePackList").val() != '' && $("#serviceServicePackList").val() != null && $("#serviceServicePackList").val() != 'null' && $("#serviceServicePackList").val() != 'undefined'){
-            serviceServicePackList = $("#serviceServicePackList").val();
-        }
+        var codeDetailKey = $("#serviceCodeDetailList").val();
+        var codeDetailNo;
+
+        $.each(SERVICE_CD_LIST, function (index, data) {
+            if(codeDetailKey == data.key) {
+                codeDetailNo = data.no;
+                return false;
+            }
+        })
 
         var param = {
             name                        : $("#serviceName").val(),
             classification              : $("#categoryServiceList").val(),
             classificationValue         : $("#categoryServiceList option:selected").text(),
-            servicePackName             : serviceServicePackList,
+            // servicePackName             : serviceServicePackList,
+            servicePackName             : $("#serviceServicePackList").val(),
             parameter                   : JSON.stringify(inputParamJson),
             appBindYn                   : $("input[name=appBindUseYn]:checked").val(),
             appBindParameter            : JSON.stringify(inputAppBindParamJson),
@@ -2271,7 +2559,10 @@
             summary                     : $("#serviceSummary").val(),
             description                 : CKEDITOR.instances.serviceDescription.getData(),
             docFileUrl                  : $("#serviceDocFileUrl").val(),
-            tagsParam                   : JSON.stringify(inputTagParamJson)
+            tagsParam                   : JSON.stringify(inputTagParamJson),
+            codeGroupNo                 : CODE_GROUP_NO,
+            codeDetailNo                : codeDetailNo,
+            language                    : USE_LANGUAGE
         };
 
         if(fileInfo){
@@ -2294,7 +2585,7 @@
         var overlapCheck=false;
         $.each(DEV_SOURCE_LIST, function (index, list_data) {
             if((devEnvParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning', '', /*[[#{catalogMain.alert.message.duplicate}]]*/);
                 overlapCheck=true;
             }
         });
@@ -2342,7 +2633,7 @@
         if(data != null){
             FILE_INFO.appSampleFileName  = data.filename;
             FILE_INFO.appSampleFilePath  = data.fileURL;
-            FILE_INFO.appSampleFileSize  = data.length;;
+            FILE_INFO.appSampleFileSize  = data.length;
         }
         registDevEnv();
     }
@@ -2380,7 +2671,7 @@
         var overlapCheck=false;
         $.each(DEV_SOURCE_LIST, function (index, list_data) {
             if(no != list_data.no && (devEnvParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning', '', /*[[#{catalogMain.alert.message.duplicate}]]*/);
                 overlapCheck=true;
             }
         });
@@ -2454,7 +2745,7 @@
         if(data != null){
             FILE_INFO.appSampleFileName  = data.filename;
             FILE_INFO.appSampleFilePath  = data.fileURL;
-            FILE_INFO.appSampleFileSize  = data.length;;
+            FILE_INFO.appSampleFileSize  = data.length;
         }
         modifyDevEnv();
     }
@@ -2485,9 +2776,13 @@
                 // 신규 앱샘플 파일 추가
                 uploadFile(formData,"POST","/v2/thumbnail"+"?key="+key, updateAppFileInfo);
             }else{ // 첨부 없음
-                FILE_INFO.appSampleFileName  = BEFORE_SAMPLE_APP_LABEL_NAME;
-                FILE_INFO.appSampleFilePath  = BEFORE_SAMPLE_APP_PATH;
-                FILE_INFO.appSampleFileSize  = BEFORE_SAMPLE_APP_SIZE;
+                // FILE_INFO.appSampleFileName  = BEFORE_SAMPLE_APP_LABEL_NAME;
+                // FILE_INFO.appSampleFilePath  = BEFORE_SAMPLE_APP_PATH;
+                // FILE_INFO.appSampleFileSize  = BEFORE_SAMPLE_APP_SIZE;
+
+                FILE_INFO.appSampleFileName  = "";
+                FILE_INFO.appSampleFilePath  = "";
+                FILE_INFO.appSampleFileSize  = "";
 
                 updateAppFileInfo(null);
             }
@@ -2507,11 +2802,11 @@
 
         if (!procCheckValidStringSpaceClass('checkServiceForm')){
             return false;
-        };
+        }
         var overlapCheck=false;
         $.each(SERVICE_SOURCE_LIST, function (index, list_data) {
             if((serviceParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning', '', /*[[#{catalogMain.alert.message.duplicate}]]*/);
                 overlapCheck=true;
             }
         });
@@ -2561,7 +2856,7 @@
         var overlapCheck=false;
         $.each(SERVICE_SOURCE_LIST, function (index, list_data) {
             if(no != list_data.no && (serviceParam()).name == list_data.name){
-                notifyAlert('warning','',"중복된 이름입니다.");
+                notifyAlert('warning', '', /*[[#{catalogMain.alert.message.duplicate}]]*/);
                 overlapCheck=true;
             }
         });
@@ -2650,7 +2945,7 @@
             var ext = this_form.value.substring(pathMiddle + 1, pathEnd).toLowerCase();
 
             if (ext != "jpg" && ext != "png" && ext != "gif") {
-                notifyAlert('warning','','이미지 파일(jpg, png, gif)만 등록 가능합니다.');
+                notifyAlert('warning', '', /*[[#{catalogMain.alert.message.imgExtError}]]*/);
                 //fileinput FileReader 참고
                 resetThumbnail();
                 return false;
@@ -2670,8 +2965,8 @@
             reader.onloadend = function (e) {
                 if (img_size > THUMB_MAX_SIZE) {
                     resetThumbnail();
-                    var alertMessage = '이미지 크기는 ' + THUMB_MAX_SIZE + 'Kb를 넘을 수 없습니다.';
-                    notifyAlert('warning','',alertMessage);
+                    var alertMessage = translateMsg("catalogMain.alert.message.imgSizeError", THUMB_MAX_SIZE);
+                    notifyAlert('warning', '', alertMessage);
 
                     return false;
                 }
@@ -2713,13 +3008,33 @@
     // Modal 초기화
     var initModal = function(){
         // 등록/수정/삭제 시 새로고침한 데이터를 다시 셀렉트 컴포넌트에 적용(default method)
+
+        var target = '';
+        var labelText = /*[[#{catalogMain.modal.body.language.label}]]*/ "";
+        var curLang = translateMsg("lang." + USE_LANGUAGE, "");
+        var langHtml = '';
+
         if(ACTIVE_TAB == 'starter'){
 
             // [앱 템플릿]
+            target = $('#starterLanguage');
+            langHtml = '<label for="language" class="col-sm-3 control-label">' + labelText + '</label>' +
+                '<div class="col-sm-9">' +
+                '<span class="form-control" name="language" style="border: none;">' + curLang + '</span>' +
+                '</div>';
+            target.html(langHtml);
 
             defaultStarterCategoryOptionList();
             defaultStarterDevEnvOptionList();
             defaultStarterServiceOptionList();
+
+            for(var i=0; i<STARTER_CD_LIST.length; i++) {
+                if(STARTER_CD_NO_LIST.includes(STARTER_CD_LIST[i].no)) {
+                    STARTER_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+            defaultAppClassificationCodeList(STARTER_CLASSIFICATION_CODE_ID);
 
             //초기화
             $('select[id=startertagParamInput]').val("paas-ta");
@@ -2736,9 +3051,23 @@
         }else if(ACTIVE_TAB == 'dev'){
 
             // [앱 개발환경]
+            target = $('#devEnvLanguage');
+            langHtml = '<label for="language" class="col-sm-3 control-label">' + labelText + '</label>' +
+                '<div class="col-sm-9">' +
+                '<span class="form-control" name="language" style="border: none;">' + curLang + '</span>' +
+                '</div>';
+            target.html(langHtml);
 
             defaultDevEnvCategoryOptionList();
             defaultDevEnvBuildpackOptionList();
+
+            for(var i=0; i<DEV_ENV_CD_LIST.length; i++) {
+                if(DEV_ENV_CD_NO_LIST.includes(DEV_ENV_CD_LIST[i].no)) {
+                    DEV_ENV_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+            defaultAppClassificationCodeList(BUILD_PACK_CLASSIFICATION_CODE_ID);
 
             //초기화
             $('select[id=devEnvtagParamInput]').val("paas-ta");
@@ -2754,8 +3083,23 @@
         }else if(ACTIVE_TAB == 'service'){
 
             // [앱 서비스]
+            target = $('#serviceLanguage');
+            langHtml = '<label for="language" class="col-sm-3 control-label">' + labelText + '</label>' +
+                '<div class="col-sm-9">' +
+                '<span class="form-control" name="language" style="border: none;">' + curLang + '</span>' +
+                '</div>';
+            target.html(langHtml);
+
             defaultServiceCategoryOptionList();
             defaultServiceServiceOptionList();
+
+            for(var i=0; i<SERVICE_CD_LIST.length; i++) {
+                if(SERVICE_CD_NO_LIST.includes(SERVICE_CD_LIST[i].no)) {
+                    SERVICE_CD_LIST.splice(i, 1);
+                    i--;
+                }
+            }
+            defaultAppClassificationCodeList(SERVICE_PACK_CLASSIFICATION_CODE_ID);
 
             $('input:radio[name=serviceUseYn]:input[value="Y"]').prop('checked', true); // 공개 여부
             $('input:radio[name=appBindUseYn]:input[value="Y"]').prop('checked', true); // 앱 바인드 파라미터 사용
@@ -2798,8 +3142,8 @@
         var limitFileSize = parseInt(limitFileSizeMb) << 20;
         var orgFileSize = reqFile[0].size;
         if (limitFileSize < orgFileSize) {
-            var alertMessage = '파일 크기는 ' + limitFileSizeMb + ' MB 를 넘을 수 없습니다.';
-            notifyAlert("danger","",alertMessage);
+            var alertMessage = translateMsg("catalogMain.alert.message.fileSizeError", limitFileSize);
+            notifyAlert('warning', '', alertMessage);
             return false;
         }
         //REQUEST_APP_SAMPLE_FILE = reqFile;
@@ -2844,6 +3188,31 @@
         var num = Math.round(reqNumber * digits) / digits;
         return num.toFixed(reqPosition);
     };
+
+
+    // [앱 템플릿][앱 개발환경[앱 서비스] 상세 - 앱 구분 코드 초기값
+    function defaultAppClassificationCodeList (groupId){
+        var objSelectBox = "";
+        var codeDetailList = [];
+
+        if(groupId == STARTER_CLASSIFICATION_CODE_ID) {
+            objSelectBox = $('#starterCodeDetailList');
+            codeDetailList = STARTER_CD_LIST;
+        } else if (groupId == BUILD_PACK_CLASSIFICATION_CODE_ID) {
+            objSelectBox = $('#devCodeDetailList');
+            codeDetailList = DEV_ENV_CD_LIST;
+        } else if (groupId == SERVICE_PACK_CLASSIFICATION_CODE_ID) {
+            objSelectBox = $('#serviceCodeDetailList');
+            codeDetailList = SERVICE_CD_LIST;
+        }
+
+        objSelectBox.html('');
+        $.each(codeDetailList, function (index, data) {
+            if(data.useYn == "Y") {
+                objSelectBox.append("<option value='" + data.key + "'> " + data.value + " </option>");
+            }
+        });
+    }
 
     // [앱 템플릿] 상세 - 서비스 셀렉트 박스 초기값
     function defaultStarterServiceOptionList(){
@@ -2891,12 +3260,15 @@
         var objSelectBox = $('#buildPackDevEnvList');
         objSelectBox.html('');
         //if(DEV_ENV_BUILDPACK_LIST.length==0){
-            objSelectBox.append("<option value='미설치 개발환경'>미설치 개발환경</option>");
+
+        var value = /*[[#{catalogMain.dev.modal.body.devEnv.select.option}]]*/ "";
+        var text = /*[[#{catalogMain.dev.modal.body.devEnv.select.text}]]*/ "";
+        objSelectBox.append("<option value='" + value + "'>" + text + "</option>");
         //}
         //else{
-            $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
-                objSelectBox.append("<option value='" + data.entity.name + "'> " + data.entity.name + " </option>");
-            });
+        $.each(DEV_ENV_BUILDPACK_LIST, function (index, data) {
+            objSelectBox.append("<option value='" + data.entity.name + "'> " + data.entity.name + " </option>");
+        });
         //}
     }
 
@@ -2915,12 +3287,13 @@
         objSelectBox.html('');
 
         //if(SERVICE_SERVICE_LIST.length==0){
-            objSelectBox.append("<option value='미설치 서비스'>미설치 서비스</option>");
+        var value = /*[[#{catalogMain.service.modal.body.service.select.option}]]*/ "";
+        objSelectBox.append("<option value='" + value + "'>" + value + "</option>");
         //}
         //else {
-            $.each(SERVICE_SERVICE_LIST, function (index, data) {
-                objSelectBox.append("<option value='" + data.entity.label + "'> " + data.entity.label + " </option>");
-            });
+        $.each(SERVICE_SERVICE_LIST, function (index, data) {
+            objSelectBox.append("<option value='" + data.entity.label + "'> " + data.entity.label + " </option>");
+        });
         //}
     }
 
@@ -2960,6 +3333,12 @@
     // [앱 서비스] 상세 - [앱 바인드 파라미터] 템플릿
     function appBindParamAdd(index, input, type){
 
+        var opText = /*[[#{catalogMain.modal.body.param.type.text}]]*/ "";
+        var opPasswd = /*[[#{catalogMain.modal.body.param.type.passwd}]]*/ "";
+        var opDefault = /*[[#{catalogMain.modal.body.param.type.default}]]*/ "";
+        var opUserAppointed = /*[[#{catalogMain.modal.body.param.type.userAppointed}]]*/ "";
+        var btn = /*[[#{catalogMain.modal.button.delete}]]*/ "";
+
         var tempHtml =
             "<div class='form-group app-bind-param-added' name='appBindParamForm'>"
             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
@@ -2969,15 +3348,15 @@
             +"       </div>"
             +"       <div class='col-sm-3 col-xs-6'>"
             +"           <select class='form-control' name='appBindParamType' style='width:auto;'>"
-            +"               <option value='text'>텍스트형</option>"
-            +"               <option value='password'>패스워드</option>"
-            +"               <option value='default'>자동입력</option>"
-            +"               <option value='userAppointed'>관리자 지정</option>"
+            +"               <option value='text'>" + opText + "</option>"
+            +"               <option value='password'>" + opPasswd + "</option>"
+            +"               <option value='default'>" + opDefault + "</option>"
+            +"               <option value='userAppointed'>" + opUserAppointed + "</option>"
             +"           </select>"
             +"       </div>"
             +"   </div>"
             +"   <div class='col-sm-2 col-xs-3'>"
-            +"       <button type='button' class='btn btn-sm btn-danger' name='appBindParamRemove'>삭제</button>"
+            +"       <button type='button' class='btn btn-sm btn-danger' name='appBindParamRemove'>" + btn + "</button>"
             +"   </div>"
             +" </div>";
 
@@ -3000,6 +3379,12 @@
     // [앱 서비스] 상세 - [앱 서비스 파라미터] 템플릿
     function appServiceParamAdd(index, input, type){
 
+        var opText = /*[[#{catalogMain.modal.body.param.type.text}]]*/ "";
+        var opPasswd = /*[[#{catalogMain.modal.body.param.type.passwd}]]*/ "";
+        var opDefault = /*[[#{catalogMain.modal.body.param.type.default}]]*/ "";
+        var opUserAppointed = /*[[#{catalogMain.modal.body.param.type.userAppointed}]]*/ "";
+        var btn = /*[[#{catalogMain.modal.button.delete}]]*/ "";
+
         var tempHtml =
             "<div class='form-group service-param-added' name='serviceParamForm'>"
             +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
@@ -3009,15 +3394,15 @@
             +"       </div>"
             +"       <div class='col-sm-3 col-xs-6'>"
             +"           <select class='form-control' name='serviceParamType' style='width:auto;'>"
-            +"               <option value='text'>텍스트형</option>"
-            +"               <option value='password'>패스워드</option>"
-            +"               <option value='default'>자동입력</option>"
-            +"               <option value='userAppointed'>관리자 지정</option>"
+            +"               <option value='text'>" + opText + "</option>"
+            +"               <option value='password'>" + opPasswd + "</option>"
+            +"               <option value='default'>" + opDefault + "</option>"
+            +"               <option value='userAppointed'>" + opUserAppointed + "</option>"
             +"           </select>"
             +"       </div>"
             +"   </div>"
             +"   <div class='col-sm-2 col-xs-3'>"
-            +"       <button type='button' class='btn btn-sm btn-danger' name='serviceParamRemove'>삭제</button>"
+            +"       <button type='button' class='btn btn-sm btn-danger' name='serviceParamRemove'>" + btn + "</button>"
             +"   </div>"
             +" </div>";
 
@@ -3073,42 +3458,6 @@
         }
     }
 
-    // [앱 템플릿] 상세 - [Tag PaidFree 파라미터] 템플릿
-    function appStarterTagParamAdd(index, type, type2){
-        var tempHtml =
-            "<div class='form-group tag-param-added' name='startertagParamFormPaidFree'>"
-            +"   <div class='col-sm-3 col-xs-12 control-label'></div>"
-            +"   <div name='paramArea'>"
-            +"       <div class='col-sm-4 col-xs-3'>"
-            +"           <select class='form-control' name='startertagParamInput' id='startertagParamInputPaidFree'>"
-            +"               <option value='pay'>pay</option>"
-            +"               <option value='free'>free</option>"
-            +"           </select>"
-            +"       </div>"
-            +"       <div class='col-sm-2 col-xs-3'>"
-            +"           <select class='form-control' name='startertagParamType' style='width:auto;'>"
-            +"               <option value='colors1'>tag1</option>"
-            +"               <option value='colors2'>tag2</option>"
-            +"               <option value='colors3'>tag3</option>"
-            +"               <option value='colors4'>tag4</option>"
-            +"               <option value='colors5'>tag5</option>"
-            +"               <option value='colors6'>tag6</option>"
-            +"       </div>"
-            +"   </div>"
-            +"   <div class='col-sm-1 col-xs-3'>"
-            +"          <button class='user_btn colors1 hide' name='startertagPreview' style='position: absolute;top: 6px;left: -8px;' disabled='disabled'>tag1</button>"
-            +"   </div>"
-            +" </div>";
-
-        $('div[name=startertagParamForm]:last').after(tempHtml);
-
-        if(type !== undefined){
-            eval("$('button[name=startertagPreview]:eq("+index+")').text('"+type+"')");
-            eval("$('button[name=startertagPreview]:eq("+index+")').addClass('"+type2+"')");
-            eval("$('button[name=startertagPreview]:eq("+index+")').removeClass('hide')");
-            setStarterTagParam(index, type, type2);
-        }
-    }
 
     // [앱 템플릿] 상세 - [앱 Tag] 셋팅
     function setStarterTagParam(index, type, type2){
@@ -3332,7 +3681,8 @@
             }
 
             if($("#buildPackDevEnvList").val()===null){
-                $("#buildPackDevEnvList").val("미설치 개발환경");
+                var value = /*[[#{catalogMain.dev.modal.body.devEnv.select.option}]]*/ '';
+                $("#buildPackDevEnvList").val(value);
             }
             updateDevEnv();
         }, 200);
@@ -3348,7 +3698,8 @@
                 $('input:radio[name="serviceUseYn"][value="N"]').prop('checked', false);
             }
             if($("#serviceServicePackList").val()===null){
-                $("#serviceServicePackList").val("미설치 서비스");
+                var value = /*[[#{catalogMain.service.modal.body.service.select.option}]]*/ '';
+                $("#serviceServicePackList").val(value);
             }
             updateService();
         }, 200);

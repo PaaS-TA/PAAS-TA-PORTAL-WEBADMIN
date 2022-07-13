@@ -13,9 +13,7 @@
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                분할 관리
-            </h1>
+            <h1 th:text="#{segment.title}"></h1>
         </section>
 
         <section class="content">
@@ -30,7 +28,7 @@
                                 <div class="input-group input-group-sm" style="width: 450px;">
                                     <input type="text" name="table_create" class="form-control pull-right" placeholder="Segment Name" id="createSegmentName" style="margin-right: 10px;"/>
                                     <div class="input-group-btn" >
-                                        <button type="submit"  class="btn btn-primary btn-sm" onclick="btnCreateIsolationSegments()">Segment 등록</button>
+                                        <button type="submit"  class="btn btn-primary btn-sm" onclick="btnCreateIsolationSegments()" th:text="#{segment.button.add}"></button>
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +45,7 @@
                                     <tbody id="isolationList" name="dataList">
                                     </tbody>
                                 </table>
-                                <div id="noIsolationMessage" class='box-header with-border' style="display: none">생성된 Isolation Segments가 없습니다.</div>
+<!--                                <div id="noIsolationMessage" class='box-header with-border' style="display: none" th:text="#{segment.empty.data}"></div>-->
                             </div>
                             <div class="box-body table-responsive no-padding" style="width: 49%">
                                 <table class="table table-bordered table-striped dataTable">
@@ -78,10 +76,10 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="segmentsOrgModalTitle">조직 Isolation Segments 정보</h4>
+                        <h4 class="modal-title" id="segmentsOrgModalTitle" th:text="#{segment.add.modal.header.title}"></h4>
                     </div>
 
-                    <div style="text-align: right;padding-right: 15px;padding-top: 10px;font-weight: bold;color: #e04f4f;">* 조직 default 초기화는 CLI에서 하시기 바랍니다.</div>
+                    <div style="text-align: right;padding-right: 15px;padding-top: 10px;font-weight: bold;color: #e04f4f;" th:text="#{segment.modal.help}"></div>
 
                     <div class="modal-body">
 
@@ -138,7 +136,7 @@
     var SELECT_ORGANIZATIONS_ISOLATION_SEGMENT_LIST;
     var SELECT_DEFAULT_ISOLATION_SEGMENT_GUID;
 
-    $( "#apiUrls" ).change(function() {
+    $("#apiUrls").change(function() {
         key = $("#apiUrls").val();
         $.cookie("api_key",key);
         getIsolationSegments(key);
@@ -164,32 +162,42 @@
         $("#createSegmentName").val("");
 
         getIsolationSegments();
-    };
+    }
 
     function getIsolationSegments() {
         procCallAjax("/v3/isolationSegments"+"?key="+key, "GET", null, procCallbackGetIsolationSegments, $('#isolationTabLoadingBar'));
-    };
+    }
 
     var procCallbackGetIsolationSegments = function(data){
         ISOLATION_SEGMENT_LIST = data.resources;
-
+        var len = Object.keys(ISOLATION_SEGMENT_LIST).length;
         var objTable = $('#isolationList');
 
         objTable.html('');
 
-        $.each(ISOLATION_SEGMENT_LIST, function (index, data) {
+        var emptyMsg = /*[[#{segment.empty.data}]]*/ "";
+
+        if(len == 0) {
             objTable.append('' +
-                '<tr id="isolation_'+(index+1)+'">' +
-                '   <td onclick="getIsolationSegmentsOrgs(\''+data.guid+'\', \'isolation_'+(index+1)+'\');" style="cursor:pointer;">' + data.name  + '</td>' +
-                '   <td style="text-align: center"><span class="fa fa-trash" onclick="btnDeleteIsolationSegments(\''+data.guid+'\');" style="cursor:pointer;"></span></td>' +
+                '<tr>' +
+                '<td colspan="4" style="text-align: center;">' + emptyMsg + '</td>' +
                 '</tr>'
             );
-        });
-
-        if(SELECT_ISOLATION_SEGMENT_GUID != "" && SELECT_ISOLATION_SEGMENT_GUID != undefined && SELECT_ISOLATION_SEGMENT_ID != "" && SELECT_ISOLATION_SEGMENT_ID != undefined) {
-            getIsolationSegmentsOrgs(SELECT_ISOLATION_SEGMENT_GUID, SELECT_ISOLATION_SEGMENT_ID);
         } else {
-            getIsolationSegmentsOrgs(ISOLATION_SEGMENT_LIST[0].guid, 'isolation_1');
+            $.each(ISOLATION_SEGMENT_LIST, function (index, data) {
+                objTable.append('' +
+                    '<tr id="isolation_' + (index + 1) + '">' +
+                    '   <td onclick="getIsolationSegmentsOrgs(\'' + data.guid + '\', \'isolation_' + (index + 1) + '\');" style="cursor:pointer;">' + data.name + '</td>' +
+                    '   <td style="text-align: center"><span class="fa fa-trash" onclick="btnDeleteIsolationSegments(\'' + data.guid + '\');" style="cursor:pointer;"></span></td>' +
+                    '</tr>'
+                );
+            });
+
+            if (SELECT_ISOLATION_SEGMENT_GUID != "" && SELECT_ISOLATION_SEGMENT_GUID != undefined && SELECT_ISOLATION_SEGMENT_ID != "" && SELECT_ISOLATION_SEGMENT_ID != undefined) {
+                getIsolationSegmentsOrgs(SELECT_ISOLATION_SEGMENT_GUID, SELECT_ISOLATION_SEGMENT_ID);
+            } else {
+                getIsolationSegmentsOrgs(ISOLATION_SEGMENT_LIST[0].guid, 'isolation_1');
+            }
         }
     };
 
@@ -201,7 +209,7 @@
         $("#"+selectId).addClass("bg-aqua disabled color-palette");
 
         procCallAjax("/v3/isolationSegments/"+isolationSegmentId+"/organizations"+"?key="+key, "GET", null, procCallbackGetIsolationSegmentsOrgs, $('#isolationTabLoadingBar'));
-    };
+    }
 
     var procCallbackGetIsolationSegmentsOrgs = function(data){
         SELECT_ORG_LIST = data.resources;
@@ -223,7 +231,7 @@
 
     function getOrgs() {
         procCallAjax("/v2/orgs"+"?key="+key, "GET", null, procCallbackGetOrgs, null);
-    };
+    }
 
     var procCallbackGetOrgs = function(data){
         var selectBox = '';
@@ -258,7 +266,7 @@
 
     function changeSelectOrgs() {
         procCallAjax("/v3/isolationSegments/"+SELECT_ISOLATION_SEGMENT_GUID+"/organizations/"+$("#selectSegmentOrgs").val()+"?key="+key, "POST", null, procCallbackEnableIsolationSegments, $('#isolationTabLoadingBar'));
-    };
+    }
 
     var procCallbackEnableIsolationSegments = function(data) {
         init();
@@ -270,33 +278,31 @@
         $("#isolationList > tr > td:first-child").each(function(index) {
 
             if(createSegmentName == "") {
-                notifyAlert('warning','', 'Isolation Segments Name이 올바르지 않습니다.');
+                notifyAlert('warning','', /*[[#{segment.alert.message.nameCheckError}]]*/);
                 return false;
             } else if($(this).text() == createSegmentName) {
-                notifyAlert('warning','', 'Isolation Segments Name이 이미 존재합니다.');
+                notifyAlert('warning','', /*[[#{segment.alert.message.duplicate}]]*/);
                 return false;
             }
-        }) ;
+        });
         if(createSegmentName == "") {
             return false;
         }
 
         procCallAjax("/v3/isolationSegments/"+createSegmentName+"?key="+key, "POST", null, procCallbackCreateIsolationSegments, $('#isolationTabLoadingBar'));
-    };
+    }
 
     var procCallbackCreateIsolationSegments = function(data) {
         if(data.guid != null) {
 
             init();
-        } else {
-
         }
     };
 
     function btnDeleteIsolationSegments(isolationSegmentId) {
         DELETE_ISOLATION_SEGMENT_GUID = isolationSegmentId;
         procCallAjax("/v3/isolationSegments/"+isolationSegmentId+"?key="+key, "DELETE", null, procCallbackDeleteIsolationSegments, null);
-    };
+    }
 
     var procCallbackDeleteIsolationSegments = function(data){
         if(data.result) {
@@ -317,12 +323,13 @@
         SELECT_ORGANIZATIONS_NAME = organizationsName;
 
         procCallAjax("/v3/isolationSegments/organizations/"+organizationsId+"?key="+key, "GET", null, procCallbackShowLayerPopSegmentsOrgs, $('#isolationTabLoadingBar'));
-    };
+    }
 
     var procCallbackShowLayerPopSegmentsOrgs = function(data){
         SELECT_ORGANIZATIONS_ISOLATION_SEGMENT_LIST = data.resources;
+        var text = /*[[#{segment.detail.modal.header.title}]]*/ '';
 
-        $("#segmentsOrgModalTitle").text(SELECT_ORGANIZATIONS_NAME + " - Isolation Segments 정보");
+        $("#segmentsOrgModalTitle").text(SELECT_ORGANIZATIONS_NAME + " - " + text);
 
         var objTable = $('#segmentsInfo');
 
@@ -342,7 +349,7 @@
 
     function getOrg() {
         procCallAjax("/v2/orgs/"+SELECT_ORGANIZATIONS_GUID+""+"?key="+key, "GET", null, procCallbackGetOrg, $('#isolationTabLoadingBar'));
-    };
+    }
 
     var procCallbackGetOrg = function(data){
         SELECT_DEFAULT_ISOLATION_SEGMENT_GUID = data.entity.default_isolation_segment_guid;
@@ -399,7 +406,7 @@
             //disable
             procCallAjax("/v3/spaces/"+spaceGuid+"/isolationSegments/reset"+"?key="+key, "PUT", null, procCallbackChangeSelectSpaceSegment, $('#isolationTabLoadingBar'));
         }
-    };
+    }
 
     var procCallbackChangeSelectSpaceSegment = function(data) {
     };
@@ -412,7 +419,7 @@
             // set
             procCallAjax("/v3/orgs/"+SELECT_ORGANIZATIONS_GUID+"/isolationSegments/"+isolationSegmentId+"?key="+key, "PUT", null, procCallbackSetOrResetOrgDefaultIsolationSegments, $('#isolationTabLoadingBar'));
         }
-    };
+    }
 
     var procCallbackSetOrResetOrgDefaultIsolationSegments = function(data) {
         showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID+"?key="+key, SELECT_ORGANIZATIONS_NAME+"?key="+key);
@@ -432,7 +439,6 @@
                 showLayerPopSegmentsOrgs(SELECT_ORGANIZATIONS_GUID+"?key="+key, SELECT_ORGANIZATIONS_NAME+"?key="+key);
                 init();
             }
-        } else {
         }
     };
 

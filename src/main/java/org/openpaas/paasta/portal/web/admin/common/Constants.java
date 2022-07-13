@@ -122,6 +122,18 @@ public class Constants {
      */
     public static final String SERVICE_PACK_CATALOG_ID = "SERVICE_PACK_CATALOG";
     /**
+     * 스타터 카탈로그 분류코드 아이디
+     */
+    public static final String STARTER_CLASSIFICATION_CODE_ID = "STARTER_TAG";
+    /**
+     * 빌드팩 카탈로그 분류코드 아이디
+     */
+    public static final String BUILD_PACK_CLASSIFICATION_CODE_ID = "BUILD_PACK_TAG";
+    /**
+     * 서비스팩 카탈로그 분류코드 아이디
+     */
+    public static final String SERVICE_PACK_CLASSIFICATION_CODE_ID = "SERVICE_PACK_TAG";
+    /**
      * 구분 문자
      */
     public static final String STRING_SEPARATOR = " :: ";

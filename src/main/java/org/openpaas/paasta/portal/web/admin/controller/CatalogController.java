@@ -1,12 +1,12 @@
 package org.openpaas.paasta.portal.web.admin.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.openpaas.paasta.portal.web.admin.common.Common;
 import org.openpaas.paasta.portal.web.admin.common.Constants;
 import org.openpaas.paasta.portal.web.admin.common.User;
-import org.openpaas.paasta.portal.web.admin.entity.ConfigEntity;
+import org.openpaas.paasta.portal.web.admin.config.LanguageConfig;
 import org.openpaas.paasta.portal.web.admin.model.Catalog;
-import org.openpaas.paasta.portal.web.admin.service.ConfigService;
 import org.openpaas.paasta.portal.web.admin.util.MultipartFileResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +39,10 @@ class CatalogController extends Common {
     private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
 
     private final String V2_URL = "/v2";
+
+    @Autowired
+    LanguageConfig languageConfig;
+
 
     /**
      * 카탈로그 메인페이지로 이동한다.
@@ -313,9 +316,10 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/starterpacks")
     @ResponseBody
-    public Map<String, Object> getStarterNamesList(HttpServletRequest request, @ModelAttribute Catalog param) {
+    public Map<String, Object> getStarterNamesList(HttpServletRequest request, @CookieValue(value = "lang", required = false) Cookie cookie, Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getStarterPacksList(Integer.parseInt(key), param);
+        String useLang = cookie.getValue();
+        return catalogService.getStarterPacksList(Integer.parseInt(key), param, useLang);
     }
 
 
@@ -329,7 +333,7 @@ class CatalogController extends Common {
     @ResponseBody
     public Map<String, Object> getStarterNames(HttpServletRequest request, @PathVariable("no") int no, @ModelAttribute Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getStarterPack(Integer.parseInt(key), no, param);
+	return catalogService.getStarterPack(Integer.parseInt(key), no, param);
     }
 
     /**
@@ -340,9 +344,10 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/developpacks")
     @ResponseBody
-    public Map<String, Object> getBuildPackCatalogList(HttpServletRequest request, @ModelAttribute Catalog param) {
+    public Map<String, Object> getBuildPackCatalogList(HttpServletRequest request, @CookieValue(value = "lang", required = false) Cookie cookie, @ModelAttribute Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getDevelopPackCatalogList(Integer.parseInt(key), param);
+        String useLang = cookie.getValue();
+	return catalogService.getDevelopPackCatalogList(Integer.parseInt(key), param, useLang);
     }
 
     /**
@@ -355,7 +360,7 @@ class CatalogController extends Common {
     @ResponseBody
     public Map<String, Object> getBuildPackCatalog(HttpServletRequest request, @PathVariable("no") int no, @ModelAttribute Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getDevelopPackCatalog(Integer.parseInt(key), no, param);
+	return catalogService.getDevelopPackCatalog(Integer.parseInt(key), no, param);
     }
 
     /**
@@ -367,9 +372,10 @@ class CatalogController extends Common {
 
     @GetMapping(V2_URL + "/servicepacks")
     @ResponseBody
-    public Map<String, Object> getServicePackCatalogList(HttpServletRequest request, @ModelAttribute Catalog param) {
+    public Map<String, Object> getServicePackCatalogList(HttpServletRequest request, @CookieValue(value = "lang", required = false) Cookie cookie, @ModelAttribute Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getServicePackCatalogList(Integer.parseInt(key), param);
+        String useLang = cookie.getValue();
+	return catalogService.getServicePackCatalogList(Integer.parseInt(key), param, useLang);
     }
 
 
@@ -383,8 +389,9 @@ class CatalogController extends Common {
     @ResponseBody
     public Map<String, Object> getServicePackCatalog(HttpServletRequest request, @PathVariable("no") int no, @ModelAttribute Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getServicePackCatalog(Integer.parseInt(key), no, param);
+	return catalogService.getServicePackCatalog(Integer.parseInt(key), no, param);
     }
+
 
     /**
      * [앱 템플릿] 해당 이름으로 등록된 [앱 템플릿] 개수를 조회한다.(등록 중복체크 용도)
@@ -394,9 +401,10 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/starterpacks/count")
     @ResponseBody
-    public Map<String, Object> getStarterNamesCount(HttpServletRequest request, @ModelAttribute Catalog param) {
+    public Map<String, Object> getStarterNamesCount(HttpServletRequest request, @CookieValue(value = "lang", required = false) Cookie cookie, @ModelAttribute Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getStarterPackCount(Integer.parseInt(key), param);
+        String useLang = cookie.getValue();
+        return catalogService.getStarterPackCount(Integer.parseInt(key), param, useLang);
     }
 
     /**
@@ -407,9 +415,10 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/developpacks/count")
     @ResponseBody
-    public Map<String, Object> getBuildPackCatalogCount(HttpServletRequest request, @ModelAttribute Catalog param) {
+    public Map<String, Object> getBuildPackCatalogCount(HttpServletRequest request, @CookieValue(value = "lang", required = false) Cookie cookie, @ModelAttribute Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getDevelopPackCatalogCount(Integer.parseInt(key), param);
+        String useLang = cookie.getValue();
+        return catalogService.getDevelopPackCatalogCount(Integer.parseInt(key), param, useLang);
     }
 
     /**
@@ -420,9 +429,10 @@ class CatalogController extends Common {
      */
     @GetMapping(V2_URL + "/servicepacks/count")
     @ResponseBody
-    public Map<String, Object> getServicePackCatalogCount(HttpServletRequest request, @ModelAttribute Catalog param) {
+    public Map<String, Object> getServicePackCatalogCount(HttpServletRequest request, @CookieValue(value = "lang", required = false) Cookie cookie, @ModelAttribute Catalog param) {
         String key = request.getParameter("key");
-        return catalogService.getServicePackCatalogCount(Integer.parseInt(key), param);
+        String useLang = cookie.getValue();
+        return catalogService.getServicePackCatalogCount(Integer.parseInt(key), param, useLang);
     }
 
     /**
@@ -538,7 +548,7 @@ class CatalogController extends Common {
      */
     @PutMapping(value = {V2_URL + "/servicepacks/{no}"})
     @ResponseBody
-    public Map<String, Object> updateServicePack(HttpServletRequest request, @PathVariable int no, @RequestBody Catalog param) throws Exception {
+    public Map<String, Object> updateServicePack(@CookieValue(value = "lang", required = false) Cookie cookie, HttpServletRequest request, @PathVariable int no, @RequestBody Catalog param) throws Exception {
         String key = request.getParameter("key");
         LOGGER.info("updateServicePack :::: " + param.toString());
         return catalogService.updateServicePackCatalog(Integer.parseInt(key), no, param);

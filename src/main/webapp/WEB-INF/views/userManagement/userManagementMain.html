@@ -10,9 +10,7 @@
     <header></header>
     <div layout:fragment="content">
         <section class="content-header">
-            <h3>
-                사용자 관리
-            </h3>
+            <h3 th:text="#{usermgnt.title}"></h3>
         </section>
         <section class="content">
 
@@ -21,9 +19,9 @@
 
                 <div class="box-header">
                     <select class="form-control toCheckString" id="access" style="width:150px; margin-left: 255px;margin-top: -5px;" onchange="selectChange()">
-                        <option value="All" selected="true">전체보기</option>
-                        <option value="t">승인</option>
-                        <option value="f">비승인</option>
+                        <option value="All" selected="true" th:text="#{usermgnt.view.option.all}"></option>
+                        <option value="t" th:text="#{usermgnt.view.option.approval}"></option>
+                        <option value="f" th:text="#{usermgnt.view.option.disapproval}"></option>
                     </select>
                     <div class="box-tools" style="margin-right: 100px;">
                         <div class="input-group input-group-sm" style="width: 450px; height: 34px" >
@@ -36,9 +34,7 @@
                         </div>
                     </div>
                     <div class="box-tools">
-                        <button type="button" class="btn btn-block btn-primary btn-sm" id="addUserBtn" name="addUserBtn" onclick="btnAddUser()">
-                            사용자 등록
-                        </button>
+                        <button type="button" class="btn btn-block btn-primary btn-sm" id="addUserBtn" name="addUserBtn" onclick="btnAddUser()" th:text="#{usermgnt.button.add.user}"></button>
                     </div>
                     <div style="height: 30px">
                     </div>
@@ -48,12 +44,12 @@
                 <table id="userInfoTableArea" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th style="text-align: center;"> 사용자 계정</th>
-                        <th style="text-align: center;"> 이름</th>
-                        <th style="text-align: center;"> 전화번호</th>
-                        <th style="text-align: center;"> 관리자</th>
-                        <th style="text-align: center;"> 상태</th>
-                        <th style="text-align: center;"> 관리</th>
+                        <th style="text-align: center;" th:text="#{usermgnt.table.account}"></th>
+                        <th style="text-align: center;" th:text="#{usermgnt.table.name}"></th>
+                        <th style="text-align: center;" th:text="#{usermgnt.table.phone}"></th>
+                        <th style="text-align: center;" th:text="#{usermgnt.table.manager}"></th>
+                        <th style="text-align: center;" th:text="#{usermgnt.table.state}"></th>
+                        <th style="text-align: center;" th:text="#{usermgnt.table.management}"></th>
                     </tr>
                     </thead>
                     <tbody id="userInfoTable" style="text-align: center;">
@@ -75,8 +71,7 @@
                             <p>One fine body…</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="modalButtonText" data-dismiss="modal">확인
-                            </button>
+                            <button type="button" class="btn btn-primary" id="modalButtonText" data-dismiss="modal" th:text="#{usermgnt.button.confirm}"></button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -92,7 +87,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="segmentsOrgModalTitle">사용자 등록</h4>
+                        <h4 class="modal-title" id="segmentsOrgModalTitle" th:text="#{usermgnt.modal.header.title}"></h4>
                     </div>
 
                     <div class="modal-body">
@@ -104,19 +99,19 @@
                                 <div class="box-body">
 
                                     <div class="form-group required">
-                                        <label for="addUserId" class="col-sm-3 control-label">아이디</label>
+                                        <label for="addUserId" class="col-sm-3 control-label" th:text="#{usermgnt.modal.body.id.label}"></label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" id="addUserId"/>
                                         </div>
                                     </div>
                                     <div class="form-group required">
-                                        <label for="addUserPassword" class="col-sm-3 control-label">비밀번호</label>
+                                        <label for="addUserPassword" class="col-sm-3 control-label" th:text="#{usermgnt.modal.body.passwd.label}"></label>
                                         <div class="col-sm-9">
                                             <input type="password" class="form-control" id="addUserPassword" autocomplete="new-password"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="addUserActive" class="col-sm-3 control-label">Active 설정 (승인 여부)</label>
+                                        <label for="addUserActive" class="col-sm-3 control-label" th:utext="#{usermgnt.modal.body.active.label}"></label>
                                         <div class="col-sm-9" style="margin-top : 5px">
                                             <input type="checkbox" checked="" id="addUserActive"/>
                                         </div>
@@ -129,8 +124,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="addUserInsert();" data-dismiss="modal">등록</button>
-                        <button type="button" id="clientCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal">취소</button>
+                        <button type="button" id="clientSaveBtn" name="modalSaveBtn" class="btn btn-sm btn-primary pull-right" onClick="addUserInsert();" data-dismiss="modal" th:text="#{usermgnt.button.add}"></button>
+                        <button type="button" id="clientCloseBtn" class="btn btn-sm btn-default pull-left" data-dismiss="modal" th:text="#{usermgnt.button.cancel}"></button>
                     </div>
 
                 </div>
@@ -240,26 +235,30 @@
 
             for (var i = 0; i < listLength; i++) {
                 boldClass = /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "" == resultList[i].adminYn ? 'fwb' : '';
-                menuText = '운영권한 부여';
-                activeText = '가입 승인';
+                menuText = /*[[#{usermgnt.table.management.admin.grant}]]*/ '';
+                activeText = /*[[#{usermgnt.table.management.signup.approval}]]*/ '';
                 var telephone = resultList[i].tellPhone == null ? '-' : resultList[i].tellPhone;
-                if (resultList[i].adminYn == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") menuText = '운영권한 삭제';
-                if (resultList[i].active == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") activeText = '가입 해제';
+                if (resultList[i].adminYn == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") {
+                    menuText = /*[[#{usermgnt.table.management.admin.delete}]]*/ '';
+                }
+                if (resultList[i].active == /*[[${T(org.openpaas.paasta.portal.web.admin.common.Constants).USE_YN_Y}]]*/ "") {
+                    activeText = /*[[#{usermgnt.table.management.signup.unsubscribe}]]*/ '';
+                }
                 if (resultList[i].active == 'Y') {
                     htmlString.push('<tr id="Managementtable' + i + '" name=" ' + resultList[i].userId + '">'
                         + '<td class="col-md-4 ' + boldClass + '">' + resultList[i].userId + '</td>'
                         + '<td class="col-md-2 ' + boldClass + '">' + resultList[i].userName + '</td>'
                         + '<td class="col-md-2 ' + boldClass + '">' + telephone + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
-                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-primary">' + '승인' + '</span>' + '</td>'
+                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-primary">' + /*[[#{usermgnt.table.state.approval}]]*/ + '</span>' + '</td>'
                         + '<td class="col-md-2 tac ' + boldClass + '">'
                         + '<div class="dropdown">'
                         + '<label class="fa fa-gears" id="dropdownMenu' + i + '" ' + 'data-toggle="dropdown" aria-expanded="false" aria-hidden="true" style="cursor: pointer;"></label>'
                         + '<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu' + i + '">'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> 비밀번호 초기화 </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')">' + /*[[#{usermgnt.table.management.passwd.reset}]]*/ + '</a></li>'
                         + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + menuText + ' </a></li>'
                         + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_LOGIN_ACTIVE + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + activeText + ' </a></li>'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\', \'' + resultList[i].userGuid + '\')"> 계정 삭제 </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\', \'' + resultList[i].userGuid + '\')">' + /*[[#{usermgnt.table.management.account.delete}]]*/ + '</a></li>'
                         + '</ul></div>');
                 } else {
                     htmlString.push('<tr id="Managementtable' + i + '" name=" ' + resultList[i].userId + '">'
@@ -267,15 +266,15 @@
                         + '<td class="col-md-2 ' + boldClass + '">' + resultList[i].userName + '</td>'
                         + '<td class="col-md-2 ' + boldClass + '">' + telephone + '</td>'
                         + '<td class="col-md-1 tac ' + boldClass + '">' + resultList[i].adminYn + '</td>'
-                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + '비승인' + '</span>' + '</td>'
+                        + '<td class="col-md-1 tac ' + boldClass + '">' + '<span class="label label-success" style="size: 100 ">' + /*[[#{usermgnt.table.state.disapproval}]]*/ + '</span>' + '</td>'
                         + '<td class="col-md-2 tac ' + boldClass + '">'
                         + '<div class="dropdown">'
                         + '<label class="fa fa-gears" id="dropdownMenu' + i + '" ' + 'data-toggle="dropdown" aria-expanded="false" aria-hidden="true" style="cursor: pointer;"></label>'
                         + '<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu' + i + '">'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> 비밀번호 초기화 </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_RESET_PASSWORD + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')">' + /*[[#{usermgnt.table.management.passwd.reset}]]*/ + '</a></li>'
                         + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + menuText + ' </a></li>'
                         + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_UPDATE_LOGIN_ACTIVE + '\', \'' + resultList[i].userId +'\', \'' + resultList[i].userGuid + '\')"> ' + activeText + ' </a></li>'
-                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\', \'' + resultList[i].userGuid + '\')"> 계정 삭제 </a></li>'
+                        + '<li role="presentation"><a role="menuitem" href="javascript:void(0);"  onclick="procUserManagementPopup(\'' + REQUEST_TYPE_DELETE_USER_ACCOUNT + '\', \'' + resultList[i].userId + '\', \'' + resultList[i].userGuid + '\')">' + /*[[#{usermgnt.table.management.account.delete}]]*/ + '</a></li>'
                         + '</ul></div>');
                 }
 
@@ -309,7 +308,7 @@
 
     // USER MANAGEMENT POPUP
     var procUserManagementPopup = function (reqType, reqUserId,reqUserGuid) {
-
+        var reqTitle = '';
         var reqMessage = '';
         var reqFunction = '';
         var reqButton = '';
@@ -319,24 +318,27 @@
             }
             reqMessage = /*[[#{common.info.popup.reset.password.message}]]*/ "";
             reqFunction = 'resetPassword("' + reqUserId + '");';
-            reqButton = '전송';
+            reqButton = /*[[#{usermgnt.button.send}]]*/ "";
+
         }
         else if (REQUEST_TYPE_UPDATE_OPERATING_AUTHORITY == reqType) {
             reqMessage = /*[[#{common.info.popup.update.operating.authority.message}]]*/ "";
             reqFunction = 'updateOperatingAuthority("' + reqUserId + '");';
-            reqButton = '실행';
+            reqButton = /*[[#{usermgnt.button.exec}]]*/ "";
         }
         else if (REQUEST_TYPE_DELETE_USER_ACCOUNT == reqType) {
             reqMessage = /*[[#{common.info.popup.delete.user.account.message}]]*/ "";
             reqFunction = 'deleteUserAccount("' + reqUserGuid + '");';
-            reqButton = '삭제';
+            reqButton = /*[[#{usermgnt.button.delete}]]*/ "";
         }
         else if (REQUEST_TYPE_UPDATE_LOGIN_ACTIVE == reqType){
-            reqMessage = "사용자포탈 로그인 접속 가능 상태를 수정하시겠습니까";
+            reqMessage = /*[[#{usermgnt.management.popup.req.message}]]*/ "";
             reqFunction = 'updateUserActive("' + reqUserId+'");';
-            reqButton = '수정';
+            reqButton = /*[[#{usermgnt.button.modify}]]*/ "";
         }
-        modalInit('사용자 관리', reqMessage, reqFunction, reqButton);
+
+        reqTitle = /*[[#{usermgnt.management.popup.title}]]*/ "";
+        modalInit(reqTitle, reqMessage, reqFunction, reqButton);
     };
 
     var modalInit = function (reqTitle, reqMessage, procFunction, reqButtonText) {
@@ -344,12 +346,17 @@
         if (reqMessage == null || reqMessage.length < 1) return false;
         if (procFunction == null) return false;
         var objButtonText = $('#modalButtonText');
-        var buttonText = null == reqButtonText || '' == reqButtonText ? reqMessage.split(' ')[0] : reqButtonText;
+        // var buttonText = null == reqButtonText || '' == reqButtonText ? reqMessage.split(' ')[0] : reqButtonText;
+        var buttonText;
+        if(null != reqButtonText && '' != reqButtonText) {
+            buttonText = reqButtonText;
+        }
 
         $('#modaltitle').html(reqTitle);
         $('#modalbody').html(reqMessage);
 
-        objButtonText.html(buttonText);
+        // objButtonText.html(buttonText);
+        objButtonText.text(buttonText);
         objButtonText.attr('onclick', procFunction);
         $('#modal-default').modal();
     };
@@ -362,7 +369,7 @@
 
     // RESET PASSWORD
     var resetPassword = function (reqUserId) {
-        alert(reqUserId)
+        alert(reqUserId);
 
         var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
         if (regex.test(reqUserId) == false) {
@@ -467,7 +474,8 @@
         key = $("#apiUrls").val();
 
         if(usersObj[$("#addUserId").val()] != undefined) {
-            notifyAlert("warning", "", $("#addUserId").val()+" 은(는) 이미 사용중인 ID 입니다.");
+            var alertMsg = $("#addUserId").val() + " " +  /*[[#{usermgnt.alert.message.duplicate}]]*/ '';
+            notifyAlert("warning", "", alertMsg);
             return false;
         }
 
