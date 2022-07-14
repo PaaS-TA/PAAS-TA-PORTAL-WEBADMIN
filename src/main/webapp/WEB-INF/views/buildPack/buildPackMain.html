@@ -130,7 +130,7 @@
         var positionOption = "";
 
         for(var i = 1; i < dataLength+1; i++ ){
-          if(i ==  data.entity.position) {
+	  if(i ==  data.position) {
             positionOption += "<option value='" + i + "' selected>" + i + "</option>";
           }else{
             positionOption += "<option value='" + i + "'>" + i + "</option>";
@@ -138,19 +138,19 @@
         }
 
         var enabled = "";
-        if(data.entity.enabled){
+        if(data.enabled){
           enabled = "checked";
         }
 
         var locked = "";
-        if(data.entity.locked){
+        if(data.locked){
           locked = "checked";
         }
 
         $("#buildPackList").append(
-                "<tr align='center' data-guid='"+data.metadata.id+"' >" +
-                "<td> " + data.entity.name + "</td>" +
-                "<td> " + data.entity.filename + "</td>" +
+		"<tr align='center' data-guid='"+data.id+"' >" +
+		"<td> " + data.name + "</td>" +
+		"<td> " + data.filename + "</td>" +
                 "<td class='col-md-1' align='center'><select name='positionNo' style='width:50px;'>" + positionOption + "</select></td>" +
                 "<td class='col-md-1' align='center'><input  name='isEnabled' type='checkbox' "+enabled+"></td>" +
                 "<td class='col-md-1' align='center'><input  name='isLocked' type='checkbox' "+locked+"></td>"
