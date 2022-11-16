@@ -3,8 +3,8 @@ applications:
     memory: 1G
     instances: 1
     buildpacks:
-    - paketo-buildpacks/java
-    #path: build/libs/paas-ta-portal-webadmin.war
+    - java_buildpack
+    path: build/libs/paas-ta-portal-webadmin.war
     env:
       server_port: 8080
 
