@@ -53,7 +53,7 @@ public class BuildPackController extends Common {
     @ResponseBody
     public Map<String, Object> getBuildPacks(HttpServletRequest request, @ModelAttribute BuildPack buildPack) {
         String key = request.getParameter("key");
-        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V2_URL + "/buildpacks", HttpMethod.GET, buildPack);
+        return commonService.procCfApiRestTemplate(Integer.parseInt(key),Constants.V3_URL + "/buildpacks", HttpMethod.GET, buildPack);
 
     }
 
